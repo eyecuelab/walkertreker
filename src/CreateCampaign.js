@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Splash() {
+export default function CreateCampaign() {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>I am a splash page.</Text>
+        <Text style={styles.text}>Create your campaign here.</Text>
       </View>
     );
 
@@ -14,7 +14,7 @@ export default function Splash() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lime',
+    backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
   },

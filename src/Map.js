@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Splash() {
+export default function Map() {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>I am a splash page.</Text>
+        <Text style={styles.text}>This is a map where you can see how far you've traveled. Maybe you can press on a safehouse location to see what you did there?</Text>
       </View>
     );
 
@@ -14,11 +14,11 @@ export default function Splash() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lime',
+    backgroundColor: 'tomato',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    color: 'fuchsia'
+    color: 'green'
   },
 });

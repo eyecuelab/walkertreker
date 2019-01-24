@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Splash() {
+export default function Team() {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>I am a splash page.</Text>
+        <Text style={styles.text}>Here you can see the members of your team at a glance, including their current steps and health.</Text>
       </View>
     );
 
@@ -14,11 +14,11 @@ export default function Splash() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lime',
+    backgroundColor: 'purple',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    color: 'fuchsia'
+    color: 'white'
   },
 });
