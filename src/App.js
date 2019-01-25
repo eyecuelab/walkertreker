@@ -10,6 +10,7 @@ import JoinCampaign from './components/JoinCampaign';
 import Map from './components/Map';
 import Profile from './components/Profile';
 import Team from './components/Team';
+import OauthTester from './components/OauthTester';
 
 class HomeScreen extends React.Component {
   render() {
@@ -20,6 +21,7 @@ class HomeScreen extends React.Component {
           title="Table of Contents"
           onPress={() => {this.props.navigation.navigate('TOC')}}
         />
+        <OauthTester/>
       </View>
     );
   }
