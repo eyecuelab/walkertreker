@@ -20,13 +20,14 @@ class OauthTester extends React.Component {
       this.setState({hasBegun: true});
       const result = await Expo.Google.logInAsync({
         behavior: 'web',
-        androidStandaloneAppClientId: '965666879956-b433srl490jhskg235o59q9cs4mt2o8c.apps.googleusercontent.com ',
+        androidClientId: '965666879956-b433srl490jhskg235o59q9cs4mt2o8c.apps.googleusercontent.com ',
         webClientId: '965666879956-02d6su55oiuet0nj6jip05l9cmcjg320.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
 
       if (result.type === 'success') {
         this.setState({token: result.accessToken});
+        console.log(JSON.stringify(result));
         return result.accessToken;
       } else {
         return {cancelled: true};
