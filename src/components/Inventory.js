@@ -14,7 +14,7 @@ export default function Inventory() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'darkorangered',
+    backgroundColor: 'darkorange',
     alignItems: 'center',
     justifyContent: 'center',
   },
