@@ -1,13 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
-export default function CreateCampaign() {
+export default class CreateCampaign extends React.Component {
 
+  componentDidMount() {
+    console.log('CreateCampaign did mount');
+  }
+
+  render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Create your campaign here.</Text>
+        <Text style={styles.text}>Create campaign</Text>
+        <Button
+          title="Start Campaign"
+          onPress={() => {console.log('Start campaign')}}
+        />
+        <Button
+          title="Invite Player to Campaign"
+          onPress={() => {this.props.navigation.navigate('ContactsList')}}
+        />
       </View>
     );
+  }
 
 }
 
