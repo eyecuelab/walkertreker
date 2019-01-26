@@ -16,10 +16,11 @@ class OauthTester extends React.Component {
   }
 
   async signInWithGoogleAsync() {
+    debugger;
     try {
       this.setState({hasBegun: true});
       const result = await Expo.Google.logInAsync({
-        behavior: 'web',
+        behavior: 'native',
         androidStandaloneAppClientId: '965666879956-b433srl490jhskg235o59q9cs4mt2o8c.apps.googleusercontent.com ',
         webClientId: '965666879956-02d6su55oiuet0nj6jip05l9cmcjg320.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
@@ -33,7 +34,7 @@ class OauthTester extends React.Component {
         return {cancelled: true};
       }
     } catch(e) {
-      console.log('caught! try failed');
+      console.log('caught! try failed', e);
       return {error: true};
     }
   }
