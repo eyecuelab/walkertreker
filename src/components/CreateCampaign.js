@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 export default class CreateCampaign extends React.Component {
 
   componentDidMount() {
-    console.log('CreateCampaign did mount');
+    // console.log('CreateCampaign did mount');
   }
 
   render() {
