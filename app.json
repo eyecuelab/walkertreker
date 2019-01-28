@@ -29,12 +29,12 @@
     },
     "android": {
       "package": "com.eyecuelab.walkertrekker",
-      "config" : {
+      "config": {
         "googleSignIn": {
-          "apiKey": "AIzaSyB5nU3WqTrziPgEoWKYlk8ivin1a1w5kGY",
-          "certificateHash": "3CBCB76AE3E69802D9B81A2C71627A4CC7ACF4F76FB7321F5A01F764D3130E76"
-        }
-      }
+          "certificateHash": "C19E9F78B5935938E2B17B1201CB130E829FF7BC",
+          "apiKey": "AIzaSyCGYASackpzA_G7IRro2vRFwGBzGzG9Q24"
+        },
+      },
     }
   }
 }
