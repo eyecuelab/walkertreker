@@ -5,6 +5,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import TOC from './components/TOC';
 import ActiveCampaignSummary from './components/ActiveCampaignSummary';
 import CreateCampaign from './components/CreateCampaign';
+import ContactsList from './components/ContactsList';
 import Inventory from './components/Inventory';
 import JoinCampaign from './components/JoinCampaign';
 import Map from './components/Map';
@@ -44,6 +45,7 @@ const AppNavigator = createStackNavigator(
     TOC: { screen: TOC, },
     CampaignSummary: { screen: ActiveCampaignSummary, },
     CreateCampaign: { screen: CreateCampaign },
+    ContactsList: { screen: ContactsList },
     Inventory: { screen: Inventory },
     JoinCampaign: { screen: JoinCampaign },
     Map: { screen: Map },
@@ -51,10 +53,10 @@ const AppNavigator = createStackNavigator(
     Team: { screen: Team },
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "CreateCampaign",
     // Options that apply to all screens accessed thru this navigator. https://reactnavigation.org/docs/en/stack-navigator.html#navigationoptions-for-screens-inside-of-the-navigator. Can be overriden in child screens with navigationOptions within that child component.
     defaultNavigationOptions: {
-      // header: null,
+      header: null,
     }
   }
 );
