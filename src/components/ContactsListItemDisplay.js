@@ -26,8 +26,9 @@ export default class ContactsListItemDisplay extends React.Component {
   }
 
   render() {
+    const containerStyle = this.props.contact.inviteToParty ? [styles.container, styles.active] : [styles.container, styles.inactive];
     return (
-      <View style={styles.container}>
+      <View style={containerStyle}>
         <View style={styles.avatarContainer}>{this.conditionalRenderImage()}</View>
         <Text style={styles.nameContainer}>{this.props.contact.name}</Text>
       </View>
@@ -44,6 +45,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 10,
   },
+  active: {
+    // apply these style rules to a contact that is selected for an invite
+    backgroundColor: 'steelblue',
+  },
+  inactive: {
+    // apply these style rules to a contact that has not been selected for an invite
+  },
   avatar: {
     borderWidth: 1,
     borderColor: 'black',
@@ -56,9 +64,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   avatarContainer: {
-    flex: 1
+    flex: 1,
+    padding: 5,
   },
   nameContainer: {
-    flex: 3,
+    flex: 2,
+    padding: 5,
   },
 })
