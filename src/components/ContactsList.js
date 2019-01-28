@@ -104,12 +104,12 @@ export default class ContactsList extends React.Component {
   listConditionalRender() {
     if (this.state.contacts) {
       return (
-        <ScrollView style={styles.list}>
+        <ScrollView showsVerticalScrollIndicator={true} style={styles.list}>
           {Object.keys(this.state.contacts).map(key => {
             const contact = this.state.contacts[key];
             return (
               <View
-                style={contact.activeInvite ? styles.activeListItem : styles.inactiveListItem}
+                style={styles.listItem}
                 key={key}
               >
                 <TouchableOpacity
@@ -121,6 +121,7 @@ export default class ContactsList extends React.Component {
               </View>
             );
           })}
+          <View style={styles.bottomMargin}></View>
         </ScrollView>
       );
     } else {
@@ -133,7 +134,7 @@ export default class ContactsList extends React.Component {
 
   submitButtonConditionalRender() {
     if (this.state.numberOfInvites == 0) {
-      return (<Button title="Send" disabled onPress={() => console.log('No contacts selected, cannot submit')} />)
+      return (<Button title="Send" disabled onPress={() => {return;}} />)
     } else {
       return <Button title="Send" onPress={() => this.submitInvites()} />
     }
@@ -146,7 +147,7 @@ export default class ContactsList extends React.Component {
           <Text>{this.state.numberOfInvites} contacts selected</Text>
           <View style={styles.submitButtons} >
             {this.submitButtonConditionalRender()}
-            <Button title="Cancel" onPress={() => this.props.navigation.navigate('CreateCampaign')} />
+            <Button title="Cancel" color="tomato" onPress={() => this.props.navigation.navigate('CreateCampaign')} />
           </View>
         </View>
       );
@@ -176,14 +177,13 @@ const styles = StyleSheet.create({
     marginTop: 24,
     width: "100%",
   },
-  inactiveListItem: {
+  listItem: {
     borderBottomColor: 'black',
     borderBottomWidth: 2,
   },
-  activeListItem: {
-    backgroundColor: 'steelblue',
-    borderBottomColor: 'black',
-    borderBottomWidth: 2,
+  bottomMargin: {
+    width: "100%",
+    height: 75,
   },
   submitContainer: {
     position: 'absolute',
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: '10%',
     flexDirection: 'column',
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(255,255,255,0.85)',
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'darkgray',

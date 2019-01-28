@@ -16,7 +16,7 @@ export default class CreateCampaign extends React.Component {
           onPress={() => {console.log('Start campaign')}}
         />
         <Button
-          title="Invite Player to Campaign"
+          title="Invite Players to Campaign"
           onPress={() => {this.props.navigation.navigate('ContactsList')}}
         />
       </View>
