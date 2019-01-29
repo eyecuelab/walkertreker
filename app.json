@@ -29,6 +29,10 @@
     },
     "android": {
       "package": "com.eyecuelab.walkertrekker",
+      "config": {
+        "googleSignIn": {
+          "certificateHash": "XXXXX",
+          "apiKey": "XXXXX"
         },
       },
     }
