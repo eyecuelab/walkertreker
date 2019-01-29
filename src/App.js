@@ -11,7 +11,7 @@ import Map from './components/Map';
 import Profile from './components/Profile';
 import Team from './components/Team';
 
-import Pedometer from './components/Pedometer';
+import Pedometer2 from './components/Pedometer2';
 
 class HomeScreen extends React.Component {
   render() {
@@ -22,7 +22,7 @@ class HomeScreen extends React.Component {
           title="Table of Contents"
           onPress={() => {this.props.navigation.navigate('TOC')}}
         />
-      <Pedometer/>
+      <Pedometer2/>
       </View>
     );
   }
