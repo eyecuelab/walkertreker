@@ -1,0 +1,57 @@
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+
+import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+
+export default class CreateCampaign extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      // quick placeholder for local state, shouldn't need more than this I think?
+      campaignLength: '15',
+      difficultyLevel: 'easy',
+      randomEvents: 'frequent'
+    }
+  }
+
+  _generateCampaign() {
+    console.log('All the stuff we need to do will be done here. For now, kick back and relax baby.');
+    // TODO
+    // 1) generate game UUID
+    // 2) get campaign length, difficulty and random events levels from state
+    // 3) send gameId, all game parameters, current player to server to create a new campaign
+    // 4) send all of the above to redux store
+    // 5) navigate to CampaignPartyView screen with path '/newParty:gameId'
+    this.props.navigation.navigate('NewCampaignPartyView');
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headline}>START A NEW CAMPAIGN</Text>
+        <TwoButtonOverlay
+          title=""
+          button1title="New Campaign"
+          button1onPress={() => this._generateCampaign()}
+          button2title="Back"
+          button2onPress={() => this.props.navigation.goBack()}
+        />
+      </View>
+    );
+  }
+
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'lightblue',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  headline: {
+    fontSize: 36,
+    margin: 25,
+  }
+});
