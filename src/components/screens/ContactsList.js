@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Button, Animated } from 'react-native';
 import { Contacts, Permissions } from 'expo';
 
-import ContactsListItemDisplay from './ContactsListItemDisplay';
+import ContactsListItemDisplay from '../ui/ContactsListItemDisplay';
+import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
 export default class ContactsList extends React.Component {
 
@@ -142,14 +143,17 @@ export default class ContactsList extends React.Component {
 
   submitConditionalRender() {
     if (!this.state.isLoading) {
+      const title = `${this.state.numberOfInvites} contacts selected`;
+      const submitDisabled = this.state.numberOfInvites == 0 ? true : false;
       return (
-        <View style={styles.submitContainer} >
-          <Text>{this.state.numberOfInvites} contacts selected</Text>
-          <View style={styles.submitButtons} >
-            {this.submitButtonConditionalRender()}
-            <Button title="Cancel" color="tomato" onPress={() => this.props.navigation.navigate('CreateCampaign')} />
-          </View>
-        </View>
+        <TwoButtonOverlay
+          title={title}
+          button1title="Send"
+          button1onPress={() => this.submitInvites()}
+          button1isDisabled={submitDisabled}
+          button2title="Cancel"
+          button2onPress={() => this.props.navigation.navigate(`CreateCampaign`)}
+        />
       );
     } else { return; }
   }

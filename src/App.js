@@ -2,28 +2,39 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, AppRegistry } from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
+// Screens for create/join campaign, the ones I'm working on for this feature.
+import CreateCampaign from './components/screens/CreateCampaign';
+import NewCampaignPartyView from './components/screens/NewCampaignPartyView';
+import ContactsList from './components/screens/ContactsList';
+import Splash from './components/screens/Splash';
+
+// components imported for testing purposes, can get rid of these no problemo
+import TwoButtonOverlay from './components/ui/TwoButtonOverlay';
+
+// The other screens.
 import TOC from './components/TOC';
 import ActiveCampaignSummary from './components/ActiveCampaignSummary';
-import CreateCampaign from './components/CreateCampaign';
-import ContactsList from './components/ContactsList';
 import Inventory from './components/Inventory';
 import JoinCampaign from './components/JoinCampaign';
 import Map from './components/Map';
 import Profile from './components/Profile';
 import Team from './components/Team';
-
 import Pedometer from './components/Pedometer';
 
 class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{textAlign: 'center'}}>Home Screeb</Text>
+        <Text style={{textAlign: 'center'}}>Home Screen</Text>
         <Button
           title="Table of Contents"
           onPress={() => {this.props.navigation.navigate('TOC')}}
         />
-      <Pedometer/>
+        <TwoButtonOverlay
+          title="Two Button Overlay"
+          button1title="Button 1"
+          button2title="Button 2"
+        />
       </View>
     );
   }
@@ -42,10 +53,11 @@ const styles = StyleSheet.create({
 const AppNavigator = createStackNavigator(
   { // List a component to act as a screen. The screen attribute is required, other options listed after. Each component is rendered with the navigation prop. Navigate by calling this.props.navigation.navigate('...').
     Home: { screen: HomeScreen, },
-    TOC: { screen: TOC, },
-    CampaignSummary: { screen: ActiveCampaignSummary, },
     CreateCampaign: { screen: CreateCampaign },
     ContactsList: { screen: ContactsList },
+    NewCampaignPartyView: { screen: NewCampaignPartyView, },
+    CampaignSummary: { screen: ActiveCampaignSummary, },
+    TOC: { screen: TOC, },
     Inventory: { screen: Inventory },
     JoinCampaign: { screen: JoinCampaign },
     Map: { screen: Map },

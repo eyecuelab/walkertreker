@@ -129,7 +129,8 @@ export default class PedometerSensor extends React.Component {
           style={styles.input}
           keyboardType='number-pad'
           ref={(input) => {this._length = input}}
-          onChangeText={(input) => {this.setState({campaignLength: input})}/>
+          onChangeText={(input) => {this.setState({campaignLength: input})}}
+        />
         <Text>
           Pedometer available? {this.state.isPedometerAvailable}
         </Text>
