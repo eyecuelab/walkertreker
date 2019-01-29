@@ -19,7 +19,9 @@ import JoinCampaign from './components/JoinCampaign';
 import Map from './components/Map';
 import Profile from './components/Profile';
 import Team from './components/Team';
-import Pedometer from './components/Pedometer';
+
+import Pedometer2 from './components/Pedometer2';
+
 
 class HomeScreen extends React.Component {
   render() {
@@ -30,11 +32,13 @@ class HomeScreen extends React.Component {
           title="Table of Contents"
           onPress={() => {this.props.navigation.navigate('TOC')}}
         />
+
         <TwoButtonOverlay
           title="Two Button Overlay"
           button1title="Button 1"
           button2title="Button 2"
         />
+
       </View>
     );
   }

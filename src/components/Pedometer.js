@@ -8,8 +8,9 @@ export default class PedometerSensor extends React.Component {
 
   constructor(props) {
     super(props);
-    this._openDatePicker = this._openDatePicker.bind(this);
+    this._pickStartDate = this._pickStartDate.bind(this);
     this._logState = this._logState.bind(this);
+    this._setCampaignLength = this._setCampaignLength.bind(this);
   }
 
   state = {
@@ -23,25 +24,20 @@ export default class PedometerSensor extends React.Component {
   };
 
   componentDidMount() {
-    this._subscribe();
+    if (this.state.campaignStartDate) {
+      this._subscribe();
+    }
   }
 
   componentWillUnmount() {
     this._unsubscribe();
   }
 
-  _setCampaignLength() {
-    console.log(this._length);
-    // this.setState({
-    //   campaignLength: this._length
-    // });
-  }
-
   _logState() {
     console.log(this.state);
   }
 
-  async _openDatePicker() {
+  async _pickStartDate() {
     try {
       const {action, year, month, day} = await DatePickerAndroid.open({
         // Use `new Date()` for current date.
@@ -51,17 +47,28 @@ export default class PedometerSensor extends React.Component {
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
         const campaignStartsOn = new Date(year, month, day);
-        const campaignEndsOn = campaignStartsOn.setDate(15);
         console.log(campaignStartsOn);
         this.setState({
           campaignStartDate: campaignStartsOn,
-          campaignEndDate: campaignEndsOn
         });
         console.log(this.state);
       }
     } catch ({code, message}) {
       console.warn('Can\'t open date picker', message);
     }
+  }
+
+  _setCampaignLength(length) {
+    console.log(this.state.campaignStartsOn);
+    let campaignEndsOn = new Date(this.state.campaignStartsOn.toString());
+    console.log('campaign ends:', campaignEndsOn);
+    let day = campaignEndsOn.toString().split('').slice(8, 10).join();
+    console.log(day);
+    campaignEndsOn.setDate(day + length);
+    console.log(campaignEndsOn);
+    this.setState({
+      campaignEndDate: campaignEndsOn
+    });
   }
 
   _subscribe = () => {
@@ -120,7 +127,7 @@ export default class PedometerSensor extends React.Component {
       <View style={styles.container}>
         <Button
           title=' select campaign start date'
-          onPress={this._openDatePicker} />
+          onPress={this._pickStartDate} />
           <Button
             title='check ya state'
             onPress={this._logState} />
@@ -131,10 +138,14 @@ export default class PedometerSensor extends React.Component {
           ref={(input) => {this._length = input}}
           onChangeText={(input) => {this.setState({campaignLength: input})}}
         />
+
         <Text>
           Pedometer available? {this.state.isPedometerAvailable}
         </Text>
         <Text>Campaign Length: {this.state.campaignLength}</Text>
+        <Button
+          title='start campaign'
+          onPress={this._setCampaignLength}/>
         <Text>
           Goal met for today? {/*{this.state.pastStepCount}*/}
         </Text>

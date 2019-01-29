@@ -29,10 +29,6 @@
     },
     "android": {
       "package": "com.eyecuelab.walkertrekker",
-      "config": {
-        "googleSignIn": {
-          "certificateHash": "C19E9F78B5935938E2B17B1201CB130E829FF7BC",
-          "apiKey": "AIzaSyCGYASackpzA_G7IRro2vRFwGBzGzG9Q24"
         },
       },
     }
