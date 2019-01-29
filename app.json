@@ -29,8 +29,6 @@
     },
     "android": {
       "package": "com.eyecuelab.walkertrekker",
-        },
-      },
-    }
-  }
+    },
+  },
 }
