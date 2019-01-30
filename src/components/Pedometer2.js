@@ -11,8 +11,8 @@ export default class PedometerSensor extends React.Component {
       isPedometerAvailable: "checking",
       pastStepCount: 0,
       currentStepCount: 1,
-      startDate: 'poop',
-      endDate: 'poop'
+      yesterdayStartDate: 'poop',
+      yesterdayEndDate: 'poop'
     };
   }
 
@@ -54,13 +54,22 @@ export default class PedometerSensor extends React.Component {
       }
     );
 
-    const end = new Date();
-    const start = new Date();
-    start.setDate(end.getDate() - 1);
+    const yesterdayEnd = new Date();
+    const yesterdayStart = new Date();
+    yesterdayStart.setDate(yesterdayEnd.getDate() - 1);
+    yesterdayStart.setHours(6,0,0,0);
+    yesterdayEnd.setHours(24,0,0,0);
+
+    const todayStart = new Date();
+    const todayEnd = new Date();
+    todayStart.setHours(6,0,0,0);
+    todayEnd.setHours(24,0,0,0);
 
     this.setState({
-      startDate: start,
-      endDate: end
+      yesterdayStartDate: yesterdayStart,
+      yesterdayEndDate: yesterdayEnd,
+      todayStartDate: todayStart,
+      todayEndDate: todayEnd,
     })
     Pedometer.getStepCountAsync(start, end).then(
       result => {
@@ -82,8 +91,8 @@ export default class PedometerSensor extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>start: {this.state.startDate.toString()}</Text>
-        <Text>end: {this.state.endDate.toString()}</Text>
+        <Text>start: {this.state.yesterdayStartDate.toString()}</Text>
+        <Text>end: {this.state.yesterdayEndDate.toString()}</Text>
         <Text>
           Pedometer.isAvailableAsync(): {this.state.isPedometerAvailable}
         </Text>
@@ -91,6 +100,10 @@ export default class PedometerSensor extends React.Component {
           Steps taken in the last 24 hours: {this.state.pastStepCount}
         </Text>
         <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
+        <Text>yesterdayStartDate: {this.state.yesterdayStartDate}</Text>
+        <Text>yesterdayEndDate: {this.state.yesterdayEndDate}</Text>
+        <Text>todayStartDate: {this.state.todayStartDate}</Text>
+        <Text>todayEndDate: {this.state.todayEndDate}</Text>
       </View>
     );
   }
