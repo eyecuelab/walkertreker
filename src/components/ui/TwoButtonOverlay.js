@@ -65,7 +65,7 @@ export default class TwoButtonOverlay extends React.Component {
         {this._titleRender()}
         <View style={[styles.buttonContainer, {flexDirection: this.props.flexDirection}]}>
           <View style={styles.buttonStyle}>
-            <TouchableHighlight style={styles.touchable} onPress={this.props.button1onPress}>
+            <TouchableHighlight style={[styles.touchable]} onPress={this.props.button1onPress}>
               <Text style={styles.buttonText}>{this.props.button1title}</Text>
             </TouchableHighlight>
           </View>
@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '10%',
     flexDirection: 'column',
-    // backgroundColor: 'rgba(255,255,255,0.85)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -120,13 +119,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   buttonStyle: {
-    // backgroundColor: 'black',
     flex: 1,
     height: '100%',
   },
   touchable: {
     height: '100%',
-    width: '100%',
+    width: '97.5%',
     backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',

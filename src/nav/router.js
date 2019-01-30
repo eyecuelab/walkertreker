@@ -17,8 +17,11 @@ import Pedometer2 from '../components/Pedometer2';
 
 const AppNavigator = createStackNavigator({
     CreateCampaign: { screen: CreateCampaign },
+    NewCampaignPartyView: {
+      screen: NewCampaignPartyView,
+      path: 'newgame/:gameId', 
+    },
     ContactsList: { screen: ContactsList },
-    NewCampaignPartyView: { screen: NewCampaignPartyView, },
     CampaignSummary: { screen: ActiveCampaignSummary, },
     TOC: { screen: TOC, },
     Inventory: { screen: Inventory },
