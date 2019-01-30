@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'darkgray'
+    color: 'darkgray',
+    fontFamily: 'verdana',
   },
 });

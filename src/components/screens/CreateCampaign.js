@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, ImageBackground } from 'react-native';
+import { Font } from 'expo';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+
+import defaultStyle from '../../styles/defaultStyle';
 
 export default class CreateCampaign extends React.Component {
 
@@ -26,32 +29,30 @@ export default class CreateCampaign extends React.Component {
     this.props.navigation.navigate('NewCampaignPartyView');
   }
 
+  componentDidMount() {
+
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.headline}>START A NEW CAMPAIGN</Text>
-        <TwoButtonOverlay
-          title=""
-          button1title="New Campaign"
-          button1onPress={() => this._generateCampaign()}
-          button2title="Back"
-          button2onPress={() => this.props.navigation.goBack()}
-        />
-      </View>
+      <ImageBackground
+        source={this.props.screenProps.backgroundImage}
+        style={{width: '100%', height: '100%',}}
+      >
+        <View style={styles.container}>
+          <Text style={styles.headline}>START A NEW CAMPAIGN</Text>
+          <Text style={{fontFamily: 'gore', fontSize: 36,}}>The quick brown fox jumped over the lazy dog</Text>
+          <TwoButtonOverlay
+            button1title="New Campaign"
+            button1onPress={() => this._generateCampaign()}
+            button2title="Back"
+            button2onPress={() => this.props.navigation.goBack()}
+          />
+        </View>
+      </ImageBackground>
     );
   }
 
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'lightblue',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  headline: {
-    fontSize: 36,
-    margin: 25,
-  }
-});
+const styles = StyleSheet.create(defaultStyle);

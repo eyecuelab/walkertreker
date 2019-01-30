@@ -23,10 +23,16 @@ export default class TwoButtonOverlay extends React.Component {
     }
   }
 
+  _titleRender() {
+    if (this.props.title) {
+      return (<Text>{this.props.title}</Text>);
+    } else return;
+  }
+
   render() {
     return (
       <View style={styles.container} >
-        <Text>{this.props.title}</Text>
+        {this._titleRender()}
         <View style={styles.buttonsRow} >
           {this._button1render()}
           {this._button2render()}
@@ -37,7 +43,7 @@ export default class TwoButtonOverlay extends React.Component {
 }
 
 TwoButtonOverlay.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   button1onPress: PropTypes.func,
   button1title: PropTypes.string.isRequired,
   button1color: PropTypes.string,
@@ -61,8 +67,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 0,
-    left: '10%',
-    width: '80%',
+    width: '100%',
     height: '10%',
     flexDirection: 'column',
     backgroundColor: 'rgba(255,255,255,0.85)',

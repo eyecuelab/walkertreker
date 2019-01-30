@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "walker-trekker-draft",
-    "slug": "walker-trekker-draft",
+    "name": "walkertrekker",
+    "slug": "walkertrekker",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -29,8 +29,6 @@
     },
     "android": {
       "package": "com.eyecuelab.walkertrekker",
-        },
-      },
-    }
-  }
+    },
+  },
 }
