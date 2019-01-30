@@ -9,7 +9,7 @@ export default defaultStyle = {
   },
   headline: {
     fontSize: 46,
-    fontFamily: 'gore',
     color: 'white',
-  }
+    fontFamily: 'gore'
+  },
 }

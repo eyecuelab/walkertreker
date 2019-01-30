@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, ImageBackground } from 'react-native';
 import { Font } from 'expo';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+import ThreeButtonToggle from '../ui/ThreeButtonToggle';
 
 import defaultStyle from '../../styles/defaultStyle';
 
@@ -12,9 +13,9 @@ export default class CreateCampaign extends React.Component {
     super(props);
     this.state = {
       // quick placeholder for local state, shouldn't need more than this I think?
-      campaignLength: '15',
-      difficultyLevel: 'easy',
-      randomEvents: 'frequent'
+      campaignLength: '15', // options: '15', '30', '90'
+      difficultyLevel: 'easy', // options: 'easy', 'med', 'hard'
+      randomEvents: 'low' // options: 'low', 'mid', 'high'
     }
   }
 
@@ -41,7 +42,9 @@ export default class CreateCampaign extends React.Component {
       >
         <View style={styles.container}>
           <Text style={styles.headline}>START A NEW CAMPAIGN</Text>
-          <Text style={{fontFamily: 'gore', fontSize: 36,}}>The quick brown fox jumped over the lazy dog</Text>
+          <ThreeButtonToggle
+            titleColor="white"
+          />
           <TwoButtonOverlay
             button1title="New Campaign"
             button1onPress={() => this._generateCampaign()}
