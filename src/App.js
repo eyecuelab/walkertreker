@@ -11,7 +11,8 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     console.log('_loadResourcesAsync start');
-    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')}),
+    const stuff = await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')});
+    console.log(stuff);
     console.log('_loadResourcesAsync finish');
   };
 
