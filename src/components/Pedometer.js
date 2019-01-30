@@ -168,5 +168,3 @@ const styles = StyleSheet.create({
     paddingRight: 8,
   }
 });
-
-// Expo.registerRootComponent(PedometerSensor);
