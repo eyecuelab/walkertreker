@@ -3,7 +3,7 @@ import React from "react";
 import { Pedometer } from "expo";
 import { StyleSheet, Text, View, Button } from "react-native";
 
-export default class PedometerSensor extends React.Component {
+export default class PedometerSensorTester extends React.Component {
 
   constructor(props) {
     super(props);
@@ -172,10 +172,7 @@ export default class PedometerSensor extends React.Component {
           Steps taken today: {this.state.todayStepCount}
         </Text>
         <Text>Walk! And watch this go up: {this.state.dynamicStepCount}</Text>
-        <Text>yesterdayStartDate: {this.state.yesterdayStartDate.toString()}</Text>
-        <Text>yesterdayEndDate: {this.state.yesterdayEndDate.toString()}</Text>
-        <Text>todayStartDate: {this.state.todayStartDate.toString()}</Text>
-        <Text>todayEndDate: {this.state.todayEndDate.toString()}</Text>
+
       </View>
     );
   }

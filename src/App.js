@@ -20,7 +20,7 @@ import Map from './components/Map';
 import Profile from './components/Profile';
 import Team from './components/Team';
 
-import PedometerSensor from './components/PedometerSensor';
+import PedometerSensorTester from './components/PedometerSensorTester';
 import PedometerSensorV2 from './components/PedometerSensorV2';
 
 
@@ -68,11 +68,11 @@ const AppNavigator = createStackNavigator(
     Map: { screen: Map },
     Profile: { screen: Profile },
     Team: { screen: Team },
-    PedometerSensor: { screen: PedometerSensor },
+    PedometerSensorTester: { screen: PedometerSensorTester },
     PedometerSensorV2: { screen: PedometerSensorV2 },
   },
   {
-    initialRouteName: "PedometerSensor",
+    initialRouteName: "PedometerSensorV2",
     // Options that apply to all screens accessed thru this navigator. https://reactnavigation.org/docs/en/stack-navigator.html#navigationoptions-for-screens-inside-of-the-navigator. Can be overriden in child screens with navigationOptions within that child component.
     defaultNavigationOptions: {
       header: null,
