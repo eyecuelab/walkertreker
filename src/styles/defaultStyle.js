@@ -11,5 +11,5 @@ export default defaultStyle = {
     fontSize: 46,
     fontFamily: 'gore',
     color: 'white',
-  }
+  },
 }

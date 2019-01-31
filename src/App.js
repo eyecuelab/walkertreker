@@ -1,18 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, AppRegistry } from 'react-native';
-import { createStackNavigator, createAppContainer } from "react-navigation";
-import { AppLoading, Font } from 'expo';
+import { AppLoading, Font, registerRootComponent, KeepAwake } from 'expo';
 import { AppContainer } from './nav/router';
 
-export default class App extends React.Component {
+if (__DEV__) {
+  KeepAwake.activate();
+}
+
+class App extends React.Component {
   state = {
     isReady: false,
   }
 
   _loadResourcesAsync = async () => {
-    console.log('_loadResourcesAsync start');
-    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')}),
-    console.log('_loadResourcesAsync finish');
+    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')});
   };
 
   _handleLoadingError = error => {
@@ -20,9 +20,7 @@ export default class App extends React.Component {
   }
 
   _handleFinishLoading = () => {
-    console.log('_handleFinishLoading start');
     this.setState({isReady: true});
-    console.log('_handleFinishLoading finish');
   }
 
   render() {
@@ -48,4 +46,4 @@ export default class App extends React.Component {
   }
 }
 
-AppRegistry.registerComponent('main', () => App);
+registerRootComponent(App)
