@@ -16,7 +16,7 @@ export default class PedometerSensorV2 extends React.Component {
       yesterdayStepCount: 0,
       currentStepCount: 0,
       campaignLength: 15, /*this should not be static; it should be informed by actual campaign length*/
-      campaignStartDate: new Date('January 28, 2019 06:00:00'), /*this needs to not be a static value; it should be informed by the actual campaign start date*/
+      campaignStartDate: new Date('January 25, 2019 06:00:00'), /*this needs to not be a static value; it should be informed by the actual campaign start date*/
       campaignDateArray: null, /*this should only be null at start*/
     };
     this._storeData = this._storeData.bind(this);
