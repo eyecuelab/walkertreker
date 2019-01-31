@@ -1,14 +1,15 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer } from "expo";
-import { StyleSheet, Text, View, AsyncStorage } from "react-native";
+import { StyleSheet, Text, View, AsyncStorage, AppState } from "react-native";
 
 
-export default class PedometerSensorTester extends React.Component {
+export default class PedometerSensorV2 extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      appState: AppState.currentState,
       isPedometerAvailable: "checking",
       todayStepCount: 0,
       yesterdayStepCount: 0,
@@ -20,10 +21,8 @@ export default class PedometerSensorTester extends React.Component {
 
   componentDidMount() {
     this._subscribe();
+    AppState.addEventListener('change', this._handleAppStateChange);
     this._updateStepCounts();
-  }
-
-  componentDidUpdate() {
   }
 
   componentWillUnmount() {
@@ -39,6 +38,7 @@ export default class PedometerSensorTester extends React.Component {
 
     Pedometer.isAvailableAsync().then(
       result => {
+
         this.setState({
           isPedometerAvailable: String(result)
         });
@@ -49,7 +49,6 @@ export default class PedometerSensorTester extends React.Component {
         });
       }
     );
-
 
     const todayStart = new Date();
     const todayEnd = new Date();
@@ -73,7 +72,23 @@ export default class PedometerSensorTester extends React.Component {
     this._subscription = null;
   };
 
+  _handleAppStateChange = (nextAppState) => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      this._updateStepCounts();
+    }
+    this.setState({appState: nextAppState});
+  };
+
   _updateStepCounts = () => {
+    this._updateStepCountsYesterday();
+    this._updateStepCountsToday();
+  }
+
+  _updateStepCountsToday = () => {
+
     //set dates for today
     const todayStart = new Date();
     const todayEnd = new Date();
@@ -81,15 +96,28 @@ export default class PedometerSensorTester extends React.Component {
     todayEnd.setHours(24,0,0,0);
     //query pedometer for today's date range
     Pedometer.getStepCountAsync(todayStart, todayEnd).then(
-      result => {
-        this.setState({ todayStepCount: result.steps });
+      async (result) => {
+        // if we have today's step total from the pedometer, we store it in AsyncStorage
+        console.log('today\'s pedometer total is ' + result.steps.toString());
+        await this._storeData('todayStepCountStorage', result.steps.toString());
+        // now that it's been stored, we retrieve it and set is as the todayStepCount state value
+        this.setState({
+          todayStepCount: parseInt(await this._retrieveData('todayStepCountStorage'), 10),
+        });
+        console.log('todayStepCount state set to ' + this.state.todayStepCount);
+        // return this.state.todayStepCount;
       },
       error => {
+        // if we have an error, state shows the error
         this.setState({
           todayStepCount: "Could not get stepCount: " + error
         });
       }
     );
+  }
+
+  _updateStepCountsYesterday = () => {
+
     //set dates for yesterday
     const yesterdayStart = new Date();
     const yesterdayEnd = new Date();
@@ -97,22 +125,22 @@ export default class PedometerSensorTester extends React.Component {
     yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
     yesterdayStart.setHours(6,0,0,0);
     yesterdayEnd.setHours(24,0,0,0);
+
     //query pedometer for yesterday's date range
     Pedometer.getStepCountAsync(yesterdayStart, yesterdayEnd).then(
-       async (result) => {
-
-        console.log('104: ' + result.steps.toString());
+      async (result) => {
+        // if we have yesterday's step total from the pedometer, we store it in AsyncStorage
+        console.log('yesterday\'s pedometer total is ' + result.steps.toString());
         await this._storeData('yesterdayStepCountStorage', result.steps.toString());
-
-        console.log('106: ' + this._retrieveData('yesterdayStepCountStorage'));
+        // now that it's been stored, we retrieve it and set is as the yesterdayStepCount state value
         this.setState({
           yesterdayStepCount: parseInt(await this._retrieveData('yesterdayStepCountStorage'), 10),
         });
-        console.log('110: state set to ' + this.state.yesterdayStepCount);
-
-
+        console.log('yesterdayStepCount state set to ' + this.state.yesterdayStepCount);
+        // return this.state.yesterdayStepCount;
       },
       error => {
+        // if we have an error, state shows the error
         this.setState({
           yesterdayStepCount: "Could not get stepCount: " + error
         });
@@ -123,10 +151,9 @@ export default class PedometerSensorTester extends React.Component {
   async _storeData(keyString, valueString) {
     try {
       await AsyncStorage.setItem(keyString, valueString);
-      console.log('127: ' + keyString + ' saved as ' + valueString);
+      console.log(keyString + ' saved as ' + valueString);
     } catch (error) {
-      // Error saving data
-      console.log('130: ' + keyString + ' data could not be saved');
+      console.log(keyString + ' data could not be saved');
     }
   }
 
@@ -134,12 +161,10 @@ export default class PedometerSensorTester extends React.Component {
     try {
       const value = await AsyncStorage.getItem(keyString);
       if (value !== null) {
-        // We have data!!
         console.log(keyString + ' retrieved as ' + value);
         return value;
       }
     } catch (error) {
-      // Error retrieving data
       console.log(keyString + ' data could not be retrieved');
     }
   }
@@ -156,11 +181,11 @@ export default class PedometerSensorTester extends React.Component {
         <Text>
           Steps taken yesterday: {this.state.yesterdayStepCount}
         </Text>
-        <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
       </View>
     );
   }
 }
+// <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
 
 const styles = StyleSheet.create({
   container: {
