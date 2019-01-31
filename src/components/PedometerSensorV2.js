@@ -3,7 +3,7 @@ import React from "react";
 import { Pedometer } from "expo";
 import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button } from "react-native";
 
-import DateShower from './DateShower';
+import StepShower from './StepShower';
 
 export default class PedometerSensorV2 extends React.Component {
 
@@ -32,11 +32,11 @@ export default class PedometerSensorV2 extends React.Component {
   componentDidMount() {
     this._subscribe();
     AppState.addEventListener('change', this._handleAppStateChange);
-    this._updateStepCounts();
+    this._updatePastStepCounts();
     setInterval(() => {
       if (this.state.appState === 'active') {
         console.log('one more minute down!');
-        this._updateStepCounts();
+        this._updatePastStepCounts();
       }
     }, 60000);
   }
@@ -219,7 +219,7 @@ export default class PedometerSensorV2 extends React.Component {
           });
         },
         error => {
-          console.log('error retrieving pedometer data at day ' + (index + 1));
+          console.log('error retrieving pedometer data at campaign day ' + (index + 1) + ' in _updatePastStepCounts');
         }
       );
     });
@@ -255,16 +255,10 @@ export default class PedometerSensorV2 extends React.Component {
         <Text>
           Steps taken today: {this.state.todayStepCount}
         </Text>
-        <Text>
-          Steps taken yesterday: {this.state.yesterdayStepCount}
-        </Text>
-        <Button title='update past steps'
-          onPress={this._updatePastStepCounts} />
         <ScrollView>
           {this.state.campaignDateArray.map((dateObj, index) =>
-            <DateShower day={dateObj.day}
+            <StepShower day={dateObj.day}
               start={dateObj.start.toString()}
-              end={dateObj.end.toString()}
               steps={dateObj.steps}
               key={index} />
           )}
@@ -274,14 +268,23 @@ export default class PedometerSensorV2 extends React.Component {
   }
 }
 
-//THIS IS FROM THE EXPO EXAMPLE
-// <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 15,
+    marginTop: 24,
     alignItems: "center",
     justifyContent: "center"
   },
 });
+
+// HERE THERE BE STUFF!
+// Prevously-used content goes here:
+
+// <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
+
+// <Button title='update past steps'
+//   onPress={this._updatePastStepCounts} />
+
+// <Text>
+//   Steps taken yesterday: {this.state.yesterdayStepCount}
+// </Text>
