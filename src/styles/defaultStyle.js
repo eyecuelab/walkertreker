@@ -32,5 +32,5 @@ export default defaultStyle = {
     fontFamily: 'verdana',
     fontSize: 11,
     color: 'white',
-  }
+  },
 }
