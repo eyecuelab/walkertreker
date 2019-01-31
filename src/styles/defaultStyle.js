@@ -10,6 +10,6 @@ export default defaultStyle = {
   headline: {
     fontSize: 46,
     color: 'white',
-    fontFamily: 'Gore'
+    fontFamily: 'gore'
   },
 }

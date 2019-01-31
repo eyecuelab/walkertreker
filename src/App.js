@@ -1,19 +1,21 @@
 import React from 'react';
-import { AppRegistry, AsyncStorage } from 'react-native';
-import { createStackNavigator, createAppContainer } from "react-navigation";
-import { AppLoading, Font } from 'expo';
+import { AsyncStorage } from 'react-native';
+import { AppLoading, Font, registerRootComponent, KeepAwake } from 'expo';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
 
-export default class App extends React.Component {
+if (__DEV__) {
+  KeepAwake.activate();
+}
+
+class App extends React.Component {
   state = {
     isReady: false,
   }
 
   _loadResourcesAsync = async () => {
     console.log('_loadResourcesAsync start');
-    const stuff = await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')});
-    console.log(stuff);
+    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')});
     // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
     const userId = await AsyncStorage.getItem('userId');
     if (userId) { console.log(userId) }
@@ -30,9 +32,7 @@ export default class App extends React.Component {
   }
 
   _handleFinishLoading = () => {
-    console.log('_handleFinishLoading start');
     this.setState({isReady: true});
-    console.log('_handleFinishLoading finish');
   }
 
   render() {
@@ -58,4 +58,4 @@ export default class App extends React.Component {
   }
 }
 
-AppRegistry.registerComponent('main', () => App);
+registerRootComponent(App)
