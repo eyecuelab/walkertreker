@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, AppRegistry } from 'react-native';
+import { StyleSheet, Text, View, Button, AppRegistry, AppState } from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 // Screens for create/join campaign, the ones I'm working on for this feature.
@@ -19,8 +19,6 @@ import JoinCampaign from './components/JoinCampaign';
 import Map from './components/Map';
 import Profile from './components/Profile';
 import Team from './components/Team';
-
-import PedometerSensorTester from './components/PedometerSensorTester';
 import PedometerSensorV2 from './components/PedometerSensorV2';
 
 
@@ -68,7 +66,6 @@ const AppNavigator = createStackNavigator(
     Map: { screen: Map },
     Profile: { screen: Profile },
     Team: { screen: Team },
-    PedometerSensorTester: { screen: PedometerSensorTester },
     PedometerSensorV2: { screen: PedometerSensorV2 },
   },
   {
@@ -83,8 +80,24 @@ const AppNavigator = createStackNavigator(
 const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      appState: AppState.currentState,
+    }
+  }
+
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    this.setState({appState: nextAppState});
+  };
+
   render() {
-    return <AppContainer />;
+    return <AppContainer appState={this.state.appState} />;
   }
 }
 
