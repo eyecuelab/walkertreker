@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 
 export default class ButtonToggle extends React.Component {
   constructor(props) {
@@ -9,11 +9,14 @@ export default class ButtonToggle extends React.Component {
 
   render() {
     const toggle = this.props.active ? styles.active : styles.inactive;
+    const activeTint = this.props.active ? 'white' : 'black'
     return (
-      <View style={[styles.container, toggle]} >
-        <Text style={[styles.value, toggle]}>{this.props.value}</Text>
-        <Text style={[styles.label, toggle]}>{this.props.label}</Text>
-      </View>
+      <ImageBackground style={{width: '100%', height: '100%'}} source={this.props.background} tintColor={activeTint}>
+        <View style={[styles.container, toggle]} >
+          <Text style={[styles.value, toggle]}>{this.props.value}</Text>
+          <Text style={[styles.label, toggle]}>{this.props.label}</Text>
+        </View>
+      </ImageBackground>
     );
   }
 }
@@ -22,11 +25,13 @@ ButtonToggle.propTypes = {
   value: PropTypes.string,
   label: PropTypes.string,
   active: PropTypes.bool,
+  background: PropTypes.any,
 };
 
 ButtonToggle.defaultProps = {
   active: false,
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -38,11 +43,11 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   active: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     color: 'darkred',
   },
   inactive: {
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
     color: 'white',
   },
   value: {

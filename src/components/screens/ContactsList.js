@@ -5,6 +5,8 @@ import { Contacts, Permissions } from 'expo';
 import ContactsListItemDisplay from '../ui/ContactsListItemDisplay';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
+import { parsePhoneNumber } from '../../util/util';
+
 export default class ContactsList extends React.Component {
 
   constructor(props) {
@@ -21,18 +23,7 @@ export default class ContactsList extends React.Component {
   }
 
   _parsePhoneNumber(str) {
-    // helper function
-    // INPUT: "(503) 123-4567"
-    // RETURN: "5031234567"
-    const phoneStr = str;
-    const phoneArr = phoneStr.split('');
-    const targetArr = [];
-    phoneArr.forEach(char => {
-    	if (parseInt(char) || char == "0") {
-      	targetArr.push(char);
-      }
-    })
-    return targetArr.join('');
+    return parsePhoneNumber(str);
   }
 
   async getContacts() {

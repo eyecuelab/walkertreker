@@ -4,6 +4,10 @@ import { StyleSheet, Text, View, TouchableHighlight, } from 'react-native';
 
 import ButtonToggle from './ButtonToggle';
 
+const bg1 = require('../../../assets/buttontexture1.png');
+const bg2 = require('../../../assets/buttontexture2.png');
+const bg3 = require('../../../assets/buttontexture3.png');
+
 export default class ThreeButtonToggle extends React.Component {
   constructor(props) {
     super(props);
@@ -24,26 +28,26 @@ export default class ThreeButtonToggle extends React.Component {
   render() {
     return (
       <View style={styles.container} >
-        <Text style={{color: this.props.titleColor, fontSize: 18}}>{this.props.title}</Text>
-        <Text style={{color: this.props.titleColor, fontSize: 12}}>{this.props.subtitle}</Text>
+        <Text style={{color: this.props.titleColor, fontSize: 24, fontFamily: 'gore',}}>{this.props.title}</Text>
+        <Text style={{color: this.props.titleColor, fontSize: 18, fontFamily: 'verdana',}}>{this.props.subtitle}</Text>
         <View style={styles.buttonContainer}>
           <TouchableHighlight
             style={styles.touchableArea}
             onPress={() => {this._toggleActiveFlags(0); this.props.handleUpdate(0);}}
           >
-            <ButtonToggle value={this.props.button1value} label={this.props.button1label} active={this.state.activeFlags[0]} />
+            <ButtonToggle background={bg1} value={this.props.button1value} label={this.props.button1label} active={this.state.activeFlags[0]} />
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.touchableArea}
             onPress={() => {this._toggleActiveFlags(1); this.props.handleUpdate(1);}}
           >
-            <ButtonToggle value={this.props.button2value} label={this.props.button2label} active={this.state.activeFlags[1]} />
+            <ButtonToggle background={bg2} value={this.props.button2value} label={this.props.button2label} active={this.state.activeFlags[1]} />
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.touchableArea}
             onPress={() => {this._toggleActiveFlags(2); this.props.handleUpdate(2);}}
           >
-            <ButtonToggle value={this.props.button3value} label={this.props.button3label} active={this.state.activeFlags[2]} />
+            <ButtonToggle background={bg3} value={this.props.button3value} label={this.props.button3label} active={this.state.activeFlags[2]} />
           </TouchableHighlight>
         </View>
       </View>
@@ -64,7 +68,7 @@ ThreeButtonToggle.propTypes = {
   handleUpdate: PropTypes.func.isRequired,
 };
 
-const width = (100/3).toString() + "%";
+const width = (99/3).toString() + "%";
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -72,6 +76,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   touchableArea: {
     width,

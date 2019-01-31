@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ImageBackground } from 'react-native';
-import { Font } from 'expo';
+import { StyleSheet, Text, View, Button, ImageBackground, } from 'react-native';
+import { Font, Constants } from 'expo';
 import { v4 } from 'uuid';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
@@ -17,6 +17,10 @@ export default class CreateCampaign extends React.Component {
       difficultyLevel: 'easy', // options: 'easy', 'hard', 'xtreme'
       randomEvents: 'low' // options: 'low', 'mid', 'high'
     }
+  }
+
+  componentDidMount() {
+    
   }
 
   _generateCampaign() {
@@ -37,10 +41,6 @@ export default class CreateCampaign extends React.Component {
       }
     }
     this.props.navigation.navigate('NewCampaignPartyView', payload);
-  }
-
-  componentDidMount() {
-
   }
 
   _updateCampaignLength = async num => {

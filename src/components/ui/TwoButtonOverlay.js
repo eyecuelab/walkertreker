@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   touchable: {
     height: '100%',
-    width: '97.5%',
+    width: '99%',
     backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',

@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, AppRegistry } from 'react-native';
+import { AppRegistry, AsyncStorage } from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { AppLoading, Font } from 'expo';
 import { AppContainer } from './nav/router';
+import { v4 } from 'uuid';
 
 export default class App extends React.Component {
   state = {
@@ -13,6 +14,14 @@ export default class App extends React.Component {
     console.log('_loadResourcesAsync start');
     const stuff = await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')});
     console.log(stuff);
+    // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
+    const userId = await AsyncStorage.getItem('userId');
+    if (userId) { console.log(userId) }
+    else {
+      const newId = v4();
+      await AsyncStorage.setItem('userId', newId);
+      console.log(newId);
+    }
     console.log('_loadResourcesAsync finish');
   };
 
