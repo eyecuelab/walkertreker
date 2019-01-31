@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { AppLoading, Font, registerRootComponent, KeepAwake } from 'expo';
 import { AppContainer } from './nav/router';
+
 
 if (__DEV__) {
   KeepAwake.activate();
