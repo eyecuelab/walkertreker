@@ -15,9 +15,9 @@ export default class PedometerSensorV2 extends React.Component {
       todayStepCount: 0,
       yesterdayStepCount: 0,
       currentStepCount: 0,
-      campaignLength: 15,
-      campaignStartDate: new Date('January 31, 2019 06:00:00'),
-      campaignDateArray: null,
+      campaignLength: 15, /*this should not be static; it should be informed by actual campaign length*/
+      campaignStartDate: new Date('January 28, 2019 06:00:00'), /*this needs to not be a static value; it should be informed by the actual campaign start date*/
+      campaignDateArray: null, /*this should only be null at start*/
     };
     this._storeData = this._storeData.bind(this);
     this._retrieveData = this._retrieveData.bind(this);
@@ -203,26 +203,25 @@ export default class PedometerSensorV2 extends React.Component {
     const campaignDateArrayCopy = JSON.parse(JSON.stringify(campaignDateArray))
 
     campaignDateArrayCopy.forEach((obj, index) => {
-      console.log(obj.start, obj.end);
+      // console.log('206: ',obj.start, obj.end);
       Pedometer.getStepCountAsync(new Date(obj.start), new Date(obj.end)).then(
         async (result) => {
-          // await this._storeData('day' + (index+1) + 'StepCountStorage', result.steps.toString());
-          // const stepsToAdd = {
-          //   steps: parseInt(await this._retrieveData('yesterdayStepCountStorage'), 10)
-          // }
-          // console.log(stepsToAdd);
-          // const dateWithSteps = Object.assign({}, campaignDateArrayCopy[index], stepsToAdd);
-          // campaignDateArrayCopy.splice(index, 1, dateWithSteps)
-          console.log(index + ': ' + result.steps);
+          await this._storeData('day' + (index + 1) + 'StepCountStorage', result.steps.toString());
+          const stepsToAdd = {
+            steps: parseInt(await this._retrieveData('day' + (index + 1) + 'StepCountStorage'), 10)
+          }
+          // console.log('213: ', stepsToAdd);
+          const dateWithSteps = Object.assign({}, campaignDateArrayCopy[index], stepsToAdd);
+          campaignDateArrayCopy.splice(index, 1, dateWithSteps)
+          // console.log('216: ', index + ': ' + result.steps);
+          this.setState({
+            campaignDateArray: campaignDateArrayCopy
+          });
         },
         error => {
-          // if we have an error, state shows the error
-          console.log('error at ' + index);
+          console.log('error retrieving pedometer data at day ' + (index + 1));
         }
       );
-    });
-    this.setState({
-      campaignDateArray: campaignDateArrayCopy
     });
   }
 
