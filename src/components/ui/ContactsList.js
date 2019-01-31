@@ -5,6 +5,8 @@ import { Contacts, Permissions } from 'expo';
 import ContactsListItemDisplay from '../ui/ContactsListItemDisplay';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
+import { parsePhoneNumber } from '../../util/util';
+
 export default class ContactsList extends React.Component {
 
   constructor(props) {
@@ -18,21 +20,6 @@ export default class ContactsList extends React.Component {
 
   componentDidMount() {
     this.getContacts();
-  }
-
-  _parsePhoneNumber(str) {
-    // helper function
-    // INPUT: "(503) 123-4567"
-    // RETURN: "5031234567"
-    const phoneStr = str;
-    const phoneArr = phoneStr.split('');
-    const targetArr = [];
-    phoneArr.forEach(char => {
-    	if (parseInt(char) || char == "0") {
-      	targetArr.push(char);
-      }
-    })
-    return targetArr.join('');
   }
 
   async getContacts() {
@@ -51,7 +38,7 @@ export default class ContactsList extends React.Component {
           if (contact.phoneNumbers) {
             contact.phoneNumbers.forEach(num => {
               if (num.label === 'mobile') {
-                const phoneToAdd = this._parsePhoneNumber(num.number);
+                const phoneToAdd = num.number;
                 numbers.push(phoneToAdd);
               }
             })
@@ -162,7 +149,6 @@ export default class ContactsList extends React.Component {
     return (
       <View style={styles.container}>
         {this.listConditionalRender()}
-        {this.submitConditionalRender()}
       </View>
     );
   }
@@ -172,22 +158,17 @@ export default class ContactsList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
   },
   list: {
-    marginTop: 24,
     width: "100%",
   },
   listItem: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 2,
-  },
-  bottomMargin: {
-    width: "100%",
-    height: 75,
+    // borderBottomColor: 'black',
+    // borderBottomWidth: 2,
   },
   submitContainer: {
     position: 'absolute',

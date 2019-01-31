@@ -1,8 +1,8 @@
 import React from 'react';
-
+import { AsyncStorage } from 'react-native';
 import { AppLoading, Font, registerRootComponent, KeepAwake } from 'expo';
 import { AppContainer } from './nav/router';
-
+import { v4 } from 'uuid';
 
 if (__DEV__) {
   KeepAwake.activate();
@@ -14,7 +14,14 @@ class App extends React.Component {
   }
 
   _loadResourcesAsync = async () => {
-    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')});
+    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf'), 'verdana': require('../assets/fonts/verdana.ttf')});
+    // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
+    const userId = await AsyncStorage.getItem('userId');
+    if (userId) { console.log('userId retrieved from AsyncStorage: ', userId) }
+    else {
+      const newId = v4();
+      await AsyncStorage.setItem('userId', newId);
+    }
   };
 
   _handleLoadingError = error => {
