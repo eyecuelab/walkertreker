@@ -12,7 +12,7 @@ import JoinCampaign from '../components/JoinCampaign';
 import Map from '../components/Map';
 import Profile from '../components/Profile';
 import Team from '../components/Team';
-import Pedometer2 from '../components/Pedometer2';
+import PedometerSensorV2 from '../components/PedometerSensorV2';
 
 const AppNavigator = createStackNavigator({
     CreateCampaign: { screen: CreateCampaign },

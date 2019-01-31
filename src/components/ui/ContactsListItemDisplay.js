@@ -10,7 +10,6 @@ export default class ContactsListItemDisplay extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.contact.numbers[0]);
   }
 
   render() {
