@@ -22,10 +22,6 @@ export default class ContactsList extends React.Component {
     this.getContacts();
   }
 
-  _parsePhoneNumber(str) {
-    return parsePhoneNumber(str);
-  }
-
   async getContacts() {
     const { status, permissions } = await Permissions.askAsync(Permissions.CONTACTS);
     if (status === 'granted') {
@@ -42,7 +38,7 @@ export default class ContactsList extends React.Component {
           if (contact.phoneNumbers) {
             contact.phoneNumbers.forEach(num => {
               if (num.label === 'mobile') {
-                const phoneToAdd = this._parsePhoneNumber(num.number);
+                const phoneToAdd = num.number;
                 numbers.push(phoneToAdd);
               }
             })
@@ -153,7 +149,6 @@ export default class ContactsList extends React.Component {
     return (
       <View style={styles.container}>
         {this.listConditionalRender()}
-        {this.submitConditionalRender()}
       </View>
     );
   }
@@ -163,22 +158,17 @@ export default class ContactsList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
   },
   list: {
-    marginTop: 24,
     width: "100%",
   },
   listItem: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 2,
-  },
-  bottomMargin: {
-    width: "100%",
-    height: 75,
+    // borderBottomColor: 'black',
+    // borderBottomWidth: 2,
   },
   submitContainer: {
     position: 'absolute',

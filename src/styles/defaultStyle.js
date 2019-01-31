@@ -12,7 +12,9 @@ export default defaultStyle = {
   // text styles
   headline: {
     fontFamily: 'gore',
-    fontSize: 46,
+    fontSize: 54,
+    lineHeight: 40,
+    paddingTop: 14,
     color: 'white',
   },
   label: {
@@ -22,13 +24,13 @@ export default defaultStyle = {
   },
   plainText: {
     fontFamily: 'verdana',
-    fontSize: 11,
+    fontSize: 16,
     color: 'white',
-    lineHeight: 16,
+    lineHeight: 24,
   },
   detail: {
     fontFamily: 'verdana',
-    fontSize: 9,
+    fontSize: 11,
     color: 'white',
   }
 }

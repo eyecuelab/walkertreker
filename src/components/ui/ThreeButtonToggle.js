@@ -36,19 +36,19 @@ export default class ThreeButtonToggle extends React.Component {
             style={threeButtonToggleStyles.touchableArea}
             onPress={() => {this._toggleActiveFlags(0); this.props.handleUpdate(0);}}
           >
-            <ButtonToggle background={bg1} value={this.props.button1value} label={this.props.button1label} active={this.state.activeFlags[0]} />
+            <ButtonToggle background={bg1} value={this.props.button1value} label={this.props.button1label} active={this.state.activeFlags[0]} bigValue={this.props.bigValue} />
           </TouchableHighlight>
           <TouchableHighlight
             style={threeButtonToggleStyles.touchableArea}
             onPress={() => {this._toggleActiveFlags(1); this.props.handleUpdate(1);}}
           >
-            <ButtonToggle background={bg2} value={this.props.button2value} label={this.props.button2label} active={this.state.activeFlags[1]} />
+            <ButtonToggle background={bg2} value={this.props.button2value} label={this.props.button2label} active={this.state.activeFlags[1]} bigValue={this.props.bigValue} />
           </TouchableHighlight>
           <TouchableHighlight
             style={threeButtonToggleStyles.touchableArea}
             onPress={() => {this._toggleActiveFlags(2); this.props.handleUpdate(2);}}
           >
-            <ButtonToggle background={bg3} value={this.props.button3value} label={this.props.button3label} active={this.state.activeFlags[2]} />
+            <ButtonToggle background={bg3} value={this.props.button3value} label={this.props.button3label} active={this.state.activeFlags[2]} bigValue={this.props.bigValue} />
           </TouchableHighlight>
         </View>
       </View>
@@ -60,6 +60,7 @@ ThreeButtonToggle.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
   titleColor: PropTypes.string,
+  bigValue: PropTypes.bool,
   button1value: PropTypes.string,
   button1label: PropTypes.string,
   button2value: PropTypes.string,
@@ -68,6 +69,10 @@ ThreeButtonToggle.propTypes = {
   button3label: PropTypes.string,
   handleUpdate: PropTypes.func.isRequired,
 };
+
+ThreeButtonToggle.defaultTypes = {
+  bigValue: false,
+}
 
 const styles = StyleSheet.create(defaultStyle);
 const width = (99/3).toString() + "%";

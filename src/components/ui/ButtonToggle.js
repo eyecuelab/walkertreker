@@ -9,12 +9,17 @@ export default class ButtonToggle extends React.Component {
 
   render() {
     const toggle = this.props.active ? styles.active : styles.inactive;
+    const bigFontStyle = this.props.bigValue ? {fontSize: 42} : {};
     const activeTint = this.props.active ? 'white' : 'black'
     return (
       <ImageBackground style={{width: '100%', height: '100%'}} source={this.props.background} tintColor={activeTint}>
         <View style={[styles.container, toggle]} >
-          <Text style={[styles.value, toggle]}>{this.props.value}</Text>
-          <Text style={[styles.label, toggle]}>{this.props.label}</Text>
+          <View style={styles.valueContainer}>
+            <Text style={[styles.value, toggle, bigFontStyle]}>{this.props.value}</Text>
+          </View>
+          <View style={styles.labelContainer}>
+            <Text style={[styles.label, toggle]}>{this.props.label}</Text>
+          </View>
         </View>
       </ImageBackground>
     );
@@ -23,6 +28,7 @@ export default class ButtonToggle extends React.Component {
 
 ButtonToggle.propTypes = {
   value: PropTypes.string,
+  bigValue: PropTypes.bool,
   label: PropTypes.string,
   active: PropTypes.bool,
   background: PropTypes.any,
@@ -30,8 +36,8 @@ ButtonToggle.propTypes = {
 
 ButtonToggle.defaultProps = {
   active: false,
+  bigValue: false,
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -43,19 +49,27 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   active: {
-    // backgroundColor: 'white',
     color: 'darkred',
   },
   inactive: {
-    // backgroundColor: 'black',
     color: 'white',
+  },
+  valueContainer: {
+    flex: 9,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  labelContainer: {
+    flex: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   value: {
     fontFamily: 'gore',
-    fontSize: 24,
+    fontSize: 28,
   },
   label: {
     fontFamily: 'gore',
     fontSize: 18,
-  }
+  },
 });

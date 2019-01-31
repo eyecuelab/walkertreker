@@ -84,6 +84,7 @@ export default class CreateCampaign extends React.Component {
             <ThreeButtonToggle
               title="Number of days"
               subtitle="Number of days for your campaign"
+              bigValue={true}
               button1value="15"
               button1label="days"
               button2value="30"
