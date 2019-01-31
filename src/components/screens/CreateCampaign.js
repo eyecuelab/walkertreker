@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ImageBackground, } from 'react-native';
-import { Font, Constants } from 'expo';
+import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage } from 'react-native';
+import { Font } from 'expo';
 import { v4 } from 'uuid';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
@@ -20,11 +20,12 @@ export default class CreateCampaign extends React.Component {
   }
 
   componentDidMount() {
-    
+
   }
 
-  _generateCampaign() {
+  async _generateCampaign() {
     const gameId = v4();
+    const userId = await AsyncStorage.getItem('userId');
     // Below in payload I am just sketching out what we might want an initial game object to look like, this is very flexible. Essentially here is where we want to initialize our game object and populate the player list first with the person that started the game, using their phone number as a unique identifier (just to start I have hard coded that with a fake phone number, later we will get this from the phone itself.)
     const payload = {
       game: {
@@ -33,8 +34,9 @@ export default class CreateCampaign extends React.Component {
         difficultyLevel: this.state.difficultyLevel,
         randomEvents: this.state.randomEvents,
         players: {
-          5031234567: {
-            id: 5031234567,
+          [userId]: {
+            id: userId,
+            teamCaptain: true,
             name: 'Joe',
           },
         },

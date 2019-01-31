@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableHighlight, } from 'react-native';
 
 import ButtonToggle from './ButtonToggle';
+import defaultStyle from '../../styles/defaultStyle';
 
 const bg1 = require('../../../assets/buttontexture1.png');
 const bg2 = require('../../../assets/buttontexture2.png');
@@ -27,24 +28,24 @@ export default class ThreeButtonToggle extends React.Component {
 
   render() {
     return (
-      <View style={styles.container} >
-        <Text style={{color: this.props.titleColor, fontSize: 24, fontFamily: 'gore',}}>{this.props.title}</Text>
-        <Text style={{color: this.props.titleColor, fontSize: 18, fontFamily: 'verdana',}}>{this.props.subtitle}</Text>
-        <View style={styles.buttonContainer}>
+      <View style={threeButtonToggleStyles.container} >
+        <Text style={[styles.label, {margin: 5, marginBottom: 0}]}>{this.props.title}</Text>
+        <Text style={[styles.detail, {fontSize: 16, margin: 5}]}>{this.props.subtitle}</Text>
+        <View style={threeButtonToggleStyles.buttonContainer}>
           <TouchableHighlight
-            style={styles.touchableArea}
+            style={threeButtonToggleStyles.touchableArea}
             onPress={() => {this._toggleActiveFlags(0); this.props.handleUpdate(0);}}
           >
             <ButtonToggle background={bg1} value={this.props.button1value} label={this.props.button1label} active={this.state.activeFlags[0]} />
           </TouchableHighlight>
           <TouchableHighlight
-            style={styles.touchableArea}
+            style={threeButtonToggleStyles.touchableArea}
             onPress={() => {this._toggleActiveFlags(1); this.props.handleUpdate(1);}}
           >
             <ButtonToggle background={bg2} value={this.props.button2value} label={this.props.button2label} active={this.state.activeFlags[1]} />
           </TouchableHighlight>
           <TouchableHighlight
-            style={styles.touchableArea}
+            style={threeButtonToggleStyles.touchableArea}
             onPress={() => {this._toggleActiveFlags(2); this.props.handleUpdate(2);}}
           >
             <ButtonToggle background={bg3} value={this.props.button3value} label={this.props.button3label} active={this.state.activeFlags[2]} />
@@ -68,8 +69,9 @@ ThreeButtonToggle.propTypes = {
   handleUpdate: PropTypes.func.isRequired,
 };
 
+const styles = StyleSheet.create(defaultStyle);
 const width = (99/3).toString() + "%";
-const styles = StyleSheet.create({
+const threeButtonToggleStyles = StyleSheet.create({
   container: {
     width: '100%',
   },

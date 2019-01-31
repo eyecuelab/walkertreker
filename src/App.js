@@ -15,7 +15,7 @@ class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     console.log('_loadResourcesAsync start');
-    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf')});
+    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf'), 'verdana': require('../assets/fonts/verdana.ttf')});
     // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
     const userId = await AsyncStorage.getItem('userId');
     if (userId) { console.log(userId) }
