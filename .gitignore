@@ -5,4 +5,5 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
+assets/design-prototypes
 app.json
