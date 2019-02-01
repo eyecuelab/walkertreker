@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, Dimensions } from 'react-native';
+import { AsyncStorage, } from 'react-native';
 import { AppLoading, Font, registerRootComponent, KeepAwake } from 'expo';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
@@ -22,8 +22,6 @@ class App extends React.Component {
       const newId = v4();
       await AsyncStorage.setItem('userId', newId);
     }
-
-    console.log(Dimensions.get('window'))
   };
 
   _handleLoadingError = error => {

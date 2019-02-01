@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Dimensions, } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import ContactsList from '../ui/ContactsList';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
@@ -44,7 +45,7 @@ export default class NewCampaignPartyView extends React.Component {
               <View style={[customStyles.headerRowLast,]}>
                 <View style={customStyles.headerRow}>
                   <View style={customStyles.plainTextContainer}>
-                    <Text style={styles.plainText}>
+                    <Text style={styles.detail}>
                       Tap to select people you want to include on your journey. Currently you've selected <Text style={{color: 'black', fontWeight: '800'}}>{this.state.numberOfInvites} people.</Text>
                     </Text>
                   </View>
@@ -63,6 +64,9 @@ export default class NewCampaignPartyView extends React.Component {
 }
 const { height, width } = Dimensions.get('window');
 const styles = StyleSheet.create(defaultStyle);
+
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   contentContainer: {
     width: '100%',
@@ -86,7 +90,8 @@ const customStyles = StyleSheet.create({
   },
   headerRowLast: {
     flex: 1,
-    alignItems: 'center',
+    position: 'absolute',
+    bottom: heightUnit*2,
   },
   plainTextContainer: {
 
