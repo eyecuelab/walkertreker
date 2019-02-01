@@ -1,4 +1,4 @@
 //step reducer will go here
-const stepReducer = (state = {}, action) => {
+export default (state = {}, action) => {
   return state;
 }

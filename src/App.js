@@ -4,6 +4,8 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 
+import rootReducer from './reducers';
+
 //putting these here as a placeholder to remind myself what might need to be imported:
 // import { createStore, applyMiddleware } from 'redux';
 // import { Provider } from 'react-redux';
@@ -66,23 +68,31 @@ const AppContainer = createAppContainer(AppNavigator);
 
 
 //placeholder code to keep errors from happening. remove when actual reducers are built out
-const initialState = {
-  reduxWorks: false,
-}
-
-const reducer = (state = initialState) => {
-  return state;
-}
-
-const store = createStore(reducer);
+// const initialState = {
+//   reduxWorks: false,
+// }
+//
+// const reducer = (state = initialState) => {
+//   return state;
+// }
 // placeholder ends here
 
+const store = createStore(rootReducer);
+
 class App extends React.Component {
+
+  buttonClick = () => {
+    store.dispatch({ type: 'TOGGLE' });
+    console.log(store.getState());
+  }
 
   render() {
     return (
       <Provider store={store}>
         <AppContainer />
+        <Button
+          title='click to demo redux'
+          onPress={this.buttonClick} />
       </Provider>
     )
   }
