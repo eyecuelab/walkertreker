@@ -1,6 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, AppRegistry, AppState } from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createStore } from 'redux';
+import { Provider, connect } from 'react-redux';
+
+//putting these here as a placeholder to remind myself what might need to be imported:
+// import { createStore, applyMiddleware } from 'redux';
+// import { Provider } from 'react-redux';
+// import rootReducer from './reducers/index';
+// import thunkMiddleware from 'redux-thunk';
 
 // Screens for create/join campaign, the ones I'm working on for this feature.
 import CreateCampaign from './components/screens/CreateCampaign';
@@ -21,28 +29,6 @@ import Profile from './components/Profile';
 import Team from './components/Team';
 import PedometerSensorV2 from './components/PedometerSensorV2';
 
-
-class HomeScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={{textAlign: 'center'}}>Home Screen</Text>
-        <Button
-          title="Table of Contents"
-          onPress={() => {this.props.navigation.navigate('TOC')}}
-        />
-
-        <TwoButtonOverlay
-          title="Two Button Overlay"
-          button1title="Button 1"
-          button2title="Button 2"
-        />
-
-      </View>
-    );
-  }
-}
-
 const styles = StyleSheet.create({
   container: {
     marginTop: 24,
@@ -55,7 +41,6 @@ const styles = StyleSheet.create({
 
 const AppNavigator = createStackNavigator(
   { // List a component to act as a screen. The screen attribute is required, other options listed after. Each component is rendered with the navigation prop. Navigate by calling this.props.navigation.navigate('...').
-    Home: { screen: HomeScreen, },
     CreateCampaign: { screen: CreateCampaign },
     ContactsList: { screen: ContactsList },
     NewCampaignPartyView: { screen: NewCampaignPartyView, },
@@ -79,27 +64,36 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      appState: AppState.currentState,
-    }
-  }
+//placeholder code to keep errors from happening. remove when actual reducers are built out
+const initialState = {
+  reduxWorks: false,
+}
 
-  componentDidMount() {
-    AppState.addEventListener('change', this._handleAppStateChange);
-  }
+const reducer = (state = initialState) => {
+  return state;
+}
 
-  _handleAppStateChange = (nextAppState) => {
-    this.setState({appState: nextAppState});
-  };
+const store = createStore(reducer);
+// placeholder ends here
+
+class App extends React.Component {
 
   render() {
-    return <AppContainer appState={this.state.appState} />;
+    return (
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    )
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    reduxWorks: state.reduxWorks
+  }
+}
 
 AppRegistry.registerComponent('main', () => App);
+
+export default connect(mapStateToProps)(App);
