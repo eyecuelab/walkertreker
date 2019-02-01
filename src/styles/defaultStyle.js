@@ -4,7 +4,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
-
 export default defaultStyle = {
   // default wrapper for screen components
   container: {
@@ -35,7 +34,7 @@ export default defaultStyle = {
   },
   detail: {
     fontFamily: 'verdana',
-    fontSize: widthUnit*3.25,
+    fontSize: widthUnit*4,
     color: 'white',
   },
 }

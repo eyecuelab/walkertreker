@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Dimensions, } from 'react-native';
+import { Contacts, Permissions } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import ContactsList from '../ui/ContactsList';
@@ -12,8 +13,157 @@ export default class NewCampaignPartyView extends React.Component {
   constructor(props) {
     super(props);
     const game = this.props.navigation.getParam('game');
-    this.state = { game, invites: {}, numberOfInvites: 0 }
+    this.state = {
+      game,
+      contacts: {},
+      contactsFetched: false,
+      invites: {},
+      numInvites: 0,
+      selected: {},
+      numSelected: 0,
+    }
+    console.log(this.state.game.numPlayers);
+  }
+
+  componentDidMount() {
+    this.getContacts()
+  }
+
+  async getContacts() {
+    const { status, permissions } = await Permissions.askAsync(Permissions.CONTACTS);
+    if (status === 'granted') {
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.Name, Contacts.Fields.PhoneNumbers, Contacts.Fields.Image]
+      });
+      if (data.length > 0) {
+        let contacts = {};
+        data.forEach(contact => {
+          const name = contact.name;
+          let numbers = [];
+          const imageAvailable = contact.imageAvailable;
+          let imageUri;
+          if (contact.phoneNumbers) {
+            contact.phoneNumbers.forEach(num => {
+              if (num.label === 'mobile') {
+                const phoneToAdd = num.number;
+                numbers.push(phoneToAdd);
+              }
+            })
+          }
+          contact.imageAvailable ? imageUri = contact.image.uri : imageUri = 'none';
+          if (numbers.length > 0) {
+            contacts = Object.assign({}, contacts, {
+              [numbers[0]]: { name, numbers, imageAvailable, imageUri, invited: false, selected: false, }
+            });
+          }
+        });
+        await this.setState({ contacts,  });
+      } else {
+        throw new Error('No contacts found');
+      }
+      await this.setState({ contactsFetched: true, });
+    } else {
+      throw new Error('Contacts permission not granted.');
+    }
+  }
+
+  handleSelectContact = async contact => {
+    const key = contact.numbers[0];
+    const prevSelects = Object.assign({}, this.state.selected);
+    const prevContacts = Object.assign({}, this.state.contacts);
+    let newSelects = Object.assign({}, prevSelects);
+    let newNumSelected = this.state.numSelected;
+    let newContacts = Object.assign({}, prevContacts);
+    newContacts[key].selected = !newContacts[key].selected;
+    if (newContacts[key].selected === true) {
+      newSelects = Object.assign({}, prevSelects, { [key]: contact});
+      newNumSelected++;
+    } else {
+      delete newSelects[key];
+      newNumSelected--;
+    }
+    await this.setState({
+      contacts: newContacts,
+      selected: newSelects,
+      numSelected: newNumSelected,
+    });
+  }
+
+  sendInvites() {
+    // let selectedDupe = Object.assign({}, this.state.selected);
+    // let numSelected = this.state.numSelected;
+    // let invitesDupe = Object.assign({}, this.state.invites);
+    // let numInvites = this.state.numInvites;
+    // let contactsDupe = Object.assign({}, this.state.contacts);
+    // const keysToChange = Object.keys(invitesDupe);
+    // keysToChange.forEach(key => {
+    //   contactsDupe[key].selected = false;
+    //   contactsDupe[key].invited = true;
+    // })
+  }
+
+  clearSelected = async () => {
+    let contactsDupe = Object.assign({}, this.state.contacts);
+    Object.keys(contactsDupe).forEach(key => {
+      contactsDupe[key].selected = false;
+    })
+    let newNumSelected = 0;
+    await this.setState({
+      contacts: contactsDupe,
+      numSelected: 0,
+    });
     console.log(this.state);
+  }
+
+  startGame() {
+    console.log('all start game behavior goes here');
+  }
+
+  abandonGame() {
+    console.log('all abandon game behavior goes here. Definitely want to pop up a confirmation modal');
+    this.props.navigation.goBack();
+  }
+
+  submitConditionalRender() {
+    if (this.state.numSelected > 0) {
+      return (
+        <TwoButtonOverlay
+          button1title="Send Invites"
+          button1onPress={this.sendInvites}
+          button2title="Clear Selected"
+          button2onPress={this.clearSelected}
+        />
+      );
+    } else if (this.state.game.numPlayers > 1) {
+      return (
+        <TwoButtonOverlay
+          button1title="START GAME"
+          button1onPress={this.startGame}
+          button2title="Abandon Game"
+          button2onPress={this.abandonGame}
+        />
+      );
+    } else {
+      return (
+        <TwoButtonOverlay
+          button1title="START GAME"
+          button1color="darkgray"
+          button1onPress={() => console.log('Cannot launch game with only one player')}
+          button2title="Back"
+          button2onPress={this.abandonGame}
+        />
+      );
+    }
+  }
+
+  detailText() {
+    if (this.state.game.numPlayers == 1 || this.state.numSelected > 0) {
+      return (
+        <Text style={styles.detail}>
+          Tap to select people you want to include on your journey. Currently you've selected <Text style={{color: 'black', fontWeight: '800'}}>{this.state.numSelected} people.</Text>
+        </Text>
+      )
+    }
   }
 
   render() {
@@ -45,24 +195,26 @@ export default class NewCampaignPartyView extends React.Component {
               <View style={[customStyles.headerRowLast,]}>
                 <View style={customStyles.headerRow}>
                   <View style={customStyles.plainTextContainer}>
-                    <Text style={styles.detail}>
-                      Tap to select people you want to include on your journey. Currently you've selected <Text style={{color: 'black', fontWeight: '800'}}>{this.state.numberOfInvites} people.</Text>
-                    </Text>
+                    {this.detailText()}
                   </View>
                 </View>
               </View>
             </View>
             <View style={customStyles.contactsContainer}>
-              <ContactsList />
+              <ContactsList
+                contacts={this.state.contacts}
+                contactsFetched={this.state.contactsFetched}
+                onSelectContact={this.handleSelectContact}
+              />
             </View>
           </View>
-          <TwoButtonOverlay button1title="button1" button2title="button2" />
+          {this.submitConditionalRender()}
         </View>
       </ImageBackground>
     );
   }
 }
-const { height, width } = Dimensions.get('window');
+
 const styles = StyleSheet.create(defaultStyle);
 
 const widthUnit = wp('1%');

@@ -29,12 +29,15 @@ class App extends React.Component {
       require('../assets/buttontexture1.png'),
       require('../assets/buttontexture2.png'),
       require('../assets/buttontexture3.png'),
+      require('../assets/blankavatar.png'),
+      require('../assets/checked.png'),
+      require('../assets/selected.png'),
     ]);
 
     await Promise.all([
       Font.loadAsync({
         'gore': require('../assets/fonts/goreRough.otf'),
-        'verdana': require('../assets/fonts/verdana.ttf')
+        'verdana': require('../assets/fonts/verdana.ttf'),
       }),
       ...imageAssets,
     ]);
@@ -67,15 +70,13 @@ class App extends React.Component {
       );
     }
 
-    else {
-      return (
-        <AppContainer
-          screenProps={{
-            backgroundImage: require('../assets/bg.png'),
-          }}
-        />
-      );
-    }
+    return (
+      <AppContainer
+        screenProps={{
+          backgroundImage: require('../assets/bg.png'),
+        }}
+      />
+    );
   }
 }
 

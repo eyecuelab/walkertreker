@@ -33,6 +33,7 @@ export default class CreateCampaign extends React.Component {
         campaignLength: this.state.campaignLength,
         difficultyLevel: this.state.difficultyLevel,
         randomEvents: this.state.randomEvents,
+        numPlayers: 1,
         players: {
           [userId]: {
             id: userId,
@@ -51,7 +52,6 @@ export default class CreateCampaign extends React.Component {
     else if (num === 1) {newLength = '30'}
     else if (num === 2) {newLength = '90'}
     await this.setState({campaignLength: newLength});
-    console.log(this.state.campaignLength);
   }
 
   _updateCampaignDifficulty = async num => {
@@ -60,7 +60,6 @@ export default class CreateCampaign extends React.Component {
     else if (num === 1) {newDifficulty = 'hard';}
     else if (num === 2) {newDifficulty = 'xtreme';}
     await this.setState({difficultyLevel: newDifficulty});
-    console.log(this.state.difficultyLevel);
   }
 
   _updateRandomEvents = async num => {
@@ -69,7 +68,6 @@ export default class CreateCampaign extends React.Component {
     else if (num === 1) {newEvents = 'mid';}
     else if (num === 2) {newEvents = 'high';}
     await this.setState({randomEvents: newEvents});
-    console.log(this.state.randomEvents);
   }
 
   render() {
@@ -127,7 +125,7 @@ export default class CreateCampaign extends React.Component {
             button1title="New Campaign"
             button1onPress={() => this._generateCampaign()}
             button2title="Back"
-            button2onPress={() => this.props.navigation.navigate('TOC')}
+            button2onPress={() => this.props.navigation.goBack()}
           />
         </View>
       </ImageBackground>
