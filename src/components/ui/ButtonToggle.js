@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class ButtonToggle extends React.Component {
   constructor(props) {
@@ -9,13 +10,13 @@ export default class ButtonToggle extends React.Component {
 
   render() {
     const toggle = this.props.active ? styles.active : styles.inactive;
-    const bigFontStyle = this.props.bigValue ? {fontSize: 42} : {};
+    const valueFontStyle = this.props.bigValue ? styles.bigValue : styles.value;
     const activeTint = this.props.active ? 'white' : 'black'
     return (
       <ImageBackground style={{width: '100%', height: '100%'}} source={this.props.background} tintColor={activeTint}>
         <View style={[styles.container, toggle]} >
           <View style={styles.valueContainer}>
-            <Text style={[styles.value, toggle, bigFontStyle]}>{this.props.value}</Text>
+            <Text style={[toggle, valueFontStyle]}>{this.props.value}</Text>
           </View>
           <View style={styles.labelContainer}>
             <Text style={[styles.label, toggle]}>{this.props.label}</Text>
@@ -39,6 +40,8 @@ ButtonToggle.defaultProps = {
   bigValue: false,
 };
 
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -66,10 +69,14 @@ const styles = StyleSheet.create({
   },
   value: {
     fontFamily: 'gore',
-    fontSize: 28,
+    fontSize: widthUnit*6,
+  },
+  bigValue: {
+    fontFamily: 'gore',
+    fontSize: widthUnit*9,
   },
   label: {
     fontFamily: 'gore',
-    fontSize: 18,
+    fontSize: widthUnit*4,
   },
 });

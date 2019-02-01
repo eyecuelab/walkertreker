@@ -4,6 +4,7 @@ import { Contacts, Permissions } from 'expo';
 
 import ContactsListItemDisplay from '../ui/ContactsListItemDisplay';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+import defaultStyle from '../../styles/defaultStyle';
 
 import { parsePhoneNumber } from '../../util/util';
 
@@ -115,7 +116,7 @@ export default class ContactsList extends React.Component {
     } else {
       // Can replace this with a spinning wheel or some loading animation
       return (
-        <Text>Fetching contacts...</Text>
+        <Text style={defaultStyleSheet.label}>Fetching contacts...</Text>
       )
     }
   }
@@ -190,3 +191,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   }
 });
+const defaultStyleSheet = StyleSheet.create(defaultStyle);

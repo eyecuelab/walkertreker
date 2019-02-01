@@ -1,36 +1,41 @@
 // use these style rules for all screen components
 
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
+
 export default defaultStyle = {
   // default wrapper for screen components
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    margin: 20,
-    marginTop: 40,
+    margin: widthUnit*5,
+    marginTop: heightUnit*5,
   },
   // text styles
   headline: {
     fontFamily: 'gore',
-    fontSize: 54,
-    lineHeight: 40,
-    paddingTop: 14,
+    fontSize: widthUnit*12,
+    lineHeight: widthUnit*9,
+    paddingTop: widthUnit*3,
     color: 'white',
   },
   label: {
     fontFamily: 'gore',
-    fontSize: 18,
+    fontSize: widthUnit*5,
     color: 'white',
   },
   plainText: {
     fontFamily: 'verdana',
-    fontSize: 16,
+    fontSize: widthUnit*5,
     color: 'white',
     lineHeight: 24,
   },
   detail: {
     fontFamily: 'verdana',
-    fontSize: 11,
+    fontSize: widthUnit*3.25,
     color: 'white',
   },
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class TwoButtonOverlay extends React.Component {
   constructor(props) {
@@ -103,6 +104,8 @@ TwoButtonOverlay.defaultProps = {
   button2isDisabled: false,
 }
 
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -132,6 +135,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontFamily: 'gore',
-    fontSize: 24,
+    fontSize: widthUnit*5,
   }
 });
