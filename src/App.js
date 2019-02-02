@@ -1,6 +1,6 @@
 import React from 'react';
-import { AsyncStorage, } from 'react-native';
-import { AppLoading, Font, registerRootComponent, KeepAwake } from 'expo';
+import { AsyncStorage, Image, } from 'react-native';
+import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, } from 'expo';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
 
@@ -13,8 +13,36 @@ class App extends React.Component {
     isReady: false,
   }
 
+  cacheImages(images) {
+    return images.map(image => {
+      if (typeof image === 'string') {
+        return Image.prefetch(image);
+      } else {
+        return Asset.fromModule(image).downloadAsync();
+      }
+    });
+  }
+
   _loadResourcesAsync = async () => {
-    await Font.loadAsync({'gore': require('../assets/fonts/goreRough.otf'), 'verdana': require('../assets/fonts/verdana.ttf')});
+    const imageAssets = this.cacheImages([
+      require('../assets/bg.png'),
+      require('../assets/buttontexture1.png'),
+      require('../assets/buttontexture2.png'),
+      require('../assets/buttontexture3.png'),
+      require('../assets/blankavatar.png'),
+      require('../assets/checked.png'),
+      require('../assets/selected.png'),
+    ]);
+
+    await Promise.all([
+      Font.loadAsync({
+        'gore': require('../assets/fonts/goreRough.otf'),
+        'verdana': require('../assets/fonts/verdana.ttf'),
+        'verdanaBold': require('../assets/fonts/verdanaBold.ttf'),
+      }),
+      ...imageAssets,
+    ]);
+
     // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
     const userId = await AsyncStorage.getItem('userId');
     if (userId) { console.log('userId retrieved from AsyncStorage: ', userId) }
@@ -43,15 +71,13 @@ class App extends React.Component {
       );
     }
 
-    else {
-      return (
-        <AppContainer
-          screenProps={{
-            backgroundImage: require('../assets/bg.png'),
-          }}
-        />
-      );
-    }
+    return (
+      <AppContainer
+        screenProps={{
+          backgroundImage: require('../assets/bg.png'),
+        }}
+      />
+    );
   }
 }
 

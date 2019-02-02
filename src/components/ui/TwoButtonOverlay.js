@@ -8,52 +8,6 @@ export default class TwoButtonOverlay extends React.Component {
     super(props);
   }
 
-  _button1render() {
-    if (this.props.button1isDisabled) {
-      return (
-        <Button
-          disabled
-          style={styles.button1style}
-          title={this.props.button1title}
-          color={this.props.button1color}
-          onPress={this.props.button1onPress}
-        />
-      );
-    } else {
-      return (
-        <Button
-          style={styles.button1style}
-          title={this.props.button1title}
-          color={this.props.button1color}
-          onPress={this.props.button1onPress}
-        />
-      );
-    }
-  }
-
-  _button2render() {
-    if (this.props.button2isDisabled) {
-      return (
-        <Button
-          disabled
-          style={styles.button2style}
-          title={this.props.button2title}
-          color={this.props.button2color}
-          onPress={this.props.button2onPress}
-        />
-      );
-    } else {
-      return (
-        <Button
-          style={styles.button2style}
-          title={this.props.button2title}
-          color={this.props.button2color}
-          onPress={this.props.button2onPress}
-        />
-      );
-    }
-  }
-
   _titleRender() {
     if (this.props.title) {
       return (<Text>{this.props.title}</Text>);
@@ -66,12 +20,12 @@ export default class TwoButtonOverlay extends React.Component {
         {this._titleRender()}
         <View style={[styles.buttonContainer, {flexDirection: this.props.flexDirection}]}>
           <View style={styles.buttonStyle}>
-            <TouchableHighlight style={[styles.touchable]} onPress={this.props.button1onPress}>
+            <TouchableHighlight style={[styles.touchable, {backgroundColor: this.props.button1color}]} onPress={this.props.button1onPress}>
               <Text style={styles.buttonText}>{this.props.button1title}</Text>
             </TouchableHighlight>
           </View>
           <View style={styles.buttonStyle}>
-            <TouchableHighlight style={styles.touchable} onPress={this.props.button2onPress}>
+            <TouchableHighlight style={[styles.touchable, {backgroundColor: this.props.button2color}]} onPress={this.props.button2onPress}>
               <Text style={styles.buttonText}>{this.props.button2title}</Text>
             </TouchableHighlight>
           </View>
@@ -128,7 +82,6 @@ const styles = StyleSheet.create({
   touchable: {
     height: '100%',
     width: '99%',
-    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
   },
