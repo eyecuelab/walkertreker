@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "walker-trekker-draft",
-    "slug": "walker-trekker-draft",
+    "name": "walkertrekker",
+    "slug": "walkertrekker",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -15,7 +15,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#8b0000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -31,10 +31,11 @@
       "package": "com.eyecuelab.walkertrekker",
       "config": {
         "googleSignIn": {
-          "certificateHash": "XXXXX",
-          "apiKey": "XXXXX"
+          "certificateHash": "C19E9F78B5935938E2B17B1201CB130E829FF7BC",
+          "apiKey": "AIzaSyCGYASackpzA_G7IRro2vRFwGBzGzG9Q24"
         },
       },
-    }
+    },
+    "scheme": "walkertrekker",
   }
 }

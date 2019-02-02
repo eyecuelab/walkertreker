@@ -1,35 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class TwoButtonOverlay extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  _button1render() {
-    if (this.props.button1isDisabled) {
-      return (<Button disabled title={this.props.button1title} color={this.props.button1color} onPress={this.props.button1onPress} />);
-    } else {
-      return (<Button title={this.props.button1title} color={this.props.button1color} onPress={this.props.button1onPress} />);
-    }
-  }
-
-  _button2render() {
-    if (this.props.button2isDisabled) {
-      return (<Button disabled title={this.props.button2title} color={this.props.button2color} onPress={this.props.button2onPress} />);
-    } else {
-      return (<Button title={this.props.button2title} color={this.props.button2color} onPress={this.props.button2onPress} />);
-    }
+  _titleRender() {
+    if (this.props.title) {
+      return (<Text>{this.props.title}</Text>);
+    } else return;
   }
 
   render() {
     return (
       <View style={styles.container} >
-        <Text>{this.props.title}</Text>
-        <View style={styles.buttonsRow} >
-          {this._button1render()}
-          {this._button2render()}
+        {this._titleRender()}
+        <View style={[styles.buttonContainer, {flexDirection: this.props.flexDirection}]}>
+          <View style={styles.buttonStyle}>
+            <TouchableHighlight style={[styles.touchable, {backgroundColor: this.props.button1color}]} onPress={this.props.button1onPress}>
+              <Text style={styles.buttonText}>{this.props.button1title}</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={styles.buttonStyle}>
+            <TouchableHighlight style={[styles.touchable, {backgroundColor: this.props.button2color}]} onPress={this.props.button2onPress}>
+              <Text style={styles.buttonText}>{this.props.button2title}</Text>
+            </TouchableHighlight>
+          </View>
         </View>
       </View>
     );
@@ -37,7 +36,8 @@ export default class TwoButtonOverlay extends React.Component {
 }
 
 TwoButtonOverlay.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  flexDirection: PropTypes.string,
   button1onPress: PropTypes.func,
   button1title: PropTypes.string.isRequired,
   button1color: PropTypes.string,
@@ -49,32 +49,45 @@ TwoButtonOverlay.propTypes = {
 }
 
 TwoButtonOverlay.defaultProps = {
+  flexDirection: 'row',
   button1onPress: () => {console.log(`You pressed button 1.`)},
-  button1color: "deepskyblue",
+  button1color: 'black',
   button1isDisabled: false,
   button2onPress: () => {console.log(`You pressed button 2.`);},
-  button2color: "tomato",
+  button2color: 'black',
   button2isDisabled: false,
 }
 
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 0,
-    left: '10%',
-    width: '80%',
+    width: '100%',
     height: '10%',
     flexDirection: 'column',
-    backgroundColor: 'rgba(255,255,255,0.85)',
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'darkgray',
-    borderWidth: 2,
   },
-  buttonsRow: {
-    margin: 5,
-    flexDirection: 'row',
-    width: '75%',
-    justifyContent: 'space-around',
+  buttonsContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'space-between',
   },
-})
+  buttonStyle: {
+    flex: 1,
+    height: '100%',
+  },
+  touchable: {
+    height: '100%',
+    width: '99%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontFamily: 'gore',
+    fontSize: widthUnit*5,
+  }
+});
