@@ -1,4 +1,5 @@
-//step reducer will go here
-export default (state = {}, action) => {
+import initialStateStepReducer from '../constants/initialStateStepReducer';
+
+export default (state = initialStateStepReducer, action) => {
   return state;
 }

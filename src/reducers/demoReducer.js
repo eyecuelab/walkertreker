@@ -1,6 +1,6 @@
-import initialState from '../constants/initialState';
+import initialStateDemoReducer from '../constants/initialStateDemoReducer';
 
-export default (state = initialState, action) => {
+export default (state = initialStateDemoReducer, action) => {
   let newState;
   switch (action.type) {
 
@@ -16,17 +16,3 @@ export default (state = initialState, action) => {
     return state;
   }
 };
-
-// switch (action.type) {
-//   case c.ADD_TICKET:
-//     newState = Object.assign({}, state, {
-//       [id]: {
-//         names: names,
-//         location: location,
-//         issue: issue,
-//         timeOpen: timeOpen,
-//         id: id,
-//         formattedWaitTime: formattedWaitTime
-//       }
-//     });
-//     return newState;
