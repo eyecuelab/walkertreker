@@ -43,7 +43,7 @@ export default class CreateCampaign extends React.Component {
         },
       }
     }
-    this.props.navigation.navigate('NewCampaignPartyView', payload);
+    this.props.navigation.navigate('InvitePlayers', payload);
   }
 
   _updateCampaignLength = async num => {

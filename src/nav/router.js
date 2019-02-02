@@ -3,8 +3,8 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 
 // screens
 import CreateCampaign from '../components/screens/CreateCampaign';
-import NewCampaignPartyView from '../components/screens/NewCampaignPartyView';
-import Splash from '../components/screens/Splash';
+import InvitePlayers from '../components/screens/InvitePlayers';
+import CampaignStaging from '../components/screens/CampaignStaging';
 import TOC from '../components/TOC';
 import ActiveCampaignSummary from '../components/ActiveCampaignSummary';
 import Inventory from '../components/Inventory';
@@ -15,10 +15,11 @@ import Team from '../components/Team';
 import PedometerSensorV2 from '../components/PedometerSensorV2';
 
 const AppNavigator = createStackNavigator({
-    CreateCampaign: { screen: CreateCampaign },
-    NewCampaignPartyView: {
-      screen: NewCampaignPartyView,
-      path: 'newgame/:gameId',
+    CreateCampaign: { screen: CreateCampaign, },
+    InvitePlayers: { screen: InvitePlayers, },
+    CampaignStaging: {
+      screen: CampaignStaging,
+      // path: '/newGame:gameId',
     },
     CampaignSummary: { screen: ActiveCampaignSummary, },
     TOC: { screen: TOC, },

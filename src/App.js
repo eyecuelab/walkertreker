@@ -38,6 +38,7 @@ class App extends React.Component {
       Font.loadAsync({
         'gore': require('../assets/fonts/goreRough.otf'),
         'verdana': require('../assets/fonts/verdana.ttf'),
+        'verdanaBold': require('../assets/fonts/verdanaBold.ttf'),
       }),
       ...imageAssets,
     ]);

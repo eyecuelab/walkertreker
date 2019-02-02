@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, Dimensions, } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, } from 'react-native';
 import { Contacts, Permissions } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -8,7 +8,7 @@ import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
 import defaultStyle from '../../styles/defaultStyle';
 
-export default class NewCampaignPartyView extends React.Component {
+export default class InvitePlayers extends React.Component {
 
   constructor(props) {
     super(props);
@@ -22,14 +22,13 @@ export default class NewCampaignPartyView extends React.Component {
       selected: {},
       numSelected: 0,
     }
-    console.log(this.state.game.numPlayers);
   }
 
   componentDidMount() {
     this.getContacts()
   }
 
-  async getContacts() {
+  getContacts = async () => {
     const { status, permissions } = await Permissions.askAsync(Permissions.CONTACTS);
     if (status === 'granted') {
       const { data } = await Contacts.getContactsAsync({
@@ -68,6 +67,7 @@ export default class NewCampaignPartyView extends React.Component {
   }
 
   handleSelectContact = async contact => {
+    if (contact.invited) { console.log('Contact has already been invited.'); return;}
     const key = contact.numbers[0];
     const prevSelects = Object.assign({}, this.state.selected);
     const prevContacts = Object.assign({}, this.state.contacts);
@@ -89,17 +89,30 @@ export default class NewCampaignPartyView extends React.Component {
     });
   }
 
-  sendInvites() {
-    // let selectedDupe = Object.assign({}, this.state.selected);
-    // let numSelected = this.state.numSelected;
-    // let invitesDupe = Object.assign({}, this.state.invites);
-    // let numInvites = this.state.numInvites;
-    // let contactsDupe = Object.assign({}, this.state.contacts);
-    // const keysToChange = Object.keys(invitesDupe);
-    // keysToChange.forEach(key => {
-    //   contactsDupe[key].selected = false;
-    //   contactsDupe[key].invited = true;
-    // })
+  sendInvites = async () => {
+    // TODO: Here, before updating local UI state, send contact objects collected in this.state.selected to server to send SMS invitations.
+    let selectedDupe = Object.assign({}, this.state.selected);
+    let numSelected = this.state.numSelected;
+    let invitesDupe = Object.assign({}, this.state.invites);
+    let numInvites = this.state.numInvites;
+    let contactsDupe = Object.assign({}, this.state.contacts);
+    const keysToChange = Object.keys(selectedDupe);
+    keysToChange.forEach(key => {
+      contactsDupe[key].selected = false;
+      contactsDupe[key].invited = true;
+      Object.assign(invitesDupe, { [key]: contactsDupe[key] });
+      numInvites++;
+    })
+    numSelected = 0;
+    await this.setState({
+      contacts: contactsDupe,
+      invites: invitesDupe,
+      numInvites,
+      numSelected,
+      selected: {},
+    });
+    console.log('Navigating to CampaignStaging');
+    this.props.navigation.navigate('CampaignStaging');
   }
 
   clearSelected = async () => {
@@ -112,19 +125,9 @@ export default class NewCampaignPartyView extends React.Component {
       contacts: contactsDupe,
       numSelected: 0,
     });
-    console.log(this.state);
   }
 
-  startGame() {
-    console.log('all start game behavior goes here');
-  }
-
-  abandonGame() {
-    console.log('all abandon game behavior goes here. Definitely want to pop up a confirmation modal');
-    this.props.navigation.goBack();
-  }
-
-  submitConditionalRender() {
+  submitConditionalRender = () => {
     if (this.state.numSelected > 0) {
       return (
         <TwoButtonOverlay
@@ -134,33 +137,24 @@ export default class NewCampaignPartyView extends React.Component {
           button2onPress={this.clearSelected}
         />
       );
-    } else if (this.state.game.numPlayers > 1) {
-      return (
-        <TwoButtonOverlay
-          button1title="START GAME"
-          button1onPress={this.startGame}
-          button2title="Abandon Game"
-          button2onPress={this.abandonGame}
-        />
-      );
     } else {
       return (
         <TwoButtonOverlay
-          button1title="START GAME"
+          button1title="Send Invites"
           button1color="darkgray"
-          button1onPress={() => console.log('Cannot launch game with only one player')}
+          button1onPress={() => console.log('No contacts selected for invitations.')}
           button2title="Back"
-          button2onPress={this.abandonGame}
+          button2onPress={() => this.props.navigation.goBack()}
         />
       );
     }
   }
 
-  detailText() {
+  detailText = () => {
     if (this.state.game.numPlayers == 1 || this.state.numSelected > 0) {
       return (
         <Text style={styles.detail}>
-          Tap to select people you want to include on your journey. Currently you've selected <Text style={{color: 'black', fontWeight: '800'}}>{this.state.numSelected} people.</Text>
+          Tap to select people you want to include on your journey. Currently you've selected <Text style={{color: 'black', fontFamily: 'verdanaBold',}}>{this.state.numSelected} people.</Text>
         </Text>
       )
     }
