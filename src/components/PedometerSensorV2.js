@@ -48,7 +48,7 @@ export default class PedometerSensorV2 extends React.Component {
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
     // create array of campaign days based on campaignLength and campaignStartDate
-    for (i=0; i < campaignLength; i++) {
+    for (let i=0; i < campaignLength; i++) {
         const start = new Date(day1Start); /* using campaignStartDate directly here caused the app to crash... not sure why*/
         const end = new Date(day1End); /* using campaignStartDate directly here caused the app to crash... not sure why*/
         dateArray.push({
