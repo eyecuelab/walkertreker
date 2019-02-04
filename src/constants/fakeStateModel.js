@@ -1,9 +1,12 @@
 export const fakeState = {
+  appState: {
+    appState: 'active',
+  },
   campaign: {
     campaignDifficulty: 'easy',
     campaignEventFrequency: 'low',
     campaignId: '1234',
-    campaignLength: 5,
+    campaignLength: 15,
     campaignPlayers: {
       5033177143: {
         displayName: 'Ali G',
@@ -122,5 +125,5 @@ export const fakeState = {
         steps: 6543,
       },
     ]
-  }
+  },
 }

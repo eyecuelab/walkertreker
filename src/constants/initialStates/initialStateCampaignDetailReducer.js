@@ -1,4 +1,4 @@
-export default {
+  export default {
   campaignId: null,
   campaignStartDate: null,
   campaignLength: null,
@@ -11,5 +11,4 @@ export default {
       isTeamCaptain: false,
     }
   },
-  // campaignDateArray: [], /*should this live in the campaign reducer or in the step reducer?*/
 }
