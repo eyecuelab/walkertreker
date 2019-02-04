@@ -111,8 +111,10 @@ export default class InvitePlayers extends React.Component {
       numSelected,
       selected: {},
     });
-    console.log('Navigating to CampaignStaging');
-    this.props.navigation.navigate('CampaignStaging');
+    this.props.navigation.navigate('CampaignStaging', {
+      game: this.state.game,
+      invites: this.state.invites,
+    });
   }
 
   clearSelected = async () => {
@@ -217,7 +219,7 @@ const customStyles = StyleSheet.create({
   contentContainer: {
     width: '100%',
     height: '90%',
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   headerContainer: {
     flex: 1,
