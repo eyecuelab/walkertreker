@@ -1,10 +1,11 @@
-import initialStateDemoReducer from '../constants/initialStates/initialStateDemoReducer';
+import constants from '../constants';
+const { c, initialState } = constants;
 
-export default (state = initialStateDemoReducer, action) => {
+export default (state = initialState.demo, action) => {
   let newState;
   switch (action.type) {
 
-  case 'TOGGLE':
+  case c.TOGGLE:
     let toggledValue = state.reduxWorks;
     toggledValue = !toggledValue;
     newState = Object.assign({}, state, {

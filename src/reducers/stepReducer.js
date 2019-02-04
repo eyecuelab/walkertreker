@@ -1,8 +1,9 @@
-import initialStateStepReducer from '../constants/initialStates/initialStateStepReducer';
+import constants from '../constants';
+const { c, initialState } = constants;
 
-export default (state = initialStateStepReducer, action) => {
+export default (state = initialState.steps, action) => {
   switch (action.type) {
-  case 'SET_CAMPAIGN_DATES':
+  case c.SET_CAMPAIGN_DATES:
     const newState = {
       campaignDateArray: action.campaignDateArray,
     }
