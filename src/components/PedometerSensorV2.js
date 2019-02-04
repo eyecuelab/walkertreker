@@ -2,10 +2,12 @@ import Expo from "expo";
 import React from "react";
 import { Pedometer } from "expo";
 import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button } from "react-native";
+import { connect } from 'react-redux';
 
+import { setAppState } from '../actions';
 import StepShower from './StepShower'; /* this is not a standing-bath of steps, it is something that shows steps to you... ;) */
 
-export default class PedometerSensorV2 extends React.Component {
+class PedometerSensorV2 extends React.Component {
 
   constructor(props) {
     super(props);
@@ -15,12 +17,13 @@ export default class PedometerSensorV2 extends React.Component {
       campaignStartDate: new Date('January 25, 2019 06:00:00'), /*this needs to not be a static value; it should be informed by the actual campaign start date*/
       campaignDateArray: null, /*this should only be null at start*/
     };
+    console.log(this.props);
     this._storeData = this._storeData.bind(this);
     this._retrieveData = this._retrieveData.bind(this);
   }
 
   componentWillMount() {
-    if (this.state.campaignDateArray === null) {
+    if (this.props.campaignDateArray === null) {
       this._constructDateLog();
     }
   }
@@ -29,11 +32,12 @@ export default class PedometerSensorV2 extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange);
     this._updateCampaignStepCounts();
     setInterval(() => {
-      if (this.state.appState === 'active') {
+      if (this.props.appState === 'active') {
         // console.log('updating steps');
         this._updateCampaignStepCounts();
       }
     }, 60000);
+    console.log(this.props.appState);
   }
 
   componentWillUnmount() {
@@ -41,40 +45,50 @@ export default class PedometerSensorV2 extends React.Component {
   }
 
   _constructDateLog = () => {
-    const { campaignStartDate, campaignLength } = this.state;
-    const dateArray = [];
+    const { campaignStartDate, campaignLength } = this.state; /* this will need to come from state set by previous screens */
+
+    //these can stay exactly as-is, i think
     const day1Start = new Date(campaignStartDate);
     const day1End = new Date(campaignStartDate);
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
-    // create array of campaign days based on campaignLength and campaignStartDate
-    for (let i=0; i < campaignLength; i++) {
-        const start = new Date(day1Start); /* using campaignStartDate directly here caused the app to crash... not sure why*/
-        const end = new Date(day1End); /* using campaignStartDate directly here caused the app to crash... not sure why*/
-        dateArray.push({
-          day: i + 1,
-          start: new Date(start.setDate(start.getDate() + i)),
-          end: new Date(end.setDate(end.getDate() + i)),
-        });
-    }
-    // put that array into state
-    this.setState({
-      campaignDateArray: dateArray
-    })
+
+
+
+
+
+    // // GARBAGE AHEAD!!!
+    // // ******
+    // for (let i=0; i < campaignLength; i++) {
+    //     const start = new Date(day1Start); /* using campaignStartDate directly here caused the app to crash... not sure why*/
+    //     const end = new Date(day1End); /* using campaignStartDate directly here caused the app to crash... not sure why*/
+    //     dateArray.push({
+    //       day: i + 1,
+    //       start: new Date(start.setDate(start.getDate() + i)),
+    //       end: new Date(end.setDate(end.getDate() + i)),
+    //     });
+    // }
+    // this.setState({
+    //   campaignDateArray: dateArray
+    // })
+    // // ******
+    // // GARBAGE BEHIND!!!
+
   }
 
   _handleAppStateChange = (nextAppState) => {
+    const { dispatch } = this.props;
     if (
-      this.state.appState.match(/inactive|background/) &&
+      this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
       this._updateCampaignStepCounts();
     }
-    this.setState({appState: nextAppState});
+    dispatch(setAppState(nextAppState));
   };
 
   _updateCampaignStepCounts = () => {
-    const { campaignDateArray } = this.state;
+    const { campaignDateArray } = this.props;
     const campaignDateArrayCopy = JSON.parse(JSON.stringify(campaignDateArray))
 
     campaignDateArrayCopy.forEach((obj, index) => {
@@ -121,14 +135,6 @@ export default class PedometerSensorV2 extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView>
-          {this.state.campaignDateArray.map((dateObj, index) =>
-            <StepShower day={dateObj.day}
-              start={dateObj.start.toString()}
-              steps={dateObj.steps}
-              key={index} />
-          )}
-        </ScrollView>
       </View>
     );
   }
@@ -143,128 +149,20 @@ const styles = StyleSheet.create({
   },
 });
 
-// HERE THERE BE STUFF!
+function mapStateToProps(state) {
+  return {
+    appState: state.appState,
+    steps: state.steps,
+  }
+}
 
-// ***Prevously-used content goes here***
+export default connect(mapStateToProps)(PedometerSensorV2);
 
-// <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
-
-// <Button title='update past steps'
-//   onPress={this._updateCampaignStepCounts} />
-
-// <Text>
-//   Steps taken yesterday: {this.state.yesterdayStepCount}
-// </Text>
-
-// <Text>
-//   Steps taken today: {this.state.todayStepCount}
-// </Text>
-
-// <Text>
-//   Pedometer.isAvailableAsync(): {this.state.isPedometerAvailable}
-// </Text>
-
-// ***Prevously-used methods go here***
-
-// _updateStepCountsToday = () => {
-//
-//   //set dates for today
-//   const todayStart = new Date();
-//   const todayEnd = new Date();
-//   todayStart.setHours(6,0,0,0);
-//   todayEnd.setHours(24,0,0,0);
-//   //query pedometer for today's date range
-//   Pedometer.getStepCountAsync(todayStart, todayEnd).then(
-//     async (result) => {
-//       // if we have today's step total from the pedometer, we store it in AsyncStorage
-//       console.log('today\'s pedometer total is ' + result.steps.toString());
-//       await this._storeData('todayStepCountStorage', result.steps.toString());
-//       // now that it's been stored, we retrieve it and set is as the todayStepCount state value
-//       this.setState({
-//         todayStepCount: parseInt(await this._retrieveData('todayStepCountStorage'), 10),
-//       });
-//       console.log('todayStepCount state set to ' + this.state.todayStepCount);
-//       // return this.state.todayStepCount;
-//     },
-//     error => {
-//       // if we have an error, state shows the error
-//       this.setState({
-//         todayStepCount: "Could not get stepCount: " + error
-//       });
-//     }
-//   );
-// }
-//
-// _updateStepCountsYesterday = () => {
-//
-//   //set dates for yesterday
-//   const yesterdayStart = new Date();
-//   const yesterdayEnd = new Date();
-//   yesterdayStart.setDate(yesterdayStart.getDate() - 1);
-//   yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
-//   yesterdayStart.setHours(6,0,0,0);
-//   yesterdayEnd.setHours(24,0,0,0);
-//
-//   //query pedometer for yesterday's date range
-//   Pedometer.getStepCountAsync(yesterdayStart, yesterdayEnd).then(
-//     async (result) => {
-//       // if we have yesterday's step total from the pedometer, we store it in AsyncStorage
-//       console.log('yesterday\'s pedometer total is ' + result.steps.toString());
-//       await this._storeData('yesterdayStepCountStorage', result.steps.toString());
-//       // now that it's been stored, we retrieve it and set is as the yesterdayStepCount state value
-//       this.setState({
-//         yesterdayStepCount: parseInt(await this._retrieveData('yesterdayStepCountStorage'), 10),
-//       });
-//       console.log('yesterdayStepCount state set to ' + this.state.yesterdayStepCount);
-//       // return this.state.yesterdayStepCount;
-//     },
-//     error => {
-  //       // if we have an error, state shows the error
-  //       this.setState({
-    //         yesterdayStepCount: "Could not get stepCount: " + error
-    //       });
-    //     }
-    //   );
-    // }
-
-    // _subscribe = () => {
-    //   this._subscription = Pedometer.watchStepCount(result => {
-    //     this.setState({
-    //       currentStepCount: result.steps
-    //     });
-    //   });
-    //
-    //   Pedometer.isAvailableAsync().then(
-    //     result => {
-    //       this.setState({
-    //         isPedometerAvailable: String(result)
-    //       });
-    //     },
-    //     error => {
-    //       this.setState({
-    //         isPedometerAvailable: "Could not get isPedometerAvailable: " + error
-    //       });
-    //     }
-    //   );
-    //
-    //   const todayStart = new Date();
-    //   const todayEnd = new Date();
-    //   todayStart.setHours(6,0,0,0);
-    //   todayEnd.setHours(24,0,0,0);
-    //
-    //   Pedometer.getStepCountAsync(todayStart, todayEnd).then(
-    //     result => {
-    //       this.setState({ todayStepCount: result.steps });
-    //     },
-    //     error => {
-    //       this.setState({
-    //         todayStepCount: "Could not get stepCount: " + error
-    //       });
-    //     }
-    //   );
-    // };
-    //
-    // _unsubscribe = () => {
-    //   this._subscription && this._subscription.remove();
-    //   this._subscription = null;
-    // };
+// <ScrollView>
+//   {this.state.campaignDateArray.map((dateObj, index) =>
+//     <StepShower day={dateObj.day}
+//       start={dateObj.start.toString()}
+//       steps={dateObj.steps}
+//       key={index} />
+//   )}
+// </ScrollView>
