@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "walker-trekker-draft",
-    "slug": "walker-trekker-draft",
+    "name": "walkertrekker",
+    "slug": "walkertrekker",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -15,7 +15,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#8b0000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -35,6 +35,7 @@
           "apiKey": "XXXXX"
         },
       },
-    }
+    },
+    "scheme": "walkertrekker",
   }
 }
