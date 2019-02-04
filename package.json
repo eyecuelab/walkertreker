@@ -1,5 +1,5 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "src/app.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -7,6 +7,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "buffer": "^5.2.1",
     "expo": "^32.0.0",
     "prop-types": "^15.6.2",
     "react": "16.5.0",
@@ -14,7 +15,10 @@
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "react-native-responsive-screen": "^1.2.0",
+    "react-navigation": "^3.0.9",
+    "redux": "^4.0.1",
+    "uuid": "^3.3.2",
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"

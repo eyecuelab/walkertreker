@@ -1,74 +1,91 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import PropTypes from 'prop-types';
+
+import defaultStyle from '../../styles/defaultStyle';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class ContactsListItemDisplay extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  conditionalRenderImage() {
-    if (this.props.contact.imageAvailable) {
-      return (
-        <Image
-          source={ { uri: this.props.contact.imageUri } }
-          style={ styles.avatar }
-        />
-      );
-    } else {
-      return (
-        // TODO: replace hotlinked placeholder avatar img
-        <Image
-          source={ { uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWFIT0kr3EAW9XDNQCe-Ie6L5ArFF6Mmv7raUS6lIASX6YSJ8G" } }
-          style={ styles.avatar }
-        />
-      );
-    }
+  componentDidMount() {
+  }
+
+  statusImage() {
+    if (this.props.contact.selected) {return <Image source={require('../../../assets/selected.png')} style={customStyles.status} />}
+    else if (this.props.contact.invited) {return <Image source={require('../../../assets/checked.png')} style={customStyles.status} />}
+    else return;
   }
 
   render() {
-    const containerStyle = this.props.contact.inviteToParty ? [styles.container, styles.active] : [styles.container, styles.inactive];
     return (
-      <View style={containerStyle}>
-        <View style={styles.avatarContainer}>{this.conditionalRenderImage()}</View>
-        <Text style={styles.nameContainer}>{this.props.contact.name}</Text>
+      <View style={customStyles.container}>
+        <View style={customStyles.statusContainer}>
+          {this.statusImage()}
+        </View>
+        <View style={customStyles.avatarContainer}>
+          <Image
+            source={this.props.contact.imageAvailable ? { uri: this.props.contact.imageUri } : require('../../../assets/blankavatar.png') }
+            style={customStyles.avatar}
+          />
+        </View>
+        <View style={customStyles.infoContainer}>
+          <Text style={styles.label}>{this.props.contact.name}</Text>
+          <Text style={styles.plainText}>{this.props.contact.numbers[0]}</Text>
+        </View>
       </View>
     )
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(defaultStyle);
+
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
+const customStyles = StyleSheet.create({
   container: {
     width: "100%",
-    height: 100,
+    height: heightUnit*12,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingLeft: 10,
   },
-  active: {
-    // apply these style rules to a contact that is selected for an invite
-    backgroundColor: 'steelblue',
-  },
-  inactive: {
-    // apply these style rules to a contact that has not been selected for an invite
-  },
-  avatar: {
-    borderWidth: 1,
-    borderColor: 'black',
-    alignItems: 'center',
+  statusContainer: {
+    flex: 1,
+    height: '100%',
     justifyContent: 'center',
-    margin: 10,
-    width: 75,
-    height: 75,
-    backgroundColor: 'black',
-    borderRadius: 100,
+    alignItems: 'center',
   },
   avatarContainer: {
-    flex: 1,
-    padding: 5,
-  },
-  nameContainer: {
     flex: 2,
-    padding: 5,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-})
+  infoContainer: {
+    flex: 6,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+    paddingLeft: 10,
+  },
+  avatar: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: widthUnit*15,
+    height: widthUnit*15,
+    borderRadius: 100,
+    backgroundColor: 'black',
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  status: {
+
+  },
+});
+
+ContactsListItemDisplay.propTypes = {
+  contact: PropTypes.object,
+};

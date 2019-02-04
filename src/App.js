@@ -1,73 +1,31 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, AppRegistry, AppState } from 'react-native';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { AppState, AsyncStorage, Image } from 'react-native';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
+import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, } from 'expo';
+import { AppContainer } from './nav/router';
+import { v4 } from 'uuid';
 
 import rootReducer from './reducers';
+
+if (__DEV__) {
+  KeepAwake.activate();
+}
+
+const store = createStore(rootReducer);
+
+class App extends React.Component {
+  state = {
+    isReady: false,
+  }
 
 //putting these here as a placeholder to remind myself what might need to be imported:
 // import { createStore, applyMiddleware } from 'redux';
 // import { Provider } from 'react-redux';
 // import rootReducer from './reducers/index';
 // import thunkMiddleware from 'redux-thunk';
-
-// Screens for create/join campaign, the ones I'm working on for this feature.
-import CreateCampaign from './components/screens/CreateCampaign';
-import NewCampaignPartyView from './components/screens/NewCampaignPartyView';
-import ContactsList from './components/screens/ContactsList';
-import Splash from './components/screens/Splash';
-
-// components imported for testing purposes, can get rid of these no problemo
-import TwoButtonOverlay from './components/ui/TwoButtonOverlay';
-
-// The other screens.
-import TOC from './components/TOC';
-import ActiveCampaignSummary from './components/ActiveCampaignSummary';
-import Inventory from './components/Inventory';
-import JoinCampaign from './components/JoinCampaign';
-import Map from './components/Map';
-import Profile from './components/Profile';
-import Team from './components/Team';
-import PedometerSensorV2 from './components/PedometerSensorV2';
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 24,
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-});
-
-const AppNavigator = createStackNavigator(
-  { // List a component to act as a screen. The screen attribute is required, other options listed after. Each component is rendered with the navigation prop. Navigate by calling this.props.navigation.navigate('...').
-    CreateCampaign: { screen: CreateCampaign },
-    ContactsList: { screen: ContactsList },
-    NewCampaignPartyView: { screen: NewCampaignPartyView, },
-    CampaignSummary: { screen: ActiveCampaignSummary, },
-    TOC: { screen: TOC, },
-    Inventory: { screen: Inventory },
-    JoinCampaign: { screen: JoinCampaign },
-    Map: { screen: Map },
-    Profile: { screen: Profile },
-    Team: { screen: Team },
-    PedometerSensorV2: { screen: PedometerSensorV2 },
-  },
-  {
-    initialRouteName: "PedometerSensorV2",
-    // Options that apply to all screens accessed thru this navigator. https://reactnavigation.org/docs/en/stack-navigator.html#navigationoptions-for-screens-inside-of-the-navigator. Can be overriden in child screens with navigationOptions within that child component.
-    defaultNavigationOptions: {
-      header: null,
-    }
-  }
-);
-
-const AppContainer = createAppContainer(AppNavigator);
-
-
-//placeholder code to keep errors from happening. remove when actual reducers are built out
+//
+// placeholder code to keep errors from happening. remove when actual reducers are built out
 // const initialState = {
 //   reduxWorks: false,
 // }
@@ -77,33 +35,82 @@ const AppContainer = createAppContainer(AppNavigator);
 // }
 // placeholder ends here
 
-const store = createStore(rootReducer);
+  cacheImages(images) {
+    return images.map(image => {
+      if (typeof image === 'string') {
+        return Image.prefetch(image);
+      } else {
+        return Asset.fromModule(image).downloadAsync();
+      }
+    });
+  }
 
-class App extends React.Component {
+  _loadResourcesAsync = async () => {
+    const imageAssets = this.cacheImages([
+      require('../assets/bg.png'),
+      require('../assets/buttontexture1.png'),
+      require('../assets/buttontexture2.png'),
+      require('../assets/buttontexture3.png'),
+      require('../assets/blankavatar.png'),
+      require('../assets/checked.png'),
+      require('../assets/selected.png'),
+    ]);
 
-  buttonClick = () => {
-    store.dispatch({ type: 'TOGGLE' });
-    console.log(store.getState());
+    await Promise.all([
+      Font.loadAsync({
+        'gore': require('../assets/fonts/goreRough.otf'),
+        'verdana': require('../assets/fonts/verdana.ttf'),
+        'verdanaBold': require('../assets/fonts/verdanaBold.ttf'),
+      }),
+      ...imageAssets,
+    ]);
+
+    // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
+    const userId = await AsyncStorage.getItem('userId');
+    if (userId) { console.log('userId retrieved from AsyncStorage: ', userId) }
+    else {
+      const newId = v4();
+      await AsyncStorage.setItem('userId', newId);
+    }
+  };
+
+  _handleLoadingError = error => {
+    console.warn(error);
+  }
+
+  _handleFinishLoading = () => {
+    this.setState({isReady: true});
   }
 
   render() {
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onFinish={this._handleFinishLoading}
+          onError={this._handleLoadingError}
+        />
+      );
+    }
+
     return (
-      <Provider store={store}>
-        <AppContainer />
-        <Button
-          title='click to demo redux'
-          onPress={this.buttonClick} />
+      <Provider store={store}
+        <AppContainer
+          screenProps={{
+            backgroundImage: require('../assets/bg.png'),
+          }}
+        />
       </Provider>
-    )
+    );
   }
 }
+
+registerRootComponent(App)
 
 function mapStateToProps(state) {
   return {
     reduxWorks: state.reduxWorks
   }
 }
-
-AppRegistry.registerComponent('main', () => App);
 
 export default connect(mapStateToProps)(App);
