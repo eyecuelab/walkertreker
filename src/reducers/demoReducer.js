@@ -1,4 +1,4 @@
-import initialStateDemoReducer from '../constants/initialStateDemoReducer';
+import initialStateDemoReducer from '../constants/initialStates/initialStateDemoReducer';
 
 export default (state = initialStateDemoReducer, action) => {
   let newState;
