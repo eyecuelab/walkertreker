@@ -94,7 +94,7 @@ class App extends React.Component {
     }
 
     return (
-      <Provider store={store}
+      <Provider store={store}>
         <AppContainer
           screenProps={{
             backgroundImage: require('../assets/bg.png'),
