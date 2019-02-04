@@ -8,6 +8,8 @@ import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
 import defaultStyle from '../../styles/defaultStyle';
 
+import { parsePhoneNumber } from '../../util/util';
+
 export default class InvitePlayers extends React.Component {
 
   constructor(props) {
@@ -39,12 +41,14 @@ export default class InvitePlayers extends React.Component {
         data.forEach(contact => {
           const name = contact.name;
           let numbers = [];
+          let key;
           const imageAvailable = contact.imageAvailable;
           let imageUri;
           if (contact.phoneNumbers) {
             contact.phoneNumbers.forEach(num => {
               if (num.label === 'mobile') {
                 const phoneToAdd = num.number;
+                key = parsePhoneNumber(phoneToAdd);
                 numbers.push(phoneToAdd);
               }
             })
@@ -52,7 +56,7 @@ export default class InvitePlayers extends React.Component {
           contact.imageAvailable ? imageUri = contact.image.uri : imageUri = 'none';
           if (numbers.length > 0) {
             contacts = Object.assign({}, contacts, {
-              [numbers[0]]: { name, numbers, imageAvailable, imageUri, invited: false, selected: false, }
+              [key]: { id: key, name, numbers, imageAvailable, imageUri, invited: false, selected: false, }
             });
           }
         });
@@ -68,7 +72,7 @@ export default class InvitePlayers extends React.Component {
 
   handleSelectContact = async contact => {
     if (contact.invited) { console.log('Contact has already been invited.'); return;}
-    const key = contact.numbers[0];
+    const key = contact.id;
     const prevSelects = Object.assign({}, this.state.selected);
     const prevContacts = Object.assign({}, this.state.contacts);
     let newSelects = Object.assign({}, prevSelects);
@@ -139,7 +143,17 @@ export default class InvitePlayers extends React.Component {
           button2onPress={this.clearSelected}
         />
       );
-    } else {
+    } else if (this.state.numInvites > 0) {
+      return (
+        <TwoButtonOverlay
+          button1title="Campaign Party"
+          button1onPress={() => this.props.navigation.navigate('CampaignStaging')}
+          button2title="Back"
+          button2onPress={() => this.props.navigation.goBack()}
+        />
+      )
+    }
+    else {
       return (
         <TwoButtonOverlay
           button1title="Send Invites"
