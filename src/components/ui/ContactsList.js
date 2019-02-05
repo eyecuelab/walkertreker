@@ -14,7 +14,7 @@ export default class ContactsList extends React.Component {
   listConditionalRender() {
     if (this.props.contactsFetched) {
       return (
-        <ScrollView showsVerticalScrollIndicator={true} style={styles.list}>
+        <View style={styles.container}>
           {Object.keys(this.props.contacts).map(key => {
             const contact = this.props.contacts[key];
             return (
@@ -31,8 +31,7 @@ export default class ContactsList extends React.Component {
               </View>
             );
           })}
-          <View style={styles.bottomMargin}></View>
-        </ScrollView>
+        </View>
       );
     } else {
       // Can replace this with a spinning wheel or some loading animation
@@ -56,10 +55,10 @@ const defaultStyleSheet = StyleSheet.create(defaultStyle);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
+    height: "100%",
   },
   list: {
     width: "100%",
@@ -68,29 +67,18 @@ const styles = StyleSheet.create({
     // borderBottomColor: 'black',
     // borderBottomWidth: 2,
   },
-  submitContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: '10%',
-    width: '80%',
-    height: '10%',
-    flexDirection: 'column',
-    backgroundColor: 'rgba(255,255,255,0.85)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: 'darkgray',
-    borderWidth: 2,
-  },
-  submitButtons: {
-    margin: 5,
-    flexDirection: 'row',
-    width: '75%',
-    justifyContent: 'space-around',
-  }
 });
 
 ContactsList.propTypes = {
   contacts: PropTypes.object,
   contactsFetched: PropTypes.bool,
   onSelectContact: PropTypes.func,
+}
+
+const doNothing = () => {return;}
+
+ContactsList.defaultProps = {
+  contacts: {},
+  contactsFetched: false,
+  onSelectContact: doNothing,
 }

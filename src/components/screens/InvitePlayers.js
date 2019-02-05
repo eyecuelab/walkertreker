@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
 import { Contacts, Permissions } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -133,6 +133,10 @@ export default class InvitePlayers extends React.Component {
     });
   }
 
+  abadonGame = async () => {
+    console.log('Abandon Game');
+  }
+
   submitConditionalRender = () => {
     if (this.state.numSelected > 0) {
       return (
@@ -147,9 +151,12 @@ export default class InvitePlayers extends React.Component {
       return (
         <TwoButtonOverlay
           button1title="Campaign Party"
-          button1onPress={() => this.props.navigation.navigate('CampaignStaging')}
-          button2title="Back"
-          button2onPress={() => this.props.navigation.goBack()}
+          button1onPress={() => this.props.navigation.navigate('CampaignStaging', {
+            game: this.state.game,
+            invites: this.state.invites,
+          })}
+          button2title="Abandon Game"
+          button2onPress={this.abandonGame}
         />
       )
     }
@@ -211,11 +218,13 @@ export default class InvitePlayers extends React.Component {
               </View>
             </View>
             <View style={customStyles.contactsContainer}>
-              <ContactsList
-                contacts={this.state.contacts}
-                contactsFetched={this.state.contactsFetched}
-                onSelectContact={this.handleSelectContact}
-              />
+              <ScrollView showsVerticalScrollIndicator={true}>
+                <ContactsList
+                  contacts={this.state.contacts}
+                  contactsFetched={this.state.contactsFetched}
+                  onSelectContact={this.handleSelectContact}
+                />
+              </ScrollView>
             </View>
           </View>
           {this.submitConditionalRender()}
@@ -260,10 +269,15 @@ const customStyles = StyleSheet.create({
   },
   contactsContainer: {
     flex: 2,
-    width: '100%',
+    // width: '100%',
+    // height: '100%',
     borderTopColor: 'white',
     borderBottomColor: 'white',
     borderTopWidth: 1,
     borderBottomWidth: 1,
+  },
+  scrollViewContainer: {
+    width: '100%',
+    height: '100%',
   },
 });
