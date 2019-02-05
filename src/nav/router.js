@@ -28,9 +28,10 @@ const AppNavigator = createStackNavigator({
     Map: { screen: Map },
     Profile: { screen: Profile },
     Team: { screen: Team },
+    PedometerSensorV2: { screen: PedometerSensorV2 }
   },
   {
-    initialRouteName: "CreateCampaign",
+    initialRouteName: "PedometerSensorV2",
     defaultNavigationOptions: {
       header: null,
     }
