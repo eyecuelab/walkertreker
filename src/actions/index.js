@@ -1,4 +1,4 @@
-import constants from '../../constants';
+import constants from '../constants';
 const { c } = constants;
 
 export const setAppState = (appState) => ({

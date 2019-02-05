@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button } fr
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
+const { setAppState, setCampaignDates } = actions;
 import StepShower from './StepShower'; /* this is not a standing-bath of steps, it is something that shows steps to you... ;) */
 
 class PedometerSensorV2 extends React.Component {
@@ -24,6 +25,7 @@ class PedometerSensorV2 extends React.Component {
 
   componentWillMount() {
     if (this.props.campaignDateArray === null) {
+      console.log('date array null');
       this._constructDateLog();
     }
   }
@@ -32,7 +34,7 @@ class PedometerSensorV2 extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange);
     this._updateCampaignStepCounts();
     setInterval(() => {
-      if (this.props.appState === 'active') {
+      if (this.props.appState.appState === 'active') {
         // console.log('updating steps');
         this._updateCampaignStepCounts();
       }
@@ -53,9 +55,9 @@ class PedometerSensorV2 extends React.Component {
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
 
+    console.log('about to set campaign dates');
 
-
-
+    dispatch(setCampaignDates(day1Start, day1End, campaignLength));
 
     // // GARBAGE AHEAD!!!
     // // ******
@@ -79,7 +81,7 @@ class PedometerSensorV2 extends React.Component {
   _handleAppStateChange = (nextAppState) => {
     const { dispatch } = this.props;
     if (
-      this.props.appState.match(/inactive|background/) &&
+      this.props.appState.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
       this._updateCampaignStepCounts();
@@ -93,6 +95,7 @@ class PedometerSensorV2 extends React.Component {
     const campaignDateArrayCopy = JSON.parse(JSON.stringify(campaignDateArray))
     console.log('campaign date array copy: ', campaignDateArrayCopy);
 
+    // UN-COMMENT THIS LATER; THIS IS GOOD CODE I THINK
     campaignDateArrayCopy.forEach((obj, index) => {
       Pedometer.getStepCountAsync(new Date(obj.start), new Date(obj.end)).then(
         async (result) => {
