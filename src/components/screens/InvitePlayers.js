@@ -26,8 +26,12 @@ export default class InvitePlayers extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.getContacts()
+  componentDidMount = () => {
+    this.getContacts();
+  }
+
+  componentDidUpdate() {
+    console.log(this.state.contacts);
   }
 
   getContacts = async () => {
@@ -143,7 +147,7 @@ export default class InvitePlayers extends React.Component {
         <TwoButtonOverlay
           button1title="Send Invites"
           button1onPress={this.sendInvites}
-          button2title="Clear Selected"
+          button2title="Clear"
           button2onPress={this.clearSelected}
         />
       );

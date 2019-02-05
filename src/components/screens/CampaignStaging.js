@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ImageBackground, ScrollView, FlatList } from 'r
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
-import TwoPartContactsList from '../ui/TwoPartContactsList';
+import ContactsList from '../ui/ContactsList';
 
 import defaultStyle from '../../styles/defaultStyle';
 
@@ -18,6 +18,10 @@ export default class CampaignStaging extends React.Component {
       invites,
       selectedPlayer: 'none',
     };
+  }
+
+  componentDidMount() {
+    // console.log(this.state);
   }
 
   submitConditionalRender = () => {
@@ -100,9 +104,27 @@ export default class CampaignStaging extends React.Component {
               </View>
             </View>
             <View style={customStyles.panelContainer}>
-              <TwoPartContactsList
-                
-              />
+              <ScrollView contentContainerStyle={customStyles.scrollContainer} showsVerticalScrollIndicator={true}>
+                <View style={customStyles.scrollChildContainer}>
+                  <Text style={customStyles.subHead}>Players</Text>
+                  <View style={[customStyles.contactListContainer, customStyles.contactListFirst]}>
+                    <ContactsList
+                      contacts={this.state.game.players}
+                      contactsFetched={true}
+                      onSelectContact={() => console.log('Select player')}
+                      allChecked={true}
+                    />
+                  </View>
+                </View>
+                <View style={[customStyles.contactListContainer, customStyles.contactListSecond]}>
+                  <Text style={customStyles.subHead}>Invited</Text>
+                  <ContactsList
+                  contacts={this.state.invites}
+                  contactsFetched={true}
+                  allSelected={true}
+                  />
+                </View>
+              </ScrollView>
             </View>
           </View>
           {this.submitConditionalRender()}
@@ -131,19 +153,45 @@ const customStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   panelContainer: {
-    flex: 4,
+    flex: 3,
+    width: '100%',
+    height: '100%',
+    paddingTop: 5,
+    marginBottom: 10,
+    borderTopColor: 'white',
+    borderBottomColor: 'white',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
     // marginTop: 10,
   },
   scrollContainer: {
     width: '100%',
-    height: '100%',
+    flexDirection: 'column',
   },
-  avatar: {
-    height: heightUnit*7,
-    width: heightUnit*7,
-  },
-  invitesContainer: {
+  scrollChildContainer: {
+    flex: 1,
     width: '100%',
-    height: '100%',
+    flexDirection: 'column',
+  },
+  contactListContainer: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-start',
+    // alignItems: 'center',
+    margin: 0,
+    padding: 0,
+  },
+  contactListFirst: {
+    marginBottom: 25,
+  },
+  contactListSecond: {
+    marginTop: 0,
+    marginBottom: 50,
+  },
+  subHead: {
+    fontFamily: 'gore',
+    fontSize: widthUnit*10,
+    // lineHeight: widthUnit*10,
+    color: 'white',
   },
 });
