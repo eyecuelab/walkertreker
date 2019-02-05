@@ -4,7 +4,7 @@ import { Pedometer } from "expo";
 import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button } from "react-native";
 import { connect } from 'react-redux';
 
-import * as actions from './actions';
+import * as actions from '../actions';
 import StepShower from './StepShower'; /* this is not a standing-bath of steps, it is something that shows steps to you... ;) */
 
 class PedometerSensorV2 extends React.Component {
@@ -53,7 +53,7 @@ class PedometerSensorV2 extends React.Component {
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
 
-    
+
 
 
 
@@ -91,6 +91,7 @@ class PedometerSensorV2 extends React.Component {
     const { campaignDateArray } = this.props.steps;
     console.log('logging campaign date array in pedometer: ',campaignDateArray);
     const campaignDateArrayCopy = JSON.parse(JSON.stringify(campaignDateArray))
+    console.log('campaign date array copy: ', campaignDateArrayCopy);
 
     campaignDateArrayCopy.forEach((obj, index) => {
       Pedometer.getStepCountAsync(new Date(obj.start), new Date(obj.end)).then(

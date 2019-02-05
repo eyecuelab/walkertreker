@@ -7,9 +7,7 @@ export const setAppState = (appState) => ({
 });
 
 export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength) => {
-
   const dateArray = [];
-
   for (let i=0; i < campaignLength; i++) {
       const start = new Date(firstDayStart); /* using campaignStartDate directly here caused the app to crash... not sure why*/
       const end = new Date(firstDayEnd); /* using campaignStartDate directly here caused the app to crash... not sure why*/
