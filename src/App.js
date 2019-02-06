@@ -1,18 +1,20 @@
 import React from 'react';
 import { AppState, AsyncStorage, Image } from 'react-native';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, } from 'expo';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
+import thunkMiddleware from 'redux-thunk';
 
 import rootReducer from './reducers';
+import middlewareLogger from './middleware/middlewareLogger'
 
 if (__DEV__) {
   KeepAwake.activate();
 }
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(middlewareLogger, thunkMiddleware));
 
 class App extends React.Component {
   state = {

@@ -5,10 +5,10 @@ import appStateReducer from './appStateReducer';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
-  campaign: campaignDetailReducer,
-  steps: stepReducer,
+  // campaign: campaignDetailReducer,
+  campaignDateArray: stepReducer,
   appState: appStateReducer,
-  demo: demoReducer,
+  // demo: demoReducer,
 });
 
 export default rootReducer;

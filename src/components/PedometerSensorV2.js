@@ -1,12 +1,11 @@
-import Expo from "expo";
 import React from "react";
+import Expo from "expo";
 import { Pedometer } from "expo";
-import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button } from "react-native";
+import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button, Alert } from "react-native";
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
-const { setAppState, setCampaignDates } = actions;
-import StepShower from './StepShower'; /* this is not a standing-bath of steps, it is something that shows steps to you... ;) */
+const { setAppState, setCampaignDates, setCampaignSteps } = actions;
 
 class PedometerSensorV2 extends React.Component {
 
@@ -18,35 +17,63 @@ class PedometerSensorV2 extends React.Component {
       campaignStartDate: new Date('January 25, 2019 06:00:00'), /*this needs to not be a static value; it should be informed by the actual campaign start date*/
       campaignDateArray: null, /*this should only be null at start*/
     };
-    console.log(this.props);
     this._storeData = this._storeData.bind(this);
     this._retrieveData = this._retrieveData.bind(this);
   }
 
+
   componentWillMount() {
     if (this.props.campaignDateArray === null) {
-      console.log('date array null');
       this._constructDateLog();
     }
   }
 
+
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
-    this._updateCampaignStepCounts();
+
+    Pedometer.isAvailableAsync().then(
+      (result) => {
+        console.log('dometer is available? ',result);
+      }, (error) => {
+        console.log('dometer not available');
+      }
+    );
+
+    setTimeout(() => {
+      this._updateCampaignStepCounts();
+    }, 10);
+
     setInterval(() => {
-      if (this.props.appState.appState === 'active') {
-        // console.log('updating steps');
+      if (this.props.appState === 'active') {
         this._updateCampaignStepCounts();
       }
     }, 60000);
-    console.log(this.props.appState);
+    // Pedometer.getStepCountAsync(new Date(2019-01-31T14:00:00.000Z), new Date(2019-02-01T08:00:00.000Z)).then(
+    //   (result) => {
+    //     console.log(result.steps);
+    //   }, (error) => {
+    //     console.log('dometer hates you');
+    //   }
+    // );
   }
+
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
+
+  _logState = () => {
+    setTimeout(() => {
+      console.log(this.props);
+
+    }, 10);
+  }
+
+
   _constructDateLog = () => {
+    const { dispatch } = this.props;
     const { campaignStartDate, campaignLength } = this.state; /* this will need to come from state set by previous screens */
 
     //these can stay exactly as-is, i think
@@ -55,81 +82,78 @@ class PedometerSensorV2 extends React.Component {
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
 
-    console.log('about to set campaign dates');
-
     dispatch(setCampaignDates(day1Start, day1End, campaignLength));
-
-    // // GARBAGE AHEAD!!!
-    // // ******
-    // for (let i=0; i < campaignLength; i++) {
-    //     const start = new Date(day1Start); /* using campaignStartDate directly here caused the app to crash... not sure why*/
-    //     const end = new Date(day1End); /* using campaignStartDate directly here caused the app to crash... not sure why*/
-    //     dateArray.push({
-    //       day: i + 1,
-    //       start: new Date(start.setDate(start.getDate() + i)),
-    //       end: new Date(end.setDate(end.getDate() + i)),
-    //     });
-    // }
-    // this.setState({
-    //   campaignDateArray: dateArray
-    // })
-    // // ******
-    // // GARBAGE BEHIND!!!
-
   }
+
 
   _handleAppStateChange = (nextAppState) => {
     const { dispatch } = this.props;
     if (
-      this.props.appState.appState.match(/inactive|background/) &&
+      this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
+      console.log('handle app state change hit the if');
       this._updateCampaignStepCounts();
     }
     dispatch(setAppState(nextAppState));
   };
 
-  _updateCampaignStepCounts = () => {
-    const { campaignDateArray } = this.props.steps;
-    console.log('logging campaign date array in pedometer: ',campaignDateArray);
-    const campaignDateArrayCopy = JSON.parse(JSON.stringify(campaignDateArray))
-    console.log('campaign date array copy: ', campaignDateArrayCopy);
 
-    // UN-COMMENT THIS LATER; THIS IS GOOD CODE I THINK
+  _updateCampaignStepCounts = () => {
+
+    const { campaignDateArray, dispatch} = this.props;
+    const campaignDateArrayCopy = JSON.parse(JSON.stringify(campaignDateArray))
+
+    // UN-COMMENT THIS LATER; THIS IS GOOD CODE I THINK:
+
     campaignDateArrayCopy.forEach((obj, index) => {
-      Pedometer.getStepCountAsync(new Date(obj.start), new Date(obj.end)).then(
-        async (result) => {
-          await this._storeData('day' + (index + 1) + 'StepCountStorage', result.steps.toString());
+      console.log(' in loop start: ', Date.parse(obj.start));
+      // console.log('end: ', obj.end);
+      // things get to here, and then never hit the pedometer code below...
+
+      Pedometer.getStepCountAsync(new Date(Date.parse(obj.start)), new Date(Date.parse(obj.end))).then(
+
+        (result) => {
+          console.log(result.steps);
+          this._storeData('day' + (index + 1) + 'StepCountStorage', result.steps.toString());
           const stepsToAdd = {
-            steps: parseInt(await this._retrieveData('day' + (index + 1) + 'StepCountStorage'), 10)
+            steps: parseInt(this._retrieveData('day' + (index + 1) + 'StepCountStorage'), 10)
           }
+          console.log('steps to add: ',stepsToAdd);
           const dateWithSteps = Object.assign({}, campaignDateArrayCopy[index], stepsToAdd);
-          campaignDateArrayCopy.splice(index, 1, dateWithSteps)
-          this.setState({
-            campaignDateArray: campaignDateArrayCopy
-          });
-        },
-        error => {
+          campaignDateArrayCopy.splice(index, 1, dateWithSteps);
+
+          // console.log(campaignDateArrayCopy);
+
+          //HERE THERE BE OLD CODE!  convert to redux, plz
+
+          // this.setState({
+          //   campaignDateArray: campaignDateArrayCopy
+          // });
+        },  //end of result block
+        (error) => {
           console.log('error retrieving pedometer data at campaign day ' + (index + 1) + ' in _updateCampaignStepCounts');
         }
-      );
-    });
+      ); //end of then
+    }); //end of forEach
+    // console.log('copy: ',campaignDateArrayCopy);
+    dispatch(setCampaignSteps(campaignDateArrayCopy));
   }
+
 
   async _storeData(keyString, valueString) {
     try {
       await AsyncStorage.setItem(keyString, valueString);
-      // console.log(keyString + ' saved as ' + valueString);
     } catch (error) {
       console.log(keyString + ' data could not be saved');
     }
   }
 
+
   async _retrieveData(keyString) {
     try {
       const value = await AsyncStorage.getItem(keyString);
       if (value !== null) {
-        // console.log(keyString + ' retrieved as ' + value);
         return value;
       }
     } catch (error) {
@@ -137,9 +161,16 @@ class PedometerSensorV2 extends React.Component {
     }
   }
 
+
   render() {
     return (
       <View style={styles.container}>
+        <Button
+          title='click here to update step counts'
+          onPress={this._updateCampaignStepCounts} />
+          <Button
+            title='click here to log props'
+            onPress={this._logState} />
       </View>
     );
   }
@@ -152,22 +183,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
+  button: {
+    height: '50%',
+    width: '100%',
+    marginTop: 20,
+  },
 });
+
 
 function mapStateToProps(state) {
   return {
     appState: state.appState,
-    steps: state.steps,
+    campaignDateArray: state.campaignDateArray,
   }
 }
 
-export default connect(mapStateToProps)(PedometerSensorV2);
 
-// <ScrollView>
-//   {this.state.campaignDateArray.map((dateObj, index) =>
-//     <StepShower day={dateObj.day}
-//       start={dateObj.start.toString()}
-//       steps={dateObj.steps}
-//       key={index} />
-//   )}
-// </ScrollView>
+export default connect(mapStateToProps)(PedometerSensorV2);

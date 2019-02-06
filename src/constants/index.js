@@ -7,7 +7,6 @@ import fakeState from './fakeStateModel';
 export default {
   c: types,
   initialState: {
-    steps: initialStateStepReducer,
     campaignDetails: initialStateCampaignDetailReducer,
     demo: initialStateDemoReducer,
   },
