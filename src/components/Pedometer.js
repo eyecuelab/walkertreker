@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 const { setAppState, setCampaignDates, setCampaignSteps } = actions;
 
-class PedometerSensorV2 extends React.Component {
+class Pedometer extends React.Component {
 
   constructor(props) {
     super(props);
@@ -199,4 +199,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(PedometerSensorV2);
+export default connect(mapStateToProps)(Pedometer);

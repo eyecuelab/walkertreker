@@ -1,6 +1,5 @@
 import campaignDetailReducer from './campaignDetailReducer';
 import stepReducer from './stepReducer';
-import demoReducer from './demoReducer';
 import appStateReducer from './appStateReducer';
 import { combineReducers } from 'redux';
 
