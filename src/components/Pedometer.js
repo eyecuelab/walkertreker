@@ -3,6 +3,7 @@ import Expo from "expo";
 import { Pedometer } from "expo";
 import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button, Alert } from "react-native";
 import { connect } from 'react-redux';
+// import effects from redux-saga?
 
 import * as actions from '../actions';
 const { setAppState, setCampaignDates, setCampaignSteps } = actions;
@@ -31,31 +32,25 @@ class Pedometer extends React.Component {
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
-
+//======================
     Pedometer.isAvailableAsync().then(
       (result) => {
-        console.log('dometer is available? ',result);
+        console.log('\'dometer is available? ',result);
       }, (error) => {
-        console.log('dometer not available');
+        console.log('\'dometer not available');
       }
     );
-
+//======================
+    // this is very dumb; it must be changed
     setTimeout(() => {
       this._updateCampaignStepCounts();
     }, 10);
-
+//======================
     setInterval(() => {
       if (this.props.appState === 'active') {
         this._updateCampaignStepCounts();
       }
     }, 60000);
-    // Pedometer.getStepCountAsync(new Date(2019-01-31T14:00:00.000Z), new Date(2019-02-01T08:00:00.000Z)).then(
-    //   (result) => {
-    //     console.log(result.steps);
-    //   }, (error) => {
-    //     console.log('dometer hates you');
-    //   }
-    // );
   }
 
 
@@ -73,7 +68,7 @@ class Pedometer extends React.Component {
 
 
   _constructDateLog = () => {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props; // replace dispatch with put?
     const { campaignStartDate, campaignLength } = this.state; /* this will need to come from state set by previous screens */
 
     //these can stay exactly as-is, i think
@@ -82,12 +77,12 @@ class Pedometer extends React.Component {
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
 
-    dispatch(setCampaignDates(day1Start, day1End, campaignLength));
+    dispatch(setCampaignDates(day1Start, day1End, campaignLength)); // replace dispatch with put?
   }
 
 
   _handleAppStateChange = (nextAppState) => {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props; // replace dispatch with put?
     if (
       this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
@@ -95,13 +90,13 @@ class Pedometer extends React.Component {
       console.log('handle app state change hit the if');
       this._updateCampaignStepCounts();
     }
-    dispatch(setAppState(nextAppState));
+    dispatch(setAppState(nextAppState)); // replace dispatch with put?
   };
 
 
   _updateCampaignStepCounts = () => {
 
-    const { campaignDateArray, dispatch} = this.props;
+    const { campaignDateArray, dispatch} = this.props; // replace dispatch with put?
     const campaignDateArrayCopy = JSON.parse(JSON.stringify(campaignDateArray))
 
     // UN-COMMENT THIS LATER; THIS IS GOOD CODE I THINK:
@@ -137,7 +132,7 @@ class Pedometer extends React.Component {
       ); //end of then
     }); //end of forEach
     // console.log('copy: ',campaignDateArrayCopy);
-    dispatch(setCampaignSteps(campaignDateArrayCopy));
+    dispatch(setCampaignSteps(campaignDateArrayCopy)); // replace dispatch with put?
   }
 
 
@@ -174,6 +169,8 @@ class Pedometer extends React.Component {
       </View>
     );
   }
+
+  // store.subscribe(render) // this might be needed but i can't tell yet
 }
 
 const styles = StyleSheet.create({

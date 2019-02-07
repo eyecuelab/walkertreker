@@ -7,7 +7,7 @@ import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
 
 // import redux-logger here
-// import redex-saga here
+// import createSagaMiddleware from redex-saga here
 import rootReducer from './reducers';
 
 if (__DEV__) {
