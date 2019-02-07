@@ -1,11 +1,13 @@
 import constants from '../constants';
 const { c } = constants;
 
+// this one might be ok, but it might need to be refactored for saga
 export const setAppState = (appState) => ({
   type: c.NEW_APP_STATE,
   appState: appState,
 });
 
+// this will almost certainly need to be completely rewritten for saga
 export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength) => {
   const dateArray = [];
   let start;
@@ -26,6 +28,7 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength) => 
     campaignDateArray: dateArray,
   });
 }
+
 
 export const setCampaignSteps = (array) => ({
     type: c.SET_STEPS,

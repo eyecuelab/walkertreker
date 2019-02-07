@@ -5,37 +5,21 @@ import { Provider, connect } from 'react-redux';
 import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, } from 'expo';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
-import thunkMiddleware from 'redux-thunk';
 
+// import redux-logger here
+// import redex-saga here
 import rootReducer from './reducers';
-import middlewareLogger from './middleware/middlewareLogger'
 
 if (__DEV__) {
   KeepAwake.activate();
 }
-
-const store = createStore(rootReducer, applyMiddleware(middlewareLogger, thunkMiddleware));
+//create a new store using redux-logger and saga-middleware
+const store = createStore(rootReducer, applyMiddleware(XXXXX, XXXXX));  // move to its own place so it can be referenced from anywhere
 
 class App extends React.Component {
   state = {
     isReady: false,
   }
-
-//putting these here as a placeholder to remind myself what might need to be imported:
-// import { createStore, applyMiddleware } from 'redux';
-// import { Provider } from 'react-redux';
-// import rootReducer from './reducers/index';
-// import thunkMiddleware from 'redux-thunk';
-//
-// placeholder code to keep errors from happening. remove when actual reducers are built out
-// const initialState = {
-//   reduxWorks: false,
-// }
-//
-// const reducer = (state = initialState) => {
-//   return state;
-// }
-// placeholder ends here
 
   cacheImages(images) {
     return images.map(image => {
