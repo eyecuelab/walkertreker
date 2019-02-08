@@ -12,7 +12,7 @@ import JoinCampaign from '../components/JoinCampaign';
 import Map from '../components/Map';
 import Profile from '../components/Profile';
 import Team from '../components/Team';
-import Pedometer from '../components/Pedometer';
+import BackgroundPedometer from '../components/BackgroundPedometer';
 
 const AppNavigator = createStackNavigator({
     CreateCampaign: { screen: CreateCampaign, },
@@ -28,10 +28,10 @@ const AppNavigator = createStackNavigator({
     Map: { screen: Map },
     Profile: { screen: Profile },
     Team: { screen: Team },
-    Pedometer: { screen: Pedometer }
+    BackgroundPedometer: { screen: BackgroundPedometer }
   },
   {
-    initialRouteName: "Pedometer",
+    initialRouteName: "CreateCampaign",
     defaultNavigationOptions: {
       header: null,
     }

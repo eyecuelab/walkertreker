@@ -3,21 +3,17 @@ import Expo from "expo";
 import { Pedometer } from "expo";
 import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button, Alert } from "react-native";
 import { connect } from 'react-redux';
-// import effects from redux-saga?
+import { put } from 'redux-saga/effects'
 
 import * as actions from '../actions';
+import constants from './../constants';
 const { setAppState, setCampaignDates, setCampaignSteps } = actions;
+const { c } = constants;
 
-class Pedometer extends React.Component {
+class BackgroundPedometer extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      appState: AppState.currentState,
-      campaignLength: 15, /*this should not be static; it should be informed by actual campaign length*/
-      campaignStartDate: new Date('January 25, 2019 06:00:00'), /*this needs to not be a static value; it should be informed by the actual campaign start date*/
-      campaignDateArray: null, /*this should only be null at start*/
-    };
     this._storeData = this._storeData.bind(this);
     this._retrieveData = this._retrieveData.bind(this);
   }
@@ -31,34 +27,37 @@ class Pedometer extends React.Component {
 
 
   componentDidMount() {
-    AppState.addEventListener('change', this._handleAppStateChange);
+    AppState.addEventListener('change', /*this needs to dispatch an action instead --> */ this._handleAppStateChange);
 //======================
     Pedometer.isAvailableAsync().then(
       (result) => {
+        // dispatch an action to the store to update state
         console.log('\'dometer is available? ',result);
       }, (error) => {
+        // dispatch an action to the store to update state
         console.log('\'dometer not available');
       }
     );
 //======================
     // this is very dumb; it must be changed
     setTimeout(() => {
-      this._updateCampaignStepCounts();
+      /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
     }, 10);
 //======================
     setInterval(() => {
       if (this.props.appState === 'active') {
-        this._updateCampaignStepCounts();
+        //dispatch action instead
+        /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
       }
     }, 60000);
   }
 
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange);
+    AppState.removeEventListener('change', /*this needs to dispatch an action instead --> */this._handleAppStateChange);
   }
 
-
+// probably get rid of this no matter what
   _logState = () => {
     setTimeout(() => {
       console.log(this.props);
@@ -69,7 +68,9 @@ class Pedometer extends React.Component {
 
   _constructDateLog = () => {
     const { dispatch } = this.props; // replace dispatch with put?
-    const { campaignStartDate, campaignLength } = this.state; /* this will need to come from state set by previous screens */
+    //these are placeholders
+    const campaignStartDate = new Date('January 25, 2019 06:00:00');
+    const campaignLength = 15
 
     //these can stay exactly as-is, i think
     const day1Start = new Date(campaignStartDate);
@@ -82,15 +83,13 @@ class Pedometer extends React.Component {
 
 
   _handleAppStateChange = (nextAppState) => {
-    const { dispatch } = this.props; // replace dispatch with put?
     if (
       this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      console.log('handle app state change hit the if');
-      this._updateCampaignStepCounts();
+      /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
     }
-    dispatch(setAppState(nextAppState)); // replace dispatch with put?
+    put({type: c.NEW_APP_STATE, appState: nextAppState})
   };
 
 
@@ -109,26 +108,19 @@ class Pedometer extends React.Component {
       Pedometer.getStepCountAsync(new Date(Date.parse(obj.start)), new Date(Date.parse(obj.end))).then(
 
         (result) => {
-          console.log(result.steps);
+          //perhaps make this next line dispatch an action?
           this._storeData('day' + (index + 1) + 'StepCountStorage', result.steps.toString());
           const stepsToAdd = {
             steps: parseInt(this._retrieveData('day' + (index + 1) + 'StepCountStorage'), 10)
           }
-          console.log('steps to add: ',stepsToAdd);
           const dateWithSteps = Object.assign({}, campaignDateArrayCopy[index], stepsToAdd);
           campaignDateArrayCopy.splice(index, 1, dateWithSteps);
-
-          // console.log(campaignDateArrayCopy);
-
-          //HERE THERE BE OLD CODE!  convert to redux, plz
-
-          // this.setState({
-          //   campaignDateArray: campaignDateArrayCopy
-          // });
         },  //end of result block
+
         (error) => {
           console.log('error retrieving pedometer data at campaign day ' + (index + 1) + ' in _updateCampaignStepCounts');
         }
+
       ); //end of then
     }); //end of forEach
     // console.log('copy: ',campaignDateArrayCopy);
@@ -140,7 +132,7 @@ class Pedometer extends React.Component {
     try {
       await AsyncStorage.setItem(keyString, valueString);
     } catch (error) {
-      console.log(keyString + ' data could not be saved');
+      console.log(keyString + ' data could not be saved - ' + error);
     }
   }
 
@@ -152,22 +144,13 @@ class Pedometer extends React.Component {
         return value;
       }
     } catch (error) {
-      console.log(keyString + ' data could not be retrieved');
+      console.log(keyString + ' data could not be retrieved - ' + error);
     }
   }
 
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Button
-          title='click here to update step counts'
-          onPress={this._updateCampaignStepCounts} />
-          <Button
-            title='click here to log props'
-            onPress={this._logState} />
-      </View>
-    );
+    return null;
   }
 
   // store.subscribe(render) // this might be needed but i can't tell yet
@@ -196,4 +179,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(Pedometer);
+export default connect(mapStateToProps)(BackgroundPedometer);

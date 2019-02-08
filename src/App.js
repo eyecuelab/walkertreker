@@ -5,24 +5,24 @@ import { Provider, connect } from 'react-redux';
 import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, } from 'expo';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
-
-import { store } from './reducers/store'
-import rootSaga from './sagas'
-
-//  BELOW: these _should_ not need to be in App.js, as the store is defined in ./reducers/store, but i am keeping them here for now in case everything breaks.  they can be commented out if store works successfully
-// import { logger } from 'redux-logger';
+import { logger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-// import rootReducer from './reducers';
+
+import BackgroundPedometer from './components/BackgroundPedometer';
+import rootSaga from './sagas';
+import rootReducer from './reducers';
+
+// some of these imports _should_ not need to be in App.js, as the store is defined in ./reducers/store, but i am keeping them here for now in case everything breaks.  they can maybe be commented out later if i can set it up right
 
 if (__DEV__) {
   KeepAwake.activate();
 }
 
-const sagaMiddleware = createSagaMiddleware()
-sagaMiddleware.run(rootSaga)
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
+sagaMiddleware.run(rootSaga);
 
-// BELOW: these now live in ./reducers/store
-// const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
+// this also live in ./reducers/store
 
 class App extends React.Component {
   state = {
@@ -94,6 +94,7 @@ class App extends React.Component {
             backgroundImage: require('../assets/bg.png'),
           }}
         />
+      <BackgroundPedometer/>
       </Provider>
     );
   }
