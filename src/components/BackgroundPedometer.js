@@ -7,8 +7,12 @@ import { put } from 'redux-saga/effects'
 
 import * as actions from '../actions';
 import constants from './../constants';
-const { setAppState, setCampaignDates, setCampaignSteps } = actions;
+
+const { setAppState, setCampaignDates } = actions;
 const { c } = constants;
+// const { campaignDateArray } = this.props.steps;
+// // const { dispatch } = this.props;
+// const action = type => dispatch({ type })
 
 class BackgroundPedometer extends React.Component {
 
@@ -20,14 +24,18 @@ class BackgroundPedometer extends React.Component {
 
 
   componentWillMount() {
-    if (this.props.campaignDateArray === null) {
+    const { campaignDateArray } = this.props.steps;
+    if (campaignDateArray === null) {
       this._constructDateLog();
     }
   }
 
+  // onGetSpell={() => action('GET_SPELL')
 
   componentDidMount() {
-    AppState.addEventListener('change', /*this needs to dispatch an action instead --> */ this._handleAppStateChange);
+    const { dispatch } = this.props;
+
+    AppState.addEventListener('change', this._handleAppStateChange);
 //======================
     Pedometer.isAvailableAsync().then(
       (result) => {
@@ -41,20 +49,21 @@ class BackgroundPedometer extends React.Component {
 //======================
     // this is very dumb; it must be changed
     setTimeout(() => {
-      /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
+      dispatch({type: c.GET_STEPS});
     }, 10);
 //======================
     setInterval(() => {
       if (this.props.appState === 'active') {
         //dispatch action instead
-        /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
+        // /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
+        dispatch({type: c.GET_STEPS});
       }
     }, 60000);
   }
 
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', /*this needs to dispatch an action instead --> */this._handleAppStateChange);
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
 // probably get rid of this no matter what
@@ -83,49 +92,16 @@ class BackgroundPedometer extends React.Component {
 
 
   _handleAppStateChange = (nextAppState) => {
+    const { dispatch } = this.props;
     if (
       this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
+      // /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
+      dispatch({type: c.GET_STEPS})
     }
-    put({type: c.NEW_APP_STATE, appState: nextAppState})
+    dispatch(setAppState(nextAppState));
   };
-
-
-  _updateCampaignStepCounts = () => {
-
-    const { campaignDateArray, dispatch} = this.props; // replace dispatch with put?
-    const campaignDateArrayCopy = JSON.parse(JSON.stringify(campaignDateArray))
-
-    // UN-COMMENT THIS LATER; THIS IS GOOD CODE I THINK:
-
-    campaignDateArrayCopy.forEach((obj, index) => {
-      console.log(' in loop start: ', Date.parse(obj.start));
-      // console.log('end: ', obj.end);
-      // things get to here, and then never hit the pedometer code below...
-
-      Pedometer.getStepCountAsync(new Date(Date.parse(obj.start)), new Date(Date.parse(obj.end))).then(
-
-        (result) => {
-          //perhaps make this next line dispatch an action?
-          this._storeData('day' + (index + 1) + 'StepCountStorage', result.steps.toString());
-          const stepsToAdd = {
-            steps: parseInt(this._retrieveData('day' + (index + 1) + 'StepCountStorage'), 10)
-          }
-          const dateWithSteps = Object.assign({}, campaignDateArrayCopy[index], stepsToAdd);
-          campaignDateArrayCopy.splice(index, 1, dateWithSteps);
-        },  //end of result block
-
-        (error) => {
-          console.log('error retrieving pedometer data at campaign day ' + (index + 1) + ' in _updateCampaignStepCounts');
-        }
-
-      ); //end of then
-    }); //end of forEach
-    // console.log('copy: ',campaignDateArrayCopy);
-    dispatch(setCampaignSteps(campaignDateArrayCopy)); // replace dispatch with put?
-  }
 
 
   async _storeData(keyString, valueString) {
@@ -174,7 +150,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     appState: state.appState,
-    campaignDateArray: state.campaignDateArray,
+    steps: state.steps,
   }
 }
 

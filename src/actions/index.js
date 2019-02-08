@@ -30,7 +30,6 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength) => 
 }
 
 
-export const setCampaignSteps = (array) => ({
-    type: c.SET_STEPS,
-    campaignDateArray: array,
-  })
+// export const setCampaignSteps = () => ({
+//     type: c.GET_STEPS,
+//   })
