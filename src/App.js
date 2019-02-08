@@ -7,18 +7,21 @@ import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
 
 import { store } from './reducers/store'
+import rootSaga from './sagas'
 
 //  BELOW: these _should_ not need to be in App.js, as the store is defined in ./reducers/store, but i am keeping them here for now in case everything breaks.  they can be commented out if store works successfully
 // import { logger } from 'redux-logger';
-// import createSagaMiddleware from 'redux-saga';
+import createSagaMiddleware from 'redux-saga';
 // import rootReducer from './reducers';
 
 if (__DEV__) {
   KeepAwake.activate();
 }
 
+const sagaMiddleware = createSagaMiddleware()
+sagaMiddleware.run(rootSaga)
+
 // BELOW: these now live in ./reducers/store
-// const sagaMiddleware = createSagaMiddleware()
 // const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
 
 class App extends React.Component {
