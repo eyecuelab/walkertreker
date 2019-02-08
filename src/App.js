@@ -6,15 +6,20 @@ import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, } from 'expo
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
 
-// import redux-logger here
-// import createSagaMiddleware from redex-saga here
-import rootReducer from './reducers';
+import { store } from './reducers/store'
+
+//  BELOW: these _should_ not need to be in App.js, as the store is defined in ./reducers/store, but i am keeping them here for now in case everything breaks.  they can be commented out if store works successfully
+// import { logger } from 'redux-logger';
+// import createSagaMiddleware from 'redux-saga';
+// import rootReducer from './reducers';
 
 if (__DEV__) {
   KeepAwake.activate();
 }
-//create a new store using redux-logger and saga-middleware
-const store = createStore(rootReducer, applyMiddleware(XXXXX, XXXXX));  // move to its own place so it can be referenced from anywhere
+
+// BELOW: these now live in ./reducers/store
+// const sagaMiddleware = createSagaMiddleware()
+// const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
 
 class App extends React.Component {
   state = {
