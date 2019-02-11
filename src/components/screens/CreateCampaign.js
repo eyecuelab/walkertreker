@@ -12,6 +12,7 @@ export default class CreateCampaign extends React.Component {
 
   constructor(props) {
     super(props);
+    // remove this state after refactor
     this.state = {
       campaignLength: '15', // options: '15', '30', '90'
       difficultyLevel: 'easy', // options: 'easy', 'hard', 'xtreme'
@@ -37,7 +38,7 @@ export default class CreateCampaign extends React.Component {
         players: {
           [userId]: {
             id: userId,
-            teamCaptain: true,
+            teamCaptain: true, // we may not need this one at all
             name: 'Joe',
           },
         },

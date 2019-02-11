@@ -12,8 +12,6 @@ import BackgroundPedometer from './components/BackgroundPedometer';
 import rootSaga from './sagas';
 import rootReducer from './reducers';
 
-// some of these imports _should_ not need to be in App.js, as the store is defined in ./reducers/store, but i am keeping them here for now in case everything breaks.  they can maybe be commented out later if i can set it up right
-
 if (__DEV__) {
   KeepAwake.activate();
 }
@@ -22,9 +20,9 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
 sagaMiddleware.run(rootSaga);
 
-// this also live in ./reducers/store
-
 class App extends React.Component {
+
+  // can this stay as-is? it seems like it works just fine...
   state = {
     isReady: false,
   }
@@ -60,6 +58,7 @@ class App extends React.Component {
     ]);
 
     // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
+    // this still seems worthwhile to create on app load so that we can have a unique id for each device/player. we can have it send this to the server when the campaign is created (by host) or joined (by not the host) to keep a log of players
     const userId = await AsyncStorage.getItem('userId');
     if (userId) { console.log('userId retrieved from AsyncStorage: ', userId) }
     else {

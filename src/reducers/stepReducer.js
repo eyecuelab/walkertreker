@@ -1,7 +1,7 @@
 import constants from '../constants';
-const { c, initialStateStepReducer } = constants;
+const { c } = constants;
 
-export default (state = initialStateStepReducer, action) => {
+export default (state = {campaignDateArray: null, isGettingSteps: false, error: null}, action) => {
   switch (action.type) {
     case c.SET_CAMPAIGN_DATES:
       return {
