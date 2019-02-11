@@ -8,6 +8,8 @@ import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import ThreeButtonToggle from '../ui/ThreeButtonToggle';
 
 import defaultStyle from '../../styles/defaultStyle';
+import constants from '../../constants';
+const { c } = constants;
 
 class CreateCampaign extends React.Component {
 
@@ -28,48 +30,52 @@ class CreateCampaign extends React.Component {
   async _generateCampaign() {
     const gameId = v4();
     const userId = await AsyncStorage.getItem('userId');
+    const deviceId = DeviceInfo.getDeviceId();
     // Below in payload I am just sketching out what we might want an initial game object to look like, this is very flexible. Essentially here is where we want to initialize our game object and populate the player list first with the person that started the game, using their phone number as a unique identifier (just to start I have hard coded that with a fake phone number, later we will get this from the phone itself.)
     const payload = {
       game: {
         id: gameId,
-        campaignLength: this.state.campaignLength,
-        difficultyLevel: this.state.difficultyLevel,
-        randomEvents: this.state.randomEvents,
+        campaignLength: this.props.campaignLength,
+        difficultyLevel: this.props.difficultyLevel,
+        randomEvents: this.props.randomEvents,
         numPlayers: 1,
         players: {
           [userId]: {
             id: userId, // this is gonna be generated on appload and stored in async storage
-            teamCaptain: true, // we may not need this one at all
             name: 'Joe',
           },
         },
       }
     }
+    // CODE GOES HERE: on this line we need to post to the server so that it has a record of the campaign
     this.props.navigation.navigate('InvitePlayers', payload);
   }
 
-  _updateCampaignLength = async num => {
+  _updateCampaignLength = num => {
+    const { dispatch } = this.props;
     let newLength;
     if (num === 0) {newLength = '15'}
     else if (num === 1) {newLength = '30'}
     else if (num === 2) {newLength = '90'}
-    await this.setState({campaignLength: newLength});
+    dispatch({type: c.SET_CAMPAIGN_LENGTH, campaignLength: newLength})
   }
 
-  _updateCampaignDifficulty = async num => {
+  _updateCampaignDifficulty = num => {
+    const { dispatch } = this.props;
     let newDifficulty;
     if (num === 0) {newDifficulty = 'easy';}
     else if (num === 1) {newDifficulty = 'hard';}
     else if (num === 2) {newDifficulty = 'xtreme';}
-    await this.setState({difficultyLevel: newDifficulty});
+    dispatch({type: c.SET_DIFFICULTY, difficultyLevel: newDifficulty})
   }
 
-  _updateRandomEvents = async num => {
+  _updateRandomEvents = num => {
+    const { dispatch } = this.props;
     let newEvents;
     if (num === 0) {newEvents = 'low';}
     else if (num === 1) {newEvents = 'mid';}
     else if (num === 2) {newEvents = 'high';}
-    await this.setState({randomEvents: newEvents});
+    dispatch({type: c.SET_EVENT_FREQUENCY, randomEvents: newEvents})
   }
 
   render() {
