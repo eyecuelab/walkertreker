@@ -10,9 +10,6 @@ import constants from './../constants';
 
 const { setAppState, setCampaignDates } = actions;
 const { c } = constants;
-// const { campaignDateArray } = this.props.steps;
-// // const { dispatch } = this.props;
-// const action = type => dispatch({ type })
 
 class BackgroundPedometer extends React.Component {
 
@@ -30,58 +27,43 @@ class BackgroundPedometer extends React.Component {
     }
   }
 
-  // onGetSpell={() => action('GET_SPELL')
-
   componentDidMount() {
     const { dispatch } = this.props;
 
     AppState.addEventListener('change', this._handleAppStateChange);
 //======================
+    // this is all unnecessary unless the pedometer stops working again. for now i'm gonna have it pop up an alert if the pedometer can't connect
     Pedometer.isAvailableAsync().then(
       (result) => {
-        // dispatch an action to the store to update state
-        console.log('\'dometer is available? ',result);
+        // maybe dispatch an action to the store to update state
+        console.log('\'dometer is available');
       }, (error) => {
-        // dispatch an action to the store to update state
-        console.log('\'dometer not available');
+        // maybe dispatch an action to the store to update state
+        Alert.alert('Walker Trekker can\'t connect to the pedometer. Try closing the app and opening it again.')
       }
     );
 //======================
-    // this is very dumb; it must be changed
-    setTimeout(() => {
-      dispatch({type: c.GET_STEPS});
-    }, 10);
+    dispatch({type: c.GET_STEPS});
 //======================
     setInterval(() => {
       if (this.props.appState === 'active') {
-        //dispatch action instead
-        // /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
         dispatch({type: c.GET_STEPS});
       }
     }, 60000);
   }
 
-
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-// probably get rid of this no matter what
-  _logState = () => {
-    setTimeout(() => {
-      console.log(this.props);
-
-    }, 10);
-  }
-
-
   _constructDateLog = () => {
     const { dispatch } = this.props; // replace dispatch with put?
-    //these are placeholders
+
+    // these are placeholders to be actually informed by other state
     const campaignStartDate = new Date('January 25, 2019 06:00:00');
     const campaignLength = 15
 
-    //these can stay exactly as-is, i think
+    // these can stay exactly as-is, i think
     const day1Start = new Date(campaignStartDate);
     const day1End = new Date(campaignStartDate);
     day1Start.setHours(6,0,0,0);
@@ -97,13 +79,12 @@ class BackgroundPedometer extends React.Component {
       this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      // /*this needs to dispatch an action instead --> */this._updateCampaignStepCounts();
       dispatch({type: c.GET_STEPS})
     }
     dispatch(setAppState(nextAppState));
   };
 
-
+  // we might be able to get rid of this once we hook up the backend
   async _storeData(keyString, valueString) {
     try {
       await AsyncStorage.setItem(keyString, valueString);
@@ -112,7 +93,7 @@ class BackgroundPedometer extends React.Component {
     }
   }
 
-
+  // we might be able to get rid of this once we hook up the backend
   async _retrieveData(keyString) {
     try {
       const value = await AsyncStorage.getItem(keyString);
@@ -124,28 +105,11 @@ class BackgroundPedometer extends React.Component {
     }
   }
 
-
   render() {
     return null;
   }
 
-  // store.subscribe(render) // this might be needed but i can't tell yet
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 24,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  button: {
-    height: '50%',
-    width: '100%',
-    marginTop: 20,
-  },
-});
-
+} // end of class
 
 function mapStateToProps(state) {
   return {
@@ -153,6 +117,5 @@ function mapStateToProps(state) {
     steps: state.steps,
   }
 }
-
 
 export default connect(mapStateToProps)(BackgroundPedometer);

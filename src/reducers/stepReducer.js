@@ -1,7 +1,7 @@
 import constants from '../constants';
 const { c } = constants;
 
-export default (state = {campaignDateArray: null, isGettingSteps: false}, action) => {
+export default (state = {campaignDateArray: null, isGettingSteps: false, error: null}, action) => {
   switch (action.type) {
     case c.SET_CAMPAIGN_DATES:
       return {
@@ -21,6 +21,13 @@ export default (state = {campaignDateArray: null, isGettingSteps: false}, action
         campaignDateArray: action.campaignDateArray,
         isGettingSteps: false,
       }
+
+      case c.STEPS_FAILED:
+        return {
+          ...state,
+          isGettingSteps: false,
+          error: action.error
+        }
 
     default:
       return state;
