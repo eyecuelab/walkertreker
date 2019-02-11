@@ -2,13 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage } from 'react-native';
 import { Font } from 'expo';
 import { v4 } from 'uuid';
+import { connect } from 'react-redux';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import ThreeButtonToggle from '../ui/ThreeButtonToggle';
 
 import defaultStyle from '../../styles/defaultStyle';
 
-export default class CreateCampaign extends React.Component {
+class CreateCampaign extends React.Component {
 
   constructor(props) {
     super(props);
@@ -37,7 +38,7 @@ export default class CreateCampaign extends React.Component {
         numPlayers: 1,
         players: {
           [userId]: {
-            id: userId,
+            id: userId, // this is gonna be generated on appload and stored in async storage
             teamCaptain: true, // we may not need this one at all
             name: 'Joe',
           },
@@ -141,3 +142,11 @@ const createCampaignStyle = StyleSheet.create({
     marginTop: 25,
   }
 })
+
+function mapStateToProps(state) {
+  return {
+    campaign: state.campaign,
+  }
+}
+
+export default connect(mapStateToProps)(CreateCampaign);
