@@ -14,8 +14,8 @@ export default class ContactsListItemDisplay extends React.Component {
   }
 
   statusImage() {
-    if (this.props.contact.selected) {return <Image source={require('../../../assets/selected.png')} style={customStyles.status} />}
-    else if (this.props.contact.invited) {return <Image source={require('../../../assets/checked.png')} style={customStyles.status} />}
+    if (this.props.selected) {return <Image source={require('../../../assets/selected.png')} style={customStyles.status} />}
+    else if (this.props.checked) {return <Image source={require('../../../assets/checked.png')} style={customStyles.status} />}
     else return;
   }
 
@@ -33,7 +33,7 @@ export default class ContactsListItemDisplay extends React.Component {
         </View>
         <View style={customStyles.infoContainer}>
           <Text style={styles.label}>{this.props.contact.name}</Text>
-          <Text style={styles.plainText}>{this.props.contact.numbers[0]}</Text>
+          <Text style={styles.plainText}>{this.props.contact.numbers ? this.props.contact.numbers[0] : ''}</Text>
         </View>
       </View>
     )
@@ -88,4 +88,11 @@ const customStyles = StyleSheet.create({
 
 ContactsListItemDisplay.propTypes = {
   contact: PropTypes.object,
+  checked: PropTypes.bool,
+  selected: PropTypes.bool,
 };
+
+ContactsListItemDisplay.defaultProps = {
+  checked: false,
+  selected: false,
+}
