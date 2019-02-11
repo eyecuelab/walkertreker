@@ -1,0 +1,5 @@
+export const NEW_APP_STATE = 'NEW_APP_STATE';
+export const SET_CAMPAIGN_DATES = 'SET_CAMPAIGN_DATES';
+export const GET_STEPS = 'GET_STEPS';
+export const STEPS_RECEIVED = 'STEPS_RECEIVED';
+export const STEPS_FAILED = 'STEPS_FAILED';

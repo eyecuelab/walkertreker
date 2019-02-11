@@ -1,4 +1,4 @@
-export default {
+  export default {
   campaignId: null,
   startDate: new Date(),
   campaignLength: '15',
@@ -32,5 +32,4 @@ export default {
     },
   },
   numPlayers: 5,
-  // campaignDateArray: [], /*should this live in the campaign reducer or in the step reducer?*/
 }

@@ -1,39 +1,33 @@
 import React from 'react';
 import { AppState, AsyncStorage, Image } from 'react-native';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, } from 'expo';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
+import { logger } from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
 
+import BackgroundPedometer from './components/BackgroundPedometer';
+import rootSaga from './sagas';
 import rootReducer from './reducers';
+
+// some of these imports _should_ not need to be in App.js, as the store is defined in ./reducers/store, but i am keeping them here for now in case everything breaks.  they can maybe be commented out later if i can set it up right
 
 if (__DEV__) {
   KeepAwake.activate();
 }
 
-const store = createStore(rootReducer);
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
+sagaMiddleware.run(rootSaga);
+
+// this also live in ./reducers/store
 
 class App extends React.Component {
   state = {
     isReady: false,
   }
-
-//putting these here as a placeholder to remind myself what might need to be imported:
-// import { createStore, applyMiddleware } from 'redux';
-// import { Provider } from 'react-redux';
-// import rootReducer from './reducers/index';
-// import thunkMiddleware from 'redux-thunk';
-//
-// placeholder code to keep errors from happening. remove when actual reducers are built out
-// const initialState = {
-//   reduxWorks: false,
-// }
-//
-// const reducer = (state = initialState) => {
-//   return state;
-// }
-// placeholder ends here
 
   cacheImages(images) {
     return images.map(image => {
@@ -100,6 +94,7 @@ class App extends React.Component {
             backgroundImage: require('../assets/bg.png'),
           }}
         />
+      <BackgroundPedometer/>
       </Provider>
     );
   }
