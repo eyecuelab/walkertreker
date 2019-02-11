@@ -34,7 +34,7 @@ export default defaultStyle = {
   },
   detail: {
     fontFamily: 'verdana',
-    fontSize: widthUnit*4,
+    fontSize: widthUnit*3.5,
     color: 'white',
   },
 }

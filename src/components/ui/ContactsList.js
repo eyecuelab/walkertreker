@@ -11,33 +11,41 @@ export default class ContactsList extends React.Component {
     super(props);
   }
 
-  listConditionalRender() {
+  setStatusFlags(contact) {
+    if (this.props.allChecked) { return [true, false];}
+    else if (this.props.allSelected) { return [false, true];}
+    else return [contact.invited, contact.selected];
+  }
+
+  listConditionalRender = () => {
     if (this.props.contactsFetched) {
       return (
-        <ScrollView showsVerticalScrollIndicator={true} style={styles.list}>
+        <View style={styles.container}>
           {Object.keys(this.props.contacts).map(key => {
             const contact = this.props.contacts[key];
+            const flags = this.setStatusFlags(contact);
             return (
-              <View
-                style={styles.listItem}
+              <TouchableOpacity
                 key={key}
+                onPress={() => this.props.onSelectContact(contact)}
+                activeOpacity={0.6}
               >
-                <TouchableOpacity
-                  onPress={() => this.props.onSelectContact(contact)}
-                  activeOpacity={0.6}
-                >
-                  <ContactsListItemDisplay contact={contact} />
-                </TouchableOpacity>
-              </View>
+                <ContactsListItemDisplay
+                  contact={contact}
+                  checked={flags[0]}
+                  selected={flags[1]}
+                />
+              </TouchableOpacity>
             );
           })}
-          <View style={styles.bottomMargin}></View>
-        </ScrollView>
+        </View>
       );
     } else {
       // Can replace this with a spinning wheel or some loading animation
       return (
-        <Text style={defaultStyleSheet.label}>Fetching contacts...</Text>
+        <View style={styles.container}>
+          <Text style={defaultStyleSheet.label}>Fetching contacts...</Text>
+        </View>
       )
     }
   }
@@ -55,11 +63,10 @@ export default class ContactsList extends React.Component {
 const defaultStyleSheet = StyleSheet.create(defaultStyle);
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
+    height: "100%",
   },
   list: {
     width: "100%",
@@ -68,29 +75,22 @@ const styles = StyleSheet.create({
     // borderBottomColor: 'black',
     // borderBottomWidth: 2,
   },
-  submitContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: '10%',
-    width: '80%',
-    height: '10%',
-    flexDirection: 'column',
-    backgroundColor: 'rgba(255,255,255,0.85)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: 'darkgray',
-    borderWidth: 2,
-  },
-  submitButtons: {
-    margin: 5,
-    flexDirection: 'row',
-    width: '75%',
-    justifyContent: 'space-around',
-  }
 });
 
 ContactsList.propTypes = {
   contacts: PropTypes.object,
   contactsFetched: PropTypes.bool,
   onSelectContact: PropTypes.func,
+  selectedFlag: PropTypes.bool,
+  checkedFlag: PropTypes.bool,
+}
+
+const doNothing = () => {return;}
+
+ContactsList.defaultProps = {
+  contacts: {},
+  contactsFetched: false,
+  onSelectContact: doNothing,
+  allSelected: false,
+  allChecked: false,
 }
