@@ -1,3 +1,5 @@
 export default {
-  campaignDateArray:  null
+  campaignDateArray: null,
+  isGettingSteps: false,
+  error: null
 }
