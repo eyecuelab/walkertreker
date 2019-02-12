@@ -27,6 +27,7 @@ class CreateCampaign extends React.Component {
 
   }
 
+  // this needs to send a post event to the server when the `new campaign` button is pushed
   async _generateCampaign() {
     const gameId = v4();
     const userId = await AsyncStorage.getItem('userId');
