@@ -31,7 +31,6 @@ class CreateCampaign extends React.Component {
   async _generateCampaign() {
     const gameId = v4();
     const userId = await AsyncStorage.getItem('userId');
-    const deviceId = DeviceInfo.getDeviceId();
     // Below in payload I am just sketching out what we might want an initial game object to look like, this is very flexible. Essentially here is where we want to initialize our game object and populate the player list first with the person that started the game, using their phone number as a unique identifier (just to start I have hard coded that with a fake phone number, later we will get this from the phone itself.)
     const payload = {
       game: {
@@ -47,6 +46,12 @@ class CreateCampaign extends React.Component {
           },
         },
       }
+    }
+    const apiPayload = {
+  		"campaignLength": this.props.campaignLength,
+  		"difficultyLevel": this.props.difficultyLevel,
+  		"randomEvents": this.props.randomEvents,
+  		"startNow": false,
     }
     // CODE GOES HERE: on this line we need to post to the server so that it has a record of the campaign
     this.props.navigation.navigate('InvitePlayers', payload);
