@@ -27,6 +27,11 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       randomEvents: action.randomEvents
     }
+  case c.CAMPAIGN_ID_RECEIVED:
+    return {
+      ...state,
+      campaignId: action.id
+    }
   default:
     return state;
   }

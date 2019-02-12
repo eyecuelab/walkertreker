@@ -1,8 +1,9 @@
 import { put, takeEvery, takeLatest, all, call, select } from 'redux-saga/effects';
 import { Pedometer } from "expo";
+import { CLIENT_APP_KEY } from 'react-native-dotenv';
 
 import constants from './constants';
-const { c } = constants;
+const { c, storeData, retrieveData } = constants;
 
 export const getDates = state => state.steps.campaignDateArray
 
@@ -29,13 +30,41 @@ export function *fetchSteps() {
   yield put({type: c.STEPS_RECEIVED, campaignDateArray: datesCopy});
 }
 
+export function *setInitialCampaignDetails(action) {
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns';
+  const initObj = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify(action.payload)
+  }
+
+  const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    .catch(error => console.log('error setting campaign details: ',error));
+
+  console.log('response is: ');
+  console.log(response);
+
+  yield storeData('campaignId', JSON.stringify(response.id))
+
+  yield put({type: c.CAMPAIGN_ID_RECEIVED, id: retrieveData('campaignId')});
+}
+
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
+}
+
+export function *watchSetInitialCampaignDetails() {
+  yield takeLatest(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails)
 }
 
 export default function* rootSaga() {
   yield all([
     // watcher sagas go here
+    watchSetInitialCampaignDetails(),
     watchSteps(),
   ])
 }

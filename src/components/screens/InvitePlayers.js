@@ -31,7 +31,7 @@ export default class InvitePlayers extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log(this.state.contacts);
+    console.log('invite players has these contacts: ',this.state.contacts);
   }
 
   getContacts = async () => {
