@@ -7,17 +7,14 @@ export const setAppState = (appState) => ({
   appState: appState,
 });
 
-// this will almost certainly need to be completely rewritten for saga
 export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength, difficultyLevel) => {
   const dateArray = [];
   let start;
   let end;
-
   for (let i=0; i < campaignLength; i++) {
     let aGoal;
     start = new Date(firstDayStart);
     end = new Date(firstDayEnd);
-
     if (i === 0) {
       if (difficultyLevel === 'easy') {
         aGoal = 2000;
@@ -31,7 +28,6 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength, dif
     } else {
       aGoal = null
     }
-
     dateArray.push({
       day: i + 1,
       start: new Date(start.setDate(start.getDate() + i)),
@@ -43,14 +39,8 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength, dif
       goalMet: false,
     });
   }
-
   return ({
     type: c.SET_CAMPAIGN_DATES,
     campaignDateArray: dateArray,
   });
 }
-
-
-// export const setCampaignSteps = () => ({
-//     type: c.GET_STEPS,
-//   })
