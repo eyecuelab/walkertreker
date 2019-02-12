@@ -2,16 +2,20 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage } from 'react-native';
 import { Font } from 'expo';
 import { v4 } from 'uuid';
+import { connect } from 'react-redux';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import ThreeButtonToggle from '../ui/ThreeButtonToggle';
 
 import defaultStyle from '../../styles/defaultStyle';
+import constants from '../../constants';
+const { c } = constants;
 
-export default class CreateCampaign extends React.Component {
+class CreateCampaign extends React.Component {
 
   constructor(props) {
     super(props);
+    // remove this state after refactor
     this.state = {
       campaignLength: '15', // options: '15', '30', '90'
       difficultyLevel: 'easy', // options: 'easy', 'hard', 'xtreme'
@@ -23,6 +27,7 @@ export default class CreateCampaign extends React.Component {
 
   }
 
+  // this needs to send a post event to the server when the `new campaign` button is pushed
   async _generateCampaign() {
     const gameId = v4();
     const userId = await AsyncStorage.getItem('userId');
@@ -30,44 +35,53 @@ export default class CreateCampaign extends React.Component {
     const payload = {
       game: {
         id: gameId,
-        campaignLength: this.state.campaignLength,
-        difficultyLevel: this.state.difficultyLevel,
-        randomEvents: this.state.randomEvents,
+        campaignLength: this.props.campaignLength,
+        difficultyLevel: this.props.difficultyLevel,
+        randomEvents: this.props.randomEvents,
         numPlayers: 1,
         players: {
           [userId]: {
-            id: userId,
-            teamCaptain: true,
+            id: userId, // this is gonna be generated on appload and stored in async storage
             name: 'Joe',
           },
         },
       }
     }
+    const apiPayload = {
+  		"campaignLength": this.props.campaignLength,
+  		"difficultyLevel": this.props.difficultyLevel,
+  		"randomEvents": this.props.randomEvents,
+  		"startNow": false,
+    }
+    // CODE GOES HERE: on this line we need to post to the server so that it has a record of the campaign
     this.props.navigation.navigate('InvitePlayers', payload);
   }
 
-  _updateCampaignLength = async num => {
+  _updateCampaignLength = num => {
+    const { dispatch } = this.props;
     let newLength;
     if (num === 0) {newLength = '15'}
     else if (num === 1) {newLength = '30'}
     else if (num === 2) {newLength = '90'}
-    await this.setState({campaignLength: newLength});
+    dispatch({type: c.SET_CAMPAIGN_LENGTH, campaignLength: newLength})
   }
 
-  _updateCampaignDifficulty = async num => {
+  _updateCampaignDifficulty = num => {
+    const { dispatch } = this.props;
     let newDifficulty;
     if (num === 0) {newDifficulty = 'easy';}
     else if (num === 1) {newDifficulty = 'hard';}
     else if (num === 2) {newDifficulty = 'xtreme';}
-    await this.setState({difficultyLevel: newDifficulty});
+    dispatch({type: c.SET_DIFFICULTY, difficultyLevel: newDifficulty})
   }
 
-  _updateRandomEvents = async num => {
+  _updateRandomEvents = num => {
+    const { dispatch } = this.props;
     let newEvents;
     if (num === 0) {newEvents = 'low';}
     else if (num === 1) {newEvents = 'mid';}
     else if (num === 2) {newEvents = 'high';}
-    await this.setState({randomEvents: newEvents});
+    dispatch({type: c.SET_EVENT_FREQUENCY, randomEvents: newEvents})
   }
 
   render() {
@@ -140,3 +154,11 @@ const createCampaignStyle = StyleSheet.create({
     marginTop: 25,
   }
 })
+
+function mapStateToProps(state) {
+  return {
+    campaign: state.campaign,
+  }
+}
+
+export default connect(mapStateToProps)(CreateCampaign);
