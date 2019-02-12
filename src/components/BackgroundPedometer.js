@@ -23,7 +23,11 @@ class BackgroundPedometer extends React.Component {
   componentWillMount() {
     const { campaignDateArray } = this.props.steps;
     const { startDate } = this.props.campaign;
-    if (startDate !== null && campaignDateArray === null) {
+
+    if (
+      startDate !== null &&
+      campaignDateArray === null
+    ) {
       this._constructDateLog();
     }
   }
@@ -64,7 +68,8 @@ class BackgroundPedometer extends React.Component {
   }
 
   _constructDateLog = () => {
-    const { dispatch } = this.props; // replace dispatch with put?
+    const { dispatch } = this.props;
+    const { difficultyLevel } = this.props.campaign;
 
     // these are placeholders to be actually informed by other state
     const campaignStartDate = new Date('January 25, 2019 06:00:00');
@@ -76,15 +81,17 @@ class BackgroundPedometer extends React.Component {
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
 
-    dispatch(setCampaignDates(day1Start, day1End, campaignLength)); // replace dispatch with put?
+    dispatch(setCampaignDates(day1Start, day1End, campaignLength, difficultyLevel));
   }
 
 
   _handleAppStateChange = (nextAppState) => {
     const { dispatch } = this.props;
+    const { campaignDateArray } = this.props.steps;
     if (
       this.props.appState.match(/inactive|background/) &&
-      nextAppState === 'active'
+      nextAppState === 'active' &&
+      campaignDateArray !== null
     ) {
       dispatch({type: c.GET_STEPS})
     }
