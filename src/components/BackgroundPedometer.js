@@ -37,7 +37,7 @@ class BackgroundPedometer extends React.Component {
     const { campaignDateArray } = this.props.steps;
 
     AppState.addEventListener('change', this._handleAppStateChange);
-//======================
+
     // this is all unnecessary unless the pedometer stops working again. for now i'm gonna have it pop up an alert if the pedometer can't connect
     Pedometer.isAvailableAsync().then(
       (result) => {
@@ -48,11 +48,11 @@ class BackgroundPedometer extends React.Component {
         Alert.alert('Walker Trekker can\'t connect to your phone\'s pedometer. Try closing the app and opening it again.')
       }
     );
-//======================
+
     if (campaignDateArray !== null) {
       dispatch({type: c.GET_STEPS});
     }
-//======================
+
     setInterval(() => {
       if (
         this.props.appState === 'active' &&
@@ -84,7 +84,6 @@ class BackgroundPedometer extends React.Component {
     dispatch(setCampaignDates(day1Start, day1End, campaignLength, difficultyLevel));
   }
 
-
   _handleAppStateChange = (nextAppState) => {
     const { dispatch } = this.props;
     const { campaignDateArray } = this.props.steps;
@@ -98,26 +97,7 @@ class BackgroundPedometer extends React.Component {
     dispatch(setAppState(nextAppState));
   };
 
-  // we might be able to get rid of this once we hook up the backend
-  async _storeData(keyString, valueString) {
-    try {
-      await AsyncStorage.setItem(keyString, valueString);
-    } catch (error) {
-      console.log(keyString + ' data could not be saved - ' + error);
-    }
-  }
-
-  // we might be able to get rid of this once we hook up the backend
-  async _retrieveData(keyString) {
-    try {
-      const value = await AsyncStorage.getItem(keyString);
-      if (value !== null) {
-        return value;
-      }
-    } catch (error) {
-      console.log(keyString + ' data could not be retrieved - ' + error);
-    }
-  }
+  // STORE/RETRIEVE DATA FUNCTIONS NOW LIVE IN CONSTANTS
 
   render() {
     return null;
