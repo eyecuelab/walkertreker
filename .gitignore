@@ -7,3 +7,4 @@ npm-debug.*
 *.mobileprovision
 assets/design-prototypes
 app.json
+.env
