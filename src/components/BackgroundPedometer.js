@@ -15,10 +15,7 @@ class BackgroundPedometer extends React.Component {
 
   constructor(props) {
     super(props);
-    this._storeData = this._storeData.bind(this);
-    this._retrieveData = this._retrieveData.bind(this);
   }
-
 
   componentWillMount() {
     const { campaignDateArray } = this.props.steps;
@@ -69,19 +66,19 @@ class BackgroundPedometer extends React.Component {
 
   _constructDateLog = () => {
     const { dispatch } = this.props;
-    const { difficultyLevel } = this.props.campaign;
+    const { difficultyLevel, campaignLength, startDate, stepGoalDayOne } = this.props.campaign;
 
     // these are placeholders to be actually informed by other state
-    const campaignStartDate = new Date('January 25, 2019 06:00:00');
-    const campaignLength = 15
+    // const campaignStartDate = new Date('January 25, 2019 06:00:00');
+    // const campaignLength = 15
 
     // these can stay exactly as-is, i think
-    const day1Start = new Date(campaignStartDate);
-    const day1End = new Date(campaignStartDate);
+    const day1Start = new Date(startDate);
+    const day1End = new Date(startDate);
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
 
-    dispatch(setCampaignDates(day1Start, day1End, campaignLength, difficultyLevel));
+    dispatch(setCampaignDates(day1Start, day1End, campaignLength, difficultyLevel, stepGoalDayOne));
   }
 
   _handleAppStateChange = (nextAppState) => {

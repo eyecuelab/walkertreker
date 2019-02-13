@@ -7,26 +7,19 @@ export const setAppState = (appState) => ({
   appState: appState,
 });
 
-export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength, difficultyLevel) => {
+export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength, difficultyLevel, stepGoalDayOne) => {
   const dateArray = [];
   let start;
   let end;
+
   for (let i=0; i < campaignLength; i++) {
     let aGoal;
     start = new Date(firstDayStart);
     end = new Date(firstDayEnd);
-    if (i === 0) {
-      if (difficultyLevel === 'easy') {
-        aGoal = 2000;
-      } else if (difficultyLevel === 'hard') {
-        aGoal = 6000;
-      } else if (difficultyLevel === 'xtreme') {
-        aGoal = 10000;
-      } else {
-        console.warn('something is wrong with the difficulty level!');
-      }
+    if (i = 0) {
+      aGoal = stepGoalDayOne;
     } else {
-      aGoal = null
+      aGoal = null;
     }
     dateArray.push({
       day: i + 1,
