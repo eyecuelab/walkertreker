@@ -49,8 +49,12 @@ export function *setInitialCampaignDetails(action) {
   console.log(response);
 
   yield storeData('campaignId', JSON.stringify(response.id))
+  yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
 
-  yield put({type: c.CAMPAIGN_ID_RECEIVED, id: retrieveData('campaignId')});
+  const campId = yield retrieveData('campaignId');
+  const stepD1 = yield retrieveData('stepGoalDayOne');
+
+  yield put({type: c.CAMPAIGN_DATA_RECEIVED, id: campId, stepGoalDayOne: stepD1});
 }
 
 export function *watchSteps() {
@@ -61,7 +65,7 @@ export function *watchSetInitialCampaignDetails() {
   yield takeLatest(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails)
 }
 
-export default function* rootSaga() {
+export default function *rootSaga() {
   yield all([
     // watcher sagas go here
     watchSetInitialCampaignDetails(),

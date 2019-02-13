@@ -5,6 +5,7 @@ campaignId: null, // populated by CreateCampaign
 campaignLength: '15', // populated by CreateCampaign
 difficultyLevel: 'easy', // populated by CreateCampaign
 randomEvents: 'low', // populated by CreateCampaign
+stepGoalDayOne: null, // populated by CreateCampaign
 players: null, // populated by each player inidividually through JoinCampaign
 startDate: null, // populated by CampaignStaging
 numPlayers: null, // derived in CampaignStaging once the host starts campaign
@@ -27,10 +28,11 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       randomEvents: action.randomEvents
     }
-  case c.CAMPAIGN_ID_RECEIVED:
+  case c.CAMPAIGN_DATA_RECEIVED:
     return {
       ...state,
-      campaignId: action.id
+      campaignId: action.id,
+      stepGoalDayOne: action.stepGoalDayOne,
     }
   default:
     return state;
