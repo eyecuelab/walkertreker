@@ -1,16 +1,16 @@
 import { AsyncStorage } from 'react-native';
 
-storeData(keyString, valueString) {
+export async function storeData(keyString, valueString) {
   try {
-    AsyncStorage.setItem(keyString, valueString);
+    await AsyncStorage.setItem(keyString, valueString);
   } catch (error) {
     console.log(keyString + ' data could not be saved - ' + error);
   }
 }
 
-retrieveData(keyString) {
+export async function retrieveData(keyString) {
   try {
-    const value = AsyncStorage.getItem(keyString);
+    const value = await AsyncStorage.getItem(keyString);
     if (value !== null) {
       return value;
     }
