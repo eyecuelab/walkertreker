@@ -41,7 +41,7 @@ class CreateCampaign extends React.Component {
         difficultyLevel: this.props.campaign.difficultyLevel,
         randomEvents: this.props.campaign.randomEvents,
         numPlayers: 1,
-        players: {
+        players: { // we can probably take this out all together
           [userId]: {
             id: userId, // this is gonna be generated on appload and stored in async storage
             name: 'Joe',
