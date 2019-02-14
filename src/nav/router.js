@@ -5,6 +5,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import CreateCampaign from '../components/screens/CreateCampaign';
 import InvitePlayers from '../components/screens/InvitePlayers';
 import CampaignStaging from '../components/screens/CampaignStaging';
+import AcceptInvite from '../components/screens/AcceptInvite';
 import TOC from '../components/TOC';
 import ActiveCampaignSummary from '../components/ActiveCampaignSummary';
 import Inventory from '../components/Inventory';
@@ -17,9 +18,10 @@ import BackgroundPedometer from '../components/BackgroundPedometer';
 const AppNavigator = createStackNavigator({
     CreateCampaign: { screen: CreateCampaign, },
     InvitePlayers: { screen: InvitePlayers, },
-    CampaignStaging: {
-      screen: CampaignStaging,
-      // path: '/newGame:gameId',
+    CampaignStaging: { screen: CampaignStaging, },
+    AcceptInvite: {
+      screen: AcceptInvite,
+      path: 'invite/',
     },
     CampaignSummary: { screen: ActiveCampaignSummary, },
     TOC: { screen: TOC, },
