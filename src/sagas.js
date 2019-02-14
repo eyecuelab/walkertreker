@@ -59,15 +59,11 @@ export function *setInitialCampaignDetails(action) {
   yield put({type: c.CAMPAIGN_DATA_RECEIVED, id: campId, stepGoalDayOne: stepD1});
 }
 
-// you are here
 export function *sendInvites(action) {
-
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite';
   const theBody = {};
   const phoneNums = Object.keys(action.invites);
-
   for (pNumber of phoneNums) {
-  // phoneNums.forEach((pNumber) => {
     const aBody =
       {
         "campaignId": JSON.parse(action.campId),
@@ -76,7 +72,6 @@ export function *sendInvites(action) {
         // "playerId": action.playId,
         "phoneNumber": pNumber,
       }
-    // Object.assign(theBody, aBody);
     const initObj = {
       method: "POST",
       headers: {
@@ -85,18 +80,12 @@ export function *sendInvites(action) {
       },
       body: JSON.stringify(aBody)
     }
-    console.log(initObj);
-
     const response = yield fetch(url, initObj)
-    // .then(response => response.json())
-    .then(response => response.text())
+    .then(response => response.json())
     .catch(error => console.warn('error sending invites: ', error));
-
-    console.log('response is: ');
-    console.log(response);
+    console.log('response is: ', response);
   };
-
-  // yield put({type: c.INVITES_SENT, confirmations: response.msg, invites: action.invites })
+  yield put({type: c.INVITES_SENT, invites: action.invites })
 }
 
 //==============================

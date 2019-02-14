@@ -36,7 +36,6 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       stepGoalDayOne: action.stepGoalDayOne,
     }
   case c.INVITES_SENT:
-    console.log('confirmed: ', action.confirmations);
     return {
       ...state,
       invited: action.invites,
