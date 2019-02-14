@@ -6,6 +6,7 @@ campaignLength: '15', // populated by CreateCampaign
 difficultyLevel: 'easy', // populated by CreateCampaign
 randomEvents: 'low', // populated by CreateCampaign
 stepGoalDayOne: null, // populated by CreateCampaign
+invited: null, //populated by InvitePlayers
 players: null, // populated by each player inidividually through JoinCampaign
 startDate: null, // populated by CampaignStaging
 numPlayers: null, // derived in CampaignStaging once the host starts campaign
@@ -33,6 +34,12 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       campaignId: action.id,
       stepGoalDayOne: action.stepGoalDayOne,
+    }
+  case c.INVITES_SENT:
+    console.log('confirmed: ', action.confirmations);
+    return {
+      ...state,
+      invited: action.invites,
     }
   default:
     return state;

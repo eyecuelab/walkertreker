@@ -7,6 +7,8 @@ const { c, storeData, retrieveData } = constants;
 
 export const getDates = state => state.steps.campaignDateArray
 
+// ==============================
+
 export function *fetchSteps() {
 
   console.log('fetching steps!');
@@ -43,7 +45,7 @@ export function *setInitialCampaignDetails(action) {
 
   const response = yield fetch(url, initObj)
     .then(response => response.json())
-    .catch(error => console.log('error setting campaign details: ',error));
+    .catch(error => console.log('error setting campaign details: ', error));
 
   console.log('response is: ');
   console.log(response);
@@ -57,18 +59,67 @@ export function *setInitialCampaignDetails(action) {
   yield put({type: c.CAMPAIGN_DATA_RECEIVED, id: campId, stepGoalDayOne: stepD1});
 }
 
+// you are here
+export function *sendInvites(action) {
+
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite';
+  const theBody = {};
+  const phoneNums = Object.keys(action.invites);
+
+  for (pNumber of phoneNums) {
+  // phoneNums.forEach((pNumber) => {
+    const aBody =
+      {
+        "campaignId": JSON.parse(action.campId),
+        // in reality we'll use the commented-out playerId below; this is just for testing:
+        "playerId": "7dd089c0-7f4b-4f39-a662-53554834a8f7",
+        // "playerId": action.playId,
+        "phoneNumber": pNumber,
+      }
+    // Object.assign(theBody, aBody);
+    const initObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "appkey": CLIENT_APP_KEY
+      },
+      body: JSON.stringify(aBody)
+    }
+    console.log(initObj);
+
+    const response = yield fetch(url, initObj)
+    // .then(response => response.json())
+    .then(response => response.text())
+    .catch(error => console.warn('error sending invites: ', error));
+
+    console.log('response is: ');
+    console.log(response);
+  };
+
+  // yield put({type: c.INVITES_SENT, confirmations: response.msg, invites: action.invites })
+}
+
+//==============================
+
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
 }
 
-export function *watchSetInitialCampaignDetails() {
+export function *watchInitialCampaignDetails() {
   yield takeLatest(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails)
 }
+
+export function *watchInvites() {
+  yield takeLatest(c.SEND_INVITES, sendInvites);
+}
+
+//==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
-    watchSetInitialCampaignDetails(),
+    watchInvites(),
+    watchInitialCampaignDetails(),
     watchSteps(),
   ])
 }
