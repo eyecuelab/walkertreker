@@ -48,10 +48,9 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       fromTheServer: action.info,
     }
   case c.PLAYER_JOINED_CAMPAIGN:
-    console.log('player joined, or at least it got to the reducer...');
     return {
       ...state,
-      //code goes here
+      players: action.players
     }
   default:
     return state;

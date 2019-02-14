@@ -91,7 +91,6 @@ export function *sendInvites(action) {
 }
 
 export function *fetchCampaignInfo(action) {
-  // curl -X GET -H "Content-type: application/json" -H "appkey: abc" https://walkertrekker.herokuapp.com/api/campaigns/join/58568813-712d-451b-9125-4103c6f1d7e5
 
   const id = action.id;
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + id;
@@ -112,18 +111,33 @@ export function *fetchCampaignInfo(action) {
 
   //here you are
   yield put({type: c.CAMPAIGN_INFO_RECEIVED, info: response})
+
 }
 
-export function *joinCampaignRequest() {
-  const url = '';
-  const initObj = {}
+export function *joinCampaignRequest(action) {
+  // PATCH
+  // /api/campaigns/join/:campaignId
+  //curl -X GET -H "Content-type: application/json" -H "appkey: abc" -d '{ "playerId": "7dd089c0-7f4b-4f39-a662-53554834a8f7" }' https://walkertrekker.herokuapp.com/api/campaigns/join/58568813-712d-451b-9125-4103c6f1d7e5
 
-  const response = yield call(fetch, url, initObj)
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/join/' + action.campId;
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({playerId: action.playId})
+  };
+
+  // ideally refactor to: yield call(() => {
+  //   fetch(url, initObj)
+  // })
+  const response = yield fetch(url, initObj)
   .then(response => response.json())
   .catch(error => console.warn('error joining campaign: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.PLAYER_JOINED_CAMPAIGN})
+  yield put({type: c.PLAYER_JOINED_CAMPAIGN, players: response.players})
 }
 
 //==============================
