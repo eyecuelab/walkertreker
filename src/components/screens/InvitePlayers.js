@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
 import { Contacts, Permissions } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { connect } from 'react-redux';
 
 import ContactsList from '../ui/ContactsList';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
@@ -10,7 +11,10 @@ import defaultStyle from '../../styles/defaultStyle';
 
 import { parsePhoneNumber } from '../../util/util';
 
-export default class InvitePlayers extends React.Component {
+import constants from '../../constants';
+const { c, storeData, retrieveData } = constants;
+
+class InvitePlayers extends React.Component {
 
   constructor(props) {
     super(props);
@@ -31,7 +35,7 @@ export default class InvitePlayers extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log(this.state.contacts);
+    console.log('invite players has these contacts: ',this.state.contacts);
   }
 
   getContacts = async () => {
@@ -98,6 +102,7 @@ export default class InvitePlayers extends React.Component {
   }
 
   sendInvites = async () => {
+    const { dispatch } = this.props;
     // TODO: Here, before updating local UI state, send contact objects collected in this.state.selected to server to send SMS invitations.
     let selectedDupe = Object.assign({}, this.state.selected);
     let numSelected = this.state.numSelected;
@@ -119,6 +124,13 @@ export default class InvitePlayers extends React.Component {
       numSelected,
       selected: {},
     });
+
+    // here insert code that posts the contacts selected to the server
+    const userId = await retrieveData('userId');
+
+    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: userId});
+    // here it ends
+
     this.props.navigation.navigate('CampaignStaging', {
       game: this.state.game,
       invites: this.state.invites,
@@ -285,3 +297,11 @@ const customStyles = StyleSheet.create({
     height: '100%',
   },
 });
+
+function mapStateToProps(state) {
+  return {
+    campaign: state.campaign,
+  }
+}
+
+export default connect(mapStateToProps)(InvitePlayers);
