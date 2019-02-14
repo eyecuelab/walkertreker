@@ -11,7 +11,6 @@ export const getDates = state => state.steps.campaignDateArray
 
 export function *fetchSteps() {
 
-  console.log('fetching steps!');
   const dates = yield select(getDates);
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
@@ -43,7 +42,8 @@ export function *setInitialCampaignDetails(action) {
     body: JSON.stringify(action.payload)
   }
 
-  const response = yield call(fetch, url, initObj)
+  // const response = yield call(fetch, url, initObj)
+  const response = yield fetch(url, initObj)
     .then(response => response.json())
     .catch(error => console.log('error setting campaign details: ', error));
 
@@ -60,13 +60,12 @@ export function *setInitialCampaignDetails(action) {
 }
 
 export function *sendInvites(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite';
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + JSON.parse(action.campId);
   const theBody = {};
   const phoneNums = Object.keys(action.invites);
   for (pNumber of phoneNums) {
     const aBody =
       {
-        "campaignId": JSON.parse(action.campId),
         // in reality we'll use the commented-out playerId below; this is just for testing:
         "playerId": "7dd089c0-7f4b-4f39-a662-53554834a8f7",
         // "playerId": action.playId,
@@ -80,8 +79,11 @@ export function *sendInvites(action) {
       },
       body: JSON.stringify(aBody)
     }
-    const response = yield call(fetch, url, initObj)
-    .then(response => response.json())
+    console.log(initObj);
+    // const response = yield call(fetch, url, initObj)
+    const response = yield fetch(url, initObj)
+    // .then(response => response.json())
+    .then(response => response.text())
     .catch(error => console.warn('error sending invites: ', error));
     console.log('response is: ', response);
   };
@@ -89,18 +91,20 @@ export function *sendInvites(action) {
 }
 
 export function *fetchCampaignInfo(action) {
-  // curl -X GET -H "Content-type: application/json" -H "appkey: abc" -d "{ campaignId: '4028d623-e955-4b16-a7e4-88b555c6cdf3' }"
+  // curl -X GET -H "Content-type: application/json" -H "appkey: abc" https://walkertrekker.herokuapp.com/api/campaigns/join/58568813-712d-451b-9125-4103c6f1d7e5
+
   const id = action.id;
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + id;
+  console.log(url);
   const initObj = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "appkey": CLIENT_APP_KEY
     }
-  }
+  };
 
-  // const response = yield call(fetch, url, initObj)
+  // const response = yield call(fetch, url, initObj) // for some reason this does not work...
   const response = yield fetch(url, initObj)
   .then(response => response.json())
   .catch(error => console.warn('error fetching campaign: ', error));
@@ -108,6 +112,18 @@ export function *fetchCampaignInfo(action) {
 
   //here you are
   yield put({type: c.CAMPAIGN_INFO_RECEIVED, info: response})
+}
+
+export function *joinCampaignRequest() {
+  const url = '';
+  const initObj = {}
+
+  const response = yield call(fetch, url, initObj)
+  .then(response => response.json())
+  .catch(error => console.warn('error joining campaign: ', error));
+  console.log('response is: ', response);
+
+  yield put({type: c.PLAYER_JOINED_CAMPAIGN})
 }
 
 //==============================
@@ -128,11 +144,16 @@ export function *watchCampaignGetting() {
   yield takeLatest(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo)
 }
 
+export function *watchJoinCampaign() {
+  yield takeLatest(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest)
+}
+
 //==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchJoinCampaign(),
     watchCampaignGetting(),
     watchInvites(),
     watchInitialCampaignDetails(),
