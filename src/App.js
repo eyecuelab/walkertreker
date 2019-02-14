@@ -1,14 +1,16 @@
 import React from 'react';
-import { AppState, AsyncStorage, Image } from 'react-native';
+import { AppState, AsyncStorage, Image, View, Text } from 'react-native';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
-import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, } from 'expo';
+import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, } from 'expo';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
 import { logger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
+import Modal from 'react-native-modal';
 
 import BackgroundPedometer from './components/BackgroundPedometer';
+import NewPlayerForm from './components/ui/NewPlayerForm';
 import rootSaga from './sagas';
 import rootReducer from './reducers';
 
@@ -25,6 +27,12 @@ class App extends React.Component {
   // can this stay as-is? it seems like it works just fine...
   state = {
     isReady: false,
+    newPlayerModalVisible: false,
+  }
+
+  _toggleNewPlayerModal = () => {
+    const newPlayerModalVisible = !this.state.newPlayerModalVisible
+    this.setState({ newPlayerModalVisible })
   }
 
   cacheImages(images) {
@@ -59,11 +67,12 @@ class App extends React.Component {
 
     // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
     // this still seems worthwhile to create on app load so that we can have a unique id for each device/player. we can have it send this to the server when the campaign is created (by host) or joined (by not the host) to keep a log of players
-    const userId = await AsyncStorage.getItem('userId');
-    if (userId) { console.log('userId retrieved from AsyncStorage: ', userId) }
-    else {
-      const newId = v4();
-      await AsyncStorage.setItem('userId', newId);
+    // TODO: change userId to playerId for consistency
+    // TODO:
+    const playerId = await AsyncStorage.getItem('playerId');
+    if (!playerId) {
+      console.log('No playerId found, opening player creation modal')
+      this.setState({newPlayerModalVisible: true})
     }
   };
 
@@ -86,14 +95,23 @@ class App extends React.Component {
       );
     }
 
+    const prefix = Linking.makeUrl('/');
+    // console.log(`prefix: ${prefix}`)
+    // const inviteUrl = Linking.makeUrl('/invite', { campaignId: "9801ce7c-ad31-4c7e-ab91-fe53e65642c5" })
+    // console.log(inviteUrl);
+
     return (
       <Provider store={store}>
+        <Modal isVisible={this.state.newPlayerModalVisible}>
+          <NewPlayerForm handleModalStateChange={this._toggleNewPlayerModal} />
+        </Modal>
         <AppContainer
+          uriPrefix={prefix}
           screenProps={{
             backgroundImage: require('../assets/bg.png'),
           }}
         />
-      <BackgroundPedometer/>
+        <BackgroundPedometer/>
       </Provider>
     );
   }
