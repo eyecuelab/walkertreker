@@ -43,7 +43,7 @@ export function *setInitialCampaignDetails(action) {
     body: JSON.stringify(action.payload)
   }
 
-  const response = yield fetch(url, initObj)
+  const response = yield call(fetch, url, initObj)
     .then(response => response.json())
     .catch(error => console.log('error setting campaign details: ', error));
 
@@ -56,7 +56,7 @@ export function *setInitialCampaignDetails(action) {
   const campId = yield retrieveData('campaignId');
   const stepD1 = yield retrieveData('stepGoalDayOne');
 
-  yield put({type: c.CAMPAIGN_DATA_RECEIVED, id: campId, stepGoalDayOne: stepD1});
+  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: campId, stepGoalDayOne: stepD1});
 }
 
 export function *sendInvites(action) {
@@ -80,12 +80,34 @@ export function *sendInvites(action) {
       },
       body: JSON.stringify(aBody)
     }
-    const response = yield fetch(url, initObj)
+    const response = yield call(fetch, url, initObj)
     .then(response => response.json())
     .catch(error => console.warn('error sending invites: ', error));
     console.log('response is: ', response);
   };
   yield put({type: c.INVITES_SENT, invites: action.invites })
+}
+
+export function *fetchCampaignInfo(action) {
+  // curl -X GET -H "Content-type: application/json" -H "appkey: abc" -d "{ campaignId: '4028d623-e955-4b16-a7e4-88b555c6cdf3' }"
+  const id = action.id;
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + id;
+  const initObj = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    }
+  }
+
+  // const response = yield call(fetch, url, initObj)
+  const response = yield fetch(url, initObj)
+  .then(response => response.json())
+  .catch(error => console.warn('error fetching campaign: ', error));
+  console.log('response is: ', response);
+
+  //here you are
+  yield put({type: c.CAMPAIGN_INFO_RECEIVED, info: response})
 }
 
 //==============================
@@ -102,11 +124,16 @@ export function *watchInvites() {
   yield takeLatest(c.SEND_INVITES, sendInvites);
 }
 
+export function *watchCampaignGetting() {
+  yield takeLatest(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo)
+}
+
 //==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchCampaignGetting(),
     watchInvites(),
     watchInitialCampaignDetails(),
     watchSteps(),

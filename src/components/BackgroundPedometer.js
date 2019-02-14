@@ -58,6 +58,11 @@ class BackgroundPedometer extends React.Component {
         dispatch({type: c.GET_STEPS});
       }
     }, 60000);
+
+    // this commented-out block was made purely to test functionality.  it can all go away once this works in prod.
+    // START
+    // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: '9801ce7c-ad31-4c7e-ab91-fe53e65642c5'})
+    // END
   }
 
   componentWillUnmount() {

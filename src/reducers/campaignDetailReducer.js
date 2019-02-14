@@ -29,7 +29,7 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       randomEvents: action.randomEvents
     }
-  case c.CAMPAIGN_DATA_RECEIVED:
+  case c.INITIAL_CAMPAIGN_DATA_RECEIVED:
     return {
       ...state,
       campaignId: action.id,
@@ -39,6 +39,11 @@ export default (state = initialStateCampaignDetailReducer, action) => {
     return {
       ...state,
       invited: action.invites,
+    }
+  case c.CAMPAIGN_INFO_RECEIVED:
+    return {
+      ...state,
+      fromTheServer: action.info,
     }
   default:
     return state;
