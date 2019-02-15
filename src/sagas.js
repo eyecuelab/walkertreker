@@ -160,14 +160,8 @@ export function *createPlayer(action) {
 }
 
 export function *updateCampaign(action) {
-  // PATCH
-  // /api/campaigns/:campaignId
-  // curl -X GET -H "Content-type: application/json" -H "appkey: abc" -d '{ "campaignUpdate": { "currentDay": 1, "inventory": { "foodItems": 5 } } }' https://walkertrekker.herokuapp.com/api/campaigns/join/58568813-712d-451b-9125-4103c6f1d7e5
 
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
-
-  console.log(url);
-
   const initObj = {
     method: "PATCH",
     headers: {
@@ -182,12 +176,9 @@ export function *updateCampaign(action) {
     })
   };
 
-  console.log(initObj);
-
   const response = yield fetch(url, initObj)
   .then(response => response.json())
   .catch(error => console.warn('error updating campaign: ', error));
-
   console.log('response is: ', response);
 
   yield put({type: c.CAMPAIGN_UPDATED, info: response})
