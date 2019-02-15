@@ -63,6 +63,7 @@ class BackgroundPedometer extends React.Component {
     // START
     // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: 'e54490cf-7771-4d63-b788-54f714c00dcf'})
     // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: 'a83d27dd-1d01-48e0-81be-300798d1f376', campId: 'e54490cf-7771-4d63-b788-54f714c00dcf'})
+    // dispatch({type: c.CREATE_PLAYER, name: 'Jimmy Poops', number: '5035550000'})
     // END
   }
 
