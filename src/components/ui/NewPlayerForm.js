@@ -20,8 +20,10 @@ class NewPlayerForm extends React.Component {
   }
 
   _handleSubmit = () => {
+    const { dispatch } = this.props;
     // 1 Send info to API to create player instance in database
-
+    dispatch({type: c.CREATE_PLAYER, name: this.state.displayName, number: this.state.phoneNumber})
+    // need error handling if the submission returns an error
     // 2 Save player info returned from API to AsyncStorage
     // 3 Call this.props.handleModalStateChange to close modal
     this.props.handleModalStateChange()

@@ -115,9 +115,6 @@ export function *fetchCampaignInfo(action) {
 }
 
 export function *joinCampaignRequest(action) {
-  // PATCH
-  // /api/campaigns/join/:campaignId
-  //curl -X GET -H "Content-type: application/json" -H "appkey: abc" -d '{ "playerId": "7dd089c0-7f4b-4f39-a662-53554834a8f7" }' https://walkertrekker.herokuapp.com/api/campaigns/join/58568813-712d-451b-9125-4103c6f1d7e5
 
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/join/' + action.campId;
   const initObj = {
@@ -138,6 +135,32 @@ export function *joinCampaignRequest(action) {
   console.log('response is: ', response);
 
   yield put({type: c.PLAYER_JOINED_CAMPAIGN, players: response.players})
+}
+
+export function *createPlayer(action) {
+  // POST
+  // /api/players
+  // curl -X POST -H "Content-type: application/json" -H "appkey: abc" -H -d '{"displayName": "Oscar Robertson", "phoneNumber": * "5035558989"}' http://localhost:5000/api/players
+
+  const url = 'https://walkertrekker.herokuapp.com/api/players';
+  const initObj = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({displayName: action.name, phoneNumber: action.number})
+  };
+
+  // ideally refactor to: yield call(() => {
+  //   fetch(url, initObj)
+  // })
+  const response = yield fetch(url, initObj)
+  .then(response => response.json())
+  .catch(error => console.warn('error creating player: ', error));
+  console.log('response is: ', response);
+
+  yield put({type: c.PLAYER_CREATED}) // this will carry a payload in the future, but for now it is blank
 }
 
 //==============================
@@ -162,11 +185,16 @@ export function *watchJoinCampaign() {
   yield takeLatest(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest)
 }
 
+export function *watchCreatePlayer() {
+  yield takeLatest(c.CREATE_PLAYER, createPlayer)
+}
+
 //==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchCreatePlayer(),
     watchJoinCampaign(),
     watchCampaignGetting(),
     watchInvites(),
