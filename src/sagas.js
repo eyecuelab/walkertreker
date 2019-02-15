@@ -7,7 +7,7 @@ const { c, storeData, retrieveData } = constants;
 
 export const getDates = state => state.steps.campaignDateArray
 
-// ==============================
+// worker sagas ==============================
 
 export function *fetchSteps() {
 
@@ -138,9 +138,6 @@ export function *joinCampaignRequest(action) {
 }
 
 export function *createPlayer(action) {
-  // POST
-  // /api/players
-  // curl -X POST -H "Content-type: application/json" -H "appkey: abc" -H -d '{"displayName": "Oscar Robertson", "phoneNumber": * "5035558989"}' http://localhost:5000/api/players
 
   const url = 'https://walkertrekker.herokuapp.com/api/players';
   const initObj = {
@@ -151,7 +148,6 @@ export function *createPlayer(action) {
     },
     body: JSON.stringify({displayName: action.name, phoneNumber: action.number})
   };
-
   // ideally refactor to: yield call(() => {
   //   fetch(url, initObj)
   // })
@@ -163,7 +159,41 @@ export function *createPlayer(action) {
   yield put({type: c.PLAYER_CREATED}) // this will carry a payload in the future, but for now it is blank
 }
 
-//==============================
+export function *updateCampaign(action) {
+  // PATCH
+  // /api/campaigns/:campaignId
+  // curl -X GET -H "Content-type: application/json" -H "appkey: abc" -d '{ "campaignUpdate": { "currentDay": 1, "inventory": { "foodItems": 5 } } }' https://walkertrekker.herokuapp.com/api/campaigns/join/58568813-712d-451b-9125-4103c6f1d7e5
+
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+
+  console.log(url);
+
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      "campaignUpdate": {
+        "currentDay": action.currentDay,
+        "inventory": action.inventory,
+      }
+    })
+  };
+
+  console.log(initObj);
+
+  const response = yield fetch(url, initObj)
+  .then(response => response.json())
+  .catch(error => console.warn('error updating campaign: ', error));
+
+  console.log('response is: ', response);
+
+  yield put({type: c.CAMPAIGN_UPDATED, info: response})
+}
+
+// watcher sagas ==============================
 
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
@@ -189,11 +219,16 @@ export function *watchCreatePlayer() {
   yield takeLatest(c.CREATE_PLAYER, createPlayer)
 }
 
-//==============================
+export function *watchUpdateCampaign() {
+  yield takeLatest(c.UPDATE_CAMPAIGN, updateCampaign)
+}
+
+// root saga ==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchUpdateCampaign(),
     watchCreatePlayer(),
     watchJoinCampaign(),
     watchCampaignGetting(),

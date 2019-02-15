@@ -52,6 +52,12 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       players: action.players
     }
+  case c.CAMPAIGN_UPDATED:
+    console.log('this action type currently just puts the whole response into state.campaign.fromTheServer.  this is not the desired effect for production; it is just a placeholder.');
+    return {
+      ...state,
+      fromTheServer: action.info,
+    }
   default:
     return state;
   }
