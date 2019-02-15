@@ -184,6 +184,27 @@ export function *updateCampaign(action) {
   yield put({type: c.CAMPAIGN_UPDATED, info: response})
 }
 
+export function *leaveCampaign(action) {
+
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/leave/' + action.campId;
+
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({"playerId": action.playId})
+  };
+
+  const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    .catch(error => console.warn('error leaving campaign: ', error));
+    console.log('response is: ', response);
+
+  yield put({type: c.CAMPAIGN_LEFT, players: response.players})
+}
+
 // watcher sagas ==============================
 
 export function *watchSteps() {
@@ -214,11 +235,16 @@ export function *watchUpdateCampaign() {
   yield takeLatest(c.UPDATE_CAMPAIGN, updateCampaign)
 }
 
+export function *watchLeaveCampaign() {
+  yield takeLatest(c.LEAVE_CAMPAIGN, leaveCampaign)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchLeaveCampaign(),
     watchUpdateCampaign(),
     watchCreatePlayer(),
     watchJoinCampaign(),

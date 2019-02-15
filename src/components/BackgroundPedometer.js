@@ -62,10 +62,10 @@ class BackgroundPedometer extends React.Component {
     // this commented-out block was made purely to test functionality.  it can all go away once this works in prod.
     // START ============
     // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: 'e54490cf-7771-4d63-b788-54f714c00dcf'})
-    // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: 'a83d27dd-1d01-48e0-81be-300798d1f376', campId: 'e54490cf-7771-4d63-b788-54f714c00dcf'})
+    // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: 'f3d977e8-9450-49e9-84cd-b0a1626b71b3', campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77'})
     // dispatch({type: c.CREATE_PLAYER, name: 'Jimmy Poops', number: '5035550000'})
     // dispatch({type: c.UPDATE_CAMPAIGN, campId: "c6e88e6e-d8ea-42c3-977a-5fbda85e2e77", currentDay: 2, inventory: {"foodItems": 3, "medicineItems": 2, "weaponItems": 0}})
-    
+    // dispatch({type: c.LEAVE_CAMPAIGN, campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77', playId: 'f3d977e8-9450-49e9-84cd-b0a1626b71b3'})
     // END ============
   }
 
