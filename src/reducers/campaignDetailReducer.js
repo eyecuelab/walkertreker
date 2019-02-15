@@ -64,6 +64,9 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       players: action.players
     }
+  case c.PLAYERS_FETCHED:
+    // we don't actually see any use case for this, but this action exists just in case
+    return state;
   default:
     return state;
   }
