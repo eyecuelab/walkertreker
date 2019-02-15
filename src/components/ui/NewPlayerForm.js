@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
@@ -19,7 +19,7 @@ class NewPlayerForm extends React.Component {
     }
   }
 
-  _handleSubmit = () => {
+  _handleSubmit = async () => {
     const { dispatch } = this.props;
     // 1 Send info to API to create player instance in database
     dispatch({type: c.CREATE_PLAYER, name: this.state.displayName, number: this.state.phoneNumber})
@@ -42,7 +42,7 @@ class NewPlayerForm extends React.Component {
           </View>
           <View style={customStyles.fieldContainer}>
             <Text style={styles.label}>Phone Number</Text>
-            <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
+            <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
           </View>
           <View style={customStyles.buttonContainer}>
             <TouchableOpacity style={customStyles.button} onPress={this._handleSubmit}><Text style={styles.label}>Submit</Text></TouchableOpacity>

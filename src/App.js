@@ -67,13 +67,12 @@ class App extends React.Component {
 
     // messing around with establishing a unique userId at app start, this can probably go away and be done in the redux store later.
     // this still seems worthwhile to create on app load so that we can have a unique id for each device/player. we can have it send this to the server when the campaign is created (by host) or joined (by not the host) to keep a log of players
-    // TODO: change userId to playerId for consistency
-    // TODO:
-    const playerId = await AsyncStorage.getItem('playerId');
-    if (!playerId) {
-      console.log('No playerId found, opening player creation modal')
-      this.setState({newPlayerModalVisible: true})
-    }
+    // Turning off for now...
+    // const playerId = await AsyncStorage.getItem('playerId');
+    // if (!playerId) {
+    //   console.log('No playerId found, opening player creation modal')
+    //   this.setState({newPlayerModalVisible: true})
+    // }
   };
 
   _handleLoadingError = error => {
