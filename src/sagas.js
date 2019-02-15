@@ -205,6 +205,26 @@ export function *leaveCampaign(action) {
   yield put({type: c.CAMPAIGN_LEFT, players: response.players})
 }
 
+export function *fetchPlayers() {
+
+  const url = 'https://walkertrekker.herokuapp.com/api/players';
+
+  const initObj = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    }
+  };
+
+  const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    .catch(error => console.log('error fetching players: ', error))
+  console.log(response);
+
+  yield put({type: c.PLAYERS_FETCHED})
+}
+
 // watcher sagas ==============================
 
 export function *watchSteps() {
@@ -239,11 +259,16 @@ export function *watchLeaveCampaign() {
   yield takeLatest(c.LEAVE_CAMPAIGN, leaveCampaign)
 }
 
+export function *watchFetchPlayers() {
+  yield takeLatest(c.FETCH_PLAYERS, fetchPlayers)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchFetchPlayers(),
     watchLeaveCampaign(),
     watchUpdateCampaign(),
     watchCreatePlayer(),
