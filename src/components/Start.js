@@ -10,23 +10,13 @@ export default class Start extends React.Component {
   }
 
   componentDidMount = async () => {
-    console.log(`===============Start.js=================`)
-    console.log(`============componentDidMount===========`)
-    console.log(`================start===================`)
-
     const path = this.props.screenProps.path
     const params = this.props.screenProps.queryParams
-    console.log(path)
-    console.log(params)
-    
+
     if (path === 'invite') {
       await this.setState({ route: this.props.navigation.navigate('AcceptInvite', params) })
       console.log(this.state.route)
     }
-
-    console.log(`===============Start.js=================`)
-    console.log(`============componentDidMount===========`)
-    console.log(`=================done===================`)
   }
 
   render() {
