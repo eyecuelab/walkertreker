@@ -44,6 +44,10 @@ export default class TOC extends React.Component {
             title="Your Party"
             onPress={() => this.props.navigation.navigate('Team')}
           />
+          <Button
+            title="Navigate to Invite Screen"
+            onPress={() => this.props.navigation.navigate('AcceptInvite', { displayName: 'hi_im_joe'})}
+          />
         </ScrollView>
       </View>
     );
