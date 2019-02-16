@@ -67,6 +67,17 @@ export default (state = initialStateCampaignDetailReducer, action) => {
   case c.PLAYERS_FETCHED:
     // we don't actually see any use case for this, but this action exists just in case
     return state;
+  case c.PLAYER_UPDATED:
+    // THIS ONE IS BEING FRUSTRATING!!! come back to this
+
+    // find the player obj in the array with the corresponding id
+    // replace that obj with the response obj
+    // return it to state
+
+    return {
+      ...state,
+      players: 'poop'
+    }
   default:
     return state;
   }
