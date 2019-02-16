@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 // screens
+import Start from '../components/Start';
 import About from '../components/screens/About';
 import CreateCampaign from '../components/screens/CreateCampaign';
 import InvitePlayers from '../components/screens/InvitePlayers';
@@ -18,15 +19,22 @@ import BackgroundPedometer from '../components/BackgroundPedometer';
 
 const AppNavigator = createStackNavigator(
   {
+    Start: { screen: Start },
     About: { screen: About, },
     CreateCampaign: { screen: CreateCampaign, },
     InvitePlayers: { screen: InvitePlayers, },
-    CampaignStaging: { screen: CampaignStaging, },
+    CampaignStaging: {
+      screen: CampaignStaging,
+      path: 'staging/:campaignId',
+    },
     AcceptInvite: {
       screen: AcceptInvite,
-      path: 'invite/',
+      path: 'invite/:campaignId'
     },
-    CampaignSummary: { screen: ActiveCampaignSummary, },
+    CampaignSummary: {
+      screen: ActiveCampaignSummary,
+      path: 'campaign/:campaignId'
+    },
     TOC: { screen: TOC, },
     Inventory: { screen: Inventory },
     JoinCampaign: { screen: JoinCampaign },
@@ -36,7 +44,7 @@ const AppNavigator = createStackNavigator(
     BackgroundPedometer: { screen: BackgroundPedometer }
   },
   {
-    initialRouteName: "About",
+    initialRouteName: "Start",
     defaultNavigationOptions: {
       header: null,
     }
