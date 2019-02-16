@@ -7,7 +7,7 @@ difficultyLevel: 'easy', // populated by CreateCampaign
 randomEvents: 'low', // populated by CreateCampaign
 stepGoalDayOne: null, // populated by CreateCampaign
 invited: null, //populated by InvitePlayers
-players: null, // populated by each player inidividually through JoinCampaign
+players: [], // populated by each player inidividually through JoinCampaign
 startDate: null, // populated by CampaignStaging
 numPlayers: null, // derived in CampaignStaging once the host starts campaign
 }
@@ -64,9 +64,11 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       players: action.players
     }
-  case c.PLAYERS_FETCHED:
-    // we don't actually see any use case for this, but this action exists just in case
-    return state;
+  case c.PLAYER_FETCHED:
+    let newState;
+    newState = Object.assign({}, state)
+    newState.players.push(action.player)
+    return newState
   default:
     return state;
   }

@@ -205,9 +205,10 @@ export function *leaveCampaign(action) {
   yield put({type: c.CAMPAIGN_LEFT, players: response.players})
 }
 
-export function *fetchPlayers() {
-
-  const url = 'https://walkertrekker.herokuapp.com/api/players';
+export function *fetchPlayer(action) {
+  console.log(action.playId);
+  const url = 'https://walkertrekker.herokuapp.com/api/players/' + action.playId;
+  console.log(url);
 
   const initObj = {
     method: "GET",
@@ -222,7 +223,7 @@ export function *fetchPlayers() {
     .catch(error => console.log('error fetching players: ', error))
   console.log(response);
 
-  yield put({type: c.PLAYERS_FETCHED})
+  yield put({type: c.PLAYER_FETCHED, player: response})
 }
 
 // watcher sagas ==============================
@@ -259,8 +260,8 @@ export function *watchLeaveCampaign() {
   yield takeLatest(c.LEAVE_CAMPAIGN, leaveCampaign)
 }
 
-export function *watchFetchPlayers() {
-  yield takeLatest(c.FETCH_PLAYERS, fetchPlayers)
+export function *watchFetchPlayer() {
+  yield takeLatest(c.FETCH_PLAYER, fetchPlayer)
 }
 
 // root saga ==============================
@@ -268,7 +269,7 @@ export function *watchFetchPlayers() {
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
-    watchFetchPlayers(),
+    watchFetchPlayer(),
     watchLeaveCampaign(),
     watchUpdateCampaign(),
     watchCreatePlayer(),
