@@ -206,10 +206,7 @@ export function *leaveCampaign(action) {
 }
 
 export function *fetchPlayer(action) {
-  console.log(action.playId);
   const url = 'https://walkertrekker.herokuapp.com/api/players/' + action.playId;
-  console.log(url);
-
   const initObj = {
     method: "GET",
     headers: {
