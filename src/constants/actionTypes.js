@@ -32,3 +32,6 @@ export const CAMPAIGN_LEFT = 'CAMPAIGN_LEFT';
 
 export const FETCH_PLAYER = 'FETCH_PLAYER';
 export const PLAYER_FETCHED = 'PLAYER_FETCHED';
+
+export const UPDATE_PLAYER = 'UPDATE_PLAYER';
+export const PLAYER_UPDATED = 'PLAYER_UPDATED';

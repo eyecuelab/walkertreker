@@ -53,10 +53,7 @@ export function *setInitialCampaignDetails(action) {
   yield storeData('campaignId', JSON.stringify(response.id))
   yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
 
-  const campId = yield retrieveData('campaignId');
-  const stepD1 = yield retrieveData('stepGoalDayOne');
-
-  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: campId, stepGoalDayOne: stepD1});
+  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, stepGoalDayOne: response.stepTargets[0]});
 }
 
 export function *sendInvites(action) {
@@ -156,7 +153,7 @@ export function *createPlayer(action) {
   .catch(error => console.warn('error creating player: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.PLAYER_CREATED}) // this will carry a payload in the future, but for now it is blank
+  yield put({type: c.PLAYER_CREATED, player: response}) // this will carry a payload in the future, but for now it is blank
 }
 
 export function *updateCampaign(action) {
@@ -223,6 +220,42 @@ export function *fetchPlayer(action) {
   yield put({type: c.PLAYER_FETCHED, player: response})
 }
 
+export function *updatePlayer(action) {
+  // PATCH
+  // /api/players
+  // curl -X PATCH -H "Content-type: application/json" -H "appkey: abc" -H -d '{ "playerId": "58568813-712d-451b-9125-4103c6f1d7e5", "playerUpdate": { "hunger" 88, "steps": [1698, 0, 0, 0, ...] } }' http://walkertrekker.herokuapp.com/api/players
+
+  const url = 'https://walkertrekker.herokuapp.com/api/players';
+
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      "playerId": action.playId,
+      "playerUpdate": {
+        "hunger": action.hunger,
+        "health": action.health,
+        "steps": action.steps
+      }
+    })
+  };
+
+  const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    .catch(error => console.log('error updating player: ', error))
+  console.log('response: ', response);
+
+  yield put({type: c.PLAYER_UPDATED, player: response})
+}
+
+export function *saveState() {
+  const allTheState = yield select();
+  yield storeData('previousState', JSON.stringify(allTheState));
+}
+
 // watcher sagas ==============================
 
 export function *watchSteps() {
@@ -261,11 +294,21 @@ export function *watchFetchPlayer() {
   yield takeLatest(c.FETCH_PLAYER, fetchPlayer)
 }
 
+export function *watchUpdatePlayer() {
+  yield takeLatest(c.UPDATE_PLAYER, updatePlayer)
+}
+
+export function *watchAppStateChange() {
+  yield takeEvery(c.NEW_APP_STATE, saveState)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchAppStateChange(),
+    watchUpdatePlayer(),
     watchFetchPlayer(),
     watchLeaveCampaign(),
     watchUpdateCampaign(),
