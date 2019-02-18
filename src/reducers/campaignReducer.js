@@ -7,7 +7,7 @@ export default (state = campaign, action) => {
   case c.SET_CAMPAIGN_LENGTH:
     return {
       ...state,
-      campaignLength: action.campaignLength
+      length: action.length
     }
   case c.SET_DIFFICULTY:
     return {

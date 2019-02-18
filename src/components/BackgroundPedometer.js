@@ -66,7 +66,7 @@ class BackgroundPedometer extends React.Component {
 
   _constructDateLog = () => {
     const { dispatch } = this.props;
-    const { difficultyLevel, campaignLength, startDate, steps } = this.props.campaign;
+    const { difficultyLevel, length, startDate, steps } = this.props.campaign;
 
     const stepGoalDayOne = steps[0];
     const day1Start = new Date(startDate);
@@ -74,7 +74,7 @@ class BackgroundPedometer extends React.Component {
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
 
-    dispatch(setCampaignDates(day1Start, day1End, campaignLength, difficultyLevel, stepGoalDayOne));
+    dispatch(setCampaignDates(day1Start, day1End, length, difficultyLevel, stepGoalDayOne));
   }
 
   _handleAppStateChange = (nextAppState) => {

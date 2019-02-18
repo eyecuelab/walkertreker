@@ -215,7 +215,7 @@ class InvitePlayers extends React.Component {
                   <Text style={[styles.headline]}>Invite {"\n"}Players</Text>
                 </View>
                 <View style={customStyles.headerRow}>
-                  <Text style={[styles.label]}>{this.state.game.campaignLength} </Text>
+                  <Text style={[styles.label]}>{this.state.game.length} </Text>
                   <Text style={[styles.label, {color: 'black'}]}>Days</Text>
                 </View>
                 <View style={customStyles.headerRow}>

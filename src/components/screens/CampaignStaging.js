@@ -91,7 +91,7 @@ export default class CampaignStaging extends React.Component {
             <View style={customStyles.headerContainer}>
               <Text style={styles.headline}>New Campaign</Text>
               <View style={customStyles.headerRow}>
-                <Text style={[styles.label]}>{this.state.game.campaignLength} </Text>
+                <Text style={[styles.label]}>{this.state.game.length} </Text>
                 <Text style={[styles.label, {color: 'black'}]}>Days</Text>
               </View>
               <View style={customStyles.headerRow}>

@@ -223,12 +223,7 @@ export function *fetchPlayer(action) {
 }
 
 export function *updatePlayer(action) {
-  // PATCH
-  // /api/players
-  // curl -X PATCH -H "Content-type: application/json" -H "appkey: abc" -H -d '{ "playerId": "58568813-712d-451b-9125-4103c6f1d7e5", "playerUpdate": { "hunger" 88, "steps": [1698, 0, 0, 0, ...] } }' http://walkertrekker.herokuapp.com/api/players
-
   const url = 'https://walkertrekker.herokuapp.com/api/players';
-
   const initObj = {
     method: "PATCH",
     headers: {
@@ -255,7 +250,7 @@ export function *updatePlayer(action) {
 
 export function *saveState() {
   const allTheState = yield select();
-  yield storeData('previousState', JSON.stringify(allTheState));
+  yield storeData('lastState', JSON.stringify(allTheState));
 }
 
 // watcher sagas ==============================

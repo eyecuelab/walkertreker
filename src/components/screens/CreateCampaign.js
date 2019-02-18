@@ -16,12 +16,6 @@ class CreateCampaign extends React.Component {
 
   constructor(props) {
     super(props);
-    // remove this state after refactor
-    // this.state = {
-    //   campaignLength: '15', // options: '15', '30', '90'
-    //   difficultyLevel: 'easy', // options: 'easy', 'hard', 'xtreme'
-    //   randomEvents: 'low' // options: 'low', 'mid', 'high'
-    // }
   }
 
   componentDidMount() {
@@ -37,13 +31,13 @@ class CreateCampaign extends React.Component {
     const payload = {
       game: {
         id: gameId,
-        campaignLength: this.props.campaign.length,
+        length: this.props.campaign.length,
         difficultyLevel: this.props.campaign.difficultyLevel,
         randomEvents: this.props.campaign.randomEvents,
         numPlayers: 1,
-        players: { // we can probably take this out all togetht
+        players: {
           [userId]: {
-            id: userId, // this is gonna be generated on appload and stored in async storage
+            id: userId,
             name: 'Joe',
           },
         },
@@ -72,7 +66,7 @@ class CreateCampaign extends React.Component {
     if (num === 0) {newLength = '15'}
     else if (num === 1) {newLength = '30'}
     else if (num === 2) {newLength = '90'}
-    dispatch({type: c.SET_CAMPAIGN_LENGTH, campaignLength: newLength})
+    dispatch({type: c.SET_CAMPAIGN_LENGTH, length: newLength})
   }
 
   _updateCampaignDifficulty = num => {
