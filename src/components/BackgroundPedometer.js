@@ -9,7 +9,7 @@ import * as actions from '../actions';
 import constants from './../constants';
 
 const { setAppState, setCampaignDates } = actions;
-const { c } = constants;
+const { c, retrieveData } = constants;
 
 class BackgroundPedometer extends React.Component {
 
@@ -64,11 +64,14 @@ class BackgroundPedometer extends React.Component {
     // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: 'e54490cf-7771-4d63-b788-54f714c00dcf'})
     // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: 'f3d977e8-9450-49e9-84cd-b0a1626b71b3', campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77'})
     // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: '7ee068b4-e73c-4fe9-a1a4-f9224f270894', campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77'})
-    // dispatch({type: c.CREATE_PLAYER, name: 'Jimmy Poops', number: '5035550000'})
+    // dispatch({type: c.CREATE_PLAYER, name: 'Morm Grumblemutt', number: '5035550005'})
+    // setTimeout(async function () {
+    //   console.log(await retrieveData('playerInfo'));
+    // }, 3000);
     // dispatch({type: c.UPDATE_CAMPAIGN, campId: "c6e88e6e-d8ea-42c3-977a-5fbda85e2e77", currentDay: 2, inventory: {"foodItems": 3, "medicineItems": 2, "weaponItems": 0}})
     // dispatch({type: c.LEAVE_CAMPAIGN, campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77', playId: 'f3d977e8-9450-49e9-84cd-b0a1626b71b3'})
     // dispatch({type: c.FETCH_PLAYERS})
-    dispatch({type: c.UPDATE_PLAYER, playId: '7ee068b4-e73c-4fe9-a1a4-f9224f270894', hunger: 46, health: 22, steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 23, 34, 45, 566, 67]})
+    dispatch({type: c.UPDATE_PLAYER, playId: '391013c8-2bd9-46c4-93ff-0131d0154aed', hunger: 99, health: 22, steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 23, 34, 45, 566, 67]})
     // END ============
   }
 

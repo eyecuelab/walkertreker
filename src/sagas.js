@@ -156,7 +156,7 @@ export function *createPlayer(action) {
   .catch(error => console.warn('error creating player: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.PLAYER_CREATED}) // this will carry a payload in the future, but for now it is blank
+  yield put({type: c.PLAYER_CREATED, player: response}) // this will carry a payload in the future, but for now it is blank
 }
 
 export function *updateCampaign(action) {

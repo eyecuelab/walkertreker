@@ -12,14 +12,9 @@ let newState;
 export default (state = initialState, action) => {
   switch (action.type) {
 
-    case c.CREATE_PLAYER:
-      const playId = v4();
-      newState = {
-        ...state,
-        displayName: action.name,
-        phoneNumber: action.number,
-        id: playId,
-      };
+    case c.PLAYER_CREATED:
+      newState = Object.assign({}, state, action.player)
+      console.log(newState);
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
 
@@ -32,17 +27,7 @@ export default (state = initialState, action) => {
       return newState;
 
     case c.PLAYER_UPDATED:
-      newState = {
-        ...state,
-        campaignId: action.player.campaignId,
-        displayName: action.player.displayName,
-        health: action.player.health,
-        hunger: action.player.hunger,
-        id: action.player.id,
-        inActiveGame: action.player.inActiveGame,
-        phoneNumber: action.player.phoneNumber,
-        steps: action.player.steps,
-      };
+      newState = action.player;
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
 

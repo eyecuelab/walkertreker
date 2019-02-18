@@ -81,7 +81,6 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
-    console.log(Linking.getInitialUrl());
     const { path, queryParams } = await Linking.parseInitialURLAsync()
     this.setState({
       isReady: true,
