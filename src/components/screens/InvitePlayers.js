@@ -1,8 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
-import { Contacts, Permissions } from 'expo';
+import { Contacts, Permissions, Linking } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
+import constants from '../../constants';
+const { c, storeData, retrieveData } = constants;
 
 import ContactsList from '../ui/ContactsList';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
@@ -11,8 +13,6 @@ import defaultStyle from '../../styles/defaultStyle';
 
 import { parsePhoneNumber } from '../../util/util';
 
-import constants from '../../constants';
-const { c, storeData, retrieveData } = constants;
 
 class InvitePlayers extends React.Component {
 
@@ -32,10 +32,12 @@ class InvitePlayers extends React.Component {
 
   componentDidMount = () => {
     this.getContacts();
+    const link = Linking.makeUrl('invite', { campaignId: this.props.campaign.campaignId })
+    console.log('link: ', link)
   }
 
   componentDidUpdate() {
-    console.log('invite players has these contacts: ',this.state.contacts);
+    
   }
 
   getContacts = async () => {
@@ -125,10 +127,13 @@ class InvitePlayers extends React.Component {
       selected: {},
     });
 
+    // const link = Linking.makeUrl('invite', { campaignId: this.props.campaign.campaignId })
+    // console.log('link: ', link)
+
     // here insert code that posts the contacts selected to the server
     const userId = await retrieveData('userId');
 
-    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: userId});
+    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: userId, });
     // here it ends
 
     this.props.navigation.navigate('CampaignStaging', {
