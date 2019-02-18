@@ -53,10 +53,7 @@ export function *setInitialCampaignDetails(action) {
   yield storeData('campaignId', JSON.stringify(response.id))
   yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
 
-  const campId = yield retrieveData('campaignId');
-  const stepD1 = yield retrieveData('stepGoalDayOne');
-
-  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: campId, stepGoalDayOne: stepD1});
+  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, stepGoalDayOne: response.stepTargets[0]});
 }
 
 export function *sendInvites(action) {
