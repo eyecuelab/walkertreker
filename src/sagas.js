@@ -251,6 +251,11 @@ export function *updatePlayer(action) {
   yield put({type: c.PLAYER_UPDATED, player: response})
 }
 
+export function *saveState() {
+  const allTheState = yield select();
+  yield storeData('previousState', JSON.stringify(allTheState));
+}
+
 // watcher sagas ==============================
 
 export function *watchSteps() {
@@ -293,11 +298,16 @@ export function *watchUpdatePlayer() {
   yield takeLatest(c.UPDATE_PLAYER, updatePlayer)
 }
 
+export function *watchAppStateChange() {
+  yield takeEvery(c.NEW_APP_STATE, saveState)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchAppStateChange(),
     watchUpdatePlayer(),
     watchFetchPlayer(),
     watchLeaveCampaign(),

@@ -1,5 +1,8 @@
+import { select } from 'redux-saga/effects';
+
 import constants from '../constants';
-const { c } = constants;
+const { c, storeData } = constants;
+
 
 export default (state = 'active', action) => {
   switch (action.type) {

@@ -72,6 +72,10 @@ class BackgroundPedometer extends React.Component {
     // dispatch({type: c.LEAVE_CAMPAIGN, campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77', playId: 'f3d977e8-9450-49e9-84cd-b0a1626b71b3'})
     // dispatch({type: c.FETCH_PLAYERS})
     // dispatch({type: c.UPDATE_PLAYER, playId: '391013c8-2bd9-46c4-93ff-0131d0154aed', hunger: 99, health: 22, steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 23, 34, 45, 566, 67]})
+    // setTimeout(async function () {
+    //   const aState = await AsyncStorage.getItem('previousState');
+    //   console.log('last state: ',aState);
+    // }, 5000);
     // END ============
   }
 
