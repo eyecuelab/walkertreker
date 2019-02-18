@@ -3,6 +3,7 @@ import { AppState, AsyncStorage, Image, View, Text } from 'react-native';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, } from 'expo';
+import { withNavigation } from 'react-navigation';
 import { AppContainer } from './nav/router';
 import { v4 } from 'uuid';
 import { logger } from 'redux-logger';
@@ -79,8 +80,16 @@ class App extends React.Component {
     console.warn(error);
   }
 
-  _handleFinishLoading = () => {
-    this.setState({isReady: true});
+  _handleFinishLoading = async () => {
+    const { path, queryParams } = await Linking.parseInitialURLAsync()
+    this.setState({
+      isReady: true,
+      path,
+      queryParams
+    });
+  }
+
+  componentDidUpdate = async () => {
   }
 
   render() {
@@ -95,9 +104,6 @@ class App extends React.Component {
     }
 
     const prefix = Linking.makeUrl('/');
-    // console.log(`prefix: ${prefix}`)
-    // const inviteUrl = Linking.makeUrl('/invite', { campaignId: "9801ce7c-ad31-4c7e-ab91-fe53e65642c5" })
-    // console.log(inviteUrl);
 
     return (
       <Provider store={store}>
@@ -108,6 +114,8 @@ class App extends React.Component {
           uriPrefix={prefix}
           screenProps={{
             backgroundImage: require('../assets/bg.png'),
+            path: this.state.path,
+            queryParams: this.state.queryParams
           }}
         />
         <BackgroundPedometer/>
