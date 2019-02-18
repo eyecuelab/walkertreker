@@ -66,13 +66,9 @@ class BackgroundPedometer extends React.Component {
 
   _constructDateLog = () => {
     const { dispatch } = this.props;
-    const { difficultyLevel, campaignLength, startDate, stepGoalDayOne } = this.props.campaign;
+    const { difficultyLevel, campaignLength, startDate, steps } = this.props.campaign;
 
-    // these are placeholders to be actually informed by other state
-    // const campaignStartDate = new Date('January 25, 2019 06:00:00');
-    // const campaignLength = 15
-
-    // these can stay exactly as-is, i think
+    const stepGoalDayOne = steps[0];
     const day1Start = new Date(startDate);
     const day1End = new Date(startDate);
     day1Start.setHours(6,0,0,0);

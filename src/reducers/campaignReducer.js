@@ -23,7 +23,8 @@ export default (state = campaign, action) => {
     return {
       ...state,
       campaignId: action.id,
-      stepGoalDayOne: action.stepGoalDayOne,
+      stepTargets: action.steps,
+      //this needs to change ^ it needs to return an array of step goals to state
     }
   case c.INVITES_SENT:
     return {

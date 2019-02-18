@@ -37,7 +37,7 @@ class CreateCampaign extends React.Component {
     const payload = {
       game: {
         id: gameId,
-        campaignLength: this.props.campaign.campaignLength,
+        campaignLength: this.props.campaign.length,
         difficultyLevel: this.props.campaign.difficultyLevel,
         randomEvents: this.props.campaign.randomEvents,
         numPlayers: 1,
@@ -51,12 +51,13 @@ class CreateCampaign extends React.Component {
     }
     let apiPayload = {
       "params": {
-        "campaignLength": this.props.campaign.campaignLength,
+        "campaignLength": this.props.campaign.length,
         "difficultyLevel": this.props.campaign.difficultyLevel,
         "randomEvents": this.props.campaign.randomEvents,
         "startNow": false,
       }
     }
+    console.log('apiPayload ',apiPayload);
     apiPayload = JSON.parse(JSON.stringify(apiPayload))
 
     dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: apiPayload});

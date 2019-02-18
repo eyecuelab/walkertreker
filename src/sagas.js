@@ -51,21 +51,23 @@ export function *setInitialCampaignDetails(action) {
   console.log(response);
 
   yield storeData('campaignId', JSON.stringify(response.id))
-  yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
+  // yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
 
-  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, stepGoalDayOne: response.stepTargets[0]});
+  // yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, stepGoalDayOne: response.stepTargets[0]});
+  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, steps: response.stepTargets});
 }
 
 export function *sendInvites(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + JSON.parse(action.campId);
+  console.log(action);
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + action.campId;
   const theBody = {};
   const phoneNums = Object.keys(action.invites);
   for (pNumber of phoneNums) {
     const aBody =
       {
         // in reality we'll use the commented-out playerId below; this is just for testing:
-        "playerId": "7dd089c0-7f4b-4f39-a662-53554834a8f7",
-        // "playerId": action.playId,
+        // "playerId": "7dd089c0-7f4b-4f39-a662-53554834a8f7",
+        "playerId": action.playId,
         "phoneNumber": pNumber,
       }
     const initObj = {
@@ -79,8 +81,8 @@ export function *sendInvites(action) {
     console.log(initObj);
     // const response = yield call(fetch, url, initObj)
     const response = yield fetch(url, initObj)
-    // .then(response => response.json())
-    .then(response => response.text())
+    .then(response => response.json())
+    // .then(response => response.text())
     .catch(error => console.warn('error sending invites: ', error));
     console.log('response is: ', response);
   };

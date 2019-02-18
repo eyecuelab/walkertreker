@@ -35,7 +35,7 @@ class InvitePlayers extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('invite players has these contacts: ',this.state.contacts);
+    // console.log('invite players has these contacts: ',this.state.contacts);
   }
 
   getContacts = async () => {
@@ -126,9 +126,11 @@ class InvitePlayers extends React.Component {
     });
 
     // here insert code that posts the contacts selected to the server
-    const userId = await retrieveData('userId');
+    const playerInfo = await retrieveData('playerInfo');
+    const playId = JSON.parse(playerInfo).id;
+    console.log('eyedee',playId);
 
-    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: userId});
+    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: playId});
     // here it ends
 
     this.props.navigation.navigate('CampaignStaging', {

@@ -29,13 +29,3 @@ export default (state = player, action) => {
       return state;
     }
 }
-
-
-"id": "f3d977e8-9450-49e9-84cd-b0a1626b71b3",
-"displayName": "Michael Jordan",
-"phoneNumber": "+15035559900",
-"inActiveGame": true,
-"campaignId": "c6e88e6e-d8ea-42c3-977a-5fbda85e2e77",
-"health": 100,
-"hunger": 100,
-"steps": [
