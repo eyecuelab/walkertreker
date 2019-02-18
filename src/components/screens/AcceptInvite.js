@@ -17,7 +17,8 @@ class AcceptInvite extends React.Component {
   }
 
   componentDidMount = async () => {
-
+    console.log(`invite screen`)
+    console.log(this.state.campaignId)
   }
 
   componentDidUpdate = async () => {
