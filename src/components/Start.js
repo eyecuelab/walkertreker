@@ -14,39 +14,35 @@ class Start extends React.Component {
   }
 
   initializeState = async () => {
+    const { dispatch } = this.props
     // uncomment this to erase player data from AsyncStorage
     // await storeData('playerInfo', JSON.stringify({}))
-    // let localPlayer = await retrieveData('playerInfo')
-    // localPlayer = JSON.parse(localPlayer)
-    // console.log('localPlayer: ', localPlayer)
+    let localPlayer = await retrieveData('playerInfo')
+    localPlayer = JSON.parse(localPlayer)
+    dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id })
+    if (localPlayer.campaignId) {
+      dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: localPlayer.campaignId })
+    }
   }
 
   componentDidMount = async () => {
-    await this.initializeState()
+    await this.initializeState();
     const path = this.props.screenProps.path;
     const params = this.props.screenProps.queryParams;
     const player = this.props.player;
     const campaign = this.props.campaign;
-    console.log('============CONFIGURING INITIAL NAVIGATION============');
-    console.log('Logging state:')
-    console.log('player: ', player);
-    console.log('campaign: ', campaign);
     let route = '';
     let routeParams = {};
     if (path === 'invite') {
-      console.log('User was invited to a game, navigating to Accept Invite screen')
       route = 'AcceptInvite';
       routeParams = params;
     } else if (player.campaignId) {
-      // if player is in active game (campaign.campaignId == true && campaign.startDate == true) set
-      // console.log('Player is in an active game, navigating to Active Campaign screen.')
-      // route = "ActiveCampaignSummary"
-
-      // else set
-      console.log('Player is registered in an active game, navigating to Campaign Staging screen.')
-      route = 'CampaignStaging';
+      if (campaign.startDate != null) {
+        route = 'ActiveCampaignSummary'
+      } else {
+        route = 'CampaignStaging';
+      }
     } else {
-      console.log('User is not in an active game nor was invited to a new game, navigating to About screen.')
       route = 'About';
     }
 
@@ -54,7 +50,6 @@ class Start extends React.Component {
       index: 0,
       actions: [NavigationActions.navigate({ routeName: route, params: routeParams })]
     });
-    console.log('============EXECUTING INITIAL NAVIGATION ACTION============');
     this.props.navigation.dispatch(resetAction);
   }
 

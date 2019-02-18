@@ -16,30 +16,8 @@ class CreateCampaign extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-
-  }
-
-  // this needs to send a post event to the server when the `new campaign` button is pushed
   async _generateCampaign() {
     const { dispatch } = this.props;
-    const gameId = v4();
-    const userId = await AsyncStorage.getItem('userId');
-    const payload = {
-      game: {
-        id: gameId,
-        campaignLength: this.props.campaign.campaignLength,
-        difficultyLevel: this.props.campaign.difficultyLevel,
-        randomEvents: this.props.campaign.randomEvents,
-        numPlayers: 1,
-        players: { // we can probably take this out all togetht
-          [userId]: {
-            id: userId, // this is gonna be generated on appload and stored in async storage
-            name: 'Joe',
-          },
-        },
-      }
-    }
     let apiPayload = {
       "params": {
         "campaignLength": this.props.campaign.campaignLength,
@@ -49,11 +27,8 @@ class CreateCampaign extends React.Component {
       }
     }
     apiPayload = JSON.parse(JSON.stringify(apiPayload))
-
     dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: apiPayload});
-    // ^ this needs to be watched by a saga and send off an api call to the server with that payload
-
-    this.props.navigation.navigate('InvitePlayers', payload);
+    this.props.navigation.navigate('InvitePlayers');
   }
 
   _updateCampaignLength = num => {

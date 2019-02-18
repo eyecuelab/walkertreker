@@ -87,12 +87,8 @@ class App extends React.Component {
   componentDidMount = async () => {
     let player = await retrieveData('playerInfo')
     player = JSON.parse(player)
-    console.log(player.playerId)
-    if (!player.playerId) {
-      console.log('No player saved to device, opening player creation modal')
+    if (!player.id) {
       this.setState({newPlayerModalVisible: true})
-    } else {
-      console.log('Local player data found: ', player)
     }
   }
 

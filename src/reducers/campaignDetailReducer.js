@@ -65,10 +65,6 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       players: action.players
     }
-  case c.PLAYER_FETCHED:
-    newState = Object.assign({}, state);
-    newState.players.push(action.player);
-    return newState;
   case c.PLAYER_UPDATED:
     newState = Object.assign({}, state);
     const indexToUpdate = newState.players.findIndex(player => player.id === action.player.id);
