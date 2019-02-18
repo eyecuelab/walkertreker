@@ -1,9 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage } from 'react-native';
-import { Font } from 'expo';
 import { v4 } from 'uuid';
 import { connect } from 'react-redux';
-
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import ThreeButtonToggle from '../ui/ThreeButtonToggle';
@@ -16,39 +14,10 @@ class CreateCampaign extends React.Component {
 
   constructor(props) {
     super(props);
-    // remove this state after refactor
-    // this.state = {
-    //   campaignLength: '15', // options: '15', '30', '90'
-    //   difficultyLevel: 'easy', // options: 'easy', 'hard', 'xtreme'
-    //   randomEvents: 'low' // options: 'low', 'mid', 'high'
-    // }
   }
 
-  componentDidMount() {
-
-  }
-
-  // this needs to send a post event to the server when the `new campaign` button is pushed
   async _generateCampaign() {
     const { dispatch } = this.props;
-    const gameId = v4();
-    const userId = await AsyncStorage.getItem('userId');
-    // Below in payload I am just sketching out what we might want an initial game object to look like, this is very flexible. Essentially here is where we want to initialize our game object and populate the player list first with the person that started the game, using their phone number as a unique identifier (just to start I have hard coded that with a fake phone number, later we will get this from the phone itself.)
-    const payload = {
-      game: {
-        id: gameId,
-        campaignLength: this.props.campaign.campaignLength,
-        difficultyLevel: this.props.campaign.difficultyLevel,
-        randomEvents: this.props.campaign.randomEvents,
-        numPlayers: 1,
-        players: { // we can probably take this out all togetht
-          [userId]: {
-            id: userId, // this is gonna be generated on appload and stored in async storage
-            name: 'Joe',
-          },
-        },
-      }
-    }
     let apiPayload = {
       "params": {
         "campaignLength": this.props.campaign.campaignLength,
@@ -58,11 +27,8 @@ class CreateCampaign extends React.Component {
       }
     }
     apiPayload = JSON.parse(JSON.stringify(apiPayload))
-
     dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: apiPayload});
-    // ^ this needs to be watched by a saga and send off an api call to the server with that payload
-
-    this.props.navigation.navigate('InvitePlayers', payload);
+    this.props.navigation.navigate('InvitePlayers');
   }
 
   _updateCampaignLength = num => {

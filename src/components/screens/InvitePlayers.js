@@ -1,8 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
-import { Contacts, Permissions } from 'expo';
+import { Contacts, Permissions, Linking } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
+import constants from '../../constants';
+const { c, storeData, retrieveData } = constants;
 
 import ContactsList from '../ui/ContactsList';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
@@ -11,16 +13,11 @@ import defaultStyle from '../../styles/defaultStyle';
 
 import { parsePhoneNumber } from '../../util/util';
 
-import constants from '../../constants';
-const { c, storeData, retrieveData } = constants;
-
 class InvitePlayers extends React.Component {
 
   constructor(props) {
     super(props);
-    const game = this.props.navigation.getParam('game');
     this.state = {
-      game,
       contacts: {},
       contactsFetched: false,
       invites: {},
@@ -32,10 +29,11 @@ class InvitePlayers extends React.Component {
 
   componentDidMount = () => {
     this.getContacts();
+    const link = Linking.makeUrl('invite', { campaignId: this.props.campaign.campaignId })
   }
 
   componentDidUpdate() {
-    console.log('invite players has these contacts: ',this.state.contacts);
+
   }
 
   getContacts = async () => {
@@ -125,14 +123,9 @@ class InvitePlayers extends React.Component {
       selected: {},
     });
 
-    // here insert code that posts the contacts selected to the server
-    const userId = await retrieveData('userId');
-
-    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: userId});
-    // here it ends
+    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: this.props.player.id, });
 
     this.props.navigation.navigate('CampaignStaging', {
-      game: this.state.game,
       invites: this.state.invites,
     });
   }
@@ -168,7 +161,6 @@ class InvitePlayers extends React.Component {
         <TwoButtonOverlay
           button1title="Campaign Party"
           button1onPress={() => this.props.navigation.navigate('CampaignStaging', {
-            game: this.state.game,
             invites: this.state.invites,
           })}
           button2title="Abandon Game"
@@ -190,13 +182,11 @@ class InvitePlayers extends React.Component {
   }
 
   detailText = () => {
-    if (this.state.game.numPlayers == 1 || this.state.numSelected > 0) {
-      return (
-        <Text style={styles.detail}>
-          Tap to select people you want to include on your journey. Currently you've selected <Text style={{color: 'black', fontFamily: 'verdanaBold',}}>{this.state.numSelected} people.</Text>
-        </Text>
-      )
-    }
+    return (
+      <Text style={styles.detail}>
+        Tap to select people you want to invite on your journey. Currently you've selected <Text style={{color: 'black', fontFamily: 'verdanaBold',}}>{this.state.numSelected} people.</Text>
+      </Text>
+    )
   }
 
   render() {
@@ -213,15 +203,15 @@ class InvitePlayers extends React.Component {
                   <Text style={[styles.headline]}>Invite {"\n"}Players</Text>
                 </View>
                 <View style={customStyles.headerRow}>
-                  <Text style={[styles.label]}>{this.state.game.campaignLength} </Text>
+                  <Text style={[styles.label]}>{this.props.campaign.campaignLength} </Text>
                   <Text style={[styles.label, {color: 'black'}]}>Days</Text>
                 </View>
                 <View style={customStyles.headerRow}>
-                  <Text style={[styles.label]}>{this.state.game.difficultyLevel} </Text>
+                  <Text style={[styles.label]}>{this.props.campaign.difficultyLevel} </Text>
                   <Text style={[styles.label, {color: 'black'}]}>Difficulty Level</Text>
                 </View>
                 <View style={customStyles.headerRow}>
-                  <Text style={[styles.label]}>{this.state.game.randomEvents} </Text>
+                  <Text style={[styles.label]}>{this.props.campaign.randomEvents} </Text>
                   <Text style={[styles.label, {color: 'black'}]}>In-game Events</Text>
                 </View>
               </View>

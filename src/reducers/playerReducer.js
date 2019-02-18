@@ -17,7 +17,9 @@ export default (state = initialState, action) => {
       console.log(newState);
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
-
+    case c.PLAYER_FETCHED:
+      newState = action.player;
+      return newState;
     case c.SEND_JOIN_CAMPAIGN_REQUEST:
       newState = {
         ...state,
@@ -25,7 +27,6 @@ export default (state = initialState, action) => {
       };
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
-
     case c.PLAYER_UPDATED:
       newState = action.player;
       storeData('playerInfo', JSON.stringify(newState));
