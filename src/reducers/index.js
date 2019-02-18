@@ -1,6 +1,7 @@
 import campaignDetailReducer from './campaignDetailReducer';
 import stepReducer from './stepReducer';
 import appStateReducer from './appStateReducer';
+import playerReducer from './playerReducer';
 import { combineReducers } from 'redux';
 
 
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
   campaign: campaignDetailReducer,
   steps: stepReducer,
   appState: appStateReducer,
+  player: playerReducer,
 });
 
 export default rootReducer;
