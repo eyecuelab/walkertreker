@@ -11,6 +11,7 @@ players: [], // populated by each player inidividually through JoinCampaign
 startDate: null, // populated by CampaignStaging
 numPlayers: null, // derived in CampaignStaging once the host starts campaign
 }
+let newState;
 
 export default (state = initialStateCampaignDetailReducer, action) => {
   switch (action.type) {
@@ -65,10 +66,14 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       players: action.players
     }
   case c.PLAYER_FETCHED:
-    let newState;
-    newState = Object.assign({}, state)
-    newState.players.push(action.player)
-    return newState
+    newState = Object.assign({}, state);
+    newState.players.push(action.player);
+    return newState;
+  case c.PLAYER_UPDATED:
+    newState = Object.assign({}, state);
+    const indexToUpdate = newState.players.findIndex(player => player.id === action.player.id);
+    newState.players.splice(indexToUpdate, 1, action.player);
+    return newState;
   default:
     return state;
   }

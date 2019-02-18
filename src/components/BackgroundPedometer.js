@@ -68,7 +68,7 @@ class BackgroundPedometer extends React.Component {
     // dispatch({type: c.UPDATE_CAMPAIGN, campId: "c6e88e6e-d8ea-42c3-977a-5fbda85e2e77", currentDay: 2, inventory: {"foodItems": 3, "medicineItems": 2, "weaponItems": 0}})
     // dispatch({type: c.LEAVE_CAMPAIGN, campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77', playId: 'f3d977e8-9450-49e9-84cd-b0a1626b71b3'})
     // dispatch({type: c.FETCH_PLAYERS})
-    dispatch({type: c.UPDATE_PLAYER, playId: '7ee068b4-e73c-4fe9-a1a4-f9224f270894', hunger: 46, health: 91, steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 23, 34, 45, 566, 67]})
+    dispatch({type: c.UPDATE_PLAYER, playId: '7ee068b4-e73c-4fe9-a1a4-f9224f270894', hunger: 46, health: 22, steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 23, 34, 45, 566, 67]})
     // END ============
   }
 

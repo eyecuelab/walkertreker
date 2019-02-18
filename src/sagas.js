@@ -249,7 +249,7 @@ export function *updatePlayer(action) {
   const response = yield fetch(url, initObj)
     .then(response => response.json())
     .catch(error => console.log('error updating player: ', error))
-  console.log(response);
+  console.log('response: ', response);
 
   yield put({type: c.PLAYER_UPDATED, player: response})
 }
@@ -301,6 +301,7 @@ export function *watchUpdatePlayer() {
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchUpdatePlayer(),
     watchFetchPlayer(),
     watchLeaveCampaign(),
     watchUpdateCampaign(),
