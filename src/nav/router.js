@@ -25,7 +25,7 @@ const AppNavigator = createStackNavigator(
     InvitePlayers: { screen: InvitePlayers, },
     CampaignStaging: {
       screen: CampaignStaging,
-      path: 'staging/:campaignId',
+      path: 'staging',
     },
     AcceptInvite: {
       screen: AcceptInvite,
@@ -33,7 +33,7 @@ const AppNavigator = createStackNavigator(
     },
     CampaignSummary: {
       screen: ActiveCampaignSummary,
-      path: 'campaign/:campaignId'
+      path: 'campaign'
     },
     TOC: { screen: TOC, },
     Inventory: { screen: Inventory },

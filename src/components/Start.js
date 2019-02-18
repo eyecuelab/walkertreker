@@ -1,21 +1,38 @@
 import React from 'react';
 import { ImageBackground } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 export default class Start extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      route: null,
+
     }
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
+
+    console.log('start screen')
     const path = this.props.screenProps.path
     const params = this.props.screenProps.queryParams
-
+    console.log('path: ', path)
     if (path === 'invite') {
-      await this.setState({ route: this.props.navigation.navigate('AcceptInvite', params) })
-      console.log(this.state.route)
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'AcceptInvite', params })],
+      });
+      this.props.navigation.dispatch(resetAction);
+    }
+
+    // if player is in a game ==> navigate to campaign screen
+    // if player is in a pending game ==> navigate to staging screen
+
+    else {
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'About' })],
+      });
+      this.props.navigation.dispatch(resetAction);
     }
   }
 
@@ -25,7 +42,6 @@ export default class Start extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}
       >
-        {this.state.route}
       </ImageBackground>
     )
   }
