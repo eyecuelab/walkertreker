@@ -130,7 +130,7 @@ class InvitePlayers extends React.Component {
     const playId = JSON.parse(playerInfo).id;
     console.log('eyedee',playId);
 
-    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: playId});
+    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.id, playId: playId});
     // here it ends
 
     this.props.navigation.navigate('CampaignStaging', {

@@ -22,7 +22,7 @@ export default (state = campaign, action) => {
   case c.INITIAL_CAMPAIGN_DATA_RECEIVED:
     return {
       ...state,
-      campaignId: action.id,
+      id: action.id,
       stepTargets: action.steps,
       //this needs to change ^ it needs to return an array of step goals to state
     }

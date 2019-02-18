@@ -10,7 +10,7 @@ import ThreeButtonToggle from '../ui/ThreeButtonToggle';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
-const { c } = constants;
+const { c, retrieveData } = constants;
 
 class CreateCampaign extends React.Component {
 
@@ -25,10 +25,12 @@ class CreateCampaign extends React.Component {
   // this needs to send a post event to the server when the `new campaign` button is pushed
   async _generateCampaign() {
     const { dispatch } = this.props;
-    const gameId = v4();
+    const gameId = this.props.campaign.id; // this needs to be got from the server
     const userId = await AsyncStorage.getItem('userId');
     // Below in payload I am just sketching out what we might want an initial game object to look like, this is very flexible. Essentially here is where we want to initialize our game object and populate the player list first with the person that started the game, using their phone number as a unique identifier (just to start I have hard coded that with a fake phone number, later we will get this from the phone itself.)
-    const payload = {
+    const playerInfoString = await retrieveData('playerInfo');
+    const playerInfo = JSON.parse(playerInfoString);
+    const payload = { // this payload needs to be reflective of the actual campaign. the player that gets filled in here is the one who initializes the campaign
       game: {
         id: gameId,
         length: this.props.campaign.length,
@@ -36,9 +38,9 @@ class CreateCampaign extends React.Component {
         randomEvents: this.props.campaign.randomEvents,
         numPlayers: 1,
         players: {
-          [userId]: {
-            id: userId,
-            name: 'Joe',
+          [playerInfo.id]: {
+            id: playerInfo.id,
+            name: playerInfo.displayName,
           },
         },
       }
