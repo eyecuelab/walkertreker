@@ -1,8 +1,11 @@
 import React from 'react';
-import { ImageBackground } from 'react-native';
+import { AsyncStorage, ImageBackground } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
+import constants from '../constants';
+const { c, retrieveData, storeData } = constants;
 
-export default class Start extends React.Component {
+class Start extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -10,30 +13,44 @@ export default class Start extends React.Component {
     }
   }
 
-  componentDidMount = () => {
+  initializeState = async () => {
+    const { dispatch } = this.props
+    // uncomment this to erase player data from AsyncStorage
+    // await storeData('playerInfo', JSON.stringify({}))
+    let localPlayer = await retrieveData('playerInfo')
+    localPlayer = JSON.parse(localPlayer)
+    dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id })
+    if (localPlayer.campaignId) {
+      dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: localPlayer.campaignId })
+    }
+  }
 
-    console.log('start screen')
-    const path = this.props.screenProps.path
-    const params = this.props.screenProps.queryParams
-    console.log('path: ', path)
+  componentDidMount = async () => {
+    await this.initializeState();
+    const path = this.props.screenProps.path;
+    const params = this.props.screenProps.queryParams;
+    const player = this.props.player;
+    const campaign = this.props.campaign;
+    let route = '';
+    let routeParams = {};
     if (path === 'invite') {
-      const resetAction = StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'AcceptInvite', params })],
-      });
-      this.props.navigation.dispatch(resetAction);
+      route = 'AcceptInvite';
+      routeParams = params;
+    } else if (player.campaignId) {
+      if (campaign.startDate != null) {
+        route = 'ActiveCampaignSummary'
+      } else {
+        route = 'CampaignStaging';
+      }
+    } else {
+      route = 'About';
     }
 
-    // if player is in a game ==> navigate to campaign screen
-    // if player is in a pending game ==> navigate to staging screen
-
-    else {
-      const resetAction = StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'About' })],
-      });
-      this.props.navigation.dispatch(resetAction);
-    }
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: route, params: routeParams })]
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   render() {
@@ -46,3 +63,12 @@ export default class Start extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    player: state.player,
+    campaign: state.campaign,
+  }
+}
+
+export default connect(mapStateToProps)(Start);

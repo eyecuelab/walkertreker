@@ -1,9 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage } from 'react-native';
-import { Font } from 'expo';
 import { v4 } from 'uuid';
 import { connect } from 'react-redux';
-
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import ThreeButtonToggle from '../ui/ThreeButtonToggle';
@@ -18,11 +16,6 @@ class CreateCampaign extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-
-  }
-
-  // this needs to send a post event to the server when the `new campaign` button is pushed
   async _generateCampaign() {
     const { dispatch } = this.props;
     const gameId = this.props.campaign.id; // this needs to be got from the server
@@ -55,11 +48,8 @@ class CreateCampaign extends React.Component {
     }
     console.log('apiPayload ',apiPayload);
     apiPayload = JSON.parse(JSON.stringify(apiPayload))
-
     dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: apiPayload});
-    // ^ this needs to be watched by a saga and send off an api call to the server with that payload
-
-    this.props.navigation.navigate('InvitePlayers', payload);
+    this.props.navigation.navigate('InvitePlayers');
   }
 
   _updateCampaignLength = num => {

@@ -38,7 +38,7 @@ export default (state = campaign, action) => {
       ...state,
       fromTheServer: action.info,
     }
-  case c.PLAYER_JOINED_CAMPAIGN: // should return
+  case c.PLAYER_JOINED_CAMPAIGN: // should return the campaign, so refactor
     return {
       ...state,
       players: action.players

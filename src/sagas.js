@@ -58,7 +58,6 @@ export function *setInitialCampaignDetails(action) {
 }
 
 export function *sendInvites(action) {
-  console.log(action);
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + action.campId;
   const theBody = {};
   const phoneNums = Object.keys(action.invites);
