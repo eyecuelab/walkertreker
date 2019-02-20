@@ -118,7 +118,7 @@ class InvitePlayers extends React.Component {
       numSelected,
       selected: {},
     });
-
+    console.log('player: ', this.props);
     dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.id, playId: this.props.player.id});
     // here it ends
 
@@ -200,7 +200,7 @@ class InvitePlayers extends React.Component {
                   <Text style={[styles.headline]}>Invite {"\n"}Players</Text>
                 </View>
                 <View style={customStyles.headerRow}>
-                  <Text style={[styles.label]}>{this.state.game.length} </Text>
+                  <Text style={[styles.label]}>{this.props.campaign.length} </Text>
                   <Text style={[styles.label, {color: 'black'}]}>Days</Text>
                 </View>
                 <View style={customStyles.headerRow}>

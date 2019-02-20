@@ -57,6 +57,7 @@ export function *setInitialCampaignDetails(action) {
   yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, steps: response.stepTargets});
 }
 
+// TODO: something is happening here that is changing state so it's all nested within player
 export function *sendInvites(action) {
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + action.campId;
   const theBody = {};
