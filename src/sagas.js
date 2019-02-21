@@ -65,8 +65,6 @@ export function *sendInvites(action) {
   for (pNumber of phoneNums) {
     const aBody =
       {
-        // in reality we'll use the commented-out playerId below; this is just for testing:
-        // "playerId": "7dd089c0-7f4b-4f39-a662-53554834a8f7",
         "playerId": action.playId,
         "phoneNumber": pNumber,
       }

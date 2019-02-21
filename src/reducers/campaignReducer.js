@@ -1,5 +1,21 @@
 import constants from '../constants';
+<<<<<<< HEAD:src/reducers/campaignReducer.js
 const { c, initialState: { campaign } } = constants;
+=======
+const { c } = constants;
+const initialStateCampaignDetailReducer = {
+  campaignId: null, // populated by CreateCampaign
+  campaignLength: '15', // populated by CreateCampaign
+  difficultyLevel: 'easy', // populated by CreateCampaign
+  randomEvents: 'low', // populated by CreateCampaign
+  stepGoalDayOne: null, // populated by CreateCampaign
+  invited: null, //populated by InvitePlayers
+  players: [], // populated by each player inidividually through JoinCampaign
+  startDate: null, // populated by CampaignStaging
+  numPlayers: null, // derived in CampaignStaging once the host starts campaign
+  stepTargets: [],
+}
+>>>>>>> master:src/reducers/campaignDetailReducer.js
 let newState;
 
 export default (state = campaign, action) => {
@@ -55,6 +71,7 @@ export default (state = campaign, action) => {
       ...state,
       players: action.players
     }
+<<<<<<< HEAD:src/reducers/campaignReducer.js
   case c.PLAYER_FETCHED: // should only be the person whose phone it is
     newState = Object.assign({}, state);
     newState.players.push(action.player);
@@ -64,6 +81,13 @@ export default (state = campaign, action) => {
     const indexToUpdate = newState.players.findIndex(player => player.id === action.player.id);
     newState.players.splice(indexToUpdate, 1, action.player);
     return newState;
+=======
+  // case c.PLAYER_UPDATED:
+  //   newState = Object.assign({}, state);
+  //   const indexToUpdate = newState.players.findIndex(player => player.id === action.player.id);
+  //   newState.players.splice(indexToUpdate, 1, action.player);
+  //   return newState;
+>>>>>>> master:src/reducers/campaignDetailReducer.js
   default:
     return state;
   }
