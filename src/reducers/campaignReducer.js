@@ -24,6 +24,8 @@ export default (state = campaign, action) => {
       ...state,
       action.campaign
     }
+
+  // this one might need to be refactored still; invited is now a thing on the server
   case c.INVITES_SENT:
     return {
       ...state,
@@ -34,7 +36,7 @@ export default (state = campaign, action) => {
       ...state,
       action.campaign,
     }
-  case c.PLAYER_JOINED_CAMPAIGN: // should return the campaign, so refactor
+  case c.PLAYER_JOINED_CAMPAIGN:
     return {
       ...state,
       action.campaign,
@@ -49,15 +51,6 @@ export default (state = campaign, action) => {
       ...state,
       action.campaign,
     }
-  // case c.PLAYER_FETCHED: // should only be the person whose phone it is
-  //   newState = Object.assign({}, state);
-  //   newState.players.push(action.player);
-  //   return newState;
-  // case c.PLAYER_UPDATED: // should only be the person whose phone it is
-  //   newState = Object.assign({}, state);
-  //   const indexToUpdate = newState.players.findIndex(player => player.id === action.player.id);
-  //   newState.players.splice(indexToUpdate, 1, action.player);
-  //   return newState;
   default:
     return state;
   }
