@@ -54,7 +54,7 @@ export function *setInitialCampaignDetails(action) {
   // yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
 
   // yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, stepGoalDayOne: response.stepTargets[0]});
-  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, steps: response.stepTargets});
+  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
 }
 
 // TODO: something is happening here that is changing state so it's all nested within player
@@ -107,7 +107,7 @@ export function *fetchCampaignInfo(action) {
   console.log('response is: ', response);
 
   //here you are
-  yield put({type: c.CAMPAIGN_INFO_RECEIVED, info: response})
+  yield put({type: c.CAMPAIGN_INFO_RECEIVED, campaign: response})
 
 }
 
@@ -131,7 +131,7 @@ export function *joinCampaignRequest(action) {
   .catch(error => console.warn('error joining campaign: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.PLAYER_JOINED_CAMPAIGN, players: response.players})
+  yield put({type: c.PLAYER_JOINED_CAMPAIGN, campaign: response})
 }
 
 export function *createPlayer(action) {
@@ -178,7 +178,7 @@ export function *updateCampaign(action) {
   .catch(error => console.warn('error updating campaign: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.CAMPAIGN_UPDATED, info: response})
+  yield put({type: c.CAMPAIGN_UPDATED, campaign: response})
 }
 
 export function *leaveCampaign(action) {
@@ -199,7 +199,7 @@ export function *leaveCampaign(action) {
     .catch(error => console.warn('error leaving campaign: ', error));
     console.log('response is: ', response);
 
-  yield put({type: c.CAMPAIGN_LEFT, players: response.players})
+  yield put({type: c.CAMPAIGN_LEFT, campaign: response})
 }
 
 export function *fetchPlayer(action) {

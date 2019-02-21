@@ -10,21 +10,22 @@ export default (state = player, action) => {
       newState = Object.assign({}, state, action.player);
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
-    case c.PLAYER_FETCHED:
-      newState = action.player;
-      return newState;
+    // this one might be completely unneccessary, depending on when/how we fetch players, etc
     case c.SEND_JOIN_CAMPAIGN_REQUEST:
       newState = {
         ...state,
-        campaignId: action.campId
+        campaignId: action.campaign.id
       };
+      storeData('playerInfo', JSON.stringify(newState));
+      return newState;
+    case c.PLAYER_FETCHED:
+      newState = action.player;
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
     case c.PLAYER_UPDATED:
       newState = action.player;
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
-
     default:
       return state;
     }
