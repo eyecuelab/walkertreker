@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux';
 import constants from '../constants';
 const { c, retrieveData, storeData } = constants;
-import io from 'socket.io-client';
+import io from 'socket.io-client'
+// import io from 'socket.io/node_modules/socket.io-client';
 
 class SocketIO extends React.Component {
   constructor(props) {

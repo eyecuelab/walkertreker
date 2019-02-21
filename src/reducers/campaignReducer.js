@@ -19,38 +19,27 @@ export default (state = campaign, action) => {
       ...state,
       randomEvents: action.randomEvents
     }
-  case c.INITIAL_CAMPAIGN_DATA_RECEIVED:
-    return {
-      ...state,
-      action.campaign
-    }
-
   // this one might need to be refactored still; invited is now a thing on the server
   case c.INVITES_SENT:
     return {
       ...state,
       invited: action.invites,
     }
+  case c.INITIAL_CAMPAIGN_DATA_RECEIVED:
+    newState = Object.assign({}, state, action.campaign);
+    return newState;
   case c.CAMPAIGN_INFO_RECEIVED:
-    return {
-      ...state,
-      action.campaign,
-    }
+    newState = Object.assign({}, state, action.campaign);
+    return newState;
   case c.PLAYER_JOINED_CAMPAIGN:
-    return {
-      ...state,
-      action.campaign,
-    }
+    newState = Object.assign({}, state, action.campaign);
+    return newState;
   case c.CAMPAIGN_UPDATED:
-    return {
-      ...state,
-      action.campaign,
-    }
+    newState = Object.assign({}, state, action.campaign);
+    return newState;
   case c.CAMPAIGN_LEFT:
-    return {
-      ...state,
-      action.campaign,
-    }
+    newState = Object.assign({}, state, action.campaign);
+    return newState;
   default:
     return state;
   }
