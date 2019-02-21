@@ -8,6 +8,7 @@ import CreateCampaign from '../components/screens/CreateCampaign';
 import InvitePlayers from '../components/screens/InvitePlayers';
 import CampaignStaging from '../components/screens/CampaignStaging';
 import AcceptInvite from '../components/screens/AcceptInvite';
+import WaitForStart from '../components/screens/WaitForStart';
 import TOC from '../components/TOC';
 import ActiveCampaignSummary from '../components/ActiveCampaignSummary';
 import Inventory from '../components/Inventory';
@@ -23,18 +24,13 @@ const AppNavigator = createStackNavigator(
     About: { screen: About, },
     CreateCampaign: { screen: CreateCampaign, },
     InvitePlayers: { screen: InvitePlayers, },
-    CampaignStaging: {
-      screen: CampaignStaging,
-      path: 'staging',
-    },
+    CampaignStaging: { screen: CampaignStaging, },
     AcceptInvite: {
       screen: AcceptInvite,
       path: 'invite/:campaignId'
     },
-    CampaignSummary: {
-      screen: ActiveCampaignSummary,
-      path: 'campaign'
-    },
+    WaitForStart: { screen: WaitForStart, },
+    CampaignSummary: { screen: ActiveCampaignSummary, },
     TOC: { screen: TOC, },
     Inventory: { screen: Inventory },
     JoinCampaign: { screen: JoinCampaign },
