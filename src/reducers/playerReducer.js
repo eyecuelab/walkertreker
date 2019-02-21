@@ -13,8 +13,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
 
     case c.PLAYER_CREATED:
-      newState = Object.assign({}, state, action.player)
-      console.log(newState);
+      newState = Object.assign({}, state, action.player);
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
     case c.PLAYER_FETCHED:

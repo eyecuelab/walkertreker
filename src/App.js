@@ -14,6 +14,7 @@ const { c, retrieveData } = constants;
 
 import Modal from 'react-native-modal';
 import NewPlayerForm from './components/ui/NewPlayerForm';
+import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 
 if (__DEV__) {
@@ -31,6 +32,7 @@ class App extends React.Component {
     this.state = {
       isReady: false,
       newPlayerModalVisible: false,
+
     }
   }
 
@@ -110,6 +112,8 @@ class App extends React.Component {
         <Modal isVisible={this.state.newPlayerModalVisible}>
           <NewPlayerForm handleModalStateChange={this._toggleNewPlayerModal} />
         </Modal>
+        <SocketIO />
+        <BackgroundPedometer/>
         <AppContainer
           uriPrefix={prefix}
           screenProps={{
@@ -118,7 +122,6 @@ class App extends React.Component {
             queryParams: this.state.queryParams
           }}
         />
-        <BackgroundPedometer/>
       </Provider>
     );
   }
