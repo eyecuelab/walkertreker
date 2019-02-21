@@ -41,7 +41,7 @@ const AppNavigator = createStackNavigator(
     Map: { screen: Map },
     Profile: { screen: Profile },
     Team: { screen: Team },
-    BackgroundPedometer: { screen: BackgroundPedometer }
+    BackgroundPedometer: { screen: BackgroundPedometer },
   },
   {
     initialRouteName: "Start",

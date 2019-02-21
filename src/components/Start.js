@@ -9,23 +9,32 @@ class Start extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-
+      player: {
+        id: null,
+        campaignId: null,
+      }
     }
   }
 
   initializeState = async () => {
-    const { dispatch } = this.props
+    const { dispatch } = this.props;
     // uncomment this to erase player data from AsyncStorage
     // await storeData('playerInfo', JSON.stringify({}))
-    let localPlayer = await retrieveData('playerInfo')
-    localPlayer = JSON.parse(localPlayer)
-    dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id })
-    if (localPlayer.campaignId) {
-      dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: localPlayer.campaignId })
+    let localPlayer = await retrieveData('playerInfo');
+    localPlayer = JSON.parse(localPlayer);
+    // stashing player info here in local state just for navigation purposes; set localPlayer to state, then let that determine navigation actions below...
+    await this.setState({ player: localPlayer });
+    // ...but let these actions initialze player and campaign state in redux store.
+    if (localPlayer.id !== null) {
+      dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id });
+    }
+    if (localPlayer.campaignId !== null) {
+      dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: localPlayer.campaignId });
     }
   }
 
   componentDidMount = async () => {
+    console.log('========== Start.componentDidMount =========');
     await this.initializeState();
     const path = this.props.screenProps.path;
     const params = this.props.screenProps.queryParams;
@@ -38,7 +47,7 @@ class Start extends React.Component {
       routeParams = params;
     } else if (player.campaignId) {
       if (campaign.startDate != null) {
-        route = 'ActiveCampaignSummary'
+        route = 'ActiveCampaignSummary';
       } else {
         route = 'CampaignStaging';
       }
@@ -60,7 +69,7 @@ class Start extends React.Component {
         style={{width: '100%', height: '100%'}}
       >
       </ImageBackground>
-    )
+    );
   }
 }
 

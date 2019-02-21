@@ -1,15 +1,16 @@
 import constants from '../constants';
 const { c } = constants;
 const initialStateCampaignDetailReducer = {
-campaignId: null, // populated by CreateCampaign
-campaignLength: '15', // populated by CreateCampaign
-difficultyLevel: 'easy', // populated by CreateCampaign
-randomEvents: 'low', // populated by CreateCampaign
-stepGoalDayOne: null, // populated by CreateCampaign
-invited: null, //populated by InvitePlayers
-players: [], // populated by each player inidividually through JoinCampaign
-startDate: null, // populated by CampaignStaging
-numPlayers: null, // derived in CampaignStaging once the host starts campaign
+  campaignId: null, // populated by CreateCampaign
+  campaignLength: '15', // populated by CreateCampaign
+  difficultyLevel: 'easy', // populated by CreateCampaign
+  randomEvents: 'low', // populated by CreateCampaign
+  stepGoalDayOne: null, // populated by CreateCampaign
+  invited: null, //populated by InvitePlayers
+  players: [], // populated by each player inidividually through JoinCampaign
+  startDate: null, // populated by CampaignStaging
+  numPlayers: null, // derived in CampaignStaging once the host starts campaign
+  stepTargets: [],
 }
 let newState;
 
@@ -65,11 +66,11 @@ export default (state = initialStateCampaignDetailReducer, action) => {
       ...state,
       players: action.players
     }
-  case c.PLAYER_UPDATED:
-    newState = Object.assign({}, state);
-    const indexToUpdate = newState.players.findIndex(player => player.id === action.player.id);
-    newState.players.splice(indexToUpdate, 1, action.player);
-    return newState;
+  // case c.PLAYER_UPDATED:
+  //   newState = Object.assign({}, state);
+  //   const indexToUpdate = newState.players.findIndex(player => player.id === action.player.id);
+  //   newState.players.splice(indexToUpdate, 1, action.player);
+  //   return newState;
   default:
     return state;
   }
