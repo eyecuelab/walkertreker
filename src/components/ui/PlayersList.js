@@ -23,7 +23,6 @@ class PlayersList extends React.Component {
         )
       );
     } else {
-      console.log('hit the else');
       return (
         <View style={styles.container}>
           <Text style={defaultStyleSheet.label}>No players...</Text>
