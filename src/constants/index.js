@@ -1,16 +1,16 @@
 import * as types from './actionTypes';
-import initialStateStepReducer from './initialStates/initialStateStepReducer';
-import initialStateCampaignDetailReducer from './initialStates/initialStateStepReducer';
-import fakeState from './fakeStateModel';
+import initialStateSteps from './initialStates/initialStateSteps';
+import initialStateCampaign from './initialStates/initialStateCampaign';
+import initialStatePlayer from './initialStates/initialStatePlayer';
 import { storeData, retrieveData } from './asyncStorage'
 
 export default {
   c: types,
   initialState: {
-    campaignDetails: initialStateCampaignDetailReducer,
-    steps: initialStateStepReducer,
+    campaign: initialStateCampaign,
+    steps: initialStateSteps,
+    player: initialStatePlayer,
   },
   storeData,
   retrieveData,
-  fakeState: fakeState,
 };

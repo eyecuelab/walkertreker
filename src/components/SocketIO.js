@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import constants from '../constants';
 const { c, retrieveData, storeData } = constants;
-import io from 'socket.io-client';
+import io from 'socket.io-client'
 
 // configuring socket.io
 // local
