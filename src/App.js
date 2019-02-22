@@ -33,7 +33,6 @@ class App extends React.Component {
     this.state = {
       isReady: false,
       newPlayerModalVisible: false,
-
     }
   }
 
@@ -72,6 +71,8 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
+    const localPlayer = await retrieveData('playerInfo')
+    await this.setState({ localPlayer })
   };
 
   _handleLoadingError = error => {
@@ -123,7 +124,8 @@ class App extends React.Component {
           screenProps={{
             backgroundImage: require('../assets/bg.png'),
             path: this.state.path,
-            queryParams: this.state.queryParams
+            queryParams: this.state.queryParams,
+            localPlayer: this.state.localPlayer,
           }}
         />
       </Provider>

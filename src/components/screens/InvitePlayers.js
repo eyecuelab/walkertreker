@@ -29,11 +29,7 @@ class InvitePlayers extends React.Component {
 
   componentDidMount = () => {
     this.getContacts();
-    const link = Linking.makeUrl('invite', { campaignId: this.props.campaign.campaignId })
-  }
-
-  componentDidUpdate() {
-
+    const link = Linking.makeUrl('invite', { campaignId: this.props.campaign.id })
   }
 
   getContacts = async () => {
@@ -122,8 +118,9 @@ class InvitePlayers extends React.Component {
       numSelected,
       selected: {},
     });
-
-    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.campaignId, playId: this.props.player.id, });
+    console.log('props right before sending: ', this.props);
+    dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.id, playId: this.props.player.id});
+    // here it ends
 
     this.props.navigation.navigate('CampaignStaging', {
       invites: this.state.invites,
@@ -203,7 +200,7 @@ class InvitePlayers extends React.Component {
                   <Text style={[styles.headline]}>Invite {"\n"}Players</Text>
                 </View>
                 <View style={customStyles.headerRow}>
-                  <Text style={[styles.label]}>{this.props.campaign.campaignLength} </Text>
+                  <Text style={[styles.label]}>{this.props.campaign.length} </Text>
                   <Text style={[styles.label, {color: 'black'}]}>Days</Text>
                 </View>
                 <View style={customStyles.headerRow}>
@@ -291,6 +288,7 @@ const customStyles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
+    player: state.player,
   }
 }
 

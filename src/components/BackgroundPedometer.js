@@ -59,24 +59,22 @@ class BackgroundPedometer extends React.Component {
       }
     }, 60000);
 
-    // this commented-out block was made purely to test functionality.  it can all go away once this works in prod.
-    // START ============
-    // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: 'e54490cf-7771-4d63-b788-54f714c00dcf'})
-    // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: 'f3d977e8-9450-49e9-84cd-b0a1626b71b3', campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77'})
-    // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: '7ee068b4-e73c-4fe9-a1a4-f9224f270894', campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77'})
-    // dispatch({type: c.CREATE_PLAYER, name: 'Morm Grumblemutt', number: '5035550005'})
-    // setTimeout(async function () {
-    //   console.log(await retrieveData('playerInfo'));
-    // }, 3000);
-    // dispatch({type: c.UPDATE_CAMPAIGN, campId: "c6e88e6e-d8ea-42c3-977a-5fbda85e2e77", currentDay: 2, inventory: {"foodItems": 3, "medicineItems": 2, "weaponItems": 0}})
-    // dispatch({type: c.LEAVE_CAMPAIGN, campId: 'c6e88e6e-d8ea-42c3-977a-5fbda85e2e77', playId: 'f3d977e8-9450-49e9-84cd-b0a1626b71b3'})
-    // dispatch({type: c.FETCH_PLAYERS})
-    // dispatch({type: c.UPDATE_PLAYER, playId: '391013c8-2bd9-46c4-93ff-0131d0154aed', hunger: 99, health: 22, steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 23, 34, 45, 566, 67]})
-    // setTimeout(async function () {
-    //   const aState = await AsyncStorage.getItem('previousState');
-    //   console.log('last state: ',aState);
-    // }, 5000);
-    // END ============
+    // ========== START DELETE THESE AFTER TESTING ==========
+    // dispatch({type: c.CREATE_PLAYER, name: 'otherjosh', number: 9712357572});
+    // const dummyPayload = JSON.parse(JSON.stringify(
+    //   {
+    //     "params": {
+    //       "campaignLength": 15,
+    //       "difficultyLevel": 'easy',
+    //       "randomEvents": 'low',
+    //     }
+    //   }
+    // ));
+    // dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: dummyPayload});
+    // dispatch({type: c.FETCH_PLAYER, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0'})
+    // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: '240d484a-ec1c-4290-8c7e-43a877abb24c'})
+    // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0', campId: '240d484a-ec1c-4290-8c7e-43a877abb24c'});
+    // ==========  END DELETE THESE AFTER TESTING  ==========
   }
 
   componentWillUnmount() {
@@ -85,19 +83,15 @@ class BackgroundPedometer extends React.Component {
 
   _constructDateLog = () => {
     const { dispatch } = this.props;
-    const { difficultyLevel, campaignLength, startDate, stepGoalDayOne } = this.props.campaign;
+    const { difficultyLevel, length, startDate, steps } = this.props.campaign;
 
-    // these are placeholders to be actually informed by other state
-    // const campaignStartDate = new Date('January 25, 2019 06:00:00');
-    // const campaignLength = 15
-
-    // these can stay exactly as-is, i think
+    const stepGoalDayOne = steps[0];
     const day1Start = new Date(startDate);
     const day1End = new Date(startDate);
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
 
-    dispatch(setCampaignDates(day1Start, day1End, campaignLength, difficultyLevel, stepGoalDayOne));
+    dispatch(setCampaignDates(day1Start, day1End, length, difficultyLevel, stepGoalDayOne));
   }
 
   _handleAppStateChange = (nextAppState) => {

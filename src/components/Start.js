@@ -8,26 +8,18 @@ const { c, retrieveData, storeData } = constants;
 class Start extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    const needPlayer = this.props.screenProps.localPlayer.id ? true : false
+    const needCampaign = this.props.screenProps.localPlayer.campaignId ? true : false
+    this.state = {
+      localPlayer: this.props.screenProps.localPlayer,
+      needPlayer,
+      needCampaign,
+    }
   }
 
-  initializeState = async () => {
-    const { dispatch } = this.props;
+  componentDidMount = async () => {
     // uncomment this to erase player data from AsyncStorage
     // await storeData('playerInfo', '{}')
-    let localPlayer = await retrieveData('playerInfo');
-    localPlayer = JSON.parse(localPlayer);
-    if (!localPlayer) {
-      this.navigate('About')
-    }
-    else {
-      if (localPlayer.id !== null) {
-        dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id });
-      }
-      if (localPlayer.campaignId !== null) {
-        dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: localPlayer.campaignId });
-      }
-    }
   }
 
   navigate = (route) => {
@@ -51,29 +43,43 @@ class Start extends React.Component {
     console.log('=================================')
     console.log('======= componentDidUpdate ======')
     console.log('=================================')
-    console.log(prevProps.player.id, this.props.player.id, this.props.player.inActiveGame, this.props.campaign.id, this.props.campaign.startDate)
-    if (!prevProps.player.id && this.props.player.id && !this.props.player.inActiveGame) {
-      console.log('This is a returning player who is not currently in a campaign, navigating to About screen')
-      this.navigate('About')
-    }
-    if (!prevProps.player.id && this.props.campaign.id && this.props.campaign.startDate == null) {
-      if (this.props.player.id == this.props.campaign.host) {
-        console.log('This is the host player registered with this campaign, navigating to CampaignStaging screen')
-        this.navigate('CampaignStaging')
-      } else {
-        console.log('This is a player registered with a game that has not yet started, navigating to WaitForStart screen')
-        this.navigate('WaitForStart')
+    console.log(this.props.player)
+    console.log(this.props.campaign)
+    console.log(this.state)
+    if (!this.state.ready) {
+      if (!this.state.getPlayer && !this.state.getCampaign) {
+        this.navigate('About')
+      }
+      if (this.state.getPlayer && !this.props.player.id) {
+        dispatch({ type: c.FETCH_PLAYER, playId: this.state.localPlayer.id})
+      }
+      if (this.state.getCampaign && !this.props.campaign.id) {
+        dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
       }
     }
-    if (!prevProps.player.id && this.props.campaign.id && this.props.campaign.startDate !== null) {
-      console.log('This player is in an active game, navigating to ActiveCampaignSummary screen')
-      this.navigate('ActiveCampaignSummary')
-    }
+
+
+    // if (!prevProps.player.id && this.props.player.id && !this.props.player.inActiveGame) {
+    //   console.log('This is a returning player who is not currently in a campaign, navigating to About screen')
+    //   this.navigate('About')
+    // }
+    // if (!prevProps.player.id && this.props.campaign.id && this.props.campaign.startDate == null) {
+    //   console.log(this.props.player.id)
+    //   console.log(this.props.campaign.host)
+    //   if (this.props.player.id == this.props.campaign.host) {
+    //     console.log('This is the host player registered with this campaign, navigating to CampaignStaging screen')
+    //     this.navigate('CampaignStaging')
+    //   } else {
+    //     console.log('This is a player registered with a game that has not yet started, navigating to WaitForStart screen')
+    //     this.navigate('WaitForStart')
+    //   }
+    // }
+    // if (!prevProps.player.id && this.props.campaign.id && this.props.campaign.startDate !== null) {
+    //   console.log('This player is in an active game, navigating to ActiveCampaignSummary screen')
+    //   this.navigate('ActiveCampaignSummary')
+    // }
   }
 
-  componentDidMount = () => {
-    this.initializeState();
-  }
 
   render() {
     return (
