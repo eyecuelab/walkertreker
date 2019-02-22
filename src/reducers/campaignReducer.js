@@ -1,7 +1,7 @@
 import constants from '../constants';
 const { c, initialState: { campaign } } = constants;
 let newState;
-import testState from '../constants/initialStates/tests/initialStateCampaignTest';
+// import testState from '../constants/initialStates/tests/initialStateCampaignTest';
 
 export default (state = campaign/*testState*/, action) => {
   switch (action.type) {
@@ -43,6 +43,9 @@ export default (state = campaign/*testState*/, action) => {
     return newState;
   case c.CAMPAIGN_LEFT:
     newState = Object.assign({}, state, action.campaign);
+    return newState;
+  case c.CAMPAIGN_DESTROYED:
+    newState = Object.assign({}, campaign);
     return newState;
   default:
     return state;
