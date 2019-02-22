@@ -9,17 +9,21 @@ class PlayersList extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log('player list props: ', this.props);
   }
 
   listConditionalRender = () => {
     if (this.props.campaign.players.length >= 1) {
       return (
         this.props.campaign.players.map(player =>
-          <Text
-            style={defaultStyleSheet.label}
+          <TouchableOpacity
+            onPress={() => {this.props.onSelectPlayer(player.id)}}
             key={player.id}>
-            {player.displayName}
-          </Text>
+            <Text
+              style={defaultStyleSheet.subHeading}>
+              {player.displayName}
+            </Text>
+          </TouchableOpacity>
         )
       );
     } else {
@@ -29,6 +33,9 @@ class PlayersList extends React.Component {
         </View>
       );
     }
+  }
+
+  componentDidMount() {
   }
 
   render() {
@@ -51,12 +58,18 @@ const styles = StyleSheet.create({
   },
   list: {
     width: "100%",
-  },
-  listItem: {
-    // borderBottomColor: 'black',
-    // borderBottomWidth: 2,
-  },
+  }
 });
+
+PlayersList.propTypes = {
+  onSelectPlayer: PropTypes.func
+}
+
+const doNothing = () => {return;}
+
+PlayersList.defaultProps = {
+  onSelectPlayer: doNothing,
+}
 
 function mapStateToProps(state) {
   return {

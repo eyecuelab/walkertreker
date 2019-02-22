@@ -10,39 +10,48 @@ import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 const { c } = constants;
 
-class NewPlayerForm extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      displayName: '',
-      phoneNumber: '',
-    }
-  }
+class WhenToStartForm extends React.Component {
 
-  _handleSubmit = async () => {
+  _handleGameStart = (num) => {
     const { dispatch } = this.props;
-    dispatch({type: c.CREATE_PLAYER, name: this.state.displayName, number: this.state.phoneNumber})
-    this.props.handleModalStateChange()
+    let bool;
+    if (num === 1) {
+      bool = true;
+    } else if (num === 0) {
+      bool = false;
+    } else {
+      console.warn('_handleGameStart is getting a weird argument');
+    }
+    dispatch({type: c.START_CAMPAIGN, campId: this.props.campaign.id, startNow: bool});
+    this.props.handleModalStateChange();
   }
 
   render() {
     return(
       <View style={customStyles.container}>
+
         <View style={customStyles.headlineContainer}>
-          <Text style={styles.headline}>New Player</Text>
+          <Text style={styles.headline}>When will your journey begin?</Text>
         </View>
+
         <View style={customStyles.formContainer}>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Display Name</Text>
-            <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({displayName: text})} value={this.state.displayName}/>
-          </View>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Phone Number</Text>
-            <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
-          </View>
+
           <View style={customStyles.buttonContainer}>
-            <TouchableOpacity style={customStyles.button} onPress={this._handleSubmit}><Text style={styles.label}>Submit</Text></TouchableOpacity>
+            <TouchableOpacity
+              style={customStyles.button}
+              onPress={()=>{this._handleGameStart(1)}}>
+              <Text style={styles.label}>Right Now</Text>
+            </TouchableOpacity>
           </View>
+
+          <View style={customStyles.buttonContainer}>
+            <TouchableOpacity
+              style={customStyles.button}
+              onPress={()=>{this._handleGameStart(0)}}>
+              <Text style={styles.label}>Tomorrow Morning</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
     )
@@ -68,9 +77,6 @@ const customStyles = StyleSheet.create({
   formContainer: {
     padding: 10,
   },
-  fieldContainer: {
-    margin: 10,
-  },
   buttonContainer: {
     margin: 10,
     justifyContent: 'center',
@@ -78,27 +84,15 @@ const customStyles = StyleSheet.create({
   },
   button: {
     backgroundColor: 'black',
-    width: widthUnit*30,
+    width: widthUnit*55,
     height: heightUnit*7.5,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  textInput: {
-    width: '100%',
-    borderColor: 'white',
-    borderRadius: 5,
-    borderWidth: 2,
-    marginTop: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    color: 'white',
-    fontFamily: 'gore',
-  },
 })
 
-NewPlayerForm.propTypes = {
+WhenToStartForm.propTypes = {
   handleModalStateChange: PropTypes.func
 }
 
@@ -108,4 +102,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(NewPlayerForm);
+export default connect(mapStateToProps)(WhenToStartForm);
