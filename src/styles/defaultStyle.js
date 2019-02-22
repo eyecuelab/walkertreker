@@ -21,6 +21,16 @@ export default defaultStyle = {
     paddingTop: widthUnit*3,
     color: 'white',
   },
+  subHeading: {
+    fontFamily: 'gore',
+    fontSize: widthUnit*8,
+    lineHeight: widthUnit*6,
+    paddingTop: widthUnit*5,
+    color: 'white',
+    textShadowColor: '#222',
+    textShadowOffset: {width: 0, height: 2},
+    textShadowRadius: 1,
+  },
   label: {
     fontFamily: 'gore',
     fontSize: widthUnit*5,
