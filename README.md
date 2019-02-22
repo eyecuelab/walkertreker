@@ -6,7 +6,7 @@
 #### Dispatching actions
 ##### Here are the actions and payloads needed to dispatch actions to the server:
 
-- Create Campaign
+- Create Campaign - _returns a proto-campaign to state, containing campaign id, length, difficulty, and event frequency. adds host player to campaign players_
   - type: `c.SET_INITIAL_CAMPAIGN_DETAILS`
   - payload: ```{
     "params": {
@@ -16,10 +16,10 @@
     },
     "playerId": player.id,
     }}```
-- Destroy Campaign
+- Destroy Campaign - _returns campaign state to its initial blank value_
   - type: `c.DESTROY_CAMPAIGN`
   - campId: `campaign.id`
-- Fetch Campaign
+- Fetch Campaign - _returns campaign that matches the supplied campaign id_
   - type: `c.FETCH_CAMPAIGN_INFO`
   - id: `campaign.id`
 - Invite to Campaign
@@ -27,19 +27,19 @@
   - campId: `campaign.id`
   - playId: `player.id`
   - invites: `[array] of contacts gathered from the device`
-- Join Campaign
+- Join Campaign - _returns updated campaign that matches the supplied campaign id_
   - type: `c.SEND_JOIN_CAMPAIGN_REQUEST`
   - campId: `campaign.id`
   - playId: `player.id`
-- Leave Campaign
+- Leave Campaign - _returns campaign state to its initial blank value_
   - type: `c.LEAVE_CAMPAIGN`
   - campId: `campaign.id`
   - playId: `player.id`
-- Start Campaign
+- Start Campaign - _returns updated campaign that matches the supplied campaign id_
   - type: `c.START_CAMPAIGN`
   - campId: `campaign.id`
   - startNow: `[boolean] ? campaign starts instantly : campaign start tomorrow morning`
-- Update Campaign
+- Update Campaign - _returns updated campaign that matches the supplied campaign id_
   - type: `c.UPDATE_CAMPAIGN`
   - campId: `campaign.id`
   - currentDay: **optional** `[number] denoting day of campaign, from 0 to 90`
@@ -48,14 +48,14 @@
       weaponItems: [number],
       medicineItems: [number]
     }```
-- Create Player
+- Create Player - _returns newly-created player object to player state_
   - type: `c.CREATE_PLAYER`
   - name: `'Macho Man Randy Savage'`
   - number: `[number] which is the players phone number`
-- Fetch Player
+- Fetch Player - _returns requested player object to player state_
   - type: `c.FETCH_PLAYER`
   - playId: `player.id`
-- Update Player
+- Update Player - _returns updated player object to player state_
   - type: `c.UPDATE_PLAYER`
   - playId: `player.id`
   - hunger: **optional** `[number] from 0 to 100, with 100 meaning completely stuffed and 0 meaning dead of starvation`

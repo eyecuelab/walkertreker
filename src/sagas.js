@@ -198,7 +198,7 @@ export function *leaveCampaign(action) {
     .catch(error => console.warn('error leaving campaign: ', error));
     console.log('response is: ', response);
 
-  yield put({type: c.CAMPAIGN_LEFT, campaign: response})
+  yield put({type: c.CAMPAIGN_LEFT})
 }
 
 export function *fetchPlayer(action) {
