@@ -7,12 +7,12 @@ export const setAppState = (appState) => ({
   appState: appState,
 });
 
-export const setCampaignDates = (firstDayStart, firstDayEnd, campaignLength, difficultyLevel, stepGoalDayOne) => {
+export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyLevel, stepGoalDayOne) => {
   const dateArray = [];
   let start;
   let end;
 
-  for (let i=0; i < campaignLength; i++) {
+  for (let i=0; i < length; i++) {
     let aGoal;
     start = new Date(firstDayStart);
     end = new Date(firstDayEnd);
