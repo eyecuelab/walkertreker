@@ -58,6 +58,7 @@ const customStyles = StyleSheet.create({
     height: heightUnit*50,
     backgroundColor: 'darkred',
     justifyContent: 'center',
+    borderRadius: 5,
   },
   headlineContainer: {
     margin: 10,
