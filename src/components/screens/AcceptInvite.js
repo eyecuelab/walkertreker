@@ -12,17 +12,13 @@ class AcceptInvite extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      campaignId: this.props.navigation.getParam('campaignId')
+
     }
   }
 
   componentDidMount = async () => {
-    console.log(`invite screen`)
-    console.log(this.state.campaignId)
-  }
-
-  componentDidUpdate = async () => {
-
+    const campaignId = this.props.navigation.getParam('campaignId', 'Error: no campaignId found')
+    this.setState({ campaignId })
   }
 
   render() {

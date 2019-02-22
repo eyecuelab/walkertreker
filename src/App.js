@@ -11,7 +11,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 import rootReducer from './reducers';
 import constants from './constants';
-const { c, retrieveData } = constants;
+const { c, storeData, retrieveData } = constants;
 
 import Modal from 'react-native-modal';
 import NewPlayerForm from './components/ui/NewPlayerForm';
@@ -71,8 +71,16 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
+    // set localPlayer for testing purposes
+    // let player = {
+    //   id: "ec8b81d6-ae17-4de9-99ca-fe007f71f731",
+    //   campaignId: null,
+    // }
+    // await storeData('playerInfo', JSON.stringify(player))
+
     const localPlayer = await retrieveData('playerInfo')
     await this.setState({ localPlayer })
+
   };
 
   _handleLoadingError = error => {

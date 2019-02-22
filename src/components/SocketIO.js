@@ -58,11 +58,9 @@ class SocketIO extends React.Component {
 
   componentDidUpdate(prevState, prevProps) {
     if (prevProps == null && this.props.player.id) {
-      console.log(`sending action connectToPlayer to server with id ${this.props.player.id}`)
       socket.emit('connectToPlayer', this.props.player.id)
     }
     if (prevProps == null && this.props.player.campaignId) {
-      console.log(`sending action connectToCampaign to server with id ${this.props.player.campaignId}`)
       socket.emit('connectToCampaign', this.props.player.campaignId)
     }
   }
