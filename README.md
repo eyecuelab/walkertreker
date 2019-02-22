@@ -6,7 +6,7 @@
 #### Dispatching actions
 ##### Here are the actions and payloads needed to dispatch actions to the server:
 
-- **Create Campaign** - _returns a proto-campaign to state, containing campaign id, length, difficulty, and event frequency. adds host player to campaign players_
+- **Create Campaign** - _returns a proto-campaign to state, containing campaign id, length, difficulty, and event frequency; adds host player to campaign players_
   - type: `c.SET_INITIAL_CAMPAIGN_DETAILS`
   - payload: ```{
     "params": {
@@ -19,7 +19,7 @@
 - **Destroy Campaign** - _returns campaign state to its initial blank value_
   - type: `c.DESTROY_CAMPAIGN`
   - campId: `campaign.id`
-- **Fetch Campaign** - _returns campaign that matches the supplied campaign id_
+- **Fetch Campaign** - _returns campaign to campaign state that matches the supplied campaign id_
   - type: `c.FETCH_CAMPAIGN_INFO`
   - id: `campaign.id`
 - **Invite to Campaign** - _does not return anything to state; sends invites from the server_
@@ -27,7 +27,7 @@
   - campId: `campaign.id`
   - playId: `player.id`
   - invites: `[array] of contacts gathered from the device`
-- **Join Campaign** - _returns updated campaign that matches the supplied campaign id_
+- **Join Campaign** - _returns updated campaign to campaign state that matches the supplied campaign id_
   - type: `c.SEND_JOIN_CAMPAIGN_REQUEST`
   - campId: `campaign.id`
   - playId: `player.id`
@@ -35,11 +35,11 @@
   - type: `c.LEAVE_CAMPAIGN`
   - campId: `campaign.id`
   - playId: `player.id`
-- **Start Campaign** - _returns updated campaign that matches the supplied campaign id_
+- **Start Campaign** - _returns updated campaign to campaign state that matches the supplied campaign id_
   - type: `c.START_CAMPAIGN`
   - campId: `campaign.id`
   - startNow: `[boolean] ? campaign starts instantly : campaign start tomorrow morning`
-- **Update Campaign** - _returns updated campaign that matches the supplied campaign id_
+- **Update Campaign** - _returns updated campaign to campaign state that matches the supplied campaign id_
   - type: `c.UPDATE_CAMPAIGN`
   - campId: `campaign.id`
   - currentDay: **optional** `[number] denoting day of campaign, from 0 to 90`
