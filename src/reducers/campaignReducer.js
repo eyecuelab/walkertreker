@@ -42,7 +42,7 @@ export default (state = campaign/*testState*/, action) => {
     newState = Object.assign({}, state, action.campaign);
     return newState;
   case c.CAMPAIGN_LEFT:
-    newState = Object.assign({}, state, action.campaign);
+    newState = Object.assign({}, campaign);
     return newState;
   case c.CAMPAIGN_DESTROYED:
     newState = Object.assign({}, campaign);
