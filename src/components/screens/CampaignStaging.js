@@ -1,20 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, FlatList } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { connect } from 'react-redux';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import ContactsList from '../ui/ContactsList';
+import PlayersList from '../ui/PlayersList';
 
 import defaultStyle from '../../styles/defaultStyle';
 
-export default class CampaignStaging extends React.Component {
+class CampaignStaging extends React.Component {
 
   constructor(props) {
     super(props);
-    const game = this.props.navigation.getParam('game');
+    // const game = this.props.navigation.getParam('game');
     const invites = this.props.navigation.getParam('invites');
     this.state = {
-      game,
+      // game,
       invites,
       selectedPlayer: 'none',
     };
@@ -25,7 +27,7 @@ export default class CampaignStaging extends React.Component {
   }
 
   submitConditionalRender = () => {
-    if (this.state.game.numPlayers == 1) {
+    if (this.props.campaign.numPlayers == 1) {
       return (
         <TwoButtonOverlay
           button1title="Waiting..."
@@ -72,7 +74,7 @@ export default class CampaignStaging extends React.Component {
   openKickPlayerConfirmation = async () => {
     // TODO: Pop up a confirmation modal that confirms the user wants to remove the selected player from the game.
     const id = this.state.selectedPlayer;
-    const player = this.state.game.players[id];
+    const player = this.props.campaign.players[id];
     console.log(`Kick player ${player.name} from game.`);
   }
 
@@ -91,15 +93,15 @@ export default class CampaignStaging extends React.Component {
             <View style={customStyles.headerContainer}>
               <Text style={styles.headline}>New Campaign</Text>
               <View style={customStyles.headerRow}>
-                <Text style={[styles.label]}>{this.state.game.campaignLength} </Text>
+                <Text style={[styles.label]}>{this.props.campaign.length} </Text>
                 <Text style={[styles.label, {color: 'black'}]}>Days</Text>
               </View>
               <View style={customStyles.headerRow}>
-                <Text style={[styles.label]}>{this.state.game.difficultyLevel} </Text>
+                <Text style={[styles.label]}>{this.props.campaign.difficultyLevel} </Text>
                 <Text style={[styles.label, {color: 'black'}]}>Difficulty Level</Text>
               </View>
               <View style={customStyles.headerRow}>
-                <Text style={[styles.label]}>{this.state.game.randomEvents} </Text>
+                <Text style={[styles.label]}>{this.props.campaign.randomEvents} </Text>
                 <Text style={[styles.label, {color: 'black'}]}>In-game Events</Text>
               </View>
             </View>
@@ -108,12 +110,9 @@ export default class CampaignStaging extends React.Component {
                 <View style={customStyles.scrollChildContainer}>
                   <Text style={customStyles.subHead}>Players</Text>
                   <View style={[customStyles.contactListContainer, customStyles.contactListFirst]}>
-                    <ContactsList
-                      contacts={this.state.game.players}
-                      contactsFetched={true}
-                      onSelectContact={() => console.log('Select player')}
-                      allChecked={true}
-                    />
+
+                    <PlayersList/>
+
                   </View>
                 </View>
                 <View style={[customStyles.contactListContainer, customStyles.contactListSecond]}>
@@ -195,3 +194,12 @@ const customStyles = StyleSheet.create({
     color: 'white',
   },
 });
+
+function mapStateToProps(state) {
+  return {
+    campaign: state.campaign,
+    player: state.player,
+  }
+}
+
+export default connect(mapStateToProps)(CampaignStaging);
