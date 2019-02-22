@@ -2,6 +2,7 @@ import React from 'react';
 import { AppState, AsyncStorage, Image, View, Text } from 'react-native';
 import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, } from 'expo';
 import { AppContainer } from './nav/router';
+import NavigationService from './nav/NavigationService';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
@@ -115,6 +116,9 @@ class App extends React.Component {
         <SocketIO />
         <BackgroundPedometer/>
         <AppContainer
+          ref={navigatorRef => {
+            NavigationService.setTopLevelNavigator(navigatorRef);
+          }}
           uriPrefix={prefix}
           screenProps={{
             backgroundImage: require('../assets/bg.png'),
