@@ -135,10 +135,10 @@ class App extends React.Component {
 
 registerRootComponent(App)
 
-function mapStateToProps(state) {
-  return {
-    reduxWorks: state.reduxWorks
-  }
-}
+// function mapStateToProps(state) {
+//   return {
+//
+//   }
+// }
 
-export default connect(mapStateToProps)(App);
+export default connect(/*mapStateToProps*/)(App);

@@ -11,17 +11,16 @@ class PlayersList extends React.Component {
     super(props);
   }
 
-  //rewrite this
   listConditionalRender = () => {
     if (this.props.campaign.players.length >= 1) {
       return (
-        <View style={styles.container}>
-          {this.props.campaign.players.map(player => {
-            <View key={player.id}>
-              <Text style={defaultStyleSheet.label}>Player: {player.displayName}</Text>
-            </View>
-          })}
-        </View>
+        this.props.campaign.players.map(player =>
+          <Text
+            style={defaultStyleSheet.label}
+            key={player.id}>
+            {player.displayName}
+          </Text>
+        )
       );
     } else {
       return (

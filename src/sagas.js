@@ -51,13 +51,14 @@ export function *setInitialCampaignDetails(action) {
   console.log(response);
 
   yield storeData('campaignId', JSON.stringify(response.id))
-  yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
+  // yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
 
-  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, stepGoalDayOne: response.stepTargets[0]});
+  // yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, stepGoalDayOne: response.stepTargets[0]});
+  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
 }
 
 export function *sendInvites(action) {
-  // const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + JSON.parse(action.campId);
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + action.campId;
   const theBody = {};
   const phoneNums = Object.keys(action.invites);
   for (pNumber of phoneNums) {
@@ -77,8 +78,8 @@ export function *sendInvites(action) {
     console.log(initObj);
     // const response = yield call(fetch, url, initObj)
     const response = yield fetch(url, initObj)
-    // .then(response => response.json())
-    .then(response => response.text())
+    .then(response => response.json())
+    // .then(response => response.text())
     .catch(error => console.warn('error sending invites: ', error));
     console.log('response is: ', response);
   };
@@ -105,7 +106,7 @@ export function *fetchCampaignInfo(action) {
   console.log('response is: ', response);
 
   //here you are
-  yield put({type: c.CAMPAIGN_INFO_RECEIVED, info: response})
+  yield put({type: c.CAMPAIGN_INFO_RECEIVED, campaign: response})
 
 }
 
@@ -129,7 +130,7 @@ export function *joinCampaignRequest(action) {
   .catch(error => console.warn('error joining campaign: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.PLAYER_JOINED_CAMPAIGN, players: response.players})
+  yield put({type: c.PLAYER_JOINED_CAMPAIGN, campaign: response})
 }
 
 export function *createPlayer(action) {
@@ -176,7 +177,7 @@ export function *updateCampaign(action) {
   .catch(error => console.warn('error updating campaign: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.CAMPAIGN_UPDATED, info: response})
+  yield put({type: c.CAMPAIGN_UPDATED, campaign: response})
 }
 
 export function *leaveCampaign(action) {
@@ -197,7 +198,7 @@ export function *leaveCampaign(action) {
     .catch(error => console.warn('error leaving campaign: ', error));
     console.log('response is: ', response);
 
-  yield put({type: c.CAMPAIGN_LEFT, players: response.players})
+  yield put({type: c.CAMPAIGN_LEFT, campaign: response})
 }
 
 export function *fetchPlayer(action) {
@@ -219,12 +220,7 @@ export function *fetchPlayer(action) {
 }
 
 export function *updatePlayer(action) {
-  // PATCH
-  // /api/players
-  // curl -X PATCH -H "Content-type: application/json" -H "appkey: abc" -H -d '{ "playerId": "58568813-712d-451b-9125-4103c6f1d7e5", "playerUpdate": { "hunger" 88, "steps": [1698, 0, 0, 0, ...] } }' http://walkertrekker.herokuapp.com/api/players
-
   const url = 'https://walkertrekker.herokuapp.com/api/players';
-
   const initObj = {
     method: "PATCH",
     headers: {
@@ -249,9 +245,48 @@ export function *updatePlayer(action) {
   yield put({type: c.PLAYER_UPDATED, player: response})
 }
 
+export function *startCampaign(action) {
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      "startNow": action.startNow,
+    })
+  };
+
+  const response = yield fetch(url, initObj)
+  .then(response => response.json())
+  .catch(error => console.warn('error starting campaign: ', error));
+  console.log('response is: ', response);
+
+  yield put({type: c.CAMPAIGN_STARTED, campaign: response})
+}
+
+export function *destroyCampaign(action) {
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+  const initObj = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+  };
+
+  const response = yield fetch(url, initObj)
+  .then(response => response.json())
+  .catch(error => console.warn('error starting campaign: ', error));
+  console.log('response is: ', response);
+
+  yield put({type: c.CAMPAIGN_DESTROYED})
+}
+
 export function *saveState() {
   const allTheState = yield select();
-  yield storeData('previousState', JSON.stringify(allTheState));
+  yield storeData('lastState', JSON.stringify(allTheState));
 }
 
 // watcher sagas ==============================
@@ -296,6 +331,14 @@ export function *watchUpdatePlayer() {
   yield takeLatest(c.UPDATE_PLAYER, updatePlayer)
 }
 
+export function *watchStartCampaign() {
+  yield takeLatest(c.START_CAMPAIGN, startCampaign)
+}
+
+export function *watchDestroyCampaign() {
+  yield takeLatest(c.DESTROY_CAMPAIGN, destroyCampaign)
+}
+
 export function *watchAppStateChange() {
   yield takeEvery(c.NEW_APP_STATE, saveState)
 }
@@ -305,6 +348,8 @@ export function *watchAppStateChange() {
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchDestroyCampaign(),
+    watchStartCampaign(),
     watchAppStateChange(),
     watchUpdatePlayer(),
     watchFetchPlayer(),
