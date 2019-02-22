@@ -57,7 +57,6 @@ export function *setInitialCampaignDetails(action) {
   yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
 }
 
-// TODO: something is happening here that is changing state so it's all nested within player
 export function *sendInvites(action) {
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + action.campId;
   const theBody = {};
@@ -247,7 +246,7 @@ export function *updatePlayer(action) {
 }
 
 export function *startCampaign(action) {
-  const url = '';
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -265,6 +264,24 @@ export function *startCampaign(action) {
   console.log('response is: ', response);
 
   yield put({type: c.CAMPAIGN_STARTED, campaign: response})
+}
+
+export function *destroyCampaign(action) {
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+  const initObj = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+  };
+
+  const response = yield fetch(url, initObj)
+  .then(response => response.json())
+  .catch(error => console.warn('error starting campaign: ', error));
+  console.log('response is: ', response);
+
+  yield put({type: c.CAMPAIGN_DESTROYED})
 }
 
 export function *saveState() {
@@ -318,6 +335,10 @@ export function *watchStartCampaign() {
   yield takeLatest(c.START_CAMPAIGN, startCampaign)
 }
 
+export function *watchDestroyCampaign() {
+  yield takeLatest(c.DESTROY_CAMPAIGN, destroyCampaign)
+}
+
 export function *watchAppStateChange() {
   yield takeEvery(c.NEW_APP_STATE, saveState)
 }
@@ -327,6 +348,8 @@ export function *watchAppStateChange() {
 export default function *rootSaga() {
   yield all([
     // watcher sagas go here
+    watchDestroyCampaign(),
+    watchStartCampaign(),
     watchAppStateChange(),
     watchUpdatePlayer(),
     watchFetchPlayer(),
