@@ -2,22 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import constants from '../constants';
 const { c, retrieveData, storeData } = constants;
-<<<<<<< HEAD
-import io from 'socket.io-client'
-
-// configuring socket.io
-// local
-// to connect to local server, 1) start the server 2) get local ip address 3) update const endpoint to point at that ip address at port 5000
-// const endpoint = 'http://192.168.0.102:5000'
-// remote
-const endpoint = 'walkertrekker.herokuapp.com'
-const socket = io(endpoint, {
-  transports: ['websocket']
-})
-=======
 import socket from '../socket';
 import NavigationService from '../nav/NavigationService';
->>>>>>> initial-navigation
 
 class SocketIO extends React.Component {
   constructor(props) {
