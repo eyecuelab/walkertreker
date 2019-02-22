@@ -8,18 +8,28 @@ const { c, retrieveData, storeData } = constants;
 class Start extends React.Component {
   constructor(props) {
     super(props)
-    const needPlayer = this.props.screenProps.localPlayer.id ? true : false
-    const needCampaign = this.props.screenProps.localPlayer.campaignId ? true : false
+    const localPlayer = JSON.parse(this.props.screenProps.localPlayer)
+    const needPlayer = localPlayer.id ? true : false
+    const needCampaign = localPlayer.campaignId ? true : false
     this.state = {
-      localPlayer: this.props.screenProps.localPlayer,
+      localPlayer,
       needPlayer,
       needCampaign,
+      gotPlayer: false,
+      gotCampaign: false,
     }
   }
 
   componentDidMount = async () => {
+    const { dispatch } = this.props
     // uncomment this to erase player data from AsyncStorage
     // await storeData('playerInfo', '{}')
+    if (this.state.needPlayer) {
+      dispatch({ type: c.FETCH_PLAYER, playId: this.state.localPlayer.id})
+    }
+    if (this.state.needCampaign) {
+      dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
+    }
   }
 
   navigate = (route) => {
@@ -27,59 +37,44 @@ class Start extends React.Component {
     let routeName = route
     let routeParams = {}
     if (path === 'invite') {
-      console.log('This player has opened the app via an invitation link, navigating to the AcceptInvite screen.')
       routeName = 'AcceptInvite'
-      routeParams = this.props.screenProps.queryParams
+      routeParams = {
+        campaignId: this.props.screenProps.queryParams.campaignId,
+      }
     }
 
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName, routeParams })]
+      actions: [NavigationActions.navigate({ routeName, params: routeParams })]
     });
     this.props.navigation.dispatch(resetAction);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('=================================')
-    console.log('======= componentDidUpdate ======')
-    console.log('=================================')
-    console.log(this.props.player)
-    console.log(this.props.campaign)
-    console.log(this.state)
-    if (!this.state.ready) {
-      if (!this.state.getPlayer && !this.state.getCampaign) {
+    if (prevProps.player.id == null && this.props.player.id !== null) {
+      this.setState({ gotPlayer: true })
+    }
+    if (prevProps.campaign.id == null && this.props.campaign.id !== null) {
+      this.setState({ gotCampaign: true })
+    }
+    if (this.state.needPlayer == this.state.gotPlayer && this.state.needCampaign == this.state.gotCampaign) {
+      if (this.state.needCampaign) {
+        if (this.props.campaign.startDate !== null) {
+          // player is in an active game, navigate to campaign summary screen
+          this.navigate('CampaignSummary')
+        } else if (this.props.player.id == this.props.campaign.host) {
+          // player created campaign that has not started, navigate to campaign staging
+          this.navigate('CampaignStaging')
+        } else {
+          // player has joined a campaign that has not started, navigate to wait for start
+          this.navigate('WaitForStart')
+        }
+      } else {
+        // not registered with a campaign, if invited will navigate to Accept Invite, otherwise navigate to About
         this.navigate('About')
       }
-      if (this.state.getPlayer && !this.props.player.id) {
-        dispatch({ type: c.FETCH_PLAYER, playId: this.state.localPlayer.id})
-      }
-      if (this.state.getCampaign && !this.props.campaign.id) {
-        dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
-      }
     }
-
-
-    // if (!prevProps.player.id && this.props.player.id && !this.props.player.inActiveGame) {
-    //   console.log('This is a returning player who is not currently in a campaign, navigating to About screen')
-    //   this.navigate('About')
-    // }
-    // if (!prevProps.player.id && this.props.campaign.id && this.props.campaign.startDate == null) {
-    //   console.log(this.props.player.id)
-    //   console.log(this.props.campaign.host)
-    //   if (this.props.player.id == this.props.campaign.host) {
-    //     console.log('This is the host player registered with this campaign, navigating to CampaignStaging screen')
-    //     this.navigate('CampaignStaging')
-    //   } else {
-    //     console.log('This is a player registered with a game that has not yet started, navigating to WaitForStart screen')
-    //     this.navigate('WaitForStart')
-    //   }
-    // }
-    // if (!prevProps.player.id && this.props.campaign.id && this.props.campaign.startDate !== null) {
-    //   console.log('This player is in an active game, navigating to ActiveCampaignSummary screen')
-    //   this.navigate('ActiveCampaignSummary')
-    // }
   }
-
 
   render() {
     return (

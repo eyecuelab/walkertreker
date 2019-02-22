@@ -10,7 +10,7 @@ import CampaignStaging from '../components/screens/CampaignStaging';
 import AcceptInvite from '../components/screens/AcceptInvite';
 import WaitForStart from '../components/screens/WaitForStart';
 import TOC from '../components/TOC';
-import ActiveCampaignSummary from '../components/ActiveCampaignSummary';
+import CampaignSummary from '../components/screens/CampaignSummary';
 import Inventory from '../components/Inventory';
 import JoinCampaign from '../components/JoinCampaign';
 import Map from '../components/Map';
@@ -30,7 +30,7 @@ const AppNavigator = createStackNavigator(
       path: 'invite/:campaignId'
     },
     WaitForStart: { screen: WaitForStart, },
-    CampaignSummary: { screen: ActiveCampaignSummary, },
+    CampaignSummary: { screen: CampaignSummary, },
     TOC: { screen: TOC, },
     Inventory: { screen: Inventory },
     JoinCampaign: { screen: JoinCampaign },
