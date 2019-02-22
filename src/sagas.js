@@ -246,7 +246,7 @@ export function *updatePlayer(action) {
 }
 
 export function *startCampaign(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/start/' + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -257,6 +257,7 @@ export function *startCampaign(action) {
       "startNow": action.startNow,
     })
   };
+  console.log(url, initObj);
 
   const response = yield fetch(url, initObj)
   .then(response => response.json())
