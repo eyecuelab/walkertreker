@@ -58,6 +58,23 @@ class BackgroundPedometer extends React.Component {
         dispatch({type: c.GET_STEPS});
       }
     }, 60000);
+
+    // ========== START DELETE THESE AFTER TESTING ==========
+    // dispatch({type: c.CREATE_PLAYER, name: 'otherjosh', number: 9712357572});
+    // const dummyPayload = JSON.parse(JSON.stringify(
+    //   {
+    //     "params": {
+    //       "campaignLength": 15,
+    //       "difficultyLevel": 'easy',
+    //       "randomEvents": 'low',
+    //     }
+    //   }
+    // ));
+    // dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: dummyPayload});
+    // dispatch({type: c.FETCH_PLAYER, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0'})
+    // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: '240d484a-ec1c-4290-8c7e-43a877abb24c'})
+    // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0', campId: '240d484a-ec1c-4290-8c7e-43a877abb24c'});
+    // ==========  END DELETE THESE AFTER TESTING  ==========
   }
 
   componentWillUnmount() {

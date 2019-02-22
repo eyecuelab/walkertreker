@@ -18,36 +18,26 @@ class CreateCampaign extends React.Component {
 
   async _generateCampaign() {
     const { dispatch } = this.props;
-    const gameId = this.props.campaign.id; // this needs to be got from the server
-    const userId = await AsyncStorage.getItem('userId');
+    // console.log(this.props.campaign.id);
+    // const gameId = this.props.campaign.id; // this needs to be got from the server
+    // const userId = await AsyncStorage.getItem('userId');
     // Below in payload I am just sketching out what we might want an initial game object to look like, this is very flexible. Essentially here is where we want to initialize our game object and populate the player list first with the person that started the game, using their phone number as a unique identifier (just to start I have hard coded that with a fake phone number, later we will get this from the phone itself.)
-    const playerInfoString = await retrieveData('playerInfo');
-    const playerInfo = JSON.parse(playerInfoString);
-    const payload = { // this payload needs to be reflective of the actual campaign. the player that gets filled in here is the one who initializes the campaign
-      game: {
-        id: gameId,
-        length: this.props.campaign.length,
-        difficultyLevel: this.props.campaign.difficultyLevel,
-        randomEvents: this.props.campaign.randomEvents,
-        numPlayers: 1,
-        players: {
-          [playerInfo.id]: {
-            id: playerInfo.id,
-            name: playerInfo.displayName,
-          },
-        },
-      }
-    }
+    // const playerInfoString = await retrieveData('playerInfo');
+    // const playerInfo = JSON.parse(playerInfoString);
+    // console.log(this.props.player.id);
+
     let apiPayload = {
       "params": {
         "campaignLength": this.props.campaign.length,
         "difficultyLevel": this.props.campaign.difficultyLevel,
         "randomEvents": this.props.campaign.randomEvents,
-        "startNow": false,
-      }
+      },
+      "playerId": this.props.player.id,
     }
+
     console.log('apiPayload ',apiPayload);
-    apiPayload = JSON.parse(JSON.stringify(apiPayload))
+
+    apiPayload = JSON.parse(JSON.stringify(apiPayload));
     dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: apiPayload});
     this.props.navigation.navigate('InvitePlayers');
   }
@@ -153,6 +143,7 @@ const createCampaignStyle = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
+    player: state.player,
   }
 }
 

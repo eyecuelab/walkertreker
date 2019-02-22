@@ -1,8 +1,9 @@
 import constants from '../constants';
 const { c, initialState: { campaign } } = constants;
 let newState;
+import testState from '../constants/initialStates/tests/initialStateCampaignTest';
 
-export default (state = campaign, action) => {
+export default (state = campaign/*testState*/, action) => {
   switch (action.type) {
   case c.SET_CAMPAIGN_LENGTH:
     return {
@@ -26,6 +27,9 @@ export default (state = campaign, action) => {
       invited: action.invites,
     }
   case c.INITIAL_CAMPAIGN_DATA_RECEIVED:
+    newState = Object.assign({}, state, action.campaign);
+    return newState;
+  case c.CAMPAIGN_STARTED:
     newState = Object.assign({}, state, action.campaign);
     return newState;
   case c.CAMPAIGN_INFO_RECEIVED:

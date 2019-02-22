@@ -246,6 +246,27 @@ export function *updatePlayer(action) {
   yield put({type: c.PLAYER_UPDATED, player: response})
 }
 
+export function *startCampaign(action) {
+  const url = '';
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      "startNow": action.startNow,
+    })
+  };
+
+  const response = yield fetch(url, initObj)
+  .then(response => response.json())
+  .catch(error => console.warn('error starting campaign: ', error));
+  console.log('response is: ', response);
+
+  yield put({type: c.CAMPAIGN_STARTED, campaign: response})
+}
+
 export function *saveState() {
   const allTheState = yield select();
   yield storeData('lastState', JSON.stringify(allTheState));
@@ -291,6 +312,10 @@ export function *watchFetchPlayer() {
 
 export function *watchUpdatePlayer() {
   yield takeLatest(c.UPDATE_PLAYER, updatePlayer)
+}
+
+export function *watchStartCampaign() {
+  yield takeLatest(c.START_CAMPAIGN, startCampaign)
 }
 
 export function *watchAppStateChange() {

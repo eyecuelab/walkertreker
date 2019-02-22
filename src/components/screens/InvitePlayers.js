@@ -29,7 +29,7 @@ class InvitePlayers extends React.Component {
 
   componentDidMount = () => {
     this.getContacts();
-    const link = Linking.makeUrl('invite', { campaignId: this.props.campaign.campaignId })
+    const link = Linking.makeUrl('invite', { campaignId: this.props.campaign.id })
   }
 
   getContacts = async () => {
@@ -118,7 +118,7 @@ class InvitePlayers extends React.Component {
       numSelected,
       selected: {},
     });
-    console.log('player: ', this.props);
+    console.log('props right before sending: ', this.props);
     dispatch({type: c.SEND_INVITES, invites: this.state.invites, campId: this.props.campaign.id, playId: this.props.player.id});
     // here it ends
 
@@ -288,6 +288,7 @@ const customStyles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
+    player: state.player,
   }
 }
 
