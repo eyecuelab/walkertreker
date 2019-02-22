@@ -21,7 +21,6 @@ class Start extends React.Component {
       this.navigate('About')
     }
     else {
-      console.log(localPlayer)
       if (localPlayer.id !== null) {
         dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id });
       }
