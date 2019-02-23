@@ -19,7 +19,7 @@ class CampaignSummary extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}
       >
-        <View style={customStyles.container}>
+        <View style={styles.container}>
           <Text style={styles.headline}>CAMPAIGN SUMMARY</Text>
           <Text style={styles.headline}>Players</Text>
           <View>

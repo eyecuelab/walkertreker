@@ -54,12 +54,13 @@ class App extends React.Component {
   _loadResourcesAsync = async () => {
     const imageAssets = this.cacheImages([
       require('../assets/bg.png'),
+      require('../assets/blankavatar.png'),
       require('../assets/buttontexture1.png'),
       require('../assets/buttontexture2.png'),
       require('../assets/buttontexture3.png'),
-      require('../assets/blankavatar.png'),
       require('../assets/checked.png'),
       require('../assets/selected.png'),
+      require('../assets/splash.png'),
     ]);
 
     await Promise.all([
