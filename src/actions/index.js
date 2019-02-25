@@ -11,18 +11,7 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyL
   let dateArray = [];
   let start;
   let end;
-
-  console.log('firstDayStart: ', firstDayStart);
-  console.log('firstDayEnd: ', firstDayEnd);
-  console.log('length: ', length);
-  console.log('difficultyLevel: ', difficultyLevel);
-  console.log('stepGoalDayOne: ', stepGoalDayOne);
-  console.log('last dateArray pre-loop: ', dateArray);
-
-// TODO: this for loop breaks everything and runs forever.  FIX IT
-
   for (let i = 0; i < length; i++) {
-    console.log(dateArray);
     let aGoal;
     start = new Date(firstDayStart);
     end = new Date(firstDayEnd);
@@ -43,7 +32,6 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyL
     }
     dateArray.push(newDateObj);
   }
-  console.log(dateArray);
   return ({
     type: c.SET_CAMPAIGN_DATES,
     campaignDateArray: dateArray,

@@ -49,10 +49,6 @@ class BackgroundPedometer extends React.Component {
     this._getReadyToBuildDateArray()
   }
 
-  componentDidUpdate() {
-
-  }
-
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
