@@ -3,7 +3,6 @@ import Expo from "expo";
 import { Pedometer } from "expo";
 import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button, Alert } from "react-native";
 import { connect } from 'react-redux';
-import { put } from 'redux-saga/effects'
 
 import * as actions from '../actions';
 import constants from './../constants';
@@ -19,36 +18,24 @@ class BackgroundPedometer extends React.Component {
 
   componentWillMount() {
     const { campaignDateArray } = this.props.steps;
-    const { startDate } = this.props.campaign;
+    // const { startDate } = this.props.campaign;
 
-    if (
-      startDate !== null &&
-      campaignDateArray === null
-    ) {
-      this._constructDateLog();
-    }
+    // if (
+    //   startDate !== null &&
+    //   campaignDateArray === null
+    // ) {
+    //   this._constructDateLog();
+    // }
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
     const { campaignDateArray } = this.props.steps;
+    // const { startDate } = this.props.campaign;
 
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    // this is all unnecessary unless the pedometer stops working again. for now i'm gonna have it pop up an alert if the pedometer can't connect
-    Pedometer.isAvailableAsync().then(
-      (result) => {
-        // maybe dispatch an action to the store to update state
-        console.log('\'dometer is available');
-      }, (error) => {
-        // maybe dispatch an action to the store to update state
-        Alert.alert('Walker Trekker can\'t connect to your phone\'s pedometer. Try closing the app and opening it again.')
-      }
-    );
-
-    if (campaignDateArray !== null) {
-      dispatch({type: c.GET_STEPS});
-    }
+    this._checkPedometerAvailability();
 
     setInterval(() => {
       if (
@@ -59,33 +46,56 @@ class BackgroundPedometer extends React.Component {
       }
     }, 60000);
 
-    // ========== START DELETE THESE AFTER TESTING ==========
-    // dispatch({type: c.CREATE_PLAYER, name: 'otherjosh', number: 9712357572});
-    // const dummyPayload = JSON.parse(JSON.stringify(
-    //   {
-    //     "params": {
-    //       "campaignLength": 15,
-    //       "difficultyLevel": 'easy',
-    //       "randomEvents": 'low',
-    //     }
-    //   }
-    // ));
-    // dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: dummyPayload});
-    // dispatch({type: c.FETCH_PLAYER, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0'})
-    // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: '240d484a-ec1c-4290-8c7e-43a877abb24c'})
-    // dispatch({type: c.SEND_JOIN_CAMPAIGN_REQUEST, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0', campId: '240d484a-ec1c-4290-8c7e-43a877abb24c'});
-    // ==========  END DELETE THESE AFTER TESTING  ==========
+    this._getReadyToBuildDateArray()
+  }
+
+  componentDidUpdate() {
+
   }
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
+  // TODO: change this function's name; this is dumb
+  _getReadyToBuildDateArray = () => {
+    const { campaignDateArray, pedometerIsAvailable } = this.props.steps;
+    const { startDate } = this.props.campaign;
+    if (
+      startDate !== null &&
+      campaignDateArray === null &&
+      pedometerIsAvailable
+    ) {
+      console.log('building date array');
+      this._constructDateLog();
+      if (campaignDateArray !== null) {
+        dispatch({type: c.GET_STEPS});
+      }
+    } else {
+      console.log('hit the else');
+      setTimeout(() => {
+        this._getReadyToBuildDateArray();
+      }, 10);
+    }
+  }
+
+  _checkPedometerAvailability = () => {
+    const { dispatch } = this.props;
+    Pedometer.isAvailableAsync().then(
+      (response) => {
+        dispatch({type: c.IS_PEDOMETER_AVAILABLE, pedometerIsAvailable: response});
+      }, (error) => {
+        // maybe dispatch an action to the store to update state
+        Alert.alert('Walker Trekker can\'t connect to your phone\'s pedometer. Try closing the app and opening it again.')
+      }
+    );
+  }
+
   _constructDateLog = () => {
     const { dispatch } = this.props;
-    const { difficultyLevel, length, startDate, steps } = this.props.campaign;
+    const { difficultyLevel, length, startDate, stepTargets } = this.props.campaign;
 
-    const stepGoalDayOne = steps[0];
+    const stepGoalDayOne = stepTargets[0];
     const day1Start = new Date(startDate);
     const day1End = new Date(startDate);
     day1Start.setHours(6,0,0,0);
@@ -106,8 +116,6 @@ class BackgroundPedometer extends React.Component {
     }
     dispatch(setAppState(nextAppState));
   };
-
-  // STORE/RETRIEVE DATA FUNCTIONS NOW LIVE IN CONSTANTS
 
   render() {
     return null;

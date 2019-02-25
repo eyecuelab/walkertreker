@@ -22,12 +22,18 @@ export default (state = steps, action) => {
         isGettingSteps: false,
       }
 
-      case c.STEPS_FAILED:
-        return {
-          ...state,
-          isGettingSteps: false,
-          error: action.error
-        }
+    case c.STEPS_FAILED:
+      return {
+        ...state,
+        isGettingSteps: false,
+        error: action.error,
+      }
+
+    case c.IS_PEDOMETER_AVAILABLE:
+      return {
+        ...state,
+        pedometerIsAvailable: action.pedometerIsAvailable,
+      }
 
     default:
       return state;
