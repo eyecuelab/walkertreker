@@ -299,21 +299,27 @@ export function *saveState() {
 // watcher sagas ==============================
 
 export function *watchSetDates() {
-  yield take(c.SET_CAMPAIGN_DATES);
-  yield put({type: c.GET_STEPS});
+  while (true) {
+    yield take(c.SET_CAMPAIGN_DATES);
+    yield put({type: c.GET_STEPS});
+  }
 }
 export function *watchSteps() {
-  yield takeEvery(c.GET_STEPS, fetchSteps);
+  yield takeLatest(c.GET_STEPS, fetchSteps);
 }
 
 export function *watchStepUpdates() {
   yield takeEvery(c.STEPS_RECEIVED, updatePlayerSteps)
 }
 
+// TODO: this saga successfully
 export function *watchPlayerStepsUpdated() {
-  yield take(c.UPDATE_PLAYER_STEPS);
-  const player = yield select(getPlayer);
-  yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps})
+  while (true) {
+    yield take(c.UPDATE_PLAYER_STEPS);
+    console.log('in update player step watcher');
+    const player = yield select(getPlayer);
+    yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps})
+  }
 }
 
 export function *watchInitialCampaignDetails() {

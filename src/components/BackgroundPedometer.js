@@ -29,7 +29,7 @@ class BackgroundPedometer extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    const { campaignDateArray } = this.props.steps;
+    // const { campaignDateArray } = this.props.steps;
     // const { startDate } = this.props.campaign;
 
     AppState.addEventListener('change', this._handleAppStateChange);
@@ -37,9 +37,13 @@ class BackgroundPedometer extends React.Component {
     this._checkPedometerAvailability();
 
     setInterval(() => {
+      console.log('BONG!');
+      console.log(this.props.appState);
+      console.log(this.props.steps.campaignDateArray.length);
+
       if (
         this.props.appState === 'active' &&
-        campaignDateArray !== null
+        this.props.steps.campaignDateArray !== null
       ) {
         dispatch({type: c.GET_STEPS});
       }
