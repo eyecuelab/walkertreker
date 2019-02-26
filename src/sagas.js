@@ -61,7 +61,7 @@ export function *setInitialCampaignDetails(action) {
     yield storeData('campaignId', JSON.stringify(response.id));
     yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
   } catch (error) {
-    console.log('error setting campaign details: ', error);
+    console.warn('error setting campaign details: ', error);
   }
 }
 
@@ -89,7 +89,7 @@ export function *sendInvites(action) {
       .then(response => response.json());
       yield put({type: c.INVITES_SENT, invites: action.invites });
     } catch (error) {
-      console.log('error sending invites: ', error);
+      console.warn('error sending invites: ', error);
     }
   };
 }
@@ -98,7 +98,6 @@ export function *fetchCampaignInfo(action) {
 
   const id = action.id;
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + id;
-  console.log(url);
   const initObj = {
     method: "GET",
     headers: {
@@ -111,7 +110,7 @@ export function *fetchCampaignInfo(action) {
     .then(response => response.json());
     yield put({type: c.CAMPAIGN_INFO_RECEIVED, campaign: response});
   } catch (error) {
-    console.log('error fetching campaign: ', error);
+    console.warn('error fetching campaign: ', error);
   }
 }
 
@@ -131,7 +130,7 @@ export function *joinCampaignRequest(action) {
     .then(response => response.json());
     yield put({type: c.PLAYER_JOINED_CAMPAIGN, campaign: response});
   } catch (error) {
-    console.log('error joining campaign: ', error);
+    console.warn('error joining campaign: ', error);
   }
 }
 
@@ -151,7 +150,7 @@ export function *createPlayer(action) {
     .then(response => response.json());
     yield put({type: c.PLAYER_CREATED, player: response});
   } catch (error) {
-    console.log('error creating player: ', error);
+    console.warn('error creating player: ', error);
   }
 }
 
@@ -177,7 +176,7 @@ export function *updateCampaign(action) {
     .then(response => response.json());
     yield put({type: c.CAMPAIGN_UPDATED, campaign: response});
   } catch (error) {
-    console.log('error updating campaign: ', error);
+    console.warn('error updating campaign: ', error);
   }
 }
 
@@ -199,7 +198,7 @@ export function *leaveCampaign(action) {
     .then(response => response.json());
     yield put({type: c.CAMPAIGN_LEFT});
   } catch (error) {
-    console.log('error leaving campaign: ', error);
+    console.warn('error leaving campaign: ', error);
   }
 }
 
@@ -218,7 +217,7 @@ export function *fetchPlayer(action) {
     .then(response => response.json());
     yield put({type: c.PLAYER_FETCHED, player: response});
   } catch (error) {
-    console.log('error fetching players: ', error);
+    console.warn('error fetching players: ', error);
   }
 }
 
@@ -245,7 +244,7 @@ export function *updatePlayer(action) {
     .then(response => response.json());
     yield put({type: c.PLAYER_UPDATED, player: response});
   } catch (error) {
-    console.log('error updating player: ', error)
+    console.warn('error updating player: ', error)
   }
 }
 
@@ -261,14 +260,12 @@ export function *startCampaign(action) {
       "startNow": action.startNow,
     })
   };
-  console.log(url, initObj);
-
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     yield put({type: c.CAMPAIGN_STARTED, campaign: response})
   } catch (error) {
-    console.log('error starting campaign: ', error)
+    console.warn('error starting campaign: ', error)
   }
 }
 
@@ -287,7 +284,7 @@ export function *destroyCampaign(action) {
     .then(response => response.json());
     yield put({type: c.CAMPAIGN_DESTROYED});
   } catch (error) {
-    console.log('error starting campaign: ', error)
+    console.warn('error starting campaign: ', error)
   }
 }
 
@@ -312,11 +309,9 @@ export function *watchStepUpdates() {
   yield takeEvery(c.STEPS_RECEIVED, updatePlayerSteps)
 }
 
-// TODO: this saga successfully
 export function *watchPlayerStepsUpdated() {
   while (true) {
     yield take(c.UPDATE_PLAYER_STEPS);
-    console.log('in update player step watcher');
     const player = yield select(getPlayer);
     yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps})
   }
