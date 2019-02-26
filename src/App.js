@@ -73,14 +73,13 @@ class App extends React.Component {
 
     // set localPlayer for testing purposes
     // let player = {
-    //   id: "ec8b81d6-ae17-4de9-99ca-fe007f71f731",
+    //   id: null,
     //   campaignId: null,
     // }
     // await storeData('playerInfo', JSON.stringify(player))
 
     const localPlayer = await retrieveData('playerInfo')
     await this.setState({ localPlayer })
-
   };
 
   _handleLoadingError = error => {
