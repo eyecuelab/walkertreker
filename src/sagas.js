@@ -1,34 +1,45 @@
-import { put, takeEvery, takeLatest, all, call, select } from 'redux-saga/effects';
+import { put, take, takeEvery, takeLatest, all, call, select } from 'redux-saga/effects';
 import { Pedometer } from "expo";
 import { CLIENT_APP_KEY } from 'react-native-dotenv';
 
 import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
-export const getDates = state => state.steps.campaignDateArray
+export const getDates = state => state.steps.campaignDateArray;
+export const getPlayer = state => state.player;
 
 // worker sagas ==============================
 
 export function *fetchSteps() {
+  console.log('started fetch steps');
 
   const dates = yield select(getDates);
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
   for (obj of datesCopy) {
+    console.log('fetch steps loop, day ' + obj.day);
     try {
-      const response = yield call(Pedometer.getStepCountAsync, new Date(Date.parse(obj.start)), new Date(Date.parse(obj.end)));
-
-      // console.log('past the first yield');
+      const start = new Date(Date.parse(obj.start))
+      const end = new Date(Date.parse(obj.end))
+      const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
 
       const dateWithSteps = Object.assign({}, datesCopy[obj.day - 1], {steps: stepsToAdd});
-
       datesCopy.splice(obj.day - 1, 1, dateWithSteps);
     } catch (error) {
       yield put({type: c.STEPS_FAILED, error})
     }
   }
   yield put({type: c.STEPS_RECEIVED, campaignDateArray: datesCopy});
+}
+
+export function *updatePlayerSteps(action) {
+
+  const simpleArray = [];
+  for (obj of action.campaignDateArray) {
+    simpleArray.push(obj.steps);
+  }
+  yield put({type: c.UPDATE_PLAYER_STEPS, steps: simpleArray})
 }
 
 export function *setInitialCampaignDetails(action) {
@@ -282,7 +293,7 @@ export function *destroyCampaign(action) {
   .catch(error => console.warn('error starting campaign: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.CAMPAIGN_DESTROYED})
+  yield put({type: c.CAMPAIGN_DESTROYED});
 }
 
 export function *saveState() {
@@ -292,52 +303,67 @@ export function *saveState() {
 
 // watcher sagas ==============================
 
+export function *watchSetDates() {
+  yield take(c.SET_CAMPAIGN_DATES);
+  yield put({type: c.GET_STEPS});
+}
 export function *watchSteps() {
-  yield takeLatest(c.GET_STEPS, fetchSteps);
+  yield takeEvery(c.GET_STEPS, fetchSteps);
+}
+
+export function *watchStepUpdates() {
+  yield takeEvery(c.STEPS_RECEIVED, updatePlayerSteps)
+}
+
+export function *watchPlayerStepsUpdated() {
+  yield take(c.UPDATE_PLAYER_STEPS);
+  // TODO: get the campaign id and the player step array before dispatching update player
+  const player = yield select(getPlayer);
+  yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps})
 }
 
 export function *watchInitialCampaignDetails() {
-  yield takeLatest(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails)
+  yield takeEvery(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails)
 }
 
 export function *watchInvites() {
-  yield takeLatest(c.SEND_INVITES, sendInvites);
+  yield takeEvery(c.SEND_INVITES, sendInvites);
 }
 
 export function *watchCampaignGetting() {
-  yield takeLatest(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo)
+  yield takeEvery(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo)
 }
 
 export function *watchJoinCampaign() {
-  yield takeLatest(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest)
+  yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest)
 }
 
 export function *watchCreatePlayer() {
-  yield takeLatest(c.CREATE_PLAYER, createPlayer)
+  yield takeEvery(c.CREATE_PLAYER, createPlayer)
 }
 
 export function *watchUpdateCampaign() {
-  yield takeLatest(c.UPDATE_CAMPAIGN, updateCampaign)
+  yield takeEvery(c.UPDATE_CAMPAIGN, updateCampaign)
 }
 
 export function *watchLeaveCampaign() {
-  yield takeLatest(c.LEAVE_CAMPAIGN, leaveCampaign)
+  yield takeEvery(c.LEAVE_CAMPAIGN, leaveCampaign)
 }
 
 export function *watchFetchPlayer() {
-  yield takeLatest(c.FETCH_PLAYER, fetchPlayer)
+  yield takeEvery(c.FETCH_PLAYER, fetchPlayer)
 }
 
 export function *watchUpdatePlayer() {
-  yield takeLatest(c.UPDATE_PLAYER, updatePlayer)
+  yield takeEvery(c.UPDATE_PLAYER, updatePlayer)
 }
 
 export function *watchStartCampaign() {
-  yield takeLatest(c.START_CAMPAIGN, startCampaign)
+  yield takeEvery(c.START_CAMPAIGN, startCampaign)
 }
 
 export function *watchDestroyCampaign() {
-  yield takeLatest(c.DESTROY_CAMPAIGN, destroyCampaign)
+  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign)
 }
 
 export function *watchAppStateChange() {
@@ -361,6 +387,9 @@ export default function *rootSaga() {
     watchCampaignGetting(),
     watchInvites(),
     watchInitialCampaignDetails(),
+    watchSetDates(),
+    watchStepUpdates(),
+    watchPlayerStepsUpdated(),
     watchSteps(),
   ])
 }

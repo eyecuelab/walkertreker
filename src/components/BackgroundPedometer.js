@@ -69,9 +69,12 @@ class BackgroundPedometer extends React.Component {
       }
     } else {
       console.log('hit the else');
+      // TODO: this timeout is a very stupid idea. find a more elegant way to solve this issue.
       setTimeout(() => {
         this._getReadyToBuildDateArray();
       }, 10);
+
+      // does it need to return here?
     }
   }
 
@@ -91,11 +94,25 @@ class BackgroundPedometer extends React.Component {
     const { dispatch } = this.props;
     const { difficultyLevel, length, startDate, stepTargets } = this.props.campaign;
 
+    // const stepGoalDayOne = stepTargets[0];
+    // const day1Start = new Date(startDate);
+    // const day1End = new Date(startDate);
+    // day1Start.setHours(6,0,0,0);
+    // day1End.setHours(24,0,0,0);
+
     const stepGoalDayOne = stepTargets[0];
-    const day1Start = new Date(startDate);
-    const day1End = new Date(startDate);
+    let day1 = new Date(startDate);
+    day1 = new Date(day1.setTime(day1.getTime() + 86400000));
+    // day1 = day1.setUTCHours(0);
+    const day1Start = new Date(day1);
+    const day1End = new Date(day1);
     day1Start.setHours(6,0,0,0);
     day1End.setHours(24,0,0,0);
+
+    console.log('startDate: ', startDate);
+    console.log('day1: ', day1);
+    console.log('_constructDateLog start date', day1Start);
+    console.log('_constructDateLog end date', day1End);
 
     dispatch(setCampaignDates(day1Start, day1End, length, difficultyLevel, stepGoalDayOne));
   }

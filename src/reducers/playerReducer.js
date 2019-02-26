@@ -27,6 +27,13 @@ export default (state = player/*testState*/, action) => {
       newState = action.player;
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
+    case c.UPDATE_PLAYER_STEPS:
+      newState = {
+        ...state,
+        steps: action.steps,
+      };
+      storeData('playerInfo', JSON.stringify(newState));
+      return newState;
     default:
       return state;
     }

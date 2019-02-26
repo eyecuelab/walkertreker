@@ -71,14 +71,22 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
-    // set localPlayer for testing purposes
+    // // set localPlayer for testing purposes
     // let player = {
-    //   id: "ec8b81d6-ae17-4de9-99ca-fe007f71f731",
+    //   id: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0',
+    //   displayName: 'otherjosh',
+    //   phoneNumber: '+19712357572',
+    //   inActiveGame: false,
     //   campaignId: null,
+    //   health: null,
+    //   hunger: null,
+    //   steps: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    //   invited: []
     // }
     // await storeData('playerInfo', JSON.stringify(player))
 
     const localPlayer = await retrieveData('playerInfo')
+    console.log(localPlayer);
     await this.setState({ localPlayer })
 
   };
