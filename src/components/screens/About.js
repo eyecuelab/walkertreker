@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -7,8 +8,32 @@ import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 export default class About extends React.Component {
 
+  constructor(props) {
+    super(props)
+    const nav = this.props.navigation.getParam('navigationOption', 'none')
+    let buttonTitle
+    if (nav == 'back') {
+      buttonTitle = 'Back'
+    } else {
+      buttonTitle = 'Create a Campaign'
+    }
+    this.state = {
+      nav,
+      buttonTitle,
+    }
+  }
+
+  _onButtonPress = () => {
+    
+    if (this.state.nav == 'none') {
+      this.props.navigation.navigate('CreateCampaign')
+    } else if (this.state.nav == 'back') {
+      this.props.navigation.goBack()
+    }
+  }
+
   render() {
-    return(
+    return (
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}
@@ -29,13 +54,13 @@ export default class About extends React.Component {
           <View style={customStyles.buttonContainer}>
             <SingleButtonFullWidth
               backgroundColor='black'
-              title='Start a Campaign'
-              onButtonPress={() => this.props.navigation.navigate('CreateCampaign')}
+              title={this.state.buttonTitle}
+              onButtonPress={this._onButtonPress}
             />
           </View>
         </View>
       </ImageBackground>
-    )
+    );
   }
 }
 

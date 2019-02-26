@@ -54,12 +54,13 @@ class App extends React.Component {
   _loadResourcesAsync = async () => {
     const imageAssets = this.cacheImages([
       require('../assets/bg.png'),
+      require('../assets/blankavatar.png'),
       require('../assets/buttontexture1.png'),
       require('../assets/buttontexture2.png'),
       require('../assets/buttontexture3.png'),
-      require('../assets/blankavatar.png'),
       require('../assets/checked.png'),
       require('../assets/selected.png'),
+      require('../assets/splash.png'),
     ]);
 
     await Promise.all([
@@ -71,24 +72,9 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
-    // // set localPlayer for testing purposes
-    // let player = {
-    //   id: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0',
-    //   displayName: 'otherjosh',
-    //   phoneNumber: '+19712357572',
-    //   inActiveGame: false,
-    //   campaignId: null,
-    //   health: null,
-    //   hunger: null,
-    //   steps: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    //   invited: []
-    // }
-    // await storeData('playerInfo', JSON.stringify(player))
-
     const localPlayer = await retrieveData('playerInfo')
     console.log('local player: ',localPlayer);
     await this.setState({ localPlayer })
-
   };
 
   _handleLoadingError = error => {
