@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
+import { ImagePicker } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
@@ -16,13 +17,27 @@ class NewPlayerForm extends React.Component {
     this.state = {
       displayName: '',
       phoneNumber: '',
+      avatar: require('../../../assets/blankavatar.png'),
+      blob: null
     }
   }
 
   _handleSubmit = async () => {
     const { dispatch } = this.props;
-    dispatch({type: c.CREATE_PLAYER, name: this.state.displayName, number: this.state.phoneNumber})
+    dispatch({type: c.CREATE_PLAYER, name: this.state.displayName, number: this.state.phoneNumber, avatar: this.state.avatar})
     this.props.handleModalStateChange()
+  }
+
+  _pickImage = async () => {
+    const avatar = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1,1],
+    })
+
+    if (!avatar.cancelled) {
+      this.setState({ avatar })
+    }
+
   }
 
   render() {
@@ -40,8 +55,21 @@ class NewPlayerForm extends React.Component {
             <Text style={styles.label}>Phone Number</Text>
             <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
           </View>
+          <View style={customStyles.fieldContainer}>
+            <Text style={styles.label}>Avatar</Text>
+            <View style={customStyles.avatarContainer}>
+              <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
+                <Image
+                  source={this.state.avatar}
+                  style={customStyles.avatar}
+                />
+              </TouchableOpacity>
+              <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
+            </View>
+          </View>
           <View style={customStyles.buttonContainer}>
             <TouchableOpacity style={customStyles.button} onPress={this._handleSubmit}><Text style={styles.label}>Submit</Text></TouchableOpacity>
+            <TouchableOpacity style={customStyles.button} onPress={this.props.handleModalStateChange}><Text style={styles.label}>Close</Text></TouchableOpacity>
           </View>
         </View>
       </View>
@@ -55,7 +83,7 @@ const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
     width: '100%',
-    height: heightUnit*50,
+    height: heightUnit*70,
     backgroundColor: 'darkred',
     justifyContent: 'center',
     borderRadius: 5,
@@ -73,6 +101,7 @@ const customStyles = StyleSheet.create({
   },
   buttonContainer: {
     margin: 10,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -95,6 +124,30 @@ const customStyles = StyleSheet.create({
     paddingLeft: 10,
     color: 'white',
     fontFamily: 'gore',
+  },
+  avatarContainer: {
+    // flex: 2,
+    // height: '100%',
+    // justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatar: {
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    width: widthUnit*20,
+    height: widthUnit*20,
+    borderRadius: 100,
+    // backgroundColor: 'black',
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  avatarCaption: {
+    fontSize: widthUnit*3.5,
+    fontFamily: 'verdana',
+    color: 'white',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    fontStyle: 'italic'
   },
 })
 
