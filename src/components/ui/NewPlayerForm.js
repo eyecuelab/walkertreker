@@ -157,6 +157,7 @@ NewPlayerForm.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    player: state.player,
     campaign: state.campaign,
   }
 }
