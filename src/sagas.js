@@ -5,19 +5,19 @@ import { CLIENT_APP_KEY } from 'react-native-dotenv';
 import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
-export const getDates = state => state.steps.campaignDateArray;
+export const getSteps = state => state.steps;
 export const getPlayer = state => state.player;
 
 // worker sagas ==============================
 
 export function *fetchSteps() {
-  console.log('started fetch steps');
 
-  const dates = yield select(getDates);
+  const steps = yield select(getSteps);
+  const dates = steps.campaignDateArray;
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
   for (obj of datesCopy) {
-    console.log('fetch steps loop, day ' + obj.day);
+    console.log('fetch steps loop, day ' + obj.day); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it
     try {
       const start = new Date(Date.parse(obj.start))
       const end = new Date(Date.parse(obj.end))
@@ -30,6 +30,8 @@ export function *fetchSteps() {
       yield put({type: c.STEPS_FAILED, error})
     }
   }
+  yield storeData('stepInfo', JSON.stringify(steps))
+
   yield put({type: c.STEPS_RECEIVED, campaignDateArray: datesCopy});
 }
 
@@ -163,7 +165,7 @@ export function *createPlayer(action) {
   .catch(error => console.warn('error creating player: ', error));
   console.log('response is: ', response);
 
-  yield put({type: c.PLAYER_CREATED, player: response}) // this will carry a payload in the future, but for now it is blank
+  yield put({type: c.PLAYER_CREATED, player: response})
 }
 
 export function *updateCampaign(action) {
@@ -248,12 +250,14 @@ export function *updatePlayer(action) {
     })
   };
 
-  const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    .catch(error => console.log('error updating player: ', error))
-  console.log('response: ', response);
-
-  yield put({type: c.PLAYER_UPDATED, player: response})
+  try {
+    const response = yield fetch(url, initObj);
+    .then(response => response.json());
+    console.log('response: ', response);
+    yield put({type: c.PLAYER_UPDATED, player: response});
+  } catch (error) {
+    console.log('error updating player: ', error)
+  }
 }
 
 export function *startCampaign(action) {
@@ -317,7 +321,6 @@ export function *watchStepUpdates() {
 
 export function *watchPlayerStepsUpdated() {
   yield take(c.UPDATE_PLAYER_STEPS);
-  // TODO: get the campaign id and the player step array before dispatching update player
   const player = yield select(getPlayer);
   yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps})
 }

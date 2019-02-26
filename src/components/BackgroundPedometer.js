@@ -16,17 +16,16 @@ class BackgroundPedometer extends React.Component {
     super(props);
   }
 
-  componentWillMount() {
-    const { campaignDateArray } = this.props.steps;
-    // const { startDate } = this.props.campaign;
-
-    // if (
-    //   startDate !== null &&
-    //   campaignDateArray === null
-    // ) {
-    //   this._constructDateLog();
-    // }
-  }
+  // componentWillMount = async () => {
+  //   // TODO: check AsyncStorage for 'stepInfo' to populate campaignDateArray
+  //   const { dispatch } = this.props;
+  //   let steps = await retrieveData('stepInfo');
+  //   steps = JSON.parse(steps);
+  //   steps = steps.campaignDateArray;
+  //   if (steps[0].steps != null) {
+  //     dispatch({type: c.STEPS_RECEIVED, campaignDateArray: steps});
+  //   }
+  // }
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -47,6 +46,9 @@ class BackgroundPedometer extends React.Component {
     }, 60000);
 
     this._getReadyToBuildDateArray()
+
+    //remove this later; this is here to reset player info if there is an error updating with the server
+    // dispatch({type: c.FETCH_PLAYER, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0'})
   }
 
   componentWillUnmount() {
@@ -94,16 +96,9 @@ class BackgroundPedometer extends React.Component {
     const { dispatch } = this.props;
     const { difficultyLevel, length, startDate, stepTargets } = this.props.campaign;
 
-    // const stepGoalDayOne = stepTargets[0];
-    // const day1Start = new Date(startDate);
-    // const day1End = new Date(startDate);
-    // day1Start.setHours(6,0,0,0);
-    // day1End.setHours(24,0,0,0);
-
     const stepGoalDayOne = stepTargets[0];
     let day1 = new Date(startDate);
     day1 = new Date(day1.setTime(day1.getTime() + 86400000));
-    // day1 = day1.setUTCHours(0);
     const day1Start = new Date(day1);
     const day1End = new Date(day1);
     day1Start.setHours(6,0,0,0);

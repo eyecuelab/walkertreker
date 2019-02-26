@@ -86,7 +86,7 @@ class App extends React.Component {
     // await storeData('playerInfo', JSON.stringify(player))
 
     const localPlayer = await retrieveData('playerInfo')
-    console.log(localPlayer);
+    console.log('local player: ',localPlayer);
     await this.setState({ localPlayer })
 
   };

@@ -11,7 +11,6 @@ export default (state = player/*testState*/, action) => {
       newState = Object.assign({}, state, action.player);
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
-    // this one might be completely unneccessary, depending on when/how we fetch players, etc
     case c.SEND_JOIN_CAMPAIGN_REQUEST:
       newState = {
         ...state,
