@@ -8,20 +8,19 @@ export const setAppState = (appState) => ({
 });
 
 export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyLevel, stepGoalDayOne) => {
-  const dateArray = [];
+  let dateArray = [];
   let start;
   let end;
-
-  for (let i=0; i < length; i++) {
+  for (let i = 0; i < length; i++) {
     let aGoal;
     start = new Date(firstDayStart);
     end = new Date(firstDayEnd);
-    if (i = 0) {
+    if (i === 0) {
       aGoal = stepGoalDayOne;
     } else {
       aGoal = null;
     }
-    dateArray.push({
+    let newDateObj = {
       day: i + 1,
       start: new Date(start.setDate(start.getDate() + i)),
       end: new Date(end.setDate(end.getDate() + i)),
@@ -30,7 +29,8 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyL
       bonus: null,
       timesScavenged: null,
       goalMet: false,
-    });
+    }
+    dateArray.push(newDateObj);
   }
   return ({
     type: c.SET_CAMPAIGN_DATES,

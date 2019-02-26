@@ -72,14 +72,8 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
-    // set localPlayer for testing purposes
-    // let player = {
-    //   id: null,
-    //   campaignId: null,
-    // }
-    // await storeData('playerInfo', JSON.stringify(player))
-
     const localPlayer = await retrieveData('playerInfo')
+    console.log('local player: ',localPlayer);
     await this.setState({ localPlayer })
   };
 

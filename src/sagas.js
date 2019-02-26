@@ -1,34 +1,47 @@
-import { put, takeEvery, takeLatest, all, call, select } from 'redux-saga/effects';
+import { put, take, takeEvery, takeLatest, all, call, select } from 'redux-saga/effects';
 import { Pedometer } from "expo";
 import { CLIENT_APP_KEY } from 'react-native-dotenv';
 
 import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
-export const getDates = state => state.steps.campaignDateArray
+export const getSteps = state => state.steps;
+export const getPlayer = state => state.player;
 
 // worker sagas ==============================
 
 export function *fetchSteps() {
 
-  const dates = yield select(getDates);
+  const steps = yield select(getSteps);
+  const dates = steps.campaignDateArray;
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
   for (obj of datesCopy) {
+    console.log('fetch steps loop, day ' + obj.day); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it
     try {
-      const response = yield call(Pedometer.getStepCountAsync, new Date(Date.parse(obj.start)), new Date(Date.parse(obj.end)));
-
-      // console.log('past the first yield');
+      const start = new Date(Date.parse(obj.start))
+      const end = new Date(Date.parse(obj.end))
+      const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
 
       const dateWithSteps = Object.assign({}, datesCopy[obj.day - 1], {steps: stepsToAdd});
-
       datesCopy.splice(obj.day - 1, 1, dateWithSteps);
     } catch (error) {
       yield put({type: c.STEPS_FAILED, error})
     }
   }
+  yield storeData('stepInfo', JSON.stringify(steps))
+
   yield put({type: c.STEPS_RECEIVED, campaignDateArray: datesCopy});
+}
+
+export function *updatePlayerSteps(action) {
+
+  const simpleArray = [];
+  for (obj of action.campaignDateArray) {
+    simpleArray.push(obj.steps);
+  }
+  yield put({type: c.UPDATE_PLAYER_STEPS, steps: simpleArray})
 }
 
 export function *setInitialCampaignDetails(action) {
@@ -42,19 +55,14 @@ export function *setInitialCampaignDetails(action) {
     body: JSON.stringify(action.payload)
   }
 
-  // const response = yield call(fetch, url, initObj)
-  const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    .catch(error => console.log('error setting campaign details: ', error));
-
-  console.log('response is: ');
-  console.log(response);
-
-  yield storeData('campaignId', JSON.stringify(response.id))
-  // yield storeData('stepGoalDayOne', JSON.stringify(response.stepTargets[0]))
-
-  // yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, id: response.id, stepGoalDayOne: response.stepTargets[0]});
-  yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield storeData('campaignId', JSON.stringify(response.id));
+    yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
+  } catch (error) {
+    console.warn('error setting campaign details: ', error);
+  }
 }
 
 export function *sendInvites(action) {
@@ -75,22 +83,21 @@ export function *sendInvites(action) {
       },
       body: JSON.stringify(aBody)
     }
-    console.log(initObj);
-    // const response = yield call(fetch, url, initObj)
-    const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    // .then(response => response.text())
-    .catch(error => console.warn('error sending invites: ', error));
-    console.log('response is: ', response);
+
+    try {
+      const response = yield fetch(url, initObj)
+      .then(response => response.json());
+      yield put({type: c.INVITES_SENT, invites: action.invites });
+    } catch (error) {
+      console.warn('error sending invites: ', error);
+    }
   };
-  yield put({type: c.INVITES_SENT, invites: action.invites })
 }
 
 export function *fetchCampaignInfo(action) {
 
   const id = action.id;
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + id;
-  console.log(url);
   const initObj = {
     method: "GET",
     headers: {
@@ -98,16 +105,13 @@ export function *fetchCampaignInfo(action) {
       "appkey": CLIENT_APP_KEY
     }
   };
-
-  // const response = yield call(fetch, url, initObj) // for some reason this does not work...
-  const response = yield fetch(url, initObj)
-  .then(response => response.json())
-  .catch(error => console.warn('error fetching campaign: ', error));
-  console.log('response is: ', response);
-
-  //here you are
-  yield put({type: c.CAMPAIGN_INFO_RECEIVED, campaign: response})
-
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.CAMPAIGN_INFO_RECEIVED, campaign: response});
+  } catch (error) {
+    console.warn('error fetching campaign: ', error);
+  }
 }
 
 export function *joinCampaignRequest(action) {
@@ -121,16 +125,13 @@ export function *joinCampaignRequest(action) {
     },
     body: JSON.stringify({playerId: action.playId})
   };
-
-  // ideally refactor to: yield call(() => {
-  //   fetch(url, initObj)
-  // })
-  const response = yield fetch(url, initObj)
-  .then(response => response.json())
-  .catch(error => console.warn('error joining campaign: ', error));
-  console.log('response is: ', response);
-
-  yield put({type: c.PLAYER_JOINED_CAMPAIGN, campaign: response})
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.PLAYER_JOINED_CAMPAIGN, campaign: response});
+  } catch (error) {
+    console.warn('error joining campaign: ', error);
+  }
 }
 
 export function *createPlayer(action) {
@@ -164,14 +165,16 @@ export function *createPlayer(action) {
       "Content-Type": "multipart/form-data",
       "appkey": CLIENT_APP_KEY
     },
-    body: data
-  }
-  const response = yield fetch(url, initObj)
-  .then(response => response.json())
-  .catch(error => console.warn('error creating player: ', error));
-  console.log('response is: ', response);
 
-  yield put({type: c.PLAYER_CREATED, player: response}) // this will carry a payload in the future, but for now it is blank
+    body: data
+  };
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.PLAYER_CREATED, player: response});
+  } catch (error) {
+    console.warn('error creating player: ', error);
+  }
 }
 
 export function *updateCampaign(action) {
@@ -191,12 +194,13 @@ export function *updateCampaign(action) {
     })
   };
 
-  const response = yield fetch(url, initObj)
-  .then(response => response.json())
-  .catch(error => console.warn('error updating campaign: ', error));
-  console.log('response is: ', response);
-
-  yield put({type: c.CAMPAIGN_UPDATED, campaign: response})
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.CAMPAIGN_UPDATED, campaign: response});
+  } catch (error) {
+    console.warn('error updating campaign: ', error);
+  }
 }
 
 export function *leaveCampaign(action) {
@@ -212,12 +216,13 @@ export function *leaveCampaign(action) {
     body: JSON.stringify({"playerId": action.playId})
   };
 
-  const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    .catch(error => console.warn('error leaving campaign: ', error));
-    console.log('response is: ', response);
-
-  yield put({type: c.CAMPAIGN_LEFT})
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.CAMPAIGN_LEFT});
+  } catch (error) {
+    console.warn('error leaving campaign: ', error);
+  }
 }
 
 export function *fetchPlayer(action) {
@@ -230,12 +235,13 @@ export function *fetchPlayer(action) {
     }
   };
 
-  const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    .catch(error => console.log('error fetching players: ', error))
-  console.log(response);
-
-  yield put({type: c.PLAYER_FETCHED, player: response})
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.PLAYER_FETCHED, player: response});
+  } catch (error) {
+    console.warn('error fetching players: ', error);
+  }
 }
 
 export function *updatePlayer(action) {
@@ -256,12 +262,13 @@ export function *updatePlayer(action) {
     })
   };
 
-  const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    .catch(error => console.log('error updating player: ', error))
-  console.log('response: ', response);
-
-  yield put({type: c.PLAYER_UPDATED, player: response})
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.PLAYER_UPDATED, player: response});
+  } catch (error) {
+    console.warn('error updating player: ', error)
+  }
 }
 
 export function *startCampaign(action) {
@@ -276,14 +283,13 @@ export function *startCampaign(action) {
       "startNow": action.startNow,
     })
   };
-  console.log(url, initObj);
-
-  const response = yield fetch(url, initObj)
-  .then(response => response.json())
-  .catch(error => console.warn('error starting campaign: ', error));
-  console.log('response is: ', response);
-
-  yield put({type: c.CAMPAIGN_STARTED, campaign: response})
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.CAMPAIGN_STARTED, campaign: response})
+  } catch (error) {
+    console.warn('error starting campaign: ', error)
+  }
 }
 
 export function *destroyCampaign(action) {
@@ -296,12 +302,13 @@ export function *destroyCampaign(action) {
     },
   };
 
-  const response = yield fetch(url, initObj)
-  .then(response => response.json())
-  .catch(error => console.warn('error starting campaign: ', error));
-  console.log('response is: ', response);
-
-  yield put({type: c.CAMPAIGN_DESTROYED})
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.CAMPAIGN_DESTROYED});
+  } catch (error) {
+    console.warn('error starting campaign: ', error)
+  }
 }
 
 export function *saveState() {
@@ -311,52 +318,70 @@ export function *saveState() {
 
 // watcher sagas ==============================
 
+export function *watchSetDates() {
+  while (true) {
+    yield take(c.SET_CAMPAIGN_DATES);
+    yield put({type: c.GET_STEPS});
+  }
+}
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
 }
 
+export function *watchStepUpdates() {
+  yield takeEvery(c.STEPS_RECEIVED, updatePlayerSteps)
+}
+
+export function *watchPlayerStepsUpdated() {
+  while (true) {
+    yield take(c.UPDATE_PLAYER_STEPS);
+    const player = yield select(getPlayer);
+    yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps})
+  }
+}
+
 export function *watchInitialCampaignDetails() {
-  yield takeLatest(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails)
+  yield takeEvery(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails)
 }
 
 export function *watchInvites() {
-  yield takeLatest(c.SEND_INVITES, sendInvites);
+  yield takeEvery(c.SEND_INVITES, sendInvites);
 }
 
 export function *watchCampaignGetting() {
-  yield takeLatest(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo)
+  yield takeEvery(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo)
 }
 
 export function *watchJoinCampaign() {
-  yield takeLatest(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest)
+  yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest)
 }
 
 export function *watchCreatePlayer() {
-  yield takeLatest(c.CREATE_PLAYER, createPlayer)
+  yield takeEvery(c.CREATE_PLAYER, createPlayer)
 }
 
 export function *watchUpdateCampaign() {
-  yield takeLatest(c.UPDATE_CAMPAIGN, updateCampaign)
+  yield takeEvery(c.UPDATE_CAMPAIGN, updateCampaign)
 }
 
 export function *watchLeaveCampaign() {
-  yield takeLatest(c.LEAVE_CAMPAIGN, leaveCampaign)
+  yield takeEvery(c.LEAVE_CAMPAIGN, leaveCampaign)
 }
 
 export function *watchFetchPlayer() {
-  yield takeLatest(c.FETCH_PLAYER, fetchPlayer)
+  yield takeEvery(c.FETCH_PLAYER, fetchPlayer)
 }
 
 export function *watchUpdatePlayer() {
-  yield takeLatest(c.UPDATE_PLAYER, updatePlayer)
+  yield takeEvery(c.UPDATE_PLAYER, updatePlayer)
 }
 
 export function *watchStartCampaign() {
-  yield takeLatest(c.START_CAMPAIGN, startCampaign)
+  yield takeEvery(c.START_CAMPAIGN, startCampaign)
 }
 
 export function *watchDestroyCampaign() {
-  yield takeLatest(c.DESTROY_CAMPAIGN, destroyCampaign)
+  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign)
 }
 
 export function *watchAppStateChange() {
@@ -380,6 +405,9 @@ export default function *rootSaga() {
     watchCampaignGetting(),
     watchInvites(),
     watchInitialCampaignDetails(),
+    watchSetDates(),
+    watchStepUpdates(),
+    watchPlayerStepsUpdated(),
     watchSteps(),
   ])
 }
