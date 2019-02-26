@@ -9,22 +9,23 @@ class PlayersList extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('player list props: ', this.props);
   }
 
   listConditionalRender = () => {
     if (this.props.campaign.players.length >= 1) {
       return (
-        this.props.campaign.players.map(player =>
-          <TouchableOpacity
-            onPress={() => {this.props.onSelectPlayer(player.id)}}
-            key={player.id}>
-            <Text
-              style={defaultStyleSheet.subHeading}>
-              {player.displayName}
-            </Text>
-          </TouchableOpacity>
-        )
+        <View style={styles.container}>
+          {this.props.campaign.players.map(player =>
+            <TouchableOpacity
+              onPress={() => {this.props.onSelectPlayer(player.id)}}
+              key={player.id}>
+              <Text
+                style={defaultStyleSheet.subHeading}>
+                {player.displayName}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
       );
     } else {
       return (
@@ -55,6 +56,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: "100%",
     height: "100%",
+    // borderWidth: 1,
+    // borderColor: 'black',
   },
   list: {
     width: "100%",

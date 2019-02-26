@@ -18,7 +18,6 @@ class SocketIO extends React.Component {
       console.log('================     TO    ================')
       console.log('================ SOCKET.IO ================')
       console.log('================   SERVER  ================')
-      // NavigationService.navigate('About');
     })
 
     socket.on('connect_error', (err) => {
