@@ -17,6 +17,7 @@ import Map from '../components/Map';
 import Profile from '../components/Profile';
 import Team from '../components/Team';
 import BackgroundPedometer from '../components/BackgroundPedometer';
+import CloudinaryDemo from '../components/CloudinaryDemo';
 
 const AppNavigator = createStackNavigator(
   {
@@ -37,10 +38,10 @@ const AppNavigator = createStackNavigator(
     Map: { screen: Map },
     Profile: { screen: Profile },
     Team: { screen: Team },
-    BackgroundPedometer: { screen: BackgroundPedometer },
+    CloudinaryDemo: { screen: CloudinaryDemo },
   },
   {
-    initialRouteName: "Start",
+    initialRouteName: "CloudinaryDemo",
     defaultNavigationOptions: {
       header: null,
     }

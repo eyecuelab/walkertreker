@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "buffer": "^5.2.1",
+    "cloudinary-react": "^1.1.0",
     "expo": "^32.0.0",
     "prop-types": "^15.6.2",
     "react": "16.5.0",
