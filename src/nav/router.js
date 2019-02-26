@@ -41,7 +41,7 @@ const AppNavigator = createStackNavigator(
     CloudinaryDemo: { screen: CloudinaryDemo },
   },
   {
-    initialRouteName: "CloudinaryDemo",
+    initialRouteName: "Start",
     defaultNavigationOptions: {
       header: null,
     }

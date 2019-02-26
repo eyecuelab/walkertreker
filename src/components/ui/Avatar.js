@@ -6,17 +6,12 @@ import cloudinary from 'cloudinary-core'
 export default class Avatar extends React.Component {
   constructor(props) {
     super(props)
-    const cl = new cloudinary.Cloudinary({cloud_name: 'walkertrekker'});
-    // let avatar = require('../../../assets/blankavatar.png')
-    // if (this.props.player.avatar !== null) {
-    //   avatar = cloudinaryCore.url(this.props.player.avatar)
-    // }
+    const cl = new cloudinary.Cloudinary({cloud_name: 'walkertrekker', secure: true});
     const avatar = this.props.player.avatar ? { uri: cl.url(this.props.player.avatar) } : require('../../../assets/blankavatar.png')
     this.state = { avatar }
   }
 
   render() {
-    console.log('Avatar: ', this.state.avatar)
     return (
       <Image
         source={this.state.avatar}
