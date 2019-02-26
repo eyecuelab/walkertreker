@@ -87,7 +87,7 @@ export function *sendInvites(action) {
     try {
       const response = yield fetch(url, initObj)
       .then(response => response.json());
-      yield put({type: c.INVITES_SENT, invites: action.invites })
+      yield put({type: c.INVITES_SENT, invites: action.invites });
     } catch (error) {
       console.log('error sending invites: ', error);
     }
@@ -107,9 +107,8 @@ export function *fetchCampaignInfo(action) {
     }
   };
   try {
-    const response = yield fetch(url, initObj);
+    const response = yield fetch(url, initObj)
     .then(response => response.json());
-    console.log('response: ', response);
     yield put({type: c.CAMPAIGN_INFO_RECEIVED, campaign: response});
   } catch (error) {
     console.log('error fetching campaign: ', error);
@@ -128,7 +127,7 @@ export function *joinCampaignRequest(action) {
     body: JSON.stringify({playerId: action.playId})
   };
   try {
-    const response = yield fetch(url, initObj);
+    const response = yield fetch(url, initObj)
     .then(response => response.json());
     yield put({type: c.PLAYER_JOINED_CAMPAIGN, campaign: response});
   } catch (error) {
@@ -149,10 +148,10 @@ export function *createPlayer(action) {
   };
   try {
     const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    yield put({type: c.PLAYER_CREATED, player: response})
+    .then(response => response.json());
+    yield put({type: c.PLAYER_CREATED, player: response});
   } catch (error) {
-    console.log('error creating player: ', error)
+    console.log('error creating player: ', error);
   }
 }
 
@@ -175,10 +174,10 @@ export function *updateCampaign(action) {
 
   try {
     const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    yield put({type: c.CAMPAIGN_UPDATED, campaign: response})
+    .then(response => response.json());
+    yield put({type: c.CAMPAIGN_UPDATED, campaign: response});
   } catch (error) {
-    console.log('error updating campaign: ', error)
+    console.log('error updating campaign: ', error);
   }
 }
 
@@ -197,10 +196,10 @@ export function *leaveCampaign(action) {
 
   try {
     const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    yield put({type: c.CAMPAIGN_LEFT})
+    .then(response => response.json());
+    yield put({type: c.CAMPAIGN_LEFT});
   } catch (error) {
-    console.log('error leaving campaign: ', error)
+    console.log('error leaving campaign: ', error);
   }
 }
 
@@ -216,11 +215,10 @@ export function *fetchPlayer(action) {
 
   try {
     const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    console.log('response: ', response);
-    yield put({type: c.PLAYER_FETCHED, player: response})
+    .then(response => response.json());
+    yield put({type: c.PLAYER_FETCHED, player: response});
   } catch (error) {
-    console.log('error fetching players: ', error)
+    console.log('error fetching players: ', error);
   }
 }
 
@@ -243,7 +241,7 @@ export function *updatePlayer(action) {
   };
 
   try {
-    const response = yield fetch(url, initObj);
+    const response = yield fetch(url, initObj)
     .then(response => response.json());
     yield put({type: c.PLAYER_UPDATED, player: response});
   } catch (error) {
@@ -267,8 +265,7 @@ export function *startCampaign(action) {
 
   try {
     const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    console.log('response: ', response);
+    .then(response => response.json());
     yield put({type: c.CAMPAIGN_STARTED, campaign: response})
   } catch (error) {
     console.log('error starting campaign: ', error)
@@ -287,8 +284,7 @@ export function *destroyCampaign(action) {
 
   try {
     const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    console.log('response: ', response);
+    .then(response => response.json());
     yield put({type: c.CAMPAIGN_DESTROYED});
   } catch (error) {
     console.log('error starting campaign: ', error)
