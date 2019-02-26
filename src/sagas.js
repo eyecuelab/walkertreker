@@ -166,7 +166,6 @@ export function *createPlayer(action) {
     },
     body: data
   }
-  console.log('initObj: ', initObj)
   const response = yield fetch(url, initObj)
   .then(response => response.json())
   .catch(error => console.warn('error creating player: ', error));

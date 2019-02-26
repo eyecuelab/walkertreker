@@ -72,11 +72,11 @@ class App extends React.Component {
     ]);
 
     // set localPlayer for testing purposes
-    let player = {
-      id: null,
-      campaignId: null,
-    }
-    await storeData('playerInfo', JSON.stringify(player))
+    // let player = {
+    //   id: null,
+    //   campaignId: null,
+    // }
+    // await storeData('playerInfo', JSON.stringify(player))
 
     const localPlayer = await retrieveData('playerInfo')
     await this.setState({ localPlayer })
