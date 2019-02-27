@@ -366,7 +366,12 @@ export function *watchAppStateChange() {
 }
 
 export function *watchPlayerActions() {
- yield takeLatest([c.PLAYER_CREATED, c.PLAYER_FETCHED, c.PLAYER_UPDATED], fetchCampaignInfo);
+  // TODO: this function takes these things just fine, but what does it pass to fetchCampaignInfo?  it needs to grab a campaign id from the action in order to actually fetch the campaign info from the server. right now it's returning an error.
+  while (true) {
+    yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED, c.PLAYER_UPDATED]);
+    const player = yield select(getPlayer);
+    yield put({type: c.FETCH_CAMPAIGN_INFO, id: player.campaignId})
+  }
 }
 
 // root saga ==============================
@@ -390,5 +395,6 @@ export default function *rootSaga() {
     watchStepUpdates(),
     watchPlayerStepsUpdated(),
     watchSteps(),
+    watchPlayerActions(),
   ])
 }
