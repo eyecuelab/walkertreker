@@ -329,19 +329,19 @@ export function *watchSteps() {
 }
 
 export function *watchStepUpdates() {
-  yield takeEvery(c.STEPS_RECEIVED, updatePlayerSteps)
+  yield takeEvery(c.STEPS_RECEIVED, updatePlayerSteps);
 }
 
 export function *watchPlayerStepsUpdated() {
   while (true) {
     yield take(c.UPDATE_PLAYER_STEPS);
     const player = yield select(getPlayer);
-    yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps})
+    yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps});
   }
 }
 
 export function *watchInitialCampaignDetails() {
-  yield takeEvery(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails)
+  yield takeEvery(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails);
 }
 
 export function *watchInvites() {
@@ -349,43 +349,52 @@ export function *watchInvites() {
 }
 
 export function *watchCampaignGetting() {
-  yield takeEvery(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo)
+  yield takeEvery(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo);
 }
 
 export function *watchJoinCampaign() {
-  yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest)
+  yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest);
 }
 
 export function *watchCreatePlayer() {
-  yield takeEvery(c.CREATE_PLAYER, createPlayer)
+  yield takeEvery(c.CREATE_PLAYER, createPlayer);
 }
 
 export function *watchUpdateCampaign() {
-  yield takeEvery(c.UPDATE_CAMPAIGN, updateCampaign)
+  yield takeEvery(c.UPDATE_CAMPAIGN, updateCampaign);
 }
 
 export function *watchLeaveCampaign() {
-  yield takeEvery(c.LEAVE_CAMPAIGN, leaveCampaign)
+  yield takeEvery(c.LEAVE_CAMPAIGN, leaveCampaign);
 }
 
 export function *watchFetchPlayer() {
-  yield takeEvery(c.FETCH_PLAYER, fetchPlayer)
+  yield takeEvery(c.FETCH_PLAYER, fetchPlayer);
 }
 
 export function *watchUpdatePlayer() {
-  yield takeEvery(c.UPDATE_PLAYER, updatePlayer)
+  yield takeEvery(c.UPDATE_PLAYER, updatePlayer);
 }
 
 export function *watchStartCampaign() {
-  yield takeEvery(c.START_CAMPAIGN, startCampaign)
+  yield takeEvery(c.START_CAMPAIGN, startCampaign);
 }
 
 export function *watchDestroyCampaign() {
-  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign)
+  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign);
 }
 
 export function *watchAppStateChange() {
-  yield takeEvery(c.NEW_APP_STATE, saveState)
+  yield takeEvery(c.NEW_APP_STATE, saveState);
+}
+
+export function *watchPlayerActions() {
+  // TODO: this function takes these things just fine, but what does it pass to fetchCampaignInfo?  it needs to grab a campaign id from the action in order to actually fetch the campaign info from the server. right now it's returning an error.
+  while (true) {
+    yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED, c.PLAYER_UPDATED]);
+    const player = yield select(getPlayer);
+    yield put({type: c.FETCH_CAMPAIGN_INFO, id: player.campaignId})
+  }
 }
 
 // root saga ==============================
@@ -409,5 +418,6 @@ export default function *rootSaga() {
     watchStepUpdates(),
     watchPlayerStepsUpdated(),
     watchSteps(),
+    watchPlayerActions(),
   ])
 }
