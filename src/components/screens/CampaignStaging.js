@@ -27,13 +27,6 @@ class CampaignStaging extends React.Component {
     };
   }
 
-  componentDidMount() {
-    // console.log(this.state);
-    const { dispatch } = this.props;
-    dispatch({type: c.FETCH_PLAYER, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0'})
-    dispatch({type: c.FETCH_CAMPAIGN_INFO, id: '5b5030b2-559d-4956-94f4-4d3f665fb0f2'})
-  }
-
   submitConditionalRender = () => {
     if (this.props.campaign.numPlayers == 1) {
       return (
