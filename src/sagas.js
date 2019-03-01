@@ -321,9 +321,9 @@ export function *saveState() {
 }
 
 export function *checkBonusSteps(action) {
-  const { steps } = action.player;
+  const { steps, stepTargets } = action.player;
   // TODO: step targets lives in the player state slice once master is pulled again.  CHANGE IT SOON
-  const { stepTargets, currentDay, inventory } = yield select(getCampaign);
+  const { currentDay, inventory } = yield select(getCampaign);
   const { campaignDateArray } = yield select(getSteps);
 
   // console.log('bonus - steps: ', steps);
@@ -364,7 +364,7 @@ export function *checkBonusSteps(action) {
   ) {
     console.log('you took some more bonus steps!');
     yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    
+
   } else if (
     stepsToday >= stepGoalToday &&
     bonusStepsToday !== null &&
