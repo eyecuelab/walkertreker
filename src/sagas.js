@@ -7,6 +7,7 @@ const { c, storeData, retrieveData } = constants;
 
 export const getSteps = state => state.steps;
 export const getPlayer = state => state.player;
+export const getCampaign = state => state.campaign;
 
 // worker sagas ==============================
 
@@ -17,7 +18,7 @@ export function *fetchSteps() {
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
   for (obj of datesCopy) {
-    console.log('fetch steps loop, day ' + obj.day); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it
+    console.log('fetch steps loop, day ' + obj.day); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
     try {
       const start = new Date(Date.parse(obj.start))
       const end = new Date(Date.parse(obj.end))
@@ -238,6 +239,8 @@ export function *fetchPlayer(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
+    // .then(response => response.text());
+    // console.log('response', response);
     yield put({type: c.PLAYER_FETCHED, player: response});
   } catch (error) {
     console.warn('error fetching players: ', error);
@@ -312,8 +315,138 @@ export function *destroyCampaign(action) {
 }
 
 export function *saveState() {
-  const allTheState = yield select();
-  yield storeData('lastState', JSON.stringify(allTheState));
+  const lastState = yield select();
+  console.log(JSON.stringify(lastState));
+  yield storeData('lastState', JSON.stringify(lastState));
+}
+
+export function *checkBonusSteps(action) {
+  const { steps } = action.player;
+  // TODO: step targets lives in the player state slice once master is pulled again.  CHANGE IT SOON
+  const { stepTargets, currentDay, inventory } = yield select(getCampaign);
+  const { campaignDateArray } = yield select(getSteps);
+
+  // console.log('bonus - steps: ', steps);
+  // console.log('bonus - stepTargets: ', stepTargets);
+  // console.log('bonus - currentDay: ', currentDay);
+  // console.log('bonus - inventory: ', inventory);
+  // console.log('bonus - campaignDateArray: ', campaignDateArray);
+
+  if (steps[currentDay - 1] === 0 || campaignDateArray === null || stepTargets.length === 0 || currentDay === 0) {
+    return;
+  }
+
+  const stepGoalToday = stepTargets[currentDay - 1];
+  const stepsToday = steps[currentDay - 1];
+  const newBonus = stepsToday - stepGoalToday;
+  const timesScavengedToday = campaignDateArray[currentDay - 1].timesScavenged;
+  const bonusStepsToday = campaignDateArray[currentDay - 1].bonus;
+
+  console.log('stepGoalToday: ', stepGoalToday);
+  console.log('stepsToday: ', stepsToday);
+  console.log('timesScavengedToday: ', timesScavengedToday);
+  console.log('bonusStepsToday: ', bonusStepsToday);
+  console.log('newBonus: ', newBonus);
+  if (
+    stepsToday >= stepGoalToday &&
+    bonusStepsToday === null
+  ) {
+    console.log('congrats! you made it to the safehouse!');
+    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+    console.log('you have' + newBonus + ' of the 500 steps you need to scavenge.');
+    // ABOVE IS THE FIRST PART
+
+  } else if (
+    stepsToday >= stepGoalToday &&
+    bonusStepsToday !== null &&
+    newBonus - (timesScavengedToday * 500) < 500 &&
+    newBonus > bonusStepsToday
+  ) {
+    console.log('you took some more bonus steps!');
+    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+    
+  } else if (
+    stepsToday >= stepGoalToday &&
+    bonusStepsToday !== null &&
+    newBonus - (timesScavengedToday * 500) < 500 &&
+    newBonus <= bonusStepsToday
+  ) {
+    console.log('nothing has changed!');
+    // yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+
+  // TODO: split this function into multiple functions that can be called independently of each other. above will flip a madeToSafeHouse boolean and add bonus steps.  below will actually do the scavenging by assigning a scavenge type based on user input
+
+  // TODO: split this function into multiple functions that can be called independently of each other. above will flip a madeToSafeHouse boolean and add bonus steps.  below will actually do the scavenging by assigning a scavenge type based on user input
+
+  } else if (
+    // BELOW IS THE SECOND PART
+    stepsToday >= stepGoalToday &&
+    bonusStepsToday !== null &&
+    newBonus - (timesScavengedToday * 500) >= 500
+    // ^ condition: there are 500 or more unused bonus steps
+  ) {
+    const newTimesScavenged = Math.floor(newBonus / 500);
+    const scavengeDifference = newTimesScavenged - timesScavengedToday;
+    const itemsScavenged = Object.assign({}, inventory);
+    const thingScavenged = () => {
+      const rando = Math.floor(Math.random() * 3);
+      if (rando === 0) {
+        return 'food';
+      } else if (rando === 1) {
+        return 'medicine';
+      } else if (rando === 2) {
+        return 'weapon';
+      } else {
+        console.warn('something is wrong with the scavenge randomizer');
+      }
+    };
+
+    // TODO: remove these for prod
+    console.log('way to go! you scavenged something!');
+    // console.log('timesScavengedToday: ', timesScavengedToday);
+    // console.log('newTimesScavenged: ', newTimesScavenged);
+    // console.log('scavengeDifference: ', scavengeDifference);
+    // console.log('pre-scavenge inventory: ', itemsScavenged);
+
+    // TODO: rethink the for loop below so that it won't fuck up the campaign if two players scavenge at once.  as it is, each request could rewrite the others if multiples come through at once.  there is less than a 300ms interval (biggest one i've seen was 206ms) where this could happen
+    let thing;
+    for (let i = 0; i < scavengeDifference; i++) {
+      thing = thingScavenged();
+      // the console log below never hits
+      console.log('loop ' + i + ': you scavenged a ' + thing + '!');
+      if (thing === 'food') {
+        itemsScavenged.foodItems++
+        console.log('added a food: ', itemsScavenged);
+      } else if (thing === 'medicine') {
+        itemsScavenged.medicineItems++
+        console.log('added a medicine: ', itemsScavenged);
+      } else if (thing === 'weapon') {
+        itemsScavenged.weaponItems++
+        console.log('added a weapon: ', itemsScavenged);
+      } else {
+        console.warn('something is wrong with the scavenge randomizer');
+        console.warn('thing is: ', thing);
+      }
+    }
+    yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: currentDay, bonus: newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged})
+  }
+}
+
+export function *getLastStepState() {
+  // TODO: retrieveData 'lastState' as object
+  const lastStateString = yield retrieveData('lastState');
+  const lastState = JSON.parse(lastStateString)
+  // TODO: pull out just steps from it
+  const lastStepState = lastState.steps;
+  console.log('lastStepState: ', lastStepState);
+  // TODO: assign new obj to steps state
+  yield put({type: c.SET_STEP_STATE, lastState: lastStepState})
+  if (
+    yield select(getSteps).pedometerIsAvailable &&
+    lastStepState.campaignDateArray !== null
+  ) {
+    yield put({type: c.GET_STEPS});
+  }
 }
 
 // watcher sagas ==============================
@@ -324,6 +457,7 @@ export function *watchSetDates() {
     yield put({type: c.GET_STEPS});
   }
 }
+
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
 }
@@ -396,6 +530,20 @@ export function *watchPlayerActions() {
   }
 }
 
+export function *watchPlayerUpdated() {
+  yield takeLatest(c.PLAYER_UPDATED, checkBonusSteps);
+}
+
+export function *watchScavengedItems() {
+  const action = yield take(c.ADD_SCAVENGED_ITEMS);
+  const campaign = yield select(getCampaign);
+  yield put({type: c.UPDATE_CAMPAIGN, campId: campaign.id, inventory: action.inventory});
+}
+
+export function *watchGetLastStepState() {
+  yield takeLatest(c.GET_LAST_STEP_STATE, getLastStepState);
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
@@ -418,5 +566,8 @@ export default function *rootSaga() {
     watchPlayerStepsUpdated(),
     watchSteps(),
     watchPlayerActions(),
+    watchPlayerUpdated(),
+    watchScavengedItems(),
+    watchGetLastStepState(),
   ])
 }
