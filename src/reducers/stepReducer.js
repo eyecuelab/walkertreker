@@ -2,6 +2,7 @@ import constants from '../constants';
 const { c, initialState: { steps } } = constants;
 
 export default (state = steps, action) => {
+  let newState;
   switch (action.type) {
     case c.SET_CAMPAIGN_DATES:
       return {
@@ -34,6 +35,21 @@ export default (state = steps, action) => {
         ...state,
         pedometerIsAvailable: action.pedometerIsAvailable,
       }
+
+    case c.ADD_BONUS_STEPS:
+      newState = Object.assign({}, state);
+      newState.campaignDateArray[action.currentDay -1].bonus = action.bonus;
+      return newState;
+
+    case c.ADD_SCAVENGED_ITEMS:
+      newState = Object.assign({}, state);
+      newState.campaignDateArray[action.currentDay - 1].timesScavenged = action.timesScavenged;
+      newState.campaignDateArray[action.currentDay - 1].bonus = action.bonus;
+      return newState
+
+    case c.SET_STEP_STATE:
+      newState = action.lastState;
+      return newState
 
     default:
       return state;
