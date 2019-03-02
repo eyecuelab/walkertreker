@@ -22,13 +22,19 @@ class BackgroundPedometer extends React.Component {
     this._checkPedometerAvailability();
 
     setTimeout(() => {
-      dispatch({type: c.GET_STEPS});
+      if (
+        this.props.steps.campaignDateArray !== null &&
+        this.props.player.id !== null
+      ) {
+        dispatch({type: c.GET_STEPS});
+      }
     }, 1000);
 
     setInterval(() => {
       if (
         this.props.appState === 'active' &&
-        this.props.steps.campaignDateArray !== null
+        this.props.steps.campaignDateArray !== null &&
+        this.props.player.id !== null
       ) {
         dispatch({type: c.GET_STEPS});
       }
@@ -79,10 +85,12 @@ class BackgroundPedometer extends React.Component {
   _handleAppStateChange = (nextAppState) => {
     const { dispatch } = this.props;
     const { campaignDateArray } = this.props.steps;
+    const { id } = this.props.player;
     if (
       this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active' &&
-      campaignDateArray !== null
+      campaignDateArray !== null &&
+      id !== null
     ) {
       dispatch({type: c.GET_STEPS})
     }
