@@ -435,12 +435,13 @@ export function *checkBonusSteps(action) {
 export function *getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData('lastState');
-  const lastState = JSON.parse(lastStateString)
-  // TODO: pull out just steps from it
-  const lastStepState = lastState.steps;
-  console.log('lastStepState: ', lastStepState);
-  // TODO: assign new obj to steps state
-  yield put({type: c.SET_STEP_STATE, lastState: lastStepState})
+  let lastState;
+  if (lastStateString != undefined) {
+    lastState = JSON.parse(lastStateString)
+    const lastStepState = lastState.steps;
+    console.log('lastStepState: ', lastStepState);
+    yield put({type: c.SET_STEP_STATE, lastState: lastStepState})
+  }
   if (
     yield select(getSteps).pedometerIsAvailable &&
     lastStepState.campaignDateArray !== null
