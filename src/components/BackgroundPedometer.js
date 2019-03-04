@@ -41,6 +41,10 @@ class BackgroundPedometer extends React.Component {
         dispatch({type: c.GET_STEPS});
       }
     }, 60000);
+
+    // TODO: remove these later. this is to reset the player in async storage
+    // dispatch({type: c.FETCH_PLAYER, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0'});
+    // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: '7e5dd640-f2bb-496b-99bf-3bb0e9f3460e'});
   }
 
   componentDidUpdate() {
@@ -73,14 +77,14 @@ class BackgroundPedometer extends React.Component {
       pedometerIsAvailable
     ) {
       const stepGoalDayOne = stepTargets[0];
-      let day1 = new Date(startDate);
-      day1 = new Date(day1.setTime(day1.getTime() + 86400000));
-      const day1Start = new Date(day1);
-      const day1End = new Date(day1);
-      day1Start.setHours(6,0,0,0);
-      day1End.setHours(24,0,0,0);
+      let day0 = new Date(startDate);
+      day0 = new Date(day0.setTime(day0.getTime() + 86400000));
+      const day0Start = new Date(day0);
+      const day0End = new Date(day0);
+      day0Start.setHours(6,0,0,0);
+      day0End.setHours(24,0,0,0);
 
-      dispatch(setCampaignDates(day1Start, day1End, length, difficultyLevel, stepGoalDayOne));
+      dispatch(setCampaignDates(day0Start, day0End, length, difficultyLevel, stepGoalDayOne));
     }
   }
 

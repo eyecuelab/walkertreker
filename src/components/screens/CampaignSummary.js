@@ -18,8 +18,7 @@ class CampaignSummary extends React.Component {
 
   _displayStepPercentage = (player) => {
     const today = this.props.campaign.currentDay;
-    console.log('today is ', today);
-    const percent = Math.floor((((player.steps[today]) / (player.stepTargets[today])) * 100));
+    const percent = Math.floor((((player.steps[today - 1]) / (player.stepTargets[today - 1])) * 100));
     return percent.toString();
   }
 
@@ -51,8 +50,7 @@ class CampaignSummary extends React.Component {
     return (
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}
-      >
+        style={{width: '100%', height: '100%'}}>
         <View style={styles.container}>
           <Text style={styles.headline}>CAMPAIGN SUMMARY</Text>
           <Text style={styles.headline}>Players</Text>
@@ -62,8 +60,9 @@ class CampaignSummary extends React.Component {
                 <ThreeInfoSquares
                   key={player.id}
                   title={player.displayName}
+                  bigValue={true}
                   button1label='Progress'
-                  button1value={this._displayStepPercentage(player)}
+                  button1value={this._displayStepPercentage(player) + '%'}
                   button2label='Health'
                   button2value={this._displayHealthLevel(player)}
                   button3label='Hunger'

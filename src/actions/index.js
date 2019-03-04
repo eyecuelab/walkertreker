@@ -21,7 +21,7 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyL
       aGoal = null;
     }
     let newDateObj = {
-      day: i + 1,
+      day: i,
       start: new Date(start.setDate(start.getDate() + i)),
       end: new Date(end.setDate(end.getDate() + i)),
       steps: null,
