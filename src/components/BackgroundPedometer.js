@@ -15,7 +15,9 @@ class BackgroundPedometer extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    dispatch({type: c.GET_LAST_STEP_STATE});
+    if (this.props.player.id && this.props.campaign.id) {
+      dispatch({type: c.GET_LAST_STEP_STATE});
+    }
 
     AppState.addEventListener('change', this._handleAppStateChange);
 
