@@ -9,6 +9,7 @@ import defaultStyle from '../../styles/defaultStyle';
 
 import Avatar from '../ui/Avatar';
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
+import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 class CampaignSummary extends React.Component {
 
@@ -46,6 +47,12 @@ class CampaignSummary extends React.Component {
     }
   }
 
+  _onButtonPress = () => {
+    this.props.navigation.navigate('Inventory');
+  }
+
+  // TODO: add inventory button to bottom of screen
+
   render() {
     return (
       <ImageBackground
@@ -70,6 +77,12 @@ class CampaignSummary extends React.Component {
               )
             })}
           </View>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title='Inventory'
+              backgroundColor='black'
+              onButtonPress={this._onButtonPress} />
+          </View>
         </View>
       </ImageBackground>
     );
@@ -77,9 +90,18 @@ class CampaignSummary extends React.Component {
 }
 
 const styles = StyleSheet.create(defaultStyle)
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    marginTop: heightUnit*10,
+    width: '100%',
+    height: heightUnit*10,
     alignItems: 'center',
     justifyContent: 'center',
   },
