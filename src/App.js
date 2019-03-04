@@ -92,8 +92,10 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     let player = await retrieveData('playerInfo')
-    player = JSON.parse(player)
-    if (!player.id) {
+    if (player != undefined) {
+      player = JSON.parse(player)
+    }
+    if (player === undefined || !player.id) {
       this.setState({newPlayerModalVisible: true})
     }
   }

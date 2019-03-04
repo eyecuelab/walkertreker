@@ -332,7 +332,7 @@ export function *checkBonusSteps(action) {
   // console.log('bonus - inventory: ', inventory);
   // console.log('bonus - campaignDateArray: ', campaignDateArray);
 
-  if (steps[currentDay - 1] === 0 || campaignDateArray === null || stepTargets.length === 0 || currentDay === 0) {
+  if (steps[currentDay - 1] === 0 || campaignDateArray === null || stepTargets === null || currentDay === 0) {
     return;
   }
 
