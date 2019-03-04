@@ -90,7 +90,7 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount = async () => {
+  componentDidMount = async () => {    
     let player = await retrieveData('playerInfo')
     if (player != undefined) {
       player = JSON.parse(player)

@@ -19,8 +19,8 @@ class CampaignSummary extends React.Component {
 
   _displayStepPercentage = (player) => {
     const today = this.props.campaign.currentDay;
-    const percent = Math.floor((((player.steps[today - 1]) / (player.stepTargets[today - 1])) * 100));
-    return percent.toString();
+    const percent = Math.floor((((player.steps[today]) / (player.stepTargets[today])) * 100));
+    return percent;
   }
 
   _displayHealthLevel = (player) => {
@@ -37,11 +37,11 @@ class CampaignSummary extends React.Component {
 
   _displayHungerLevel = (player) => {
     if (player.hunger > 0 && player.hunger < 34) {
-      return 'High';
+      return 'Starving';
     } else if (player.hunger >= 34 && player.hunger < 67) {
-      return 'OK';
+      return 'Hungry';
     } else if (player.hunger >= 67) {
-      return 'Low';
+      return 'Full';
     } else {
       return 'Dead';
     }
@@ -51,7 +51,10 @@ class CampaignSummary extends React.Component {
     this.props.navigation.navigate('Inventory');
   }
 
-  // TODO: add inventory button to bottom of screen
+  // TODO: add color-coding to the ThreeInfoSquares component below.
+  // [] progress - red: <50%, green >100%
+  // [] health - red: poor, green: good
+  // [] hunger - red: high, green: low
 
   render() {
     return (
@@ -79,7 +82,7 @@ class CampaignSummary extends React.Component {
           </View>
           <View style={customStyles.buttonContainer}>
             <SingleButtonFullWidth
-              title='Inventory'
+              title='View Inventory'
               backgroundColor='black'
               onButtonPress={this._onButtonPress} />
           </View>
