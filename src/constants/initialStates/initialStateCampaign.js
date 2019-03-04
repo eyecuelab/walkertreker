@@ -3,9 +3,9 @@
     startDate: null,
     endDate: null,
     currentDay: 0,
-    length: null,
-    difficultyLevel: null,
-    randomEvents: null,
+    length: "15",
+    difficultyLevel: "easy",
+    randomEvents: "low",
     numPlayers: 0,
     stepTargets: [],
     inventory: {
