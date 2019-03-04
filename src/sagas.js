@@ -25,8 +25,8 @@ export function *fetchSteps() {
       const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
 
-      const dateWithSteps = Object.assign({}, datesCopy[obj.day - 1], {steps: stepsToAdd});
-      datesCopy.splice(obj.day - 1, 1, dateWithSteps);
+      const dateWithSteps = Object.assign({}, datesCopy[obj.day], {steps: stepsToAdd});
+      datesCopy.splice(obj.day, 1, dateWithSteps);
     } catch (error) {
       yield put({type: c.STEPS_FAILED, error})
     }
@@ -323,7 +323,7 @@ export function *saveState() {
 export function *checkBonusSteps(action) {
   const { steps, stepTargets } = action.player;
   // TODO: step targets lives in the player state slice once master is pulled again.  CHANGE IT SOON
-  const { currentDay, inventory } = yield select(getCampaign);
+  const { currentDay, inventory, startDate } = yield select(getCampaign);
   const { campaignDateArray } = yield select(getSteps);
 
   // console.log('bonus - steps: ', steps);
@@ -332,15 +332,15 @@ export function *checkBonusSteps(action) {
   // console.log('bonus - inventory: ', inventory);
   // console.log('bonus - campaignDateArray: ', campaignDateArray);
 
-  if (steps[currentDay - 1] === 0 || campaignDateArray === null || stepTargets === null || currentDay === 0) {
+  if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
     return;
   }
 
-  const stepGoalToday = stepTargets[currentDay - 1];
-  const stepsToday = steps[currentDay - 1];
+  const stepGoalToday = stepTargets[currentDay];
+  const stepsToday = steps[currentDay];
   const newBonus = stepsToday - stepGoalToday;
-  const timesScavengedToday = campaignDateArray[currentDay - 1].timesScavenged;
-  const bonusStepsToday = campaignDateArray[currentDay - 1].bonus;
+  const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
+  const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
   console.log('stepGoalToday: ', stepGoalToday);
   console.log('stepsToday: ', stepsToday);

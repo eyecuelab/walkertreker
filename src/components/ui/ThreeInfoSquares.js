@@ -19,7 +19,7 @@ export default class ThreeInfoSquares extends React.Component {
         <Text style={[styles.detail, {margin: 5}]}>{this.props.subtitle}</Text>
 
         <View style={threeInfoSquaresStyles.squareContainer}>
-          //==============================
+
           <View style={threeInfoSquaresStyles.square}>
             <ButtonToggle
               background={bg1}
@@ -27,7 +27,7 @@ export default class ThreeInfoSquares extends React.Component {
               label={this.props.button1label}
               bigValue={this.props.bigValue} />
           </View>
-          //==============================
+
           <View style={threeInfoSquaresStyles.square}>
             <ButtonToggle
               background={bg2}
@@ -35,7 +35,7 @@ export default class ThreeInfoSquares extends React.Component {
               label={this.props.button2label}
               bigValue={this.props.bigValue} />
           </View>
-          //==============================
+
           <View style={threeInfoSquaresStyles.square}>
             <ButtonToggle
               background={bg3}
@@ -43,7 +43,7 @@ export default class ThreeInfoSquares extends React.Component {
               label={this.props.button3label}
               bigValue={this.props.bigValue} />
           </View>
-          //==============================
+
         </View>
       </View>
     );

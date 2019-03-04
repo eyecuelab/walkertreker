@@ -38,13 +38,13 @@ export default (state = steps, action) => {
 
     case c.ADD_BONUS_STEPS:
       newState = Object.assign({}, state);
-      newState.campaignDateArray[action.currentDay -1].bonus = action.bonus;
+      newState.campaignDateArray[action.currentDay].bonus = action.bonus;
       return newState;
 
     case c.ADD_SCAVENGED_ITEMS:
       newState = Object.assign({}, state);
-      newState.campaignDateArray[action.currentDay - 1].timesScavenged = action.timesScavenged;
-      newState.campaignDateArray[action.currentDay - 1].bonus = action.bonus;
+      newState.campaignDateArray[action.currentDay].timesScavenged = action.timesScavenged;
+      newState.campaignDateArray[action.currentDay].bonus = action.bonus;
       return newState
 
     case c.SET_STEP_STATE:
