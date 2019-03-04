@@ -7,7 +7,7 @@
     difficultyLevel: "easy",
     randomEvents: "low",
     numPlayers: 0,
-    stepTargets: [],
+    stepTargets: null,
     inventory: {
         foodItems: 0,
         weaponItems: 0,

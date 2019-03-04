@@ -83,8 +83,9 @@ class App extends React.Component {
           campaignId: false,
         }
       })
+    } else {
+      await this.setState({ localPlayer })
     }
-    await this.setState({ localPlayer })
   };
 
   _handleLoadingError = error => {
