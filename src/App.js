@@ -23,7 +23,7 @@ if (__DEV__) {
 }
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 class App extends React.Component {
@@ -72,8 +72,18 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
-    const localPlayer = await retrieveData('playerInfo')
-    console.log('local player: ',localPlayer);
+    // await storeData('playerInfo', '{}')
+    let localPlayer = await retrieveData('playerInfo')
+    localPlayer = JSON.parse(localPlayer)
+    if (!localPlayer.id) {
+      await this.setState({
+        newPlayerModalVisible: true,
+        localPlayer: {
+          id: false,
+          campaignId: false,
+        }
+      })
+    }
     await this.setState({ localPlayer })
   };
 
@@ -88,14 +98,6 @@ class App extends React.Component {
       path,
       queryParams
     });
-  }
-
-  componentDidMount = async () => {
-    let player = await retrieveData('playerInfo')
-    player = JSON.parse(player)
-    if (!player.id) {
-      this.setState({newPlayerModalVisible: true})
-    }
   }
 
   render() {

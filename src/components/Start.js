@@ -8,7 +8,7 @@ const { c, retrieveData, storeData } = constants;
 class Start extends React.Component {
   constructor(props) {
     super(props)
-    const localPlayer = JSON.parse(this.props.screenProps.localPlayer)
+    const localPlayer = this.props.screenProps.localPlayer
     const needPlayer = localPlayer.id ? true : false
     const needCampaign = localPlayer.campaignId ? true : false
     this.state = {
@@ -22,8 +22,6 @@ class Start extends React.Component {
 
   componentDidMount = async () => {
     const { dispatch } = this.props
-    // uncomment this to erase player data from AsyncStorage
-    // await storeData('playerInfo', '{}')
     if (this.state.needPlayer) {
       dispatch({ type: c.FETCH_PLAYER, playId: this.state.localPlayer.id})
     }
