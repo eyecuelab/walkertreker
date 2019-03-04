@@ -24,7 +24,7 @@ export default class About extends React.Component {
   }
 
   _onButtonPress = () => {
-    
+
     if (this.state.nav == 'none') {
       this.props.navigation.navigate('CreateCampaign')
     } else if (this.state.nav == 'back') {
