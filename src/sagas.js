@@ -342,11 +342,11 @@ export function *checkBonusSteps(action) {
   const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
   const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
-  console.log('stepGoalToday: ', stepGoalToday);
-  console.log('stepsToday: ', stepsToday);
-  console.log('timesScavengedToday: ', timesScavengedToday);
-  console.log('bonusStepsToday: ', bonusStepsToday);
-  console.log('newBonus: ', newBonus);
+  // console.log('stepGoalToday: ', stepGoalToday);
+  // console.log('stepsToday: ', stepsToday);
+  // console.log('timesScavengedToday: ', timesScavengedToday);
+  // console.log('bonusStepsToday: ', bonusStepsToday);
+  // console.log('newBonus: ', newBonus);
   if (
     stepsToday >= stepGoalToday &&
     bonusStepsToday === null
@@ -439,7 +439,7 @@ export function *getLastStepState() {
   if (lastStateString != undefined) {
     lastState = JSON.parse(lastStateString)
     const lastStepState = lastState.steps;
-    console.log('lastStepState: ', lastStepState);
+    // console.log('lastStepState: ', lastStepState);
     yield put({type: c.SET_STEP_STATE, lastState: lastStepState})
   }
   if (

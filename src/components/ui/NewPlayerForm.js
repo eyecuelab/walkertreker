@@ -18,7 +18,6 @@ class NewPlayerForm extends React.Component {
       displayName: '',
       phoneNumber: '',
       avatar: require('../../../assets/blankavatar.png'),
-      blob: null
     }
   }
 
