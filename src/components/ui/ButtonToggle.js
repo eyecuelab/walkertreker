@@ -12,7 +12,6 @@ export default class ButtonToggle extends React.Component {
     const toggle = this.props.active ? styles.active : styles.inactive;
     const valueFontStyle = this.props.bigValue ? styles.bigValue : styles.value;
     const activeTint = this.props.active ? 'white' : 'black';
-
     const color = (color) => {
       if (color == 'red') {
         return styles.red;
@@ -22,7 +21,6 @@ export default class ButtonToggle extends React.Component {
         return styles.inactive;
       }
     };
-    console.log('the color: ', this.props.color);
 
     return (
       <ImageBackground style={{width: '100%', height: '100%'}} source={this.props.background} tintColor={activeTint}>
@@ -97,5 +95,4 @@ const styles = StyleSheet.create({
   green: {
     color: '#68ae5b'
   },
-  blank: {},
 });
