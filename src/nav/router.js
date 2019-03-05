@@ -18,6 +18,8 @@ import Profile from '../components/Profile';
 import Team from '../components/Team';
 import BackgroundPedometer from '../components/BackgroundPedometer';
 import CloudinaryDemo from '../components/CloudinaryDemo';
+import Safehouse from '../components/screens/Safehouse';
+
 
 const AppNavigator = createStackNavigator(
   {
@@ -39,6 +41,7 @@ const AppNavigator = createStackNavigator(
     Profile: { screen: Profile },
     Team: { screen: Team },
     CloudinaryDemo: { screen: CloudinaryDemo },
+    Safehouse: { screen: Safehouse },
   },
   {
     initialRouteName: "Start",

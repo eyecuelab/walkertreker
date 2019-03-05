@@ -11,6 +11,41 @@ const bg3 = require('../../../assets/buttontexture3.png');
 
 export default class ThreeInfoSquares extends React.Component {
 
+  // TODO: feed all the ButtonToggles an 'isRed' and an 'isGreen' prop as a boolean
+
+  _percentColor = () => {
+    const val = parseInt(this.props.button1value.slice(0, -1));
+    if (val < 50) {
+      return 'red';
+    } else if (val > 100) {
+      return 'green';
+    } else {
+      return 'white'
+    }
+  }
+
+  _healthColor = () => {
+    const val = this.props.button2value;
+    if (val === 'Poor') {
+      return 'red';
+    } else if (val === 'Good') {
+      return 'green';
+    } else {
+      return 'white';
+    }
+  }
+
+  _hungerColor = () => {
+    const val = this.props.button3value;
+    if (val === 'Starving') {
+      return 'red';
+    } else if (val === 'Full') {
+      return 'green'
+    } else {
+      return 'white';
+    }
+  }
+
   render() {
     return (
       <View style={threeInfoSquaresStyles.container} >
@@ -25,7 +60,8 @@ export default class ThreeInfoSquares extends React.Component {
               background={bg1}
               value={this.props.button1value}
               label={this.props.button1label}
-              bigValue={this.props.bigValue} />
+              bigValue={this.props.bigValue}
+              color={this._percentColor()} />
           </View>
 
           <View style={threeInfoSquaresStyles.square}>
@@ -33,7 +69,8 @@ export default class ThreeInfoSquares extends React.Component {
               background={bg2}
               value={this.props.button2value}
               label={this.props.button2label}
-              bigValue={this.props.bigValue} />
+              bigValue={this.props.bigValue}
+              color={this._healthColor()} />
           </View>
 
           <View style={threeInfoSquaresStyles.square}>
@@ -41,7 +78,8 @@ export default class ThreeInfoSquares extends React.Component {
               background={bg3}
               value={this.props.button3value}
               label={this.props.button3label}
-              bigValue={this.props.bigValue} />
+              bigValue={this.props.bigValue}
+              color={this._hungerColor()} />
           </View>
 
         </View>

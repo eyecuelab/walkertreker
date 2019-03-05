@@ -9,6 +9,7 @@ import defaultStyle from '../../styles/defaultStyle';
 
 import Avatar from '../ui/Avatar';
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
+import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 class CampaignSummary extends React.Component {
 
@@ -18,8 +19,8 @@ class CampaignSummary extends React.Component {
 
   _displayStepPercentage = (player) => {
     const today = this.props.campaign.currentDay;
-    const percent = Math.floor((((player.steps[today - 1]) / (player.stepTargets[today - 1])) * 100));
-    return percent.toString();
+    const percent = Math.floor((((player.steps[today]) / (player.stepTargets[today])) * 100));
+    return percent;
   }
 
   _displayHealthLevel = (player) => {
@@ -36,15 +37,24 @@ class CampaignSummary extends React.Component {
 
   _displayHungerLevel = (player) => {
     if (player.hunger > 0 && player.hunger < 34) {
-      return 'High';
+      return 'Starving';
     } else if (player.hunger >= 34 && player.hunger < 67) {
-      return 'OK';
+      return 'Hungry';
     } else if (player.hunger >= 67) {
-      return 'Low';
+      return 'Full';
     } else {
       return 'Dead';
     }
   }
+
+  _onButtonPress = () => {
+    this.props.navigation.navigate('Inventory');
+  }
+
+  // TODO: add color-coding to the ThreeInfoSquares component below.
+  // [] progress - red: <50%, green >100%
+  // [] health - red: poor, green: good
+  // [] hunger - red: high, green: low
 
   render() {
     return (
@@ -70,6 +80,12 @@ class CampaignSummary extends React.Component {
               )
             })}
           </View>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title='View Inventory'
+              backgroundColor='black'
+              onButtonPress={this._onButtonPress} />
+          </View>
         </View>
       </ImageBackground>
     );
@@ -77,9 +93,18 @@ class CampaignSummary extends React.Component {
 }
 
 const styles = StyleSheet.create(defaultStyle)
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    marginTop: heightUnit*10,
+    width: '100%',
+    height: heightUnit*10,
     alignItems: 'center',
     justifyContent: 'center',
   },
