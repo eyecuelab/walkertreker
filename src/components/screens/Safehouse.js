@@ -8,13 +8,6 @@ import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 export default class Safehouse extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      lookingFor: null
-    }
-  }
-
   _selectFood = () => {
     const { dispatch } = this.props;
     dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'food'});
@@ -30,18 +23,19 @@ export default class Safehouse extends React.Component {
     dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'weapon'});
   }
 
-  submitConditionalRender = () => {
-    if (this.state.lookingFor === 'food') {
+  _submitConditionalRender = () => {
+    const { scavengingFor } = this.props.steps;
+    if (scavengingFor === 'food') {
       return (
-        <Text style={[styles.plainText, customStyles.text]}>food</Text>
+        <Text style={[styles.plainText, customStyles.headline]}>food</Text>
       );
-    } else if (this.state.lookingFor === 'medicine') {
+    } else if (scavengingFor === 'medicine') {
       return (
-        <Text style={[styles.plainText, customStyles.text]}>medicine</Text>
+        <Text style={[styles.plainText, customStyles.headline]}>medicine</Text>
       );
-    } else if (this.state.lookingFor === 'weapon') {
+    } else if (scavengingFor === 'weapon') {
       return (
-        <Text style={[styles.plainText, customStyles.text]}>weapon</Text>
+        <Text style={[styles.plainText, customStyles.headline]}>weapon</Text>
       );
     } else {
       return (
@@ -90,7 +84,7 @@ export default class Safehouse extends React.Component {
             <Text style={[styles.plainText, customStyles.text]}>If you walk another quarter mile, you can do one of the following:</Text>
           </View>
 
-          {this.submitConditionalRender()}
+          {this._submitConditionalRender()}
 
         </View>
       </ImageBackground>
