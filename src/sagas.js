@@ -326,7 +326,7 @@ export function *checkBonusSteps(action) {
   const { campaignDateArray } = yield select(getSteps);
 
   if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
-    return; // there is no player or game or both
+    return; // there is no player or game or steps or step targets, so bye
   }
 
   const stepGoalToday = stepTargets[currentDay];
@@ -334,8 +334,6 @@ export function *checkBonusSteps(action) {
   const newBonus = stepsToday - stepGoalToday;
   const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
   const bonusStepsToday = campaignDateArray[currentDay].bonus;
-
-  // HERE BEGINS THE BRANCHING
 
   if (
     // no additional bonus steps have been taken
@@ -345,13 +343,15 @@ export function *checkBonusSteps(action) {
     newBonus <= bonusStepsToday
   ) {
     return; // there is nothing to do
+
   } else if (
     // there are bonus steps for the first time today
     stepsToday >= stepGoalToday &&
     bonusStepsToday === null
   ) {
     yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    yield put({type: c.GO_TO_SAFEHOUSE});
+    yield put({type: c.GO_TO_SAFEHOUSE, currentDay: currentDay});
+
   } else if (
     // there are new bonus steps but not enough to scavenge
     stepsToday >= stepGoalToday &&
@@ -360,6 +360,7 @@ export function *checkBonusSteps(action) {
     newBonus > bonusStepsToday
   ) {
     yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+
   } else if (
     // there are 500 or more unused bonus steps to use for scavenging
     stepsToday >= stepGoalToday &&
@@ -367,55 +368,27 @@ export function *checkBonusSteps(action) {
     newBonus - (timesScavengedToday * 500) >= 500
   ) {
     yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday, inventory: inventory}); // flesh out what this will do
+    yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday, inventory: inventory});
   }
 }
 
 export function *scavenge(action) {
-  /*variables needed:
-  newBonus
-  timesScavengedToday
-  inventory
-  selectedItem [does not exist yet, but should be a number from 0-2]
-  */
-  // reassign all these variables to be from the action
-  const newTimesScavenged = Math.floor(newBonus / 500);
-  const scavengeDifference = newTimesScavenged - timesScavengedToday;
-  const itemsScavenged = Object.assign({}, inventory);
-  const thingScavenged = () => {
-    // TODO: instead of this rando, this should take in a prop or something from user input on the safehouse screen. it can still be a 0, 1, or 2
-    const rando = Math.floor(Math.random() * 3);
-    if (rando === 0) {
-      return 'food';
-    } else if (rando === 1) {
-      return 'medicine';
-    } else if (rando === 2) {
-      return 'weapon';
-    } else {
-      console.warn('something is wrong with the scavenge randomizer');
-    }
-  };
-  console.log('way to go! you scavenged something!');
 
-  let thing;
-  for (let i = 0; i < scavengeDifference; i++) {
-    thing = thingScavenged();
-    console.log('loop ' + i + ': you scavenged a ' + thing + '!');
-    if (thing === 'food') {
-      itemsScavenged.foodItems++
-      console.log('added a food: ', itemsScavenged);
-    } else if (thing === 'medicine') {
-      itemsScavenged.medicineItems++
-      console.log('added a medicine: ', itemsScavenged);
-    } else if (thing === 'weapon') {
-      itemsScavenged.weaponItems++
-      console.log('added a weapon: ', itemsScavenged);
-    } else {
-      console.warn('something is wrong with the scavenge randomizer');
-      console.warn('thing is: ', thing);
-    }
+  const newTimesScavenged = action.timesScavengedToday + 1;
+  const itemsScavenged = Object.assign({}, action.inventory);
+  const { scavengingFor } = yield select(getSteps);
+
+  if (scavengingFor === 'food') {
+    itemsScavenged.foodItems++;
+  } else if (scavengingFor === 'medicine') {
+    itemsScavenged.medicineItems++;
+  } else if (scavengingFor === 'weapon') {
+    itemsScavenged.weaponItems++;
+  } else {
+    console.warn('the scavenge function can\'t tell what to scavenge');
   }
-  yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: currentDay, bonus: newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged})
+
+  yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: action.currentDay, bonus: action.newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged});
 }
 
 export function *getLastStepState() {
