@@ -24,26 +24,27 @@ class Safehouse extends React.Component {
 
   _selectWeapon = () => {
     const { dispatch } = this.props;
-    dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'weapon'});
+    dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'weapons'});
   }
 
   _submitConditionalRender = () => {
     const { scavengingFor } = this.props.steps;
-    if (scavengingFor === 'food') {
+    if (scavengingFor) {
       return (
-        <Text style={[styles.plainText, customStyles.headline]}>food</Text>
-      );
-    } else if (scavengingFor === 'medicine') {
-      return (
-        <Text style={[styles.plainText, customStyles.headline]}>medicine</Text>
-      );
-    } else if (scavengingFor === 'weapon') {
-      return (
-        <Text style={[styles.plainText, customStyles.headline]}>weapon</Text>
+        <View style={customStyles.textContainer}>
+          <Text style={styles.headline}>
+            You are scavenging for{"\n"}
+            {scavengingFor}.
+          </Text>
+        </View>
       );
     } else {
       return (
         <View style={customStyles.container}>
+          <View style={customStyles.textContainer}>
+            <Text style={[styles.plainText, customStyles.text]}>If you walk another quarter mile, you can do one of the following:</Text>
+          </View>
+
           <View style={customStyles.buttonContainer}>
             <SingleButtonFullWidth
               backgroundColor='black'
@@ -84,10 +85,6 @@ class Safehouse extends React.Component {
             <Text style={[styles.plainText, customStyles.text]}>You have made it to the safehouse with time to spare. You can use that time to scavenge for resources.</Text>
           </View>
 
-          <View style={customStyles.textContainer}>
-            <Text style={[styles.plainText, customStyles.text]}>If you walk another quarter mile, you can do one of the following:</Text>
-          </View>
-
           {this._submitConditionalRender()}
 
         </View>
@@ -103,6 +100,13 @@ const customStyles = StyleSheet.create({
   headlineContainer: {
     width: '100%',
     justifyContent: 'flex-start',
+  },
+  headline: {
+    fontFamily: 'gore',
+    fontSize: widthUnit*12,
+    lineHeight: widthUnit*9,
+    paddingTop: widthUnit*3,
+    color: 'white',
   },
   textContainer: {
     marginTop: 20,
