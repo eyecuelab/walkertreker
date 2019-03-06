@@ -47,14 +47,27 @@ class CampaignSummary extends React.Component {
     }
   }
 
-  _onButtonPress = () => {
+  _onButtonPressInventory = () => {
     this.props.navigation.navigate('Inventory');
   }
 
-  // TODO: add color-coding to the ThreeInfoSquares component below.
-  // [] progress - red: <50%, green >100%
-  // [] health - red: poor, green: good
-  // [] hunger - red: high, green: low
+  _onButtonPressSafehouse = () => {
+    this.props.navigation.navigate('Safehouse');
+  }
+
+  // TODO: when INVENTORY is fleshed out, make sure to put this function in there too
+  _submitConditionalRender = () => {
+    if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
+      return (
+        <SingleButtonFullWidth
+          title='Scavenge at Safehouse'
+          backgroundColor='black'
+          onButtonPress={this._onButtonPressSafehouse} />
+      );
+    } else {
+      return null;
+    }
+  }
 
   render() {
     return (
@@ -84,7 +97,8 @@ class CampaignSummary extends React.Component {
             <SingleButtonFullWidth
               title='View Inventory'
               backgroundColor='black'
-              onButtonPress={this._onButtonPress} />
+              onButtonPress={this._onButtonPressInventory} />
+            {this._submitConditionalRender()}
           </View>
         </View>
       </ImageBackground>
@@ -114,6 +128,7 @@ function mapStateToProps(state) {
   return {
     campaign: state.campaign,
     player: state.player,
+    steps: state.steps,
   }
 }
 
