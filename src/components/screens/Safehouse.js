@@ -16,15 +16,18 @@ export default class Safehouse extends React.Component {
   }
 
   _selectFood = () => {
-    this.setState({lookingFor: 'food'});
+    const { dispatch } = this.props;
+    dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'food'});
   }
 
   _selectMedicine = () => {
-    this.setState({lookingFor: 'medicine'});
+    const { dispatch } = this.props;
+    dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'medicine'});
   }
 
   _selectWeapon = () => {
-    this.setState({lookingFor: 'weapon'});
+    const { dispatch } = this.props;
+    dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'weapon'});
   }
 
   submitConditionalRender = () => {

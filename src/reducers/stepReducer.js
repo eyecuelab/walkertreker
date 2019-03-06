@@ -41,6 +41,12 @@ export default (state = steps, action) => {
       newState.campaignDateArray[action.currentDay].bonus = action.bonus;
       return newState;
 
+    case c.SELECT_SCAVENGE:
+      return {
+        ...state,
+        scavengingFor: action.scavengingFor,
+      }
+
     case c.ADD_SCAVENGED_ITEMS:
       newState = Object.assign({}, state);
       newState.campaignDateArray[action.currentDay].timesScavenged = action.timesScavenged;
@@ -50,6 +56,11 @@ export default (state = steps, action) => {
     case c.SET_STEP_STATE:
       newState = action.lastState;
       return newState
+
+    case: c.GO_TO_SAFEHOUSE:
+      newState = Object.assign({}, state);
+      newState.campaignDateArray[action.currentDay].goalMet = true;
+      return newState;
 
     default:
       return state;
