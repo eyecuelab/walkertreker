@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ToastAndroid } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import constants from '../../constants';
@@ -15,6 +15,24 @@ class CampaignSummary extends React.Component {
 
   constructor(props) {
     super(props)
+    const toast = this.props.navigation.getParam('toast')
+    if (toast) {
+      this._showToast(toast.msg)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.campaign.players !== null) {
+      for (let newPlayer of this.props.campaign.players) {
+        const id = newPlayer.id
+        let filtered = prevProps.campaign.players.filter(player => player.id === id)
+        const oldPlayer = filtered[0]
+        const today = this.props.campaign.currentDay
+        if (newPlayer.steps[today] !== oldPlayer.steps[today]) {
+          this._showToast(`${newPlayer.displayName}'s steps have updated.`)
+        }
+      }
+    }
   }
 
   _displayStepPercentage = (player) => {
@@ -49,6 +67,10 @@ class CampaignSummary extends React.Component {
 
   _onButtonPress = () => {
     this.props.navigation.navigate('Inventory');
+  }
+
+  _showToast = (msg) => {
+    ToastAndroid.show(msg, ToastAndroid.SHORT)
   }
 
   // TODO: add color-coding to the ThreeInfoSquares component below.

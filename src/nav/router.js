@@ -11,7 +11,7 @@ import AcceptInvite from '../components/screens/AcceptInvite';
 import WaitForStart from '../components/screens/WaitForStart';
 import CampaignSummary from '../components/screens/CampaignSummary';
 import Safehouse from '../components/screens/Safehouse';
-
+import EndOfDaySummary from '../components/screens/EndOfDaySummary';
 
 const AppNavigator = createStackNavigator(
   {
@@ -27,6 +27,7 @@ const AppNavigator = createStackNavigator(
     WaitForStart: { screen: WaitForStart, },
     CampaignSummary: { screen: CampaignSummary, },
     Safehouse: { screen: Safehouse },
+    EndOfDaySummary: { screen: EndOfDaySummary },
   },
   {
     initialRouteName: "Start",
