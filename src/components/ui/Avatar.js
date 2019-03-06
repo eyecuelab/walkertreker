@@ -8,6 +8,8 @@ export default class Avatar extends React.Component {
     super(props)
     const cl = new cloudinary.Cloudinary({cloud_name: 'walkertrekker', secure: true});
     const avatar = this.props.player.avatar ? { uri: cl.url(this.props.player.avatar) } : require('../../../assets/blankavatar.png')
+    console.log(`${this.props.player.displayName}: `)
+    console.log(this.props.player)
     this.state = { avatar }
   }
 
