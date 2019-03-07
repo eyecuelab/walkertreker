@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, ToastAndroid } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ToastAndroid, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import constants from '../../constants';
@@ -10,6 +10,7 @@ import defaultStyle from '../../styles/defaultStyle';
 import Avatar from '../ui/Avatar';
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
+import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
 class CampaignSummary extends React.Component {
 
@@ -65,18 +66,45 @@ class CampaignSummary extends React.Component {
     }
   }
 
-  _onButtonPress = () => {
+  _onButtonPressInventory = () => {
     this.props.navigation.navigate('Inventory');
+  }
+
+
+  _onButtonPressSafehouse = () => {
+    this.props.navigation.navigate('Safehouse');
+  }
+
+  // TODO: when INVENTORY is fleshed out, make sure to put this function in there too
+  _submitConditionalRender = () => {
+    if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
+    // if (true) {
+      return (
+        <TwoButtonOverlay
+          button1onPress={this._onButtonPressSafehouse}
+          button1title='Safehouse'
+          button1color='black'
+          button1isDisabled={false}
+          button2onPress={this._onButtonPressInventory}
+          button2title='Inventory'
+          button2color='black'
+          button2isDisabled={false} />
+      );
+    } else {
+      return (
+        <View style={customStyles.buttonContainer}>
+          <SingleButtonFullWidth
+            title='View Inventory'
+            backgroundColor='black'
+            onButtonPress={this._onButtonPressInventory} />
+        </View>
+      );
+    }
   }
 
   _showToast = (msg) => {
     ToastAndroid.show(msg, ToastAndroid.SHORT)
   }
-
-  // TODO: add color-coding to the ThreeInfoSquares component below.
-  // [] progress - red: <50%, green >100%
-  // [] health - red: poor, green: good
-  // [] hunger - red: high, green: low
 
   render() {
     return (
@@ -86,7 +114,7 @@ class CampaignSummary extends React.Component {
         <View style={styles.container}>
           <Text style={styles.headline}>CAMPAIGN SUMMARY</Text>
           <Text style={styles.headline}>Players</Text>
-          <View>
+          <ScrollView>
             {this.props.campaign.players.map(player => {
               return (
                 <ThreeInfoSquares
@@ -101,12 +129,12 @@ class CampaignSummary extends React.Component {
                   button3value={this._displayHungerLevel(player)} />
               )
             })}
-          </View>
-          <View style={customStyles.buttonContainer}>
-            <SingleButtonFullWidth
-              title='View Inventory'
-              backgroundColor='black'
-              onButtonPress={this._onButtonPress} />
+          </ScrollView>
+
+          <View style={customStyles.bottom}>
+
+            {this._submitConditionalRender()}
+
           </View>
         </View>
       </ImageBackground>
@@ -124,11 +152,18 @@ const customStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonContainer: {
-    marginTop: heightUnit*10,
+    marginTop: heightUnit*3,
     width: '100%',
     height: heightUnit*10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bottom: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: widthUnit*2,
   },
 });
 
@@ -136,6 +171,7 @@ function mapStateToProps(state) {
   return {
     campaign: state.campaign,
     player: state.player,
+    steps: state.steps,
   }
 }
 

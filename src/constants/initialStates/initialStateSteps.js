@@ -3,4 +3,5 @@ export default {
   isGettingSteps: false,
   error: null,
   pedometerIsAvailable: false,
+  scavengingFor: null,
 }

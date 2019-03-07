@@ -323,18 +323,11 @@ export function *saveState() {
 
 export function *checkBonusSteps(action) {
   const { steps, stepTargets } = action.player;
-  // TODO: step targets lives in the player state slice once master is pulled again.  CHANGE IT SOON
   const { currentDay, inventory, startDate } = yield select(getCampaign);
   const { campaignDateArray } = yield select(getSteps);
 
-  // console.log('bonus - steps: ', steps);
-  // console.log('bonus - stepTargets: ', stepTargets);
-  // console.log('bonus - currentDay: ', currentDay);
-  // console.log('bonus - inventory: ', inventory);
-  // console.log('bonus - campaignDateArray: ', campaignDateArray);
-
   if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
-    return;
+    return; // there is no player or game or steps or step targets, so bye
   }
 
   const stepGoalToday = stepTargets[currentDay];
@@ -343,94 +336,60 @@ export function *checkBonusSteps(action) {
   const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
   const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
-  // console.log('stepGoalToday: ', stepGoalToday);
-  // console.log('stepsToday: ', stepsToday);
-  // console.log('timesScavengedToday: ', timesScavengedToday);
-  // console.log('bonusStepsToday: ', bonusStepsToday);
-  // console.log('newBonus: ', newBonus);
   if (
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday === null
-  ) {
-    console.log('congrats! you made it to the safehouse!');
-    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    console.log('you have' + newBonus + ' of the 500 steps you need to scavenge.');
-    // ABOVE IS THE FIRST PART
-
-  } else if (
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) < 500 &&
-    newBonus > bonusStepsToday
-  ) {
-    console.log('you took some more bonus steps!');
-    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-
-  } else if (
+    // no additional bonus steps have been taken
     stepsToday >= stepGoalToday &&
     bonusStepsToday !== null &&
     newBonus - (timesScavengedToday * 500) < 500 &&
     newBonus <= bonusStepsToday
   ) {
-    console.log('nothing has changed!');
-    // yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-
-  // TODO: split this function into multiple functions that can be called independently of each other. above will flip a madeToSafeHouse boolean and add bonus steps.  below will actually do the scavenging by assigning a scavenge type based on user input
-
-  // TODO: split this function into multiple functions that can be called independently of each other. above will flip a madeToSafeHouse boolean and add bonus steps.  below will actually do the scavenging by assigning a scavenge type based on user input
+    return; // there is nothing to do
 
   } else if (
-    // BELOW IS THE SECOND PART
+    // there are bonus steps for the first time today
+    stepsToday >= stepGoalToday &&
+    bonusStepsToday === null
+  ) {
+    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+    yield put({type: c.GO_TO_SAFEHOUSE, currentDay: currentDay});
+
+  } else if (
+    // there are new bonus steps but not enough to scavenge
+    stepsToday >= stepGoalToday &&
+    bonusStepsToday !== null &&
+    newBonus - (timesScavengedToday * 500) < 500 &&
+    newBonus > bonusStepsToday
+  ) {
+    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+
+  } else if (
+    // there are 500 or more unused bonus steps to use for scavenging
     stepsToday >= stepGoalToday &&
     bonusStepsToday !== null &&
     newBonus - (timesScavengedToday * 500) >= 500
-    // ^ condition: there are 500 or more unused bonus steps
   ) {
-    const newTimesScavenged = Math.floor(newBonus / 500);
-    const scavengeDifference = newTimesScavenged - timesScavengedToday;
-    const itemsScavenged = Object.assign({}, inventory);
-    const thingScavenged = () => {
-      const rando = Math.floor(Math.random() * 3);
-      if (rando === 0) {
-        return 'food';
-      } else if (rando === 1) {
-        return 'medicine';
-      } else if (rando === 2) {
-        return 'weapon';
-      } else {
-        console.warn('something is wrong with the scavenge randomizer');
-      }
-    };
-
-    // TODO: remove these for prod
-    console.log('way to go! you scavenged something!');
-    // console.log('timesScavengedToday: ', timesScavengedToday);
-    // console.log('newTimesScavenged: ', newTimesScavenged);
-    // console.log('scavengeDifference: ', scavengeDifference);
-    // console.log('pre-scavenge inventory: ', itemsScavenged);
-
-    // TODO: rethink the for loop below so that it won't fuck up the campaign if two players scavenge at once.  as it is, each request could rewrite the others if multiples come through at once.  there is less than a 300ms interval (biggest one i've seen was 206ms) where this could happen
-    let thing;
-    for (let i = 0; i < scavengeDifference; i++) {
-      thing = thingScavenged();
-      // the console log below never hits
-      console.log('loop ' + i + ': you scavenged a ' + thing + '!');
-      if (thing === 'food') {
-        itemsScavenged.foodItems++
-        console.log('added a food: ', itemsScavenged);
-      } else if (thing === 'medicine') {
-        itemsScavenged.medicineItems++
-        console.log('added a medicine: ', itemsScavenged);
-      } else if (thing === 'weapon') {
-        itemsScavenged.weaponItems++
-        console.log('added a weapon: ', itemsScavenged);
-      } else {
-        console.warn('something is wrong with the scavenge randomizer');
-        console.warn('thing is: ', thing);
-      }
-    }
-    yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: currentDay, bonus: newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged})
+    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+    yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday, inventory: inventory});
   }
+}
+
+export function *scavenge(action) {
+
+  const newTimesScavenged = action.timesScavengedToday + 1;
+  const itemsScavenged = Object.assign({}, action.inventory);
+  const { scavengingFor } = yield select(getSteps);
+
+  if (scavengingFor === 'food') {
+    itemsScavenged.foodItems++;
+  } else if (scavengingFor === 'medicine') {
+    itemsScavenged.medicineItems++;
+  } else if (scavengingFor === 'weapon') {
+    itemsScavenged.weaponItems++;
+  } else {
+    console.warn('the scavenge function can\'t tell what to scavenge');
+  }
+
+  yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: action.currentDay, bonus: action.newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged});
 }
 
 export function *getLastStepState() {
@@ -544,6 +503,10 @@ export function *watchScavengedItems() {
 
 export function *watchGetLastStepState() {
   yield takeLatest(c.GET_LAST_STEP_STATE, getLastStepState);
+}
+
+export function *watchStartScavenge() {
+  yield takeEvery(c.START_SCAVENGE, scavenge);
 }
 
 // root saga ==============================

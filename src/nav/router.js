@@ -10,6 +10,7 @@ import CampaignStaging from '../components/screens/CampaignStaging';
 import AcceptInvite from '../components/screens/AcceptInvite';
 import WaitForStart from '../components/screens/WaitForStart';
 import CampaignSummary from '../components/screens/CampaignSummary';
+import Inventory from '../components/screens/Inventory';
 import Safehouse from '../components/screens/Safehouse';
 import EndOfDaySummary from '../components/screens/EndOfDaySummary';
 

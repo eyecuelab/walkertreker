@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '10%',
+    height: heightUnit*8,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -89,5 +89,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'gore',
     fontSize: widthUnit*5,
+    textAlign: 'center',
   }
 });

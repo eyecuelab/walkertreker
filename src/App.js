@@ -25,7 +25,7 @@ if (__DEV__) {
 }
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
 sagaMiddleware.run(rootSaga);
 
 class App extends React.Component {
@@ -64,6 +64,31 @@ class App extends React.Component {
       require('../assets/checked.png'),
       require('../assets/selected.png'),
       require('../assets/splash.png'),
+      require('../assets/safehouse_bg.png'),
+      require('../assets/food/Apple.png'),
+      require('../assets/food/Baked_Beans.png'),
+      require('../assets/food/Beer.png'),
+      require('../assets/food/Dry_meat.png'),
+      require('../assets/food/Energy_Drink.png'),
+      require('../assets/food/Pasta.png'),
+      require('../assets/food/Pepsi.png'),
+      require('../assets/food/Pure_water.png'),
+      require('../assets/food/Sugar.png'),
+      require('../assets/medication/Bandages-0.png'),
+      require('../assets/medication/First_Aid_Kit.png'),
+      require('../assets/medication/Healing_salve.png'),
+      require('../assets/medication/Metocaine.png'),
+      require('../assets/medication/Tidocycline.png'),
+      require('../assets/medication/Tratodonide.png'),
+      require('../assets/weapons/Baseball_Bat.png'),
+      require('../assets/weapons/Cleveland.png'),
+      require('../assets/weapons/Colt_Python.png'),
+      require('../assets/weapons/Crowbar.png'),
+      require('../assets/weapons/Golf_Club.png'),
+      require('../assets/weapons/Hammer.png'),
+      require('../assets/weapons/Hockey_Stick.png'),
+      require('../assets/weapons/Iron_Pickaxe.png'),
+      require('../assets/weapons/Shotgun-0.png'),
     ]);
 
     await Promise.all([

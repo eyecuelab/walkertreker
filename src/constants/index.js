@@ -1,4 +1,5 @@
 import * as types from './actionTypes';
+import * as items from './itemImages';
 import initialStateSteps from './initialStates/initialStateSteps';
 import initialStateCampaign from './initialStates/initialStateCampaign';
 import initialStatePlayer from './initialStates/initialStatePlayer';
@@ -14,5 +15,6 @@ export default {
   },
   storeData,
   retrieveData,
+  item: items,
   navigation,
 };

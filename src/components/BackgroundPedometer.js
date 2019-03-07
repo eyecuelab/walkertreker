@@ -43,8 +43,8 @@ class BackgroundPedometer extends React.Component {
     }, 60000);
 
     // TODO: remove these later. this is to reset the player in async storage
-    // dispatch({type: c.FETCH_PLAYER, playId: '2f3110c7-5b6b-423a-8bc4-f9774fe066a0'});
-    // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: '7e5dd640-f2bb-496b-99bf-3bb0e9f3460e'});
+    // dispatch({type: c.FETCH_PLAYER, playId: 'b9de95ec-730e-4d64-b2f7-ba7e19857e67'});
+    // dispatch({type: c.FETCH_CAMPAIGN_INFO, id: '11d6d6ca-5acb-4c22-a94b-9b6f1323ebdd'});
   }
 
   componentDidUpdate() {
