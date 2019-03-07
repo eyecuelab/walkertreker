@@ -11,7 +11,7 @@ import AcceptInvite from '../components/screens/AcceptInvite';
 import WaitForStart from '../components/screens/WaitForStart';
 import TOC from '../components/TOC';
 import CampaignSummary from '../components/screens/CampaignSummary';
-import Inventory from '../components/Inventory';
+import Inventory from '../components/screens/Inventory';
 import JoinCampaign from '../components/JoinCampaign';
 import Map from '../components/Map';
 import Profile from '../components/Profile';
