@@ -61,6 +61,7 @@ class App extends React.Component {
       require('../assets/checked.png'),
       require('../assets/selected.png'),
       require('../assets/splash.png'),
+      require('../assets/safehouse_bg.png'),
     ]);
 
     await Promise.all([
