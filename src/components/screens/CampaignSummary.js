@@ -58,9 +58,8 @@ class CampaignSummary extends React.Component {
 
   // TODO: when INVENTORY is fleshed out, make sure to put this function in there too
   _submitConditionalRender = () => {
-    // if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
-
-    if (true) {
+    if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
+    // if (true) {
       return (
         <TwoButtonOverlay
           button1onPress={this._onButtonPressSafehouse}
