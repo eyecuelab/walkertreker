@@ -76,7 +76,7 @@ class App extends React.Component {
       require('../assets/medication/Healing_salve.png'),
       require('../assets/medication/Metocaine.png'),
       require('../assets/medication/Tidocycline.png'),
-      require('../assets/medication/Tratodonine.png'),
+      require('../assets/medication/Tratodonide.png'),
       require('../assets/weapons/Baseball_Bat.png'),
       require('../assets/weapons/Cleveland.png'),
       require('../assets/weapons/Colt_Python.png'),

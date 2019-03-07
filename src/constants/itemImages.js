@@ -1,0 +1,29 @@
+export const apple = require('../../assets/food/Apple.png');
+export const beans = require('../../assets/food/Baked_Beans.png');
+export const beer = require('../../assets/food/Beer.png');
+export const meat = require('../../assets/food/Dry_meat.png');
+export const energyDrink = require('../../assets/food/Energy_Drink.png');
+export const pasta = require('../../assets/food/Pasta.png');
+export const pepsi = require('../../assets/food/Pepsi.png');
+export const water = require('../../assets/food/Pure_water.png');
+export const sugar = require('../../assets/food/Sugar.png');
+export const foodArray = [apple, beans, beer, meat, energyDrink, pasta, pepsi, water, sugar];
+
+export const bandages = require('../../assets/medication/Bandages-0.png');
+export const firstAidKit = require('../../assets/medication/First_Aid_Kit.png');
+export const salve = require('../../assets/medication/Healing_salve.png');
+export const metocaine = require('../../assets/medication/Metocaine.png');
+export const tidocycline = require('../../assets/medication/Tidocycline.png');
+export const tratodonide = require('../../assets/medication/Tratodonide.png');
+export const medicineArray = [bandages, firstAidKit, salve, metocaine, tidocycline, tratodonide];
+
+export const baseballBat = require('../../assets/weapons/Baseball_Bat.png');
+export const cleveland = require('../../assets/weapons/Cleveland.png');
+export const colt = require('../../assets/weapons/Colt_Python.png');
+export const crowbar = require('../../assets/weapons/Crowbar.png');
+export const golfClub = require('../../assets/weapons/Golf_Club.png');
+export const hammer = require('../../assets/weapons/Hammer.png');
+export const hockeyStick = require('../../assets/weapons/Hockey_Stick.png');
+export const pickaxe = require('../../assets/weapons/Iron_Pickaxe.png');
+export const shotgun = require('../../assets/weapons/Shotgun-0.png');
+export const weaponArray = [baseballBat, cleveland, colt, crowbar, golfClub, hammer, hockeyStick, pickaxe, shotgun];
