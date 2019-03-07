@@ -17,8 +17,6 @@ class SocketIO extends React.Component {
       console.log('================ SOCKET.IO ================')
       console.log('================   SERVER  ================')
       console.log(`   socket.id: ${socket.id}   `)
-      console.log(`   this.props.player.id: ${this.props.player.id}`)
-      console.log(`   this.props.player.campaignId: ${this.props.player.campaignId}`)
 
       // ACTIONS SERVER ==> CLIENT (set up listeners for these):
       // log: log a message from the server in client console
@@ -57,20 +55,20 @@ class SocketIO extends React.Component {
         dispatch({ type: c.PLAYER_UPDATED, player })
       })
 
-      socket.on('campaignStarted', (campaign) => {
-        console.log('received campaignStarted event from server')
-        dispatch({ type: c.CAMPAIGN_UPDATED, campaign })
-        NavigationService.navigate('CampaignSummary', { toast: { msg: 'The campaign has begun! Better get moving!' } })
-      })
+      // socket.on('campaignStarted', (campaign) => {
+      //   console.log('received campaignStarted event from server')
+      //   dispatch({ type: c.CAMPAIGN_UPDATED, campaign })
+      //   NavigationService.navigate('CampaignSummary', { toast: { msg: 'The campaign has begun! Better get moving!' } })
+      // })
 
-      socket.on('campaignDeleted', (campaign) => {
-        console.log('received campaignDeleted event from server')
-      })
+      // socket.on('campaignDeleted', (campaign) => {
+      //   console.log('received campaignDeleted event from server')
+      // })
 
-      socket.on('endOfDayUpdate', (result) => {
-        console.log('received endOfDayUpdate event from server')
-        NavigationService.navigate('EndOfDaySummary', { update: result })
-      })
+      // socket.on('endOfDayUpdate', (result) => {
+      //   console.log('received endOfDayUpdate event from server')
+      //   NavigationService.navigate('EndOfDaySummary', { update: result })
+      // })
     })
 
   }

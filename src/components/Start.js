@@ -3,18 +3,21 @@ import { AsyncStorage, ImageBackground } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import constants from '../constants';
-const { c, retrieveData, storeData } = constants;
+const { c, retrieveData, storeData, navigation } = constants;
 
 class Start extends React.Component {
   constructor(props) {
     super(props)
     const localPlayer = this.props.screenProps.localPlayer
+    const notification = this.props.screenProps.notification
+    console.log(navigation)
     const needPlayer = localPlayer.id ? true : false
     const needCampaign = localPlayer.campaignId ? true : false
     this.state = {
       localPlayer,
       needPlayer,
       needCampaign,
+      notification,
       gotPlayer: false,
       gotCampaign: false,
     }
@@ -34,13 +37,19 @@ class Start extends React.Component {
     const path = this.props.screenProps.path;
     let routeName = route
     let routeParams = {}
+    if (this.state.notification) {
+      const type = this.state.notification.data.type
+      routeName = navigation[type]
+      routeParams = this.state.notification.data.data ? { data: this.state.notification.data.data } : {}
+    }
     if (path === 'invite') {
       routeName = 'AcceptInvite'
       routeParams = {
         campaignId: this.props.screenProps.queryParams.campaignId,
       }
     }
-
+    console.log('INITIAL ROUTE: ', routeName)
+    console.log('ROUTE PARAMS: ', routeParams)
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName, params: routeParams })]
