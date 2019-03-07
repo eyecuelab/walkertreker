@@ -44,7 +44,7 @@ class Safehouse extends React.Component {
     if (scavengingFor) {
       return (
         <View style={customStyles.textContainer}>
-          <Text style={[styles.headline, {textShadowColor: 'black',textShadowOffset: {width: 0, height: 1},textShadowRadius: 3}]}>
+          <Text style={[styles.headline]}>
             You are{"\n"}
             scavenging{"\n"}
             for{"\n"}
