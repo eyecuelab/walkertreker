@@ -14,7 +14,8 @@ class EndOfDaySummary extends React.Component {
 
   constructor(props) {
     super(props)
-    const update = this.props.navigation.getParam('update')
+    const update = this.props.navigation.getParam('data')
+    console.log(update)
     const campaign = this.props.campaign
     const currentDay = campaign.currentDay
     let didWeMakeIt = true
@@ -23,7 +24,7 @@ class EndOfDaySummary extends React.Component {
         didWeMakeIt = false
       }
     }
-    
+
     this.state = { update, campaign, currentDay, didWeMakeIt }
   }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
@@ -9,7 +9,7 @@ import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
-const { c } = constants;
+const { c } = constants
 
 class NewPlayerForm extends React.Component {
   constructor(props) {
@@ -23,8 +23,31 @@ class NewPlayerForm extends React.Component {
 
   _handleSubmit = async () => {
     const { dispatch } = this.props;
-    dispatch({type: c.CREATE_PLAYER, name: this.state.displayName, number: this.state.phoneNumber, avatar: this.state.avatar})
+    const pushToken = this.registerForPushNotificationsAsync()
+    dispatch({
+      type: c.CREATE_PLAYER,
+      name: this.state.displayName,
+      number: this.state.phoneNumber,
+      avatar: this.state.avatar,
+      pushToken,
+    })
     this.props.handleModalStateChange()
+  }
+
+  registerForPushNotificationsAsync = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      return;
+    }
+
+    const token = await Notifications.getExpoPushTokenAsync();
+    return token;
   }
 
   _pickImage = async () => {

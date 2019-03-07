@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View,} from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import defaultStyle from '../../styles/defaultStyle';
 
@@ -59,7 +60,7 @@ class PlayerEndOfDay extends React.Component {
       <View style={customStyles.container}>
         <View style={customStyles.row}>
           <View style={customStyles.avatarContainer}>
-            <Avatar player={this.props.player} imageStyles={{width: 75, height: 75}} />
+            <Avatar player={this.props.player} imageStyles={{width: wp('17.5%'), height: wp('17.5%')}} />
           </View>
           <View style={customStyles.nameContainer}>
             <View style={customStyles.column}>

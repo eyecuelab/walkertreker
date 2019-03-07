@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppState, AsyncStorage, Image, View, Text } from 'react-native';
-import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, } from 'expo';
+import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, Notifications, } from 'expo';
 import { AppContainer } from './nav/router';
 import NavigationService from './nav/NavigationService';
 
@@ -17,6 +17,8 @@ import Modal from 'react-native-modal';
 import NewPlayerForm from './components/ui/NewPlayerForm';
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
+import NotificationListeners from './components/NotificationListeners';
+import GetNotificationToken from './components/GetNotificationToken'
 
 if (__DEV__) {
   KeepAwake.activate();
@@ -33,6 +35,7 @@ class App extends React.Component {
     this.state = {
       isReady: false,
       newPlayerModalVisible: false,
+      notification: false
     }
   }
 
@@ -101,6 +104,14 @@ class App extends React.Component {
     });
   }
 
+  _passNotificationToStart = (notification) => {
+    this.setState({ notification })
+  }
+
+  componentDidMount() {
+    Notifications.addListener(this._passNotificationToStart)
+  }
+
   render() {
     if (!this.state.isReady) {
       return (
@@ -120,7 +131,8 @@ class App extends React.Component {
           <NewPlayerForm handleModalStateChange={this._toggleNewPlayerModal} />
         </Modal>
         <SocketIO />
-        <BackgroundPedometer/>
+        <NotificationListeners />
+        <BackgroundPedometer />
         <AppContainer
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
@@ -131,6 +143,7 @@ class App extends React.Component {
             path: this.state.path,
             queryParams: this.state.queryParams,
             localPlayer: this.state.localPlayer,
+            notification: this.state.notification,
           }}
         />
       </Provider>

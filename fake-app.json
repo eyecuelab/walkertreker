@@ -29,6 +29,7 @@
     },
     "android": {
       "package": "com.eyecuelab.walkertrekker",
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {
           "certificateHash": "XXXXX",
