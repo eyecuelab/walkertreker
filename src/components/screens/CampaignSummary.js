@@ -63,12 +63,12 @@ class CampaignSummary extends React.Component {
     if (true) {
       return (
         <TwoButtonOverlay
-          button1onPress={this._onButtonPressInventory}
-          button1title='Inventory'
+          button1onPress={this._onButtonPressSafehouse}
+          button1title='Safehouse'
           button1color='black'
           button1isDisabled={false}
-          button2onPress={this._onButtonPressSafehouse}
-          button2title='Safehouse'
+          button2onPress={this._onButtonPressInventory}
+          button2title='Inventory'
           button2color='black'
           button2isDisabled={false} />
       );
