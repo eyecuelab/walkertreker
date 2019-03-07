@@ -3,7 +3,8 @@ import * as items from './itemImages';
 import initialStateSteps from './initialStates/initialStateSteps';
 import initialStateCampaign from './initialStates/initialStateCampaign';
 import initialStatePlayer from './initialStates/initialStatePlayer';
-import { storeData, retrieveData } from './asyncStorage'
+import { storeData, retrieveData } from './asyncStorage';
+import { NAVIGATION as navigation } from './navigation';
 
 export default {
   c: types,
@@ -15,4 +16,5 @@ export default {
   storeData,
   retrieveData,
   item: items,
+  navigation,
 };

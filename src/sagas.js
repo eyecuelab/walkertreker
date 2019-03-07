@@ -159,6 +159,7 @@ export function *createPlayer(action) {
   const data = new FormData()
   data.append('displayName', action.name)
   data.append('phoneNumber', action.number)
+  data.append('pushToken', action.pushToken)
   data.append('avatar', { uri: localUri, name: filename, type });
   const initObj = {
     method: "POST",

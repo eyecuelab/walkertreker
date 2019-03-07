@@ -8,3 +8,4 @@ npm-debug.*
 assets/design-prototypes
 app.json
 .env
+google-services.json
