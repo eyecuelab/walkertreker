@@ -70,7 +70,6 @@ class CampaignSummary extends React.Component {
     this.props.navigation.navigate('Inventory');
   }
 
-
   _onButtonPressSafehouse = () => {
     this.props.navigation.navigate('Safehouse');
   }
@@ -94,7 +93,7 @@ class CampaignSummary extends React.Component {
       return (
         <View style={customStyles.buttonContainer}>
           <SingleButtonFullWidth
-            title='View Inventory'
+            title='Inventory'
             backgroundColor='black'
             onButtonPress={this._onButtonPressInventory} />
         </View>

@@ -29,6 +29,7 @@ const AppNavigator = createStackNavigator(
     CampaignSummary: { screen: CampaignSummary, },
     Safehouse: { screen: Safehouse },
     EndOfDaySummary: { screen: EndOfDaySummary },
+    Inventory: { screen: Inventory },
   },
   {
     initialRouteName: "Start",

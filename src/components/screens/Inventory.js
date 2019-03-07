@@ -8,7 +8,7 @@ const { c, item } = constants;
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
-
+import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 class Inventory extends React.Component {
 
@@ -32,6 +32,32 @@ class Inventory extends React.Component {
     // TODO: then do a thing to this array
   }
 
+  _submitConditionalRender = () => {
+    if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
+    // if (true) {
+      return (
+        <TwoButtonOverlay
+          button1onPress={this._onButtonPressSafehouse}
+          button1title='Safehouse'
+          button1color='black'
+          button1isDisabled={false}
+          button2onPress={this._onButtonPressSummary}
+          button2title='Campaign Summary'
+          button2color='black'
+          button2isDisabled={false} />
+      );
+    } else {
+      return (
+        <View style={customStyles.buttonContainer}>
+          <SingleButtonFullWidth
+            title='Campaign Summary'
+            backgroundColor='black'
+            onButtonPress={this._onButtonPressSummary} />
+        </View>
+      );
+    }
+  }
+
   render() {
     return (
       <ImageBackground
@@ -47,17 +73,9 @@ class Inventory extends React.Component {
           <Text style={styles.subHeading}>Weapons</Text>
           <ScrollView style={customStyles.itemContainer}></ScrollView>
           <View style={customStyles.bottom}>
-            <View style={customStyles.bottom}>
-                <TwoButtonOverlay
-                  button1onPress={this._onButtonPressSummary}
-                  button1title='Campaign Summary'
-                  button1color='black'
-                  button1isDisabled={false}
-                  button2onPress={this._onButtonPressSafehouse}
-                  button2title='Safehouse'
-                  button2color='black'
-                  button2isDisabled={false} />
-            </View>
+
+            {this._submitConditionalRender()}
+
           </View>
         </View>
       </ImageBackground>
@@ -90,14 +108,21 @@ const customStyles = StyleSheet.create({
     flexDirection: 'row',
     // alignItems: 'flex-start',
     flexWrap: 'wrap',
-  }
+  },
+  buttonContainer: {
+    marginTop: heightUnit*3,
+    width: '100%',
+    height: heightUnit*10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
     // player: state.player,
-    // steps: state.steps,
+    steps: state.steps,
   }
 }
 
