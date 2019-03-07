@@ -100,21 +100,24 @@ class Safehouse extends React.Component {
                 resizeMode={'cover'}
                 style={customStyles.safehouseBg}>
 
-                <View style={[customStyles.container, {flex: 1.25, padding: widthUnit, paddingTop: widthUnit*2}]}>
-                  <DayCounter campaign={this.props.campaign}/>
+                <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', padding: widthUnit*2}}>
+                  <View style={[customStyles.container, {flex: 1.25}]}>
+                    <DayCounter campaign={this.props.campaign}/>
 
-                  <View style={customStyles.headlineContainer}>
-                    <Text style={styles.headline}>Safehouse</Text>
+                    <View style={customStyles.headlineContainer}>
+                      <Text style={styles.headline}>Safehouse</Text>
+                    </View>
+
+                    <View style={customStyles.textContainer}>
+                      <Text style={[styles.plainText, customStyles.text]}>You have made it to the safehouse with time to spare. You can use that time to scavenge for resources.</Text>
+                    </View>
                   </View>
 
-                  <View style={customStyles.textContainer}>
-                    <Text style={[styles.plainText, customStyles.text]}>You have made it to the safehouse with time to spare. You can use that time to scavenge for resources.</Text>
+                  <View style={[customStyles.container, {flex: 3, padding: widthUnit}]}>
+                    {this._submitConditionalRender()}
                   </View>
                 </View>
 
-                <View style={[customStyles.container, {flex: 3, padding: widthUnit}]}>
-                  {this._submitConditionalRender()}
-                </View>
 
               </ImageBackground>
             </View>
@@ -182,8 +185,8 @@ const customStyles = StyleSheet.create({
     height: undefined,
     flex: 1,
     // padding: widthUnit*3,
-    borderWidth: widthUnit*2,
-    borderColor: 'black',
+    // borderWidth: widthUnit*2,
+    // borderColor: 'black',
     // marginLeft: widthUnit*3,
     justifyContent: 'flex-start',
     // opacity: 0.2,
