@@ -167,7 +167,6 @@ export function *createPlayer(action) {
       "Content-Type": "multipart/form-data",
       "appkey": CLIENT_APP_KEY
     },
-
     body: data
   };
   try {

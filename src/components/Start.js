@@ -10,7 +10,6 @@ class Start extends React.Component {
     super(props)
     const localPlayer = this.props.screenProps.localPlayer
     const notification = this.props.screenProps.notification
-    console.log(navigation)
     const needPlayer = localPlayer.id ? true : false
     const needCampaign = localPlayer.campaignId ? true : false
     this.state = {
@@ -48,8 +47,6 @@ class Start extends React.Component {
         campaignId: this.props.screenProps.queryParams.campaignId,
       }
     }
-    console.log('INITIAL ROUTE: ', routeName)
-    console.log('ROUTE PARAMS: ', routeParams)
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName, params: routeParams })]
