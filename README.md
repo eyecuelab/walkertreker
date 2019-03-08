@@ -42,7 +42,7 @@
 - **Update Campaign** - _returns updated campaign to campaign state that matches the supplied campaign id_
   - type: `c.UPDATE_CAMPAIGN`
   - campId: `campaign.id`
-  - currentDay: **optional** `[number] denoting day of campaign, from 0 to 90`
+  - currentDay: **optional** `[number] denoting day of campaign, from 0 to 89`
   - inventory: **optional** ```{
       foodItems: [number],
       weaponItems: [number],
