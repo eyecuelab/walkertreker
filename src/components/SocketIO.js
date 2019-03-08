@@ -45,6 +45,11 @@ class SocketIO extends React.Component {
       dispatch({ type: c.PLAYER_UPDATED, player })
     })
 
+    setInterval(() => {
+      socket.emit('stayAwake');
+    }, 30000)
+    socket.on('stayAwake', () => {return;})
+
     const token = await this.getPushToken()
     socket.emit('log', '')
     socket.emit('log', ' ========================= ')
