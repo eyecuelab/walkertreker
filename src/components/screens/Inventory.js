@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import constants from '../../constants';
 const { c, item } = constants;
+const { foodArray, medicineArray, weaponArray } = item;
 
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
@@ -67,11 +68,27 @@ class Inventory extends React.Component {
           <DayCounter campaign={this.props.campaign} />
           <Text style={styles.headline}>GROUP INVENTORY</Text>
           <Text style={styles.subHeading}>Food</Text>
-          <ScrollView style={customStyles.itemContainer}></ScrollView>
+          <ScrollView style={customStyles.itemContainer}>
+
+            {this.props.campaign.inventory.foodItems.map((number, index) => {
+              const img = foodArray[number];
+              return(
+                <Image
+                  key={index}
+                  style={{width: 88, height: 88}}
+                  source={img} />
+              )
+            })}
+
+          </ScrollView>
           <Text style={styles.subHeading}>Medicine</Text>
-          <ScrollView style={customStyles.itemContainer}></ScrollView>
+          <ScrollView style={customStyles.itemContainer}>
+
+          </ScrollView>
           <Text style={styles.subHeading}>Weapons</Text>
-          <ScrollView style={customStyles.itemContainer}></ScrollView>
+          <ScrollView style={customStyles.itemContainer}>
+
+          </ScrollView>
           <View style={customStyles.bottom}>
 
             {this._submitConditionalRender()}
