@@ -323,7 +323,7 @@ export function *saveState() {
 export function *checkBonusSteps(action) {
   const { steps, stepTargets } = action.player;
   const { currentDay, inventory, startDate } = yield select(getCampaign);
-  const { campaignDateArray } = yield select(getSteps);
+  const { campaignDateArray, scavengingFor } = yield select(getSteps);
 
   if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
     return; // there is no player or game or steps or step targets, so bye
@@ -335,16 +335,17 @@ export function *checkBonusSteps(action) {
   const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
   const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
+  // if (
+  //   // no additional bonus steps have been taken
+  //   stepsToday >= stepGoalToday &&
+  //   bonusStepsToday !== null &&
+  //   newBonus - (timesScavengedToday * 500) < 500 &&
+  //   newBonus <= bonusStepsToday
+  // ) {
+  //   return; // there is nothing to do
+  //
+  // } else
   if (
-    // no additional bonus steps have been taken
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) < 500 &&
-    newBonus <= bonusStepsToday
-  ) {
-    return; // there is nothing to do
-
-  } else if (
     // there are bonus steps for the first time today
     stepsToday >= stepGoalToday &&
     bonusStepsToday === null
@@ -365,10 +366,13 @@ export function *checkBonusSteps(action) {
     // there are 500 or more unused bonus steps to use for scavenging
     stepsToday >= stepGoalToday &&
     bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) >= 500
+    newBonus - (timesScavengedToday * 500) >= 500 &&
+    scavengingFor
   ) {
     yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
     yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday, inventory: inventory});
+  } else {
+    return;
   }
 }
 
@@ -380,10 +384,13 @@ export function *scavenge(action) {
   const rando = (x) => Math.floor(Math.random() * x);
   let newItem;
 
+  if (scavengingFor === null) {
+    return;
+  }
+
   console.log('newTimesScavenged', newTimesScavenged);
   console.log('itemsScavenged', itemsScavenged);
   console.log('scavengingFor', scavengingFor);
-
 
   if (scavengingFor === 'food') {
     newItem = rando(9);
@@ -500,7 +507,7 @@ export function *watchAppStateChange() {
 
 export function *watchPlayerActions() {
   while (true) {
-    yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED, c.PLAYER_UPDATED]);
+    yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED /*, c.PLAYER_UPDATED*/]);
     const player = yield select(getPlayer);
     yield put({type: c.FETCH_CAMPAIGN_INFO, id: player.campaignId})
   }
