@@ -23,7 +23,8 @@ class NewPlayerForm extends React.Component {
 
   _handleSubmit = async () => {
     const { dispatch } = this.props;
-    const pushToken = this.registerForPushNotificationsAsync()
+    const pushToken = await this.registerForPushNotificationsAsync()
+    console.log('PUSH TOKEN FOUND: ', pushToken)
     dispatch({
       type: c.CREATE_PLAYER,
       name: this.state.displayName,
