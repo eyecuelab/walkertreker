@@ -40,7 +40,7 @@ class FoodModal extends React.Component {
             <TouchableOpacity
               style={customStyles.button}
               onPress={()=>{this._eatTheFood(1)}}>
-              <Text style={styles.label}>Yes/Text>
+              <Text style={styles.label}>Yes</Text>
             </TouchableOpacity>
           </View>
 

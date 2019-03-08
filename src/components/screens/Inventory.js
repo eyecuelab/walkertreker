@@ -11,7 +11,7 @@ import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import DistressedImageHolder from '../ui/DistressedImageHolder';
+import FoodModal from '../ui/FoodModal';
 
 const bg1 = require('../../../assets/buttontexture1.png');
 const bg2 = require('../../../assets/buttontexture2.png');
@@ -94,7 +94,7 @@ class Inventory extends React.Component {
         <Modal isVisible={this.state.foodtModalVisible}>
           <FoodModal
             handleModalStateChange={this._toggleFoodModal}
-            index={} />
+            index={0} />
         </Modal>
 
         <View style={[styles.container, {alignItems: 'flex-start'}]}>
@@ -110,7 +110,7 @@ class Inventory extends React.Component {
                 {this.props.campaign.inventory.foodItems.map((number, index) => {
                   const img = foodArray[number];
                   return(
-                    {/*TODO: add */}
+
                       <Image
                         key={index}
                         style={customStyles.item}
