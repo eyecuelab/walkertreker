@@ -3,7 +3,7 @@ import { Pedometer } from "expo";
 import { CLIENT_APP_KEY } from 'react-native-dotenv';
 
 import constants from './constants';
-const { c, storeData, retrieveData } = constants;
+const { c, storeData, retrieveData, item } = constants;
 
 export const getSteps = state => state.steps;
 export const getPlayer = state => state.player;
@@ -377,13 +377,18 @@ export function *scavenge(action) {
   const newTimesScavenged = action.timesScavengedToday + 1;
   const itemsScavenged = Object.assign({}, action.inventory);
   const { scavengingFor } = yield select(getSteps);
+  const rando = (x) => Math.floor(Math.random() * x);
+  let newItem;
 
   if (scavengingFor === 'food') {
-    itemsScavenged.foodItems++;
+    newItem = c.item.foodArray[rando(9)];
+    itemsScavenged.foodItems.push(newItem);
   } else if (scavengingFor === 'medicine') {
-    itemsScavenged.medicineItems++;
+    newItem = c.item.medicineArray[rando(6)]
+    itemsScavenged.medicineItems.push(newItem);
   } else if (scavengingFor === 'weapon') {
-    itemsScavenged.weaponItems++;
+    newItem = c.item.weaponArray[rando(9)];
+    itemsScavenged.weaponItems.push(newItem);
   } else {
     console.warn('the scavenge function can\'t tell what to scavenge');
   }
