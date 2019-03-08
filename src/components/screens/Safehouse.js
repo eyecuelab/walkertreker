@@ -28,7 +28,7 @@ class Safehouse extends React.Component {
 
   _selectWeapon = () => {
     const { dispatch } = this.props;
-    dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'weapons'});
+    dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'weapon'});
   }
 
   _onButtonPressInventory = () => {
