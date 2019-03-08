@@ -50,7 +50,7 @@ class EndOfDaySummary extends React.Component {
       if (weapons > 0) {
         text = `Players that went back for their friends consumed ${weapons} weapon ${items} to reduce their damage taken.`
       } else {
-        text = `Unfortunately your party couldn't minimize damage taken because your party has no weapons. Get to the safehouse tomorrow and scavenge for weapons!`
+        text = `Your party couldn't minimize damage taken because you have no weapons. Tomorrow, get to the safehouse before dark and scavenge for weapons!`
       }
     }
     return (

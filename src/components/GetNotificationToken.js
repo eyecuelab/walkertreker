@@ -20,7 +20,13 @@ class GetNotificationToken extends React.Component {
     }
 
     const token = await Notifications.getExpoPushTokenAsync();
-    console.log(token)
+    console.log('')
+    console.log(' ========================= ')
+    console.log('')
+    console.log('   YOUR NOTIFICATION TOKEN: ', token)
+    console.log('')
+    console.log(' ========================= ')
+    console.log('')
     return token;
   }
 

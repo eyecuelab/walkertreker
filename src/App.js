@@ -75,20 +75,28 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
-    // await storeData('playerInfo', '{}')
+    // blank localPlayer in asyncStorage
+    // await storeData('playerInfo', undefined)
     let localPlayer = await retrieveData('playerInfo')
-    localPlayer = JSON.parse(localPlayer)
+    const dud = {
+      id: false,
+      campaignId: false
+    }
+    if (!localPlayer) {
+      localPlayer = dud
+    } else {
+      localPlayer = JSON.parse(localPlayer)
+    }
     if (!localPlayer.id) {
+      localPlayer = dud
+    }
+    if (localPlayer.id == null) {
       await this.setState({
         newPlayerModalVisible: true,
-        localPlayer: {
-          id: false,
-          campaignId: false,
-        }
       })
-    } else {
-      await this.setState({ localPlayer })
     }
+    await this.setState({ localPlayer })
+
   };
 
   _handleLoadingError = error => {
