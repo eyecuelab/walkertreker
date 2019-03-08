@@ -21,18 +21,6 @@ class Inventory extends React.Component {
     this.props.navigation.navigate('Safehouse');
   }
 
-  _populateItemImages = (num) => {
-    let arrayOfImages;
-    if (num === 0) {
-      arrayOfImages = item.foodArray;
-    } else if (num === 1) {
-      arrayOfImages = item.medicineArray;
-    } else if (num === 2) {
-      arrayOfImages = item.weaponArray;
-    }
-    // TODO: then do a thing to this array
-  }
-
   _submitConditionalRender = () => {
     if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
     // if (true) {
@@ -67,28 +55,55 @@ class Inventory extends React.Component {
         <View style={[styles.container, {alignItems: 'flex-start'}]}>
           <DayCounter campaign={this.props.campaign} />
           <Text style={styles.headline}>GROUP INVENTORY</Text>
-          <Text style={styles.subHeading}>Food</Text>
-          <ScrollView style={customStyles.itemContainer}>
 
-            {this.props.campaign.inventory.foodItems.map((number, index) => {
-              const img = foodArray[number];
-              return(
-                <Image
-                  key={index}
-                  style={{width: 88, height: 88}}
-                  source={img} />
-              )
-            })}
+          <View style={{flex: 7, width: '100%'}}>
+            <ScrollView style={customStyles.inventoryContainer}>
 
-          </ScrollView>
-          <Text style={styles.subHeading}>Medicine</Text>
-          <ScrollView style={customStyles.itemContainer}>
+              <Text style={styles.subHeading}>Food</Text>
+              <View style={customStyles.itemContainer}>
+                {this.props.campaign.inventory.foodItems.map((number, index) => {
+                  const img = foodArray[number];
+                  return(
+                    <Image
+                      key={index}
+                      style={{width: widthUnit*28, height: widthUnit*28, marginRight: widthUnit}}
+                      resizeMode='contain'
+                      source={img} />
+                  )
+                })}
+              </View>
 
-          </ScrollView>
-          <Text style={styles.subHeading}>Weapons</Text>
-          <ScrollView style={customStyles.itemContainer}>
+              <Text style={styles.subHeading}>Medicine</Text>
+              <View style={customStyles.itemContainer}>
+                {this.props.campaign.inventory.medicineItems.map((number, index) => {
+                  const img = medicineArray[number];
+                  return(
+                    <Image
+                      key={index}
+                      style={{width: widthUnit*28, height: widthUnit*28, marginRight: widthUnit}}
+                      resizeMode='contain'
+                      source={img} />
+                  )
+                })}
+              </View>
 
-          </ScrollView>
+              <Text style={styles.subHeading}>Weapons</Text>
+              <View style={customStyles.itemContainer}>
+                {this.props.campaign.inventory.weaponItems.map((number, index) => {
+                  const img = weaponArray[number];
+                  return(
+                    <Image
+                      key={index}
+                      style={{width: widthUnit*28, height: widthUnit*28, marginRight: widthUnit}}
+                      resizeMode='contain'
+                      source={img} />
+                  )
+                })}
+              </View>
+
+            </ScrollView>
+          </View>
+
           <View style={customStyles.bottom}>
 
             {this._submitConditionalRender()}
@@ -98,7 +113,6 @@ class Inventory extends React.Component {
       </ImageBackground>
     );
   }
-
 }
 
 const styles = StyleSheet.create(defaultStyle)
@@ -119,17 +133,25 @@ const customStyles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginBottom: widthUnit*2,
+    backgroundColor: 'pink',
+  },
+  inventoryContainer: {
+    flex: 1,
+    width: '100%',
+    // flexDirection: 'row',
+    // alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    backgroundColor: 'lime',
   },
   itemContainer: {
     flex: 1,
     flexDirection: 'row',
-    // alignItems: 'flex-start',
     flexWrap: 'wrap',
   },
   buttonContainer: {
     marginTop: heightUnit*3,
     width: '100%',
-    height: heightUnit*10,
+    height: heightUnit*8,
     alignItems: 'center',
     justifyContent: 'center',
   },
