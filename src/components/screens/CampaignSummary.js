@@ -153,7 +153,7 @@ const customStyles = StyleSheet.create({
   buttonContainer: {
     marginTop: heightUnit*3,
     width: '100%',
-    height: heightUnit*10,
+    height: heightUnit*8,
     alignItems: 'center',
     justifyContent: 'center',
   },
