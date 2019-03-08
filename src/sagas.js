@@ -373,27 +373,38 @@ export function *checkBonusSteps(action) {
 }
 
 export function *scavenge(action) {
-
+  console.log('MADE IT TO SCAVENGE');
   const newTimesScavenged = action.timesScavengedToday + 1;
   const itemsScavenged = Object.assign({}, action.inventory);
   const { scavengingFor } = yield select(getSteps);
   const rando = (x) => Math.floor(Math.random() * x);
   let newItem;
 
+  console.log('newTimesScavenged', newTimesScavenged);
+  console.log('itemsScavenged', itemsScavenged);
+  console.log('scavengingFor', scavengingFor);
+
+
   if (scavengingFor === 'food') {
-    newItem = c.item.foodArray[rando(9)];
+    newItem = rando(9);
     itemsScavenged.foodItems.push(newItem);
+    console.log('newItem', newItem);
   } else if (scavengingFor === 'medicine') {
-    newItem = c.item.medicineArray[rando(6)]
+    newItem = rando(6);
     itemsScavenged.medicineItems.push(newItem);
+    console.log('newItem', newItem);
   } else if (scavengingFor === 'weapon') {
-    newItem = c.item.weaponArray[rando(9)];
+    newItem = rando(9);
     itemsScavenged.weaponItems.push(newItem);
+    console.log('newItem', newItem);
   } else {
     console.warn('the scavenge function can\'t tell what to scavenge');
   }
 
+  console.log('made it through the scavenge branching');
+
   yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: action.currentDay, bonus: action.newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged});
+  yield put({type: c.RESET_SCAVENGE});
 }
 
 export function *getLastStepState() {
@@ -538,5 +549,6 @@ export default function *rootSaga() {
     watchPlayerUpdated(),
     watchScavengedItems(),
     watchGetLastStepState(),
+    watchStartScavenge(),
   ])
 }
