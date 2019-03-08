@@ -44,9 +44,9 @@
   - campId: `campaign.id`
   - currentDay: **optional** `[number] denoting day of campaign, from 0 to 89`
   - inventory: **optional** ```{
-      foodItems: [number],
-      weaponItems: [number],
-      medicineItems: [number]
+      foodItems: [number, number, number],
+      weaponItems: [number, number],
+      medicineItems: [number, number, number, number]
     }```
 - **Create Player** - _returns newly-created player object to player state_
   - type: `c.CREATE_PLAYER`
