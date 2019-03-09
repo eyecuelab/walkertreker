@@ -38,7 +38,9 @@ class Start extends React.Component {
     let routeParams = {}
     if (this.state.notification) {
       const type = this.state.notification.data.type
-      routeName = navigation[type]
+      if (navigation[type] !== 'none') {
+        routeName = navigation[type]
+      }
       routeParams = this.state.notification.data.data ? { data: this.state.notification.data.data } : {}
     }
     if (path === 'invite') {
