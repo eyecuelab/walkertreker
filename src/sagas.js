@@ -400,7 +400,7 @@ export function *scavenge(action) {
     newItem = rando(6);
     itemsScavenged.medicineItems.push(newItem);
     console.log('newItem', newItem);
-  } else if (scavengingFor === 'weapon') {
+  } else if (scavengingFor === 'weapons') {
     newItem = rando(9);
     itemsScavenged.weaponItems.push(newItem);
     console.log('newItem', newItem);
