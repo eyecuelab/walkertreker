@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
@@ -25,9 +25,8 @@ class Inventory extends React.Component {
       foodModalVisible: false,
       medicineModalVisible: false,
       weaponModalVisible: false,
-      foodModalIndex: null,
-      medicineModalIndex: null,
-      weaponModalIndex: null,
+      modalIndex: null,
+      modalValue: null,
     }
   }
 
@@ -54,7 +53,16 @@ class Inventory extends React.Component {
     this.setState({ weaponModalVisible })
   }
 
+  _onFoodPress = (value, index) => {
+    this.setState({
+      modalValue: value,
+      modalIndex: index
+    });
+    this._toggleFoodModal();
+  }
+
   _submitConditionalRender = () => {
+
     if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
     // if (true) {
       return (
@@ -91,10 +99,11 @@ class Inventory extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}>
 
-        <Modal isVisible={this.state.foodtModalVisible}>
+        <Modal isVisible={this.state.foodModalVisible}>
           <FoodModal
             handleModalStateChange={this._toggleFoodModal}
-            index={0} />
+            index={this.state.modalIndex}
+            value={this.state.modalValue} />
         </Modal>
 
         <View style={[styles.container, {alignItems: 'flex-start'}]}>
@@ -107,15 +116,17 @@ class Inventory extends React.Component {
               <Text style={styles.subHeading}>Food</Text>
               <View style={customStyles.itemContainer}>
 
-                {this.props.campaign.inventory.foodItems.map((number, index) => {
-                  const img = foodArray[number];
+                {this.props.campaign.inventory.foodItems.map((value, index) => {
+                  const img = foodArray[value];
                   return(
-
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {this._onFoodPress(value, index)}} >
                       <Image
-                        key={index}
                         style={customStyles.item}
                         resizeMode='contain'
                         source={img} />
+                    </TouchableOpacity>
                   )
                 })}
 
@@ -124,9 +135,10 @@ class Inventory extends React.Component {
               <Text style={styles.subHeading}>Medicine</Text>
               <View style={customStyles.itemContainer}>
 
-                {this.props.campaign.inventory.medicineItems.map((number, index) => {
-                  const img = medicineArray[number];
+                {this.props.campaign.inventory.medicineItems.map((value, index) => {
+                  const img = medicineArray[value];
                   return(
+
                     <Image
                       key={index}
                       index={index}
@@ -141,9 +153,10 @@ class Inventory extends React.Component {
               <Text style={styles.subHeading}>Weapons</Text>
               <View style={customStyles.itemContainer}>
 
-                {this.props.campaign.inventory.weaponItems.map((number, index) => {
-                  const img = weaponArray[number];
+                {this.props.campaign.inventory.weaponItems.map((value, index) => {
+                  const img = weaponArray[value];
                   return(
+
                     <Image
                       key={index}
                       style={customStyles.item}
