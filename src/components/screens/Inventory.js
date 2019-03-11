@@ -12,6 +12,8 @@ import DayCounter from '../ui/DayCounter';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import FoodModal from '../ui/FoodModal';
+import MedicineModal from '../ui/MedicineModal';
+import WeaponModal from '../ui/WeaponModal';
 
 const bg1 = require('../../../assets/buttontexture1.png');
 const bg2 = require('../../../assets/buttontexture2.png');
@@ -61,6 +63,22 @@ class Inventory extends React.Component {
     this._toggleFoodModal();
   }
 
+  _onMedicinePress = (value, index) => {
+    this.setState({
+      modalValue: value,
+      modalIndex: index
+    });
+    this._toggleMedicineModal();
+  }
+
+  _onWeaponPress = (value, index) => {
+    this.setState({
+      modalValue: value,
+      modalIndex: null,
+    });
+    this._toggleWeaponModal();
+  }
+
   _submitConditionalRender = () => {
 
     if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
@@ -106,6 +124,20 @@ class Inventory extends React.Component {
             value={this.state.modalValue} />
         </Modal>
 
+        <Modal isVisible={this.state.medicineModalVisible}>
+          <MedicineModal
+            handleModalStateChange={this._toggleMedicineModal}
+            index={this.state.modalIndex}
+            value={this.state.modalValue} />
+        </Modal>
+
+        <Modal isVisible={this.state.weaponModalVisible}>
+          <WeaponModal
+            handleModalStateChange={this._toggleWeaponModal}
+            index={this.state.modalIndex}
+            value={this.state.modalValue} />
+        </Modal>
+
         <View style={[styles.container, {alignItems: 'flex-start'}]}>
           <DayCounter campaign={this.props.campaign} />
           <Text style={styles.headline}>GROUP INVENTORY</Text>
@@ -138,13 +170,14 @@ class Inventory extends React.Component {
                 {this.props.campaign.inventory.medicineItems.map((value, index) => {
                   const img = medicineArray[value];
                   return(
-
-                    <Image
+                    <TouchableOpacity
                       key={index}
-                      index={index}
-                      style={customStyles.item}
-                      resizeMode='contain'
-                      source={img} />
+                      onPress={() => {this._onMedicinePress(value, index)}} >
+                      <Image
+                        style={customStyles.item}
+                        resizeMode='contain'
+                        source={img} />
+                    </TouchableOpacity>
                   )
                 })}
 
@@ -156,12 +189,14 @@ class Inventory extends React.Component {
                 {this.props.campaign.inventory.weaponItems.map((value, index) => {
                   const img = weaponArray[value];
                   return(
-
-                    <Image
+                    <TouchableOpacity
                       key={index}
-                      style={customStyles.item}
-                      resizeMode='contain'
-                      source={img} />
+                      onPress={() => {this._onWeaponPress(value, index)}} >
+                      <Image
+                        style={customStyles.item}
+                        resizeMode='contain'
+                        source={img} />
+                    </TouchableOpacity>
                   )
                 })}
 
