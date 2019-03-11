@@ -414,6 +414,13 @@ export function *scavenge(action) {
   yield put({type: c.RESET_SCAVENGE});
 }
 
+export function *updateHungerAndHealth(action) {
+  yield put({type: c.UPDATE_HUNGER, hunger: action.hunger});
+  yield put({type: c.UPDATE_HEALTH, health: action.health});
+  const player = yield select(getPlayer);
+  yield put({type: c.UPDATE_PLAYER, playId: player.id, hunger: player.hunger, health: player.health})
+};
+
 export function *getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData('lastState');
@@ -531,6 +538,10 @@ export function *watchStartScavenge() {
   yield takeEvery(c.START_SCAVENGE, scavenge);
 }
 
+export function *watchHungerAndHealth() {
+  yield takeEvery(c.UPDATE_HUNGER_HEALTH, updateHungerAndHealth)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
@@ -557,5 +568,6 @@ export default function *rootSaga() {
     watchScavengedItems(),
     watchGetLastStepState(),
     watchStartScavenge(),
+    watchHungerAndHealth(),
   ])
 }
