@@ -165,6 +165,7 @@ class App extends React.Component {
         </Modal>
         <SocketIO />
         <NotificationListeners />
+        <GetNotificationToken />
         <BackgroundPedometer />
         <AppContainer
           ref={navigatorRef => {

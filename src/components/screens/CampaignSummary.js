@@ -56,11 +56,11 @@ class CampaignSummary extends React.Component {
 
   _displayHungerLevel = (player) => {
     if (player.hunger > 0 && player.hunger < 34) {
-      return 'Starving';
+      return 'High';
     } else if (player.hunger >= 34 && player.hunger < 67) {
-      return 'Hungry';
+      return 'OK';
     } else if (player.hunger >= 67) {
-      return 'Full';
+      return 'Low';
     } else {
       return 'Dead';
     }
@@ -69,7 +69,6 @@ class CampaignSummary extends React.Component {
   _onButtonPressInventory = () => {
     this.props.navigation.navigate('Inventory');
   }
-
 
   _onButtonPressSafehouse = () => {
     this.props.navigation.navigate('Safehouse');
@@ -94,7 +93,7 @@ class CampaignSummary extends React.Component {
       return (
         <View style={customStyles.buttonContainer}>
           <SingleButtonFullWidth
-            title='View Inventory'
+            title='Inventory'
             backgroundColor='black'
             onButtonPress={this._onButtonPressInventory} />
         </View>
@@ -154,7 +153,7 @@ const customStyles = StyleSheet.create({
   buttonContainer: {
     marginTop: heightUnit*3,
     width: '100%',
-    height: heightUnit*10,
+    height: heightUnit*8,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -37,9 +37,9 @@ export default class ThreeInfoSquares extends React.Component {
 
   _hungerColor = () => {
     const val = this.props.button3value;
-    if (val === 'Starving') {
+    if (val === 'High') {
       return 'red';
-    } else if (val === 'Full') {
+    } else if (val === 'Low') {
       return 'green'
     } else {
       return 'white';

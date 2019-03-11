@@ -47,6 +47,13 @@ export default (state = steps, action) => {
         scavengingFor: action.scavengingFor,
       }
 
+    case c.RESET_SCAVENGE:
+    // TODO: when this action fires, use it as an opportunity to pop up a modal telling the user they scavenged something.
+      return {
+        ...state,
+        scavengingFor: null,
+      }
+
     case c.ADD_SCAVENGED_ITEMS:
       newState = Object.assign({}, state);
       newState.campaignDateArray[action.currentDay].timesScavenged = action.timesScavenged;

@@ -57,7 +57,7 @@ class Safehouse extends React.Component {
         <View style={customStyles.container}>
 
           <View style={customStyles.textContainer}>
-            <Text style={[styles.plainText, customStyles.text]}>If you walk another quarter mile, you can do one of the following:</Text>
+            <Text style={[styles.plainText, customStyles.text]}>If you walk a while longer, you can do one of the following:</Text>
           </View>
 
           <View style={customStyles.bottom}>

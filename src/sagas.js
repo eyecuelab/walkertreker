@@ -3,7 +3,7 @@ import { Pedometer } from "expo";
 import { CLIENT_APP_KEY } from 'react-native-dotenv';
 
 import constants from './constants';
-const { c, storeData, retrieveData } = constants;
+const { c, storeData, retrieveData, item } = constants;
 
 export const getSteps = state => state.steps;
 export const getPlayer = state => state.player;
@@ -323,7 +323,7 @@ export function *saveState() {
 export function *checkBonusSteps(action) {
   const { steps, stepTargets } = action.player;
   const { currentDay, inventory, startDate } = yield select(getCampaign);
-  const { campaignDateArray } = yield select(getSteps);
+  const { campaignDateArray, scavengingFor } = yield select(getSteps);
 
   if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
     return; // there is no player or game or steps or step targets, so bye
@@ -335,16 +335,17 @@ export function *checkBonusSteps(action) {
   const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
   const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
+  // if (
+  //   // no additional bonus steps have been taken
+  //   stepsToday >= stepGoalToday &&
+  //   bonusStepsToday !== null &&
+  //   newBonus - (timesScavengedToday * 500) < 500 &&
+  //   newBonus <= bonusStepsToday
+  // ) {
+  //   return; // there is nothing to do
+  //
+  // } else
   if (
-    // no additional bonus steps have been taken
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) < 500 &&
-    newBonus <= bonusStepsToday
-  ) {
-    return; // there is nothing to do
-
-  } else if (
     // there are bonus steps for the first time today
     stepsToday >= stepGoalToday &&
     bonusStepsToday === null
@@ -365,31 +366,60 @@ export function *checkBonusSteps(action) {
     // there are 500 or more unused bonus steps to use for scavenging
     stepsToday >= stepGoalToday &&
     bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) >= 500
+    newBonus - (timesScavengedToday * 500) >= 500 &&
+    scavengingFor
   ) {
     yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
     yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday, inventory: inventory});
+  } else {
+    return;
   }
 }
 
 export function *scavenge(action) {
-
+  console.log('MADE IT TO SCAVENGE');
   const newTimesScavenged = action.timesScavengedToday + 1;
   const itemsScavenged = Object.assign({}, action.inventory);
   const { scavengingFor } = yield select(getSteps);
+  const rando = (x) => Math.floor(Math.random() * x);
+  let newItem;
+
+  if (scavengingFor === null) {
+    return;
+  }
+
+  console.log('newTimesScavenged', newTimesScavenged);
+  console.log('itemsScavenged', itemsScavenged);
+  console.log('scavengingFor', scavengingFor);
 
   if (scavengingFor === 'food') {
-    itemsScavenged.foodItems++;
+    newItem = rando(9);
+    itemsScavenged.foodItems.push(newItem);
+    console.log('newItem', newItem);
   } else if (scavengingFor === 'medicine') {
-    itemsScavenged.medicineItems++;
-  } else if (scavengingFor === 'weapon') {
-    itemsScavenged.weaponItems++;
+    newItem = rando(6);
+    itemsScavenged.medicineItems.push(newItem);
+    console.log('newItem', newItem);
+  } else if (scavengingFor === 'weapons') {
+    newItem = rando(9);
+    itemsScavenged.weaponItems.push(newItem);
+    console.log('newItem', newItem);
   } else {
     console.warn('the scavenge function can\'t tell what to scavenge');
   }
 
+  console.log('made it through the scavenge branching');
+
   yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: action.currentDay, bonus: action.newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged});
+  yield put({type: c.RESET_SCAVENGE});
 }
+
+export function *updateHungerAndHealth(action) {
+  yield put({type: c.UPDATE_HUNGER, hunger: action.hunger});
+  yield put({type: c.UPDATE_HEALTH, health: action.health});
+  const player = yield select(getPlayer);
+  yield put({type: c.UPDATE_PLAYER, playId: player.id, hunger: player.hunger, health: player.health})
+};
 
 export function *getLastStepState() {
   // TODO: retrieveData 'lastState' as object
@@ -484,7 +514,7 @@ export function *watchAppStateChange() {
 
 export function *watchPlayerActions() {
   while (true) {
-    yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED, c.PLAYER_UPDATED]);
+    yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED /*, c.PLAYER_UPDATED*/]);
     const player = yield select(getPlayer);
     yield put({type: c.FETCH_CAMPAIGN_INFO, id: player.campaignId})
   }
@@ -506,6 +536,10 @@ export function *watchGetLastStepState() {
 
 export function *watchStartScavenge() {
   yield takeEvery(c.START_SCAVENGE, scavenge);
+}
+
+export function *watchHungerAndHealth() {
+  yield takeEvery(c.UPDATE_HUNGER_HEALTH, updateHungerAndHealth)
 }
 
 // root saga ==============================
@@ -533,5 +567,7 @@ export default function *rootSaga() {
     watchPlayerUpdated(),
     watchScavengedItems(),
     watchGetLastStepState(),
+    watchStartScavenge(),
+    watchHungerAndHealth(),
   ])
 }

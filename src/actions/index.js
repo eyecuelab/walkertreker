@@ -27,7 +27,7 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyL
       steps: null,
       goal: aGoal,
       bonus: null,
-      timesScavenged: null,
+      timesScavenged: 0,
       goalMet: false,
     }
     dateArray.push(newDateObj);

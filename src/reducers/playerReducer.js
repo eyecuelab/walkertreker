@@ -33,6 +33,23 @@ export default (state = player/*testState*/, action) => {
       };
       storeData('playerInfo', JSON.stringify(newState));
       return newState;
+
+    case c.UPDATE_HUNGER:
+      newState = {
+        ...state,
+        hunger: action.hunger,
+      };
+      storeData('playerInfo', JSON.stringify(newState));
+      return newState;
+
+    case c.UPDATE_HEALTH:
+      newState = {
+        ...state,
+        health: action.health,
+      };
+      storeData('playerInfo', JSON.stringify(newState));
+      return newState;
+
     default:
       return state;
     }

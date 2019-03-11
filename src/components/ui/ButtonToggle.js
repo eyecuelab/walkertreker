@@ -18,7 +18,7 @@ export default class ButtonToggle extends React.Component {
       } else if (color == 'green') {
         return styles.green;
       } else {
-        return styles.inactive;
+        return;
       }
     };
 
