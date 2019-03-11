@@ -56,11 +56,11 @@ class CampaignSummary extends React.Component {
 
   _displayHungerLevel = (player) => {
     if (player.hunger > 0 && player.hunger < 34) {
-      return 'Starving';
+      return 'High';
     } else if (player.hunger >= 34 && player.hunger < 67) {
-      return 'Hungry';
+      return 'OK';
     } else if (player.hunger >= 67) {
-      return 'Full';
+      return 'Low';
     } else {
       return 'Dead';
     }
