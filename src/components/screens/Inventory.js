@@ -79,38 +79,6 @@ class Inventory extends React.Component {
     this._toggleWeaponModal();
   }
 
-  _submitConditionalRender = () => {
-
-    if (this.props.steps.campaignDateArray[this.props.campaign.currentDay].goalMet) {
-    // if (true) {
-      return (
-        <TwoButtonOverlay
-          button1onPress={this._onButtonPressSafehouse}
-          button1title='Safehouse'
-          button1color='black'
-          button1isDisabled={false}
-          button2onPress={this._onButtonPressSummary}
-          button2title='Campaign Summary'
-          button2color='black'
-          button2isDisabled={false} />
-      );
-    } else {
-      return (
-        <View style={customStyles.buttonContainer}>
-          <SingleButtonFullWidth
-            title='Campaign Summary'
-            backgroundColor='black'
-            onButtonPress={this._onButtonPressSummary} />
-        </View>
-      );
-    }
-  }
-
-  // TODO:
-  // [ ] create modals for all three item types
-  // [ ] when an item is pressed, first assign its index to state and then give the modal access to that state
-  // [ ] write functions in food and med modals that use the index passed in to remove that item from the inventory array, adjust health/hunger, update the player, and update the campaign
-
   render() {
     return (
       <ImageBackground
@@ -143,10 +111,11 @@ class Inventory extends React.Component {
           <Text style={styles.headline}>GROUP INVENTORY</Text>
 
           <View style={{flex: 7, width: '100%'}}>
-            <ScrollView style={customStyles.inventoryContainer}>
 
-              <Text style={styles.subHeading}>Food</Text>
-              <View style={customStyles.itemContainer}>
+              <Text style={styles.subHeading}>Food <Text style={[styles.label]}>({this.props.campaign.inventory.foodItems.length})</Text></Text>
+              <ScrollView
+                style={customStyles.itemContainer}
+                horizontal='true' >
 
                 {this.props.campaign.inventory.foodItems.map((value, index) => {
                   const img = foodArray[value];
@@ -162,10 +131,12 @@ class Inventory extends React.Component {
                   )
                 })}
 
-              </View>
+              </ScrollView>
 
-              <Text style={styles.subHeading}>Medicine</Text>
-              <View style={customStyles.itemContainer}>
+              <Text style={styles.subHeading}>Medicine <Text style={styles.label}>({this.props.campaign.inventory.medicineItems.length})</Text></Text>
+              <ScrollView
+                style={customStyles.itemContainer}
+                horizontal='true' >
 
                 {this.props.campaign.inventory.medicineItems.map((value, index) => {
                   const img = medicineArray[value];
@@ -181,10 +152,12 @@ class Inventory extends React.Component {
                   )
                 })}
 
-              </View>
+              </ScrollView>
 
-              <Text style={styles.subHeading}>Weapons</Text>
-              <View style={customStyles.itemContainer}>
+              <Text style={styles.subHeading}>Weapons <Text style={styles.label}>({this.props.campaign.inventory.weaponItems.length})</Text></Text>
+              <ScrollView
+                style={customStyles.itemContainer}
+                horizontal='true'>
 
                 {this.props.campaign.inventory.weaponItems.map((value, index) => {
                   const img = weaponArray[value];
@@ -200,14 +173,18 @@ class Inventory extends React.Component {
                   )
                 })}
 
-              </View>
+              </ScrollView>
 
-            </ScrollView>
           </View>
 
           <View style={customStyles.bottom}>
 
-            {this._submitConditionalRender()}
+            <View style={customStyles.buttonContainer}>
+              <SingleButtonFullWidth
+                title='Go Back'
+                backgroundColor='black'
+                onButtonPress={()=>this.props.navigation.goBack()} />
+            </View>
 
           </View>
         </View>
