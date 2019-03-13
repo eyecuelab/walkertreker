@@ -140,7 +140,7 @@ class Safehouse extends React.Component {
               resizeMode={'cover'}
               style={customStyles.safehouseBg}>
 
-              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', padding: widthUnit}}>
+              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit * 2}}>
 
                 <View style={[customStyles.container]}>
                   <View style={{paddingLeft: widthUnit, paddingRight: widthUnit}}>
