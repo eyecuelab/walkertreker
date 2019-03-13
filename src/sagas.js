@@ -411,14 +411,17 @@ export function *scavenge(action) {
   console.log('made it through the scavenge branching');
 
   yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: action.currentDay, bonus: action.newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged});
-  yield put({type: c.RESET_SCAVENGE});
+  yield put({type: c.DONE_SCAVENGING, justScavenged: newItem });
 }
 
 export function *updateHungerAndHealth(action) {
   yield put({type: c.UPDATE_HUNGER, hunger: action.hunger});
   yield put({type: c.UPDATE_HEALTH, health: action.health});
   const player = yield select(getPlayer);
-  yield put({type: c.UPDATE_PLAYER, playId: player.id, hunger: player.hunger, health: player.health})
+  yield put({type: c.UPDATE_PLAYER, playId: player.id, hunger: player.hunger, health: player.health});
+  // TODO: test this logic and see if it breaks anything
+  const campaign = yield select(getCampaign);
+  yield put({type: c.UPDATE_CAMPAIGN, campId: campaign.id, inventory: campaign.inventory});
 };
 
 export function *getLastStepState() {
