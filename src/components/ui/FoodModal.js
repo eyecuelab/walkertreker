@@ -27,8 +27,8 @@ class FoodModal extends React.Component {
       if (newHunger > 100) {
         newHunger = 100;
       }
+      foodItems.splice(index, 1);
       dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
-      foodItems.splice(index, 1)
       handleModalStateChange();
     }
   }

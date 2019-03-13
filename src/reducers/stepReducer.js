@@ -47,10 +47,16 @@ export default (state = steps, action) => {
         scavengingFor: action.scavengingFor,
       }
 
-    case c.RESET_SCAVENGE:
-    // TODO: when this action fires, use it as an opportunity to pop up a modal telling the user they scavenged something.
+    case c.DONE_SCAVENGING:
       return {
         ...state,
+        justScavenged: action.justScavenged,
+      }
+
+    case c.RESET_SCAVENGE:
+      return {
+        ...state,
+        justScavenged: null,
         scavengingFor: null,
       }
 

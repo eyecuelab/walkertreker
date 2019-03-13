@@ -51,12 +51,14 @@ export default class About extends React.Component {
           <View style={customStyles.textContainer}>
             <Text style={[styles.plainText, customStyles.text]}>Walker Trekker features campaigns that can be configured with various days, difficulty levels, and participants.</Text>
           </View>
-          <View style={customStyles.buttonContainer}>
-            <SingleButtonFullWidth
-              backgroundColor='black'
-              title={this.state.buttonTitle}
-              onButtonPress={this._onButtonPress}
-            />
+          <View style={styles.bottom}>
+            <View style={styles.buttonContainer}>
+              <SingleButtonFullWidth
+                backgroundColor='black'
+                title={this.state.buttonTitle}
+                onButtonPress={this._onButtonPress}
+                />
+            </View>
           </View>
         </View>
       </ImageBackground>
@@ -79,12 +81,5 @@ const customStyles = StyleSheet.create({
   },
   text: {
     lineHeight: heightUnit*3.75,
-  },
-  buttonContainer: {
-    marginTop: heightUnit*10,
-    width: '100%',
-    height: heightUnit*10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })

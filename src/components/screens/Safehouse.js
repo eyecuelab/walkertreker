@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Image} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
 import constants from '../../constants';
-const { c } = constants;
+const { c, item } = constants;
+const { foodArray, medicineArray, weaponArray } = item;
 const safehouse_bg = require('../../../assets/safehouse_bg.png');
 
 import defaultStyle from '../../styles/defaultStyle';
@@ -39,9 +40,15 @@ class Safehouse extends React.Component {
     this.props.navigation.navigate('CampaignSummary');
   }
 
+  _confirmItem = () => {
+    const { dispatch } = this.props;
+    dispatch({type: c.RESET_SCAVENGE});
+  }
+
   _submitConditionalRender = () => {
-    const { scavengingFor } = this.props.steps;
-    if (scavengingFor) {
+    const { scavengingFor, justScavenged } = this.props.steps;
+    // if you are scavenging for something but have not retrieved it yet
+    if (scavengingFor != null && justScavenged === null) {
       return (
         <View style={customStyles.textContainer}>
           <Text style={[styles.headline]}>
@@ -52,6 +59,39 @@ class Safehouse extends React.Component {
           </Text>
         </View>
       );
+    // if you are done scavenging for something, but are not scavenging for a new thing yet
+    } else if (scavengingFor && justScavenged) {
+      // return a component that tells the user they scavenged something, shows them what it is, and gives them a button to close it, which will take the user to the else below
+      let array;
+      if (scavengingFor === 'food') {
+        array = foodArray;
+      } else if (scavengingFor == 'medicine') {
+        array = medicineArray;
+      } else if (scavengingFor === 'weapons') {
+        array = weaponArray;
+      } else {
+        console.warn('you have a weird value in scavengingFor; fix it!');
+      }
+      const newItemScavenged = array[justScavenged]
+      return(
+        <View style={customStyles.container}>
+          <Text style={[styles.plainText, customStyles.text]}>You managed to find a useful item among the wreckage and debris. It has been added to your inventory.  You might survive another night...</Text>
+          <View style={[customStyles.imageContainer, {width: widthUnit*20, aspectRatio: 1}]}>
+            <Image
+              source={newItemScavenged}
+              resizeMode='contain' />
+          </View>
+          <View style={customStyles.bottom}>
+            <View style={customStyles.buttonContainer}>
+              <SingleButtonFullWidth
+                backgroundColor='darkred'
+                title='OK'
+                onButtonPress={this._confirmItem} />
+            </View>
+          </View>
+        </View>
+      )
+
     } else {
       return (
         <View style={customStyles.container}>
@@ -124,15 +164,12 @@ class Safehouse extends React.Component {
 
 
           <View style={customStyles.bottom}>
-              <TwoButtonOverlay
-                button1onPress={this._onButtonPressSummary}
-                button1title='Campaign Summary'
-                button1color='black'
-                button1isDisabled={false}
-                button2onPress={this._onButtonPressInventory}
-                button2title='Inventory'
-                button2color='black'
-                button2isDisabled={false} />
+            <View style={customStyles.buttonContainer}>
+              <SingleButtonFullWidth
+                title='Go Back'
+                backgroundColor='black'
+                onButtonPress={()=>this.props.navigation.goBack()} />
+            </View>
           </View>
 
         </View>
@@ -199,6 +236,12 @@ const customStyles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: widthUnit*2,
   },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    width: '100%'
+  }
 })
 
 function mapStateToProps(state) {
