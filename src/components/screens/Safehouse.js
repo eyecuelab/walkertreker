@@ -148,7 +148,7 @@ class Safehouse extends React.Component {
                     <DayCounter campaign={this.props.campaign}/>
 
                     <View style={customStyles.headlineContainer}>
-                      <Text style={styles.headline}>Safe house</Text>
+                      <Text style={styles.headline}>Safe{"\n"}House</Text>
                     </View>
                   </View>
 
@@ -157,7 +157,7 @@ class Safehouse extends React.Component {
                   </View>
                 </View>
 
-                <View style={[customStyles.container, {flex: 2.5}]}>
+                <View style={[customStyles.container, {flex: 2}]}>
                   {this._submitConditionalRender()}
                 </View>
 
