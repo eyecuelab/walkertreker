@@ -107,15 +107,17 @@ class Inventory extends React.Component {
         </Modal>
 
         <View style={[styles.container, {alignItems: 'flex-start'}]}>
-          <DayCounter campaign={this.props.campaign} />
-          <Text style={styles.headline}>GROUP INVENTORY</Text>
+          <View style={{flex: 1}}>
+            <DayCounter campaign={this.props.campaign} />
+            <Text style={styles.headline}>GROUP INVENTORY</Text>
+          </View>
 
-          <View style={{flex: 7, width: '100%'}}>
+          <View style={{flex: 4.2}}>
+            <ScrollView style={{flex: 1}}>
 
-              <Text style={styles.subHeading}>{this.props.campaign.inventory.foodItems.length} Food</Text>
-              <ScrollView
-                style={customStyles.itemContainer}
-                horizontal='true' >
+              <Text style={styles.subHeadingBlack}>{this.props.campaign.inventory.foodItems.length} Food</Text>
+              <View
+                style={customStyles.itemContainer}>
 
                 {this.props.campaign.inventory.foodItems.map((value, index) => {
                   const img = foodArray[value];
@@ -131,12 +133,11 @@ class Inventory extends React.Component {
                   )
                 })}
 
-              </ScrollView>
+              </View>
 
-              <Text style={styles.subHeading}>{this.props.campaign.inventory.medicineItems.length} Medicine</Text>
-              <ScrollView
-                style={customStyles.itemContainer}
-                horizontal='true' >
+              <Text style={styles.subHeadingBlack}>{this.props.campaign.inventory.medicineItems.length} Medicine</Text>
+              <View
+                style={customStyles.itemContainer}>
 
                 {this.props.campaign.inventory.medicineItems.map((value, index) => {
                   const img = medicineArray[value];
@@ -152,12 +153,11 @@ class Inventory extends React.Component {
                   )
                 })}
 
-              </ScrollView>
+              </View>
 
-              <Text style={styles.subHeading}>{this.props.campaign.inventory.weaponItems.length} Weapons</Text>
-              <ScrollView
-                style={customStyles.itemContainer}
-                horizontal='true'>
+              <Text style={styles.subHeadingBlack}>{this.props.campaign.inventory.weaponItems.length} Weapons</Text>
+              <View
+                style={customStyles.itemContainer}>
 
                 {this.props.campaign.inventory.weaponItems.map((value, index) => {
                   const img = weaponArray[value];
@@ -173,11 +173,12 @@ class Inventory extends React.Component {
                   )
                 })}
 
-              </ScrollView>
+              </View>
 
+            </ScrollView>
           </View>
 
-          <View style={customStyles.bottom}>
+          <View style={[customStyles.bottom, {backgroundColor: 'rgba(0,0,0,0)'}]}>
 
             <View style={customStyles.buttonContainer}>
               <SingleButtonFullWidth
@@ -206,11 +207,11 @@ const customStyles = StyleSheet.create({
     color: 'skyblue'
   },
   bottom: {
-    flex: 1,
+    flex: 0.7,
     width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: widthUnit*2,
+    // marginBottom: widthUnit*2,
   },
   inventoryContainer: {
     flex: 1,
@@ -225,7 +226,7 @@ const customStyles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   buttonContainer: {
-    marginTop: heightUnit*3,
+    // marginTop: heightUnit*3,
     width: '100%',
     height: heightUnit*8,
     alignItems: 'center',
