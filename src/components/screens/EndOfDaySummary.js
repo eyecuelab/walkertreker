@@ -10,6 +10,9 @@ import PlayersList from '../ui/PlayersList';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import PlayerEndOfDay from '../ui/PlayerEndOfDay';
 
+const safehouse_bg = require('../../../assets/safehouse_bg.png');
+const attack_bg = require('../../../assets/attack_bg.png');
+
 class EndOfDaySummary extends React.Component {
 
   constructor(props) {
@@ -23,7 +26,6 @@ class EndOfDaySummary extends React.Component {
         didWeMakeIt = false
       }
     }
-
     this.state = { update, campaign, currentDay, didWeMakeIt }
   }
 
@@ -58,43 +60,54 @@ class EndOfDaySummary extends React.Component {
   }
 
   render() {
+    const bg = this.state.didWeMakeIt ? safehouse_bg : attack_bg
     return (
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}
       >
         <View style={styles.container}>
-          <View style={customStyles.headerContainer}>
-            <Text style={styles.label}>Day {this.state.currentDay + 1}</Text>
-            <Text style={styles.headline}>Night{"\n"}Fall</Text>
-          </View>
-          <View style={customStyles.playersContainer}>
-            {this._headerTextRender()}
-            <ScrollView
-              style={customStyles.playersScroll}
-              showsVerticalScrollIndicator={true}
+          <View style={{width: '100%', height: '100%'}}>
+            <ImageBackground
+              source={bg}
+              resizeMode={'cover'}
+              style={customStyles.bgImage}
             >
-              {this.state.campaign.players.map(player => {
-                const playerUpdate = this.state.update.players.filter(obj => obj.id === player.id)[0]
-                return (
-                  <PlayerEndOfDay key={player.id}
-                    player={player}
-                    playerUpdate={playerUpdate}
-                    today={this.state.currentDay}
-                    didWeMakeIt={this.state.didWeMakeIt}
+              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
+                <View style={customStyles.headerContainer}>
+                  <Text style={styles.label}>Day {this.state.currentDay + 1}</Text>
+                  <Text style={styles.headline}>Night{"\n"}Fall</Text>
+                </View>
+                <View style={customStyles.playersContainer}>
+                  {this._headerTextRender()}
+                  <ScrollView
+                    style={customStyles.playersScroll}
+                    showsVerticalScrollIndicator={true}
+                  >
+                    {this.state.campaign.players.map(player => {
+                      const playerUpdate = this.state.update.players.filter(obj => obj.id === player.id)[0]
+                      return (
+                        <PlayerEndOfDay key={player.id}
+                          player={player}
+                          playerUpdate={playerUpdate}
+                          today={this.state.currentDay}
+                          didWeMakeIt={this.state.didWeMakeIt}
+                        />
+                      )
+                    })}
+                    {this._footerTextRender()}
+                  </ScrollView>
+                </View>
+                <View style={customStyles.buttonContainer}>
+                  <SingleButtonFullWidth
+                    title="Back"
+                    backgroundColor="black"
+                    onButtonPress={() => this.props.navigation.navigate('CampaignSummary')}
                   />
-                )
-              })}
-              {this._footerTextRender()}
-            </ScrollView>
+                </View>
+              </View>
+            </ImageBackground>
           </View>
-        </View>
-        <View style={customStyles.buttonContainer}>
-          <SingleButtonFullWidth
-            title="Campaign Summary"
-            backgroundColor="black"
-            onButtonPress={() => this.props.navigation.navigate('CampaignSummary')}
-          />
         </View>
       </ImageBackground>
     );
@@ -116,6 +129,7 @@ const customStyles = StyleSheet.create({
     // paddingBottom: heightUnit,
     flex: 4,
     width: '100%',
+    marginTop: heightUnit*2.5
     // borderColor: 'black',
     // borderWidth: 1,
   },
@@ -129,6 +143,12 @@ const customStyles = StyleSheet.create({
   },
   playerScroll: {
     width: '100%',
+  },
+  bgImage: {
+    width: undefined,
+    height: undefined,
+    flex: 1,
+    justifyContent: 'flex-start',
   },
 });
 
