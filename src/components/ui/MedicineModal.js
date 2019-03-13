@@ -27,8 +27,8 @@ class MedicineModal extends React.Component {
       if (newHunger > 100) {
         newHunger = 100;
       }
-      dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
       medicineItems.splice(index, 1)
+      dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
       handleModalStateChange();
     }
   }

@@ -14,7 +14,6 @@ class WeaponModal extends React.Component {
   _dismissTheWeapon = () => {
     const { handleModalStateChange } = this.props;
     handleModalStateChange();
-
   }
 
   render() {
