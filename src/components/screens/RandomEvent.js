@@ -68,6 +68,7 @@ class RandomEvent extends React.Component {
       B: `You voted for ${this.state.optionBButton}`
     }
     console.log(OPTIONS[opt])
+    this.props.navigation.navigate('CampaignSummary')
   }
 
   render() {
@@ -83,7 +84,7 @@ class RandomEvent extends React.Component {
                 resizeMode={'cover'}
                 style={customStyles.randomEventBg}>
 
-                <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*2}}>
+                <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
                   <View style={[customStyles.container, {flex: 3}]}>
                     <Text style={styles.label}>{this._timerDisplay()}</Text>
 
@@ -91,7 +92,7 @@ class RandomEvent extends React.Component {
                       <Text style={styles.headline}>Group{'\n'}Decision</Text>
                     </View>
 
-                    <View style={customStyles.textContainer}>
+                    <View style={[customStyles.textContainer, customStyles.marginTop]}>
                       <Text style={[styles.plainText, customStyles.text]}>{this.state.antecedent}</Text>
                     </View>
                   </View>
@@ -181,6 +182,9 @@ const customStyles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: widthUnit*2,
   },
+  marginTop: {
+    marginTop: heightUnit*2.5
+  }
 })
 
 function mapStateToProps(state) {

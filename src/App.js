@@ -66,6 +66,7 @@ class App extends React.Component {
       require('../assets/splash.png'),
       require('../assets/safehouse_bg.png'),
       require('../assets/event_bg.png'),
+      require('../assets/attack_bg.png'),
       require('../assets/food/Apple.png'),
       require('../assets/food/Baked_Beans.png'),
       require('../assets/food/Beer.png'),
@@ -109,16 +110,11 @@ class App extends React.Component {
       campaignId: false
     }
     if (!localPlayer) {
-      console.log('LOCALPLAYER: ')
-      console.log(localPlayer)
       localPlayer = dud
-      console.log('Opening New Player modal')
       await this.setState({
         newPlayerModalVisible: true,
       })
     } else {
-      console.log('LOCALPLAYER: ')
-      console.log(localPlayer)
       localPlayer = JSON.parse(localPlayer)
     }
     await this.setState({ localPlayer })

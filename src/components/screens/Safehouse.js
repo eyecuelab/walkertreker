@@ -144,6 +144,7 @@ class Safehouse extends React.Component {
 
                 <View style={[customStyles.container]}>
                   <View style={{paddingLeft: widthUnit, paddingRight: widthUnit}}>
+
                     <DayCounter campaign={this.props.campaign}/>
 
                     <View style={customStyles.headlineContainer}>
