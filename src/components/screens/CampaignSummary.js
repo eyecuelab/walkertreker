@@ -114,7 +114,7 @@ class CampaignSummary extends React.Component {
         <View style={styles.container}>
           <DayCounter campaign={this.props.campaign} />
           <Text style={styles.headline}>Campaign Summary</Text>
-          <ScrollView>
+          <ScrollView style={customStyles.scrollContainer}>
             {this.props.campaign.players.map(player => {
               return (
                 <View key={player.id} style={customStyles.playerInfoContainer}>
@@ -169,8 +169,12 @@ const customStyles = StyleSheet.create({
     marginBottom: widthUnit*2,
   },
   playerInfoContainer: {
+    marginTop: heightUnit*2,
     marginBottom: heightUnit*2
   },
+  scrollContainer: {
+    marginTop: heightUnit*2.5
+  }
 });
 
 function mapStateToProps(state) {

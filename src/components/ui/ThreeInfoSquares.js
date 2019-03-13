@@ -51,8 +51,8 @@ export default class ThreeInfoSquares extends React.Component {
     return (
       <View style={customStyles.container} >
         <View style={customStyles.headerRow}>
-          <Avatar player={this.props.player} imageStyles={customStyles.avatarStyle} />
-          <Text style={[styles.label, {margin: 5, marginBottom: 0}]}>{this.props.title}</Text>
+
+          <Text style={[styles.label, customStyles.title]}>{this.props.title}</Text>
         </View>
 
         <Text style={[styles.detail, {margin: 5}]}>{this.props.subtitle}</Text>
@@ -92,6 +92,8 @@ export default class ThreeInfoSquares extends React.Component {
   }
 }
 
+// <Avatar player={this.props.player} imageStyles={customStyles.avatarStyle} />
+
 ThreeInfoSquares.propTypes = {
   title: PropTypes.string.isRequired,
   player: PropTypes.object,
@@ -123,10 +125,19 @@ const customStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    height: widthUnit*3,
+    marginBottom: 0,
   },
   avatarStyle: {
     width: widthUnit*10,
     aspectRatio: 1,
+  },
+  title:  {
+    margin: 0,
+    marginLeft: 0,
+    marginBottom: 0,
+    fontSize: heightUnit*5,
+    color: 'black',
   },
   squareContainer: {
     width: '100%',
