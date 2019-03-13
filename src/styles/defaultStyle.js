@@ -36,6 +36,11 @@ export default defaultStyle = {
     fontSize: widthUnit*5,
     color: 'white',
   },
+  labelBlack: {
+    fontFamily: 'gore',
+    fontSize: widthUnit*5,
+    color: 'black',
+  },
   plainText: {
     fontFamily: 'verdana',
     fontSize: widthUnit*5,
@@ -46,5 +51,19 @@ export default defaultStyle = {
     fontFamily: 'verdana',
     fontSize: widthUnit*3.5,
     color: 'white',
+  },
+  bottom: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    // marginBottom: widthUnit*2,
+  },
+  buttonContainer: {
+    marginTop: heightUnit,
+    width: '100%',
+    height: heightUnit*8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }
