@@ -112,7 +112,7 @@ class Inventory extends React.Component {
 
           <View style={{flex: 7, width: '100%'}}>
 
-              <Text style={styles.subHeading}>Food <Text style={[styles.label]}>({this.props.campaign.inventory.foodItems.length})</Text></Text>
+              <Text style={styles.subHeading}>{this.props.campaign.inventory.foodItems.length} Food</Text>
               <ScrollView
                 style={customStyles.itemContainer}
                 horizontal='true' >
@@ -133,7 +133,7 @@ class Inventory extends React.Component {
 
               </ScrollView>
 
-              <Text style={styles.subHeading}>Medicine <Text style={styles.label}>({this.props.campaign.inventory.medicineItems.length})</Text></Text>
+              <Text style={styles.subHeading}>{this.props.campaign.inventory.medicineItems.length} Medicine</Text>
               <ScrollView
                 style={customStyles.itemContainer}
                 horizontal='true' >
@@ -154,7 +154,7 @@ class Inventory extends React.Component {
 
               </ScrollView>
 
-              <Text style={styles.subHeading}>Weapons <Text style={styles.label}>({this.props.campaign.inventory.weaponItems.length})</Text></Text>
+              <Text style={styles.subHeading}>{this.props.campaign.inventory.weaponItems.length} Weapons</Text>
               <ScrollView
                 style={customStyles.itemContainer}
                 horizontal='true'>
