@@ -5,6 +5,7 @@ import initialStateCampaign from './initialStates/initialStateCampaign';
 import initialStatePlayer from './initialStates/initialStatePlayer';
 import { storeData, retrieveData } from './asyncStorage';
 import { NAVIGATION as navigation } from './navigation';
+import events from './events';
 
 export default {
   c: types,
@@ -17,4 +18,5 @@ export default {
   retrieveData,
   item: items,
   navigation,
+  events,
 };

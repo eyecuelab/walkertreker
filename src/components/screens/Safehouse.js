@@ -100,12 +100,12 @@ class Safehouse extends React.Component {
                 resizeMode={'cover'}
                 style={customStyles.safehouseBg}>
 
-                <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', padding: widthUnit*2}}>
+                <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', padding: widthUnit*5}}>
                   <View style={[customStyles.container, {flex: 1.25}]}>
                     <DayCounter campaign={this.props.campaign}/>
 
                     <View style={customStyles.headlineContainer}>
-                      <Text style={styles.headline}>Safehouse</Text>
+                      <Text style={styles.headline}>Safe house</Text>
                     </View>
 
                     <View style={customStyles.textContainer}>
@@ -113,7 +113,7 @@ class Safehouse extends React.Component {
                     </View>
                   </View>
 
-                  <View style={[customStyles.container, {flex: 3, padding: widthUnit}]}>
+                  <View style={[customStyles.container, {flex: 3}]}>
                     {this._submitConditionalRender()}
                   </View>
                 </View>
@@ -176,6 +176,7 @@ const customStyles = StyleSheet.create({
     // margin: widthUnit*2,
     flex: 1,
     justifyContent: 'flex-start',
+    width: '100%',
     // padding: widthUnit,
     // paddingTop: widthUnit*2,
     // backgroundColor: 'pink',

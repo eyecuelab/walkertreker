@@ -21,8 +21,6 @@ class AcceptInvite extends React.Component {
   }
 
   componentDidMount = async () => {
-    console.log('AcceptInvite this.props:')
-    console.log(this.props)
     const { dispatch } = this.props
     const campaignId = this.props.navigation.getParam('campaignId', false)
     this.setState({ campaignId })
@@ -131,6 +129,7 @@ const customStyles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
+    player: state.player,
     campaign: state.campaign,
   }
 }

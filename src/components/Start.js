@@ -30,6 +30,9 @@ class Start extends React.Component {
     if (this.state.needCampaign) {
       dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
     }
+    if (!this.state.needPlayer) {
+      this.navigate('About')
+    }
   }
 
   navigate = (route) => {
@@ -49,6 +52,9 @@ class Start extends React.Component {
         campaignId: this.props.screenProps.queryParams.campaignId,
       }
     }
+    console.log('INITIAL NAVIGATION: ')
+    console.log('routeName: ', routeName)
+    console.log('routeParams: ', routeParams)
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName, params: routeParams })]

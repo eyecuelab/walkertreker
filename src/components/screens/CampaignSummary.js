@@ -11,6 +11,7 @@ import Avatar from '../ui/Avatar';
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+import DayCounter from '../ui/DayCounter';
 
 class CampaignSummary extends React.Component {
 
@@ -111,21 +112,24 @@ class CampaignSummary extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}>
         <View style={styles.container}>
-          <Text style={styles.headline}>CAMPAIGN SUMMARY</Text>
-          <Text style={styles.headline}>Players</Text>
-          <ScrollView>
+          <DayCounter campaign={this.props.campaign} />
+          <Text style={styles.headline}>Campaign Summary</Text>
+          <ScrollView style={customStyles.scrollContainer}>
             {this.props.campaign.players.map(player => {
               return (
-                <ThreeInfoSquares
-                  key={player.id}
-                  title={player.displayName}
-                  bigValue={true}
-                  button1label='Progress'
-                  button1value={this._displayStepPercentage(player) + '%'}
-                  button2label='Health'
-                  button2value={this._displayHealthLevel(player)}
-                  button3label='Hunger'
-                  button3value={this._displayHungerLevel(player)} />
+                <View key={player.id} style={customStyles.playerInfoContainer}>
+                  <ThreeInfoSquares
+                    title={player.displayName}
+                    player={player}
+                    bigValue={true}
+                    button1label='Progress'
+                    button1value={this._displayStepPercentage(player) + '%'}
+                    button2label='Health'
+                    button2value={this._displayHealthLevel(player)}
+                    button3label='Hunger'
+                    button3value={this._displayHungerLevel(player)}
+                  />
+                </View>
               )
             })}
           </ScrollView>
@@ -164,6 +168,13 @@ const customStyles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: widthUnit*2,
   },
+  playerInfoContainer: {
+    marginTop: heightUnit*2,
+    marginBottom: heightUnit*2
+  },
+  scrollContainer: {
+    marginTop: heightUnit*2.5
+  }
 });
 
 function mapStateToProps(state) {

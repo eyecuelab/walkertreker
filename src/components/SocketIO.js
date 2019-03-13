@@ -49,15 +49,6 @@ class SocketIO extends React.Component {
       socket.emit('stayAwake');
     }, 30000)
     socket.on('stayAwake', () => {return;})
-
-    const token = await this.getPushToken()
-    socket.emit('log', '')
-    socket.emit('log', ' ========================= ')
-    socket.emit('log', '')
-    socket.emit('log', `   YOUR NOTIFICATION TOKEN: ${token}   `)
-    socket.emit('log', '')
-    socket.emit('log', ' ========================= ')
-    socket.emit('log', '')
   }
 
   componentDidUpdate(prevProps) {
@@ -67,23 +58,6 @@ class SocketIO extends React.Component {
     if (prevProps.player.campaignId == null && this.props.player.campaignId) {
       socket.emit('connectToCampaign', this.props.player.campaignId)
     }
-  }
-
-  getPushToken = async () => {
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-
-    if (finalStatus !== 'granted') {
-      return;
-    }
-
-    const token = await Notifications.getExpoPushTokenAsync();
-    console.log('TOKEN: ', token)
-    return token;
   }
 
   render() {

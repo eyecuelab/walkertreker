@@ -65,6 +65,7 @@ class App extends React.Component {
       require('../assets/selected.png'),
       require('../assets/splash.png'),
       require('../assets/safehouse_bg.png'),
+      require('../assets/event_bg.png'),
       require('../assets/food/Apple.png'),
       require('../assets/food/Baked_Beans.png'),
       require('../assets/food/Beer.png'),
@@ -100,25 +101,25 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
-    // blank localPlayer in asyncStorage
-    // await storeData('playerInfo', undefined)
+    // blank localPlayer in asyncStorage:
+    // await storeData('playerInfo', "")
     let localPlayer = await retrieveData('playerInfo')
     const dud = {
       id: false,
       campaignId: false
     }
     if (!localPlayer) {
+      console.log('LOCALPLAYER: ')
+      console.log(localPlayer)
       localPlayer = dud
-    } else {
-      localPlayer = JSON.parse(localPlayer)
-    }
-    if (!localPlayer.id) {
-      localPlayer = dud
-    }
-    if (localPlayer.id == null) {
+      console.log('Opening New Player modal')
       await this.setState({
         newPlayerModalVisible: true,
       })
+    } else {
+      console.log('LOCALPLAYER: ')
+      console.log(localPlayer)
+      localPlayer = JSON.parse(localPlayer)
     }
     await this.setState({ localPlayer })
 
@@ -165,7 +166,6 @@ class App extends React.Component {
         </Modal>
         <SocketIO />
         <NotificationListeners />
-        <GetNotificationToken />
         <BackgroundPedometer />
         <AppContainer
           ref={navigatorRef => {

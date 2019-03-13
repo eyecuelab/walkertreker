@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, } from 'react-native';
 import { connect } from 'react-redux';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import defaultStyle from '../../styles/defaultStyle';
+import Avatar from './Avatar';
 
 class PlayersList extends React.Component {
 
@@ -50,6 +52,8 @@ class PlayersList extends React.Component {
 }
 
 const defaultStyleSheet = StyleSheet.create(defaultStyle);
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -61,7 +65,7 @@ const styles = StyleSheet.create({
   },
   list: {
     width: "100%",
-  }
+  },
 });
 
 PlayersList.propTypes = {

@@ -58,8 +58,7 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingLeft: 5,
-    paddingRight: 5,
+    padding: 10,
   },
   active: {
     color: 'darkred',

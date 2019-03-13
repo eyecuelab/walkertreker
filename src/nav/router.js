@@ -10,9 +10,10 @@ import CampaignStaging from '../components/screens/CampaignStaging';
 import AcceptInvite from '../components/screens/AcceptInvite';
 import WaitForStart from '../components/screens/WaitForStart';
 import CampaignSummary from '../components/screens/CampaignSummary';
-import Inventory from '../components/screens/Inventory';
 import Safehouse from '../components/screens/Safehouse';
 import EndOfDaySummary from '../components/screens/EndOfDaySummary';
+import Inventory from '../components/screens/Inventory';
+import RandomEvent from '../components/screens/RandomEvent';
 
 const AppNavigator = createStackNavigator(
   {
@@ -30,6 +31,7 @@ const AppNavigator = createStackNavigator(
     Safehouse: { screen: Safehouse },
     EndOfDaySummary: { screen: EndOfDaySummary },
     Inventory: { screen: Inventory },
+    RandomEvent: { screen: RandomEvent },
   },
   {
     initialRouteName: "Start",

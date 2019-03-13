@@ -17,7 +17,6 @@ class CampaignStaging extends React.Component {
 
   constructor(props) {
     super(props);
-    // const game = this.props.navigation.getParam('game');
     const invites = this.props.navigation.getParam('invites');
     this.state = {
       // game,
