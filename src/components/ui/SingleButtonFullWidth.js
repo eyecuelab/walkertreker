@@ -24,7 +24,7 @@ const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
-    width: '90%',
+    width: '100%',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
