@@ -1,11 +1,12 @@
 export const NAVIGATION = {
   campaignStarted: 'CampaignSummary',
   campaignDeleted: 'About',
-  campaignIsLost: 'EndOfGame',
-  campaignIsWon: 'EndOfGame',
+  campaignIsLost: 'CampaignIsLost',
+  campaignIsWon: 'CampaignIsWon',
   randomEventStart: 'RandomEvent',
   randomEventEnd: 'RandomEventResult',
-  endOfDayUpdate: 'EndOfDaySummary',
+  weDidntMakeIt: 'EndOfDaySummary',
+  weMadeIt: 'Safehouse',
   noPlayerSteps: 'none',
   hungerAlert: 'none',
 }

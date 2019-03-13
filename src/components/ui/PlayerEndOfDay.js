@@ -71,8 +71,8 @@ class PlayerEndOfDay extends React.Component {
             </View>
             <View style={customStyles.column}>
               <View style={customStyles.smallRow}>
-                <Text style={[styles.label, {color: 'black'}]}>Health: {this._renderHealthChange()}</Text>
-                <Text style={[styles.label, {color: 'black'}]}>Hunger: {this._renderHunger()}</Text>
+                <Text style={[styles.label, customStyles.label]}>Health: {this._renderHealthChange()}</Text>
+                <Text style={[styles.label, customStyles.label]}>Hunger: {this._renderHunger()}</Text>
               </View>
             </View>
           </View>
@@ -84,6 +84,8 @@ class PlayerEndOfDay extends React.Component {
 }
 
 const styles = StyleSheet.create(defaultStyle);
+const widthUnit = wp('1%')
+const heightUnit = hp('1%')
 const customStyles = StyleSheet.create({
   container: {
     width: '100%',
@@ -114,6 +116,10 @@ const customStyles = StyleSheet.create({
     textShadowOffset: {width: 0, height: 2},
     textShadowRadius: 1,
   },
+  label: {
+    color: 'white',
+    fontSize: heightUnit*2.5,
+  }
 });
 
 PlayerEndOfDay.propTypes = {
