@@ -14,6 +14,8 @@ import Safehouse from '../components/screens/Safehouse';
 import EndOfDaySummary from '../components/screens/EndOfDaySummary';
 import Inventory from '../components/screens/Inventory';
 import RandomEvent from '../components/screens/RandomEvent';
+import CampaignIsLost from '../components/screens/CampaignIsLost';
+import CampaignIsWon from '../components/screens/CampaignIsWon';
 
 const AppNavigator = createStackNavigator(
   {
@@ -32,6 +34,8 @@ const AppNavigator = createStackNavigator(
     EndOfDaySummary: { screen: EndOfDaySummary },
     Inventory: { screen: Inventory },
     RandomEvent: { screen: RandomEvent },
+    CampaignIsLost: { screen: CampaignIsLost },
+    CampaignIsWon: { screen: CampaignIsWon },
   },
   {
     initialRouteName: "Start",
