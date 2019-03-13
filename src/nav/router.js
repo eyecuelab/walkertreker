@@ -34,7 +34,7 @@ const AppNavigator = createStackNavigator(
     RandomEvent: { screen: RandomEvent },
   },
   {
-    initialRouteName: "Start",
+    initialRouteName: "Safehouse",
     defaultNavigationOptions: {
       header: null,
     }

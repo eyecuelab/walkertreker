@@ -94,13 +94,13 @@ class Safehouse extends React.Component {
 
     } else {
       return (
-        <View style={customStyles.container}>
+        <View style={[customStyles.container, {justifyContent: 'space-between'}]}>
 
-          <View style={customStyles.textContainer}>
+          <View style={[customStyles.textContainer, customStyles.top]}>
             <Text style={[styles.plainText, customStyles.text]}>If you walk a while longer, you can do one of the following:</Text>
           </View>
 
-          <View style={customStyles.bottom}>
+          <View style={[customStyles.bottom, {paddingLeft: widthUnit, paddingRight: widthUnit}]}>
             <View style={customStyles.buttonContainer}>
               <SingleButtonFullWidth
                 backgroundColor='darkred'
@@ -134,43 +134,46 @@ class Safehouse extends React.Component {
         style={{width: '100%', height: '100%'}} >
         <View style={styles.container}>
 
-            <View style={{width: '100%', height: heightUnit*80}}>
-              <ImageBackground
-                source={safehouse_bg}
-                resizeMode={'cover'}
-                style={customStyles.safehouseBg}>
+          <View style={{width: '100%', height: '100%'}}>
+            <ImageBackground
+              source={safehouse_bg}
+              resizeMode={'cover'}
+              style={customStyles.safehouseBg}>
 
-                <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', padding: widthUnit*5}}>
-                  <View style={[customStyles.container, {flex: 1.25}]}>
+              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', padding: widthUnit}}>
+
+                <View style={[customStyles.container]}>
+                  <View style={{paddingLeft: widthUnit, paddingRight: widthUnit}}>
                     <DayCounter campaign={this.props.campaign}/>
 
                     <View style={customStyles.headlineContainer}>
                       <Text style={styles.headline}>Safe house</Text>
                     </View>
-
-                    <View style={customStyles.textContainer}>
-                      <Text style={[styles.plainText, customStyles.text]}>You have made it to the safehouse with time to spare. You can use that time to scavenge for resources.</Text>
-                    </View>
                   </View>
 
-                  <View style={[customStyles.container, {flex: 3}]}>
-                    {this._submitConditionalRender()}
+                  <View style={customStyles.textContainer}>
+                    <Text style={[styles.plainText, customStyles.text]}>You have made it to the safehouse with time to spare. You can use that time to scavenge for resources.</Text>
                   </View>
                 </View>
 
+                <View style={[customStyles.container, {flex: 2.5}]}>
+                  {this._submitConditionalRender()}
+                </View>
 
-              </ImageBackground>
-            </View>
+                <View style={[customStyles.bottom, {paddingLeft: widthUnit, paddingRight: widthUnit, marginBottom: widthUnit * 2}]}>
+                  <View style={customStyles.buttonContainer}>
+                    <SingleButtonFullWidth
+                      title='Go Back'
+                      backgroundColor='black'
+                      onButtonPress={()=>this.props.navigation.goBack()} />
+                  </View>
+                </View>
 
-
-          <View style={customStyles.bottom}>
-            <View style={customStyles.buttonContainer}>
-              <SingleButtonFullWidth
-                title='Go Back'
-                backgroundColor='black'
-                onButtonPress={()=>this.props.navigation.goBack()} />
-            </View>
+              </View>
+            </ImageBackground>
           </View>
+
+
 
         </View>
       </ImageBackground>
@@ -203,11 +206,12 @@ const customStyles = StyleSheet.create({
     lineHeight: heightUnit*3.75,
   },
   buttonContainer: {
-    marginTop: heightUnit,
+    // marginTop: heightUnit,
     width: '100%',
     height: heightUnit*8,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: widthUnit * 2,
   },
   container: {
     // margin: widthUnit*2,
@@ -230,11 +234,17 @@ const customStyles = StyleSheet.create({
     // opacity: 0.2,
   },
   bottom: {
-    flex: 1,
+    // flex: 1,
     width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: widthUnit*2,
+    // marginBottom: widthUnit,
+  },
+  top: {
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    // marginBottom: widthUnit,
   },
   imageContainer: {
     flex: 1,
