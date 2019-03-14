@@ -55,7 +55,7 @@ class EndOfDaySummary extends React.Component {
       }
     }
     return (
-      <Text style={[styles.detail, {marginTop: 20}]}>{text}</Text>
+      <Text style={[styles.detail, {marginTop: 10, marginBottom: 20}]}>{text}</Text>
     )
   }
 
@@ -75,7 +75,7 @@ class EndOfDaySummary extends React.Component {
             >
               <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
                 <View style={customStyles.headerContainer}>
-                  <Text style={styles.label}>Day {this.state.currentDay + 1}</Text>
+                  <Text style={styles.label}>Day {this.state.currentDay}</Text>
                   <Text style={styles.headline}>Night{"\n"}Fall</Text>
                 </View>
                 <View style={customStyles.playersContainer}>
@@ -95,8 +95,8 @@ class EndOfDaySummary extends React.Component {
                         />
                       )
                     })}
-                    {this._footerTextRender()}
                   </ScrollView>
+                  {this._footerTextRender()}
                 </View>
                 <View style={customStyles.buttonContainer}>
                   <SingleButtonFullWidth
@@ -134,8 +134,8 @@ const customStyles = StyleSheet.create({
     // borderWidth: 1,
   },
   buttonContainer: {
-    marginTop: heightUnit*5,
-    marginBottom: heightUnit*5,
+    // marginTop: heightUnit*5,
+    // marginBottom: heightUnit*5,
     width: '100%',
     height: heightUnit*10,
     alignItems: 'center',
