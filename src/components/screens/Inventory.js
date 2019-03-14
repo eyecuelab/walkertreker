@@ -224,6 +224,7 @@ const customStyles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginTop: widthUnit * 2.5,
   },
   buttonContainer: {
     // marginTop: heightUnit*3,
@@ -233,8 +234,8 @@ const customStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   item: {
-    width: widthUnit*28,
-    height: widthUnit*28,
+    width: widthUnit*21,
+    height: widthUnit*21,
     marginRight: widthUnit
   }
 });
