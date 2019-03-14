@@ -50,7 +50,7 @@ export default defaultStyle = {
   },
   plainText: {
     fontFamily: 'verdana',
-    fontSize: widthUnit*5,
+    fontSize: widthUnit*4.7,
     color: 'white',
     lineHeight: 24,
   },
