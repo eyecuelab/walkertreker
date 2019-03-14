@@ -51,9 +51,8 @@ class Safehouse extends React.Component {
     if (scavengingFor != null && justScavenged === null) {
       return (
         <View style={customStyles.textContainer}>
-          <Text style={[styles.headline]}>
-            You are{"\n"}
-            scavenging{"\n"}
+          <Text style={[styles.headline, customStyles.scavengingText]}>
+            searching{"\n"}
             for{"\n"}
             {scavengingFor}.
           </Text>
@@ -140,7 +139,7 @@ class Safehouse extends React.Component {
               resizeMode={'cover'}
               style={customStyles.safehouseBg}>
 
-              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit * 2}}>
+              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
 
                 <View style={[customStyles.container]}>
                   <View style={{paddingLeft: widthUnit, paddingRight: widthUnit}}>
@@ -252,6 +251,10 @@ const customStyles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%'
+  },
+  scavengingText: {
+    fontSize: heightUnit*8,
+    lineHeight: heightUnit*6,
   }
 })
 
