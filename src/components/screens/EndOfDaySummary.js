@@ -95,8 +95,8 @@ class EndOfDaySummary extends React.Component {
                         />
                       )
                     })}
-                    {this._footerTextRender()}
                   </ScrollView>
+                  {this._footerTextRender()}
                 </View>
                 <View style={customStyles.buttonContainer}>
                   <SingleButtonFullWidth
@@ -134,8 +134,8 @@ const customStyles = StyleSheet.create({
     // borderWidth: 1,
   },
   buttonContainer: {
-    marginTop: heightUnit*5,
-    marginBottom: heightUnit*5,
+    // marginTop: heightUnit*5,
+    // marginBottom: heightUnit*5,
     width: '100%',
     height: heightUnit*10,
     alignItems: 'center',
