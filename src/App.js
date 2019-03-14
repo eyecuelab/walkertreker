@@ -161,6 +161,7 @@ class App extends React.Component {
           <NewPlayerForm handleModalStateChange={this._toggleNewPlayerModal} />
         </Modal>
         <SocketIO />
+        <GetNotificationToken />
         <NotificationListeners />
         <BackgroundPedometer />
         <AppContainer
