@@ -6,10 +6,12 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { connect } from 'react-redux';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 const { c } = constants
+const use_item_bg = require('../../../assets/use_item_bg.png');
 
 class NewPlayerForm extends React.Component {
   constructor(props) {
@@ -64,40 +66,52 @@ class NewPlayerForm extends React.Component {
 
   render() {
     return(
-      <View style={customStyles.container}>
-        <View style={customStyles.headlineContainer}>
-          <Text style={styles.headline}>New Player</Text>
-        </View>
-        <View style={customStyles.formContainer}>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Display Name</Text>
-            <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({displayName: text})} value={this.state.displayName}/>
+      <ImageBackground
+      source={use_item_bg}
+      resizeMode='cover'
+      style={customStyles.itemBg}
+      >
+        <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
+          <View style={customStyles.headlineContainer}>
+            <Text style={styles.headline}>New Player</Text>
           </View>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Phone Number</Text>
-            <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
-          </View>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Avatar</Text>
-            <View style={customStyles.avatarContainer}>
-              <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
-                <Image
-                  source={this.state.avatar}
-                  style={customStyles.avatar}
-                />
-              </TouchableOpacity>
-              <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
+          <View style={customStyles.formContainer}>
+            <View style={customStyles.fieldContainer}>
+              <Text style={styles.label}>Display Name</Text>
+              <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({displayName: text})} value={this.state.displayName}/>
+            </View>
+            <View style={customStyles.fieldContainer}>
+              <Text style={styles.label}>Phone Number</Text>
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
+            </View>
+            <View style={customStyles.fieldContainer}>
+              <Text style={styles.label}>Avatar</Text>
+              <View style={customStyles.avatarContainer}>
+                <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
+                  <Image
+                    source={this.state.avatar}
+                    style={customStyles.avatar}
+                  />
+                </TouchableOpacity>
+                <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
+              </View>
             </View>
           </View>
           <View style={customStyles.buttonContainer}>
-            <TouchableOpacity style={customStyles.button} onPress={this._handleSubmit}><Text style={styles.label}>Submit</Text></TouchableOpacity>
-            <TouchableOpacity style={customStyles.button} onPress={this.props.handleModalStateChange}><Text style={styles.label}>Close</Text></TouchableOpacity>
+            <View style={customStyles.button}>
+              <SingleButtonFullWidth
+                title="Submit"
+                onButtonPress={this._handleSubmit}
+                backgroundColor="darkred"
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </ImageBackground>
     )
   }
 }
+            // <TouchableOpacity style={customStyles.button} onPress={this._handleSubmit}><Text style={styles.label}>Submit</Text></TouchableOpacity>
 
 const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
@@ -105,10 +119,11 @@ const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
     width: '100%',
-    height: heightUnit*70,
-    backgroundColor: 'darkred',
-    justifyContent: 'center',
-    borderRadius: 5,
+    height: '100%',
+    // backgroundColor: 'darkred',
+    // justifyContent: 'center',
+    // borderRadius: 5,
+    padding: widthUnit * 5,
   },
   headlineContainer: {
     margin: 10,
@@ -122,15 +137,18 @@ const customStyles = StyleSheet.create({
     margin: 10,
   },
   buttonContainer: {
-    margin: 10,
+    // margin: 10,
+    height: heightUnit*20,
+    width: '100%',
+    alignSelf: 'flex-end',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   button: {
     backgroundColor: 'black',
-    width: widthUnit*30,
-    height: heightUnit*7.5,
+    width: '100%',
+    height: heightUnit*10,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -170,6 +188,12 @@ const customStyles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
     fontStyle: 'italic'
+  },
+  itemBg: {
+    width: undefined,
+    height: undefined,
+    flex: 1,
+    justifyContent: 'flex-start',
   },
 })
 

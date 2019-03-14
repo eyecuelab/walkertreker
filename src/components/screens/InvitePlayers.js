@@ -197,7 +197,7 @@ class InvitePlayers extends React.Component {
             <View style={customStyles.headerContainer}>
               <View style={customStyles.headerFirst}>
                 <View style={[customStyles.headerRow,]}>
-                  <Text style={[styles.headline]}>Invite {"\n"}Players</Text>
+                  <Text style={[styles.headline]}>Invite{"\n"}Players</Text>
                 </View>
                 <View style={[customStyles.headerRow, {marginTop: widthUnit * 2.5}]}>
                   <Text style={[styles.label]}>{this.props.campaign.length} </Text>
@@ -272,9 +272,11 @@ const customStyles = StyleSheet.create({
 
   },
   contactsContainer: {
-    flex: 2,
+    flex: 1.5,
+    // backgroundColor: 'green',
     // width: '100%',
     // height: '100%',
+    // height: heightUnit*50,
     borderTopColor: 'white',
     borderBottomColor: 'white',
     borderTopWidth: 1,
