@@ -157,7 +157,7 @@ const customStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   panelContainer: {
-    flex: 2.6,
+    flex: 2.3,
     width: '100%',
     height: '100%',
     paddingTop: 5,

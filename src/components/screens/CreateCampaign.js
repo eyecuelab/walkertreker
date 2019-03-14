@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage, ScrollView } from 'react-native';
 import { v4 } from 'uuid';
 import { connect } from 'react-redux';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import ThreeButtonToggle from '../ui/ThreeButtonToggle';
@@ -70,54 +71,58 @@ class CreateCampaign extends React.Component {
       >
         <View style={styles.container}>
           <Text style={styles.headline}>START A NEW CAMPAIGN</Text>
-          <View style={createCampaignStyle.toggleContainer}>
+          <View style={createCampaignStyle.scrollviewContainer}>
+            <ScrollView style={[{}]}>
+            <View style={createCampaignStyle.toggleContainer}>
             <ThreeButtonToggle
-              title="Number of days"
-              subtitle="Number of days for your campaign"
-              bigValue={true}
-              button1value="15"
-              button1label="days"
-              button2value="30"
-              button2label="days"
-              button3value="90"
-              button3label="days"
-              titleColor="white"
-              handleUpdate={this._updateCampaignLength}
+            title="Number of days"
+            subtitle="Number of days for your campaign"
+            bigValue={true}
+            button1value="15"
+            button1label="days"
+            button2value="30"
+            button2label="days"
+            button3value="90"
+            button3label="days"
+            titleColor="white"
+            handleUpdate={this._updateCampaignLength}
             />
-          </View>
-          <View style={createCampaignStyle.toggleContainer}>
+            </View>
+            <View style={createCampaignStyle.toggleContainer}>
             <ThreeButtonToggle
-              title="Difficulty level"
-              subtitle="An average distance expected each day"
-              button1value="Easy"
-              button1label="1 mile"
-              button2value="Hard"
-              button2label="3 miles"
-              button3value="Xtreme"
-              button3label="5 miles"
-              titleColor="white"
-              handleUpdate={this._updateCampaignDifficulty}
+            title="Difficulty level"
+            subtitle="An average distance expected each day"
+            button1value="Easy"
+            button1label="1 mile"
+            button2value="Hard"
+            button2label="3 miles"
+            button3value="Xtreme"
+            button3label="5 miles"
+            titleColor="white"
+            handleUpdate={this._updateCampaignDifficulty}
             />
-          </View>
-          <View style={createCampaignStyle.toggleContainer}>
+            </View>
+            <View style={createCampaignStyle.toggleContainer}>
             <ThreeButtonToggle
-              title="In-game event"
-              subtitle="Frequency for in-game events throughout the day"
-              button1value="Low"
-              button1label="About 3"
-              button2value="Mid"
-              button2label="About 5"
-              button3value="High"
-              button3label="About 8"
-              titleColor="white"
-              handleUpdate={this._updateRandomEvents}
+            title="In-game event"
+            subtitle="Frequency for in-game events throughout the day"
+            button1value="Low"
+            button1label="About 3"
+            button2value="Mid"
+            button2label="About 5"
+            button3value="High"
+            button3label="About 8"
+            titleColor="white"
+            handleUpdate={this._updateRandomEvents}
             />
+            </View>
+            </ScrollView>
           </View>
           <TwoButtonOverlay
-            button1title="New Campaign"
-            button1onPress={() => this._generateCampaign()}
-            button2title="Back"
-            button2onPress={() => this.props.navigation.goBack()}
+          button1title="New Campaign"
+          button1onPress={() => this._generateCampaign()}
+          button2title="Back"
+          button2onPress={() => this.props.navigation.goBack()}
           />
         </View>
       </ImageBackground>
@@ -127,9 +132,14 @@ class CreateCampaign extends React.Component {
 }
 
 const styles = StyleSheet.create(defaultStyle);
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 const createCampaignStyle = StyleSheet.create({
   toggleContainer: {
-    marginTop: 25,
+    marginTop: heightUnit*2.5,
+  },
+  scrollviewContainer: {
+    height: heightUnit*60,
   }
 })
 
