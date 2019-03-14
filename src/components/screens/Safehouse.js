@@ -156,7 +156,7 @@ class Safehouse extends React.Component {
                   </View>
                 </View>
 
-                <View style={[customStyles.container, {flex: 2}]}>
+                <View style={[customStyles.container, {flex: 1.5}]}>
                   {this._submitConditionalRender()}
                 </View>
 
