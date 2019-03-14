@@ -70,8 +70,9 @@ class WaitForStart extends React.Component {
         <View style={[styles.container ]}>
           <View style={customStyles.contentContainer}>
             <View style={customStyles.headerContainer}>
-              <Text style={styles.headline}>New{"\n"}Campaign{"\n"}</Text>
-              <CampaignDetails campaign={this.props.campaign} />
+              <Text style={[styles.headline, {marginBottom: widthUnit * 2.5}]}>New{"\n"}Campaign{"\n"}</Text>
+              <CampaignDetails
+                campaign={this.props.campaign} />
             </View>
 
             <View style={[ customStyles.playerContainer ]}>

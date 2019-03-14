@@ -152,7 +152,7 @@ class Safehouse extends React.Component {
                     </View>
                   </View>
 
-                  <View style={customStyles.textContainer}>
+                  <View style={[customStyles.textContainer, {marginTop: widthUnit * 2.5}]}>
                     <Text style={[styles.plainText, customStyles.text]}>You have made it to the safehouse with time to spare. You can use that time to scavenge for resources.</Text>
                   </View>
                 </View>
