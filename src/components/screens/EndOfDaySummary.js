@@ -55,7 +55,7 @@ class EndOfDaySummary extends React.Component {
       }
     }
     return (
-      <Text style={[styles.detail, {marginTop: 20}]}>{text}</Text>
+      <Text style={[styles.detail, {marginTop: 10, marginBottom: 20}]}>{text}</Text>
     )
   }
 
