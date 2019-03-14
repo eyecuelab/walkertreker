@@ -199,7 +199,7 @@ class InvitePlayers extends React.Component {
                 <View style={[customStyles.headerRow,]}>
                   <Text style={[styles.headline]}>Invite {"\n"}Players</Text>
                 </View>
-                <View style={customStyles.headerRow}>
+                <View style={[customStyles.headerRow, {marginTop: widthUnit * 2.5}]}>
                   <Text style={[styles.label]}>{this.props.campaign.length} </Text>
                   <Text style={[styles.label, {color: 'black'}]}>Days</Text>
                 </View>
@@ -257,6 +257,7 @@ const customStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     margin: 0,
     padding: 0,
+    // marginTop: widthUnit * 2.5,
   },
   headerRowFirst: {
     flex: 2,

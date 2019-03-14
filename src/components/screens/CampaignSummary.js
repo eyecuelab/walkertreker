@@ -75,30 +75,47 @@ class CampaignSummary extends React.Component {
     this.props.navigation.navigate('Safehouse');
   }
 
+  _onButtonPressNothing = () => {
+    return;
+  }
+
   // TODO: when INVENTORY is fleshed out, make sure to put this function in there too
   _submitConditionalRender = () => {
     const stepsToday = this.props.player.steps[this.props.campaign.currentDay];
     const stepTargetToday = this.props.player.stepTargets[this.props.campaign.currentDay];
     if (stepsToday > stepTargetToday) {
-    // if (true) {
+    // if (false) {
       return (
-        <TwoButtonOverlay
-          button1onPress={this._onButtonPressSafehouse}
-          button1title='Safehouse'
-          button1color='black'
-          button1isDisabled={false}
-          button2onPress={this._onButtonPressInventory}
-          button2title='Inventory'
-          button2color='black'
-          button2isDisabled={false} />
+        <View style={{width: '100%'}}>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title='Safehouse'
+              backgroundColor='black'
+              onButtonPress={this._onButtonPressSafehouse} />
+          </View>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title='Inventory'
+              backgroundColor='black'
+              onButtonPress={this._onButtonPressInventory} />
+          </View>
+        </View>
       );
     } else {
       return (
-        <View style={customStyles.buttonContainer}>
-          <SingleButtonFullWidth
-            title='Inventory'
-            backgroundColor='black'
-            onButtonPress={this._onButtonPressInventory} />
+        <View style={{width: '100%'}}>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title='Safehouse'
+              backgroundColor='darkgray'
+              onButtonPress={this._onButtonPressNothing} />
+          </View>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title='Inventory'
+              backgroundColor='black'
+              onButtonPress={this._onButtonPressInventory} />
+          </View>
         </View>
       );
     }
@@ -157,7 +174,7 @@ const customStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonContainer: {
-    marginTop: heightUnit*3,
+    marginTop: widthUnit * 2,
     width: '100%',
     height: heightUnit*8,
     alignItems: 'center',

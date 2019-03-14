@@ -29,7 +29,7 @@ export default class ButtonToggle extends React.Component {
             <Text style={[toggle, valueFontStyle, color(this.props.color)]}>{this.props.value}</Text>
           </View>
           <View style={styles.labelContainer}>
-            <Text style={[styles.label, toggle]}>{this.props.label}</Text>
+            <Text style={[styles.label, toggle, color(this.props.color)]}>{this.props.label}</Text>
           </View>
         </View>
       </ImageBackground>

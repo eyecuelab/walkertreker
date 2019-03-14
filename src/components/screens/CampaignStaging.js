@@ -98,7 +98,7 @@ class CampaignStaging extends React.Component {
           <View style={customStyles.contentContainer}>
             <View style={customStyles.headerContainer}>
               <Text style={styles.headline}>New Campaign</Text>
-              <View style={customStyles.headerRow}>
+              <View style={[customStyles.headerRow, {marginTop: widthUnit * 2.5}]}>
                 <Text style={[styles.label]}>{this.props.campaign.length} </Text>
                 <Text style={[styles.label, {color: 'black'}]}>Days</Text>
               </View>
@@ -157,7 +157,7 @@ const customStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   panelContainer: {
-    flex: 3,
+    flex: 2.6,
     width: '100%',
     height: '100%',
     paddingTop: 5,

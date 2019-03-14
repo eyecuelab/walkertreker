@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
@@ -8,6 +8,7 @@ import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 const { c, item } = constants;
 const { foodArray } = item;
+const use_item_bg = require('../../../assets/use_item_bg.png');
 
 class FoodModal extends React.Component {
 
@@ -37,40 +38,45 @@ class FoodModal extends React.Component {
     return(
       <View style={customStyles.container}>
 
-        <View style={customStyles.headlineContainer}>
-          <Text style={styles.headline}>Eat some food</Text>
-        </View>
+        <ImageBackground
+          source={use_item_bg}
+          resizeMode='cover'
+          style={customStyles.itemBg} >
 
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Image
-            style={{width: widthUnit*15, aspectRatio: 1}}
-            source={foodArray[this.props.value]}
-            resizeMode='contain' />
-        </View>
+            <View style={customStyles.headlineContainer}>
+              <Text style={styles.headline}>Eat some food</Text>
+            </View>
 
-        <View>
-          <Text style={[styles.text, {padding: 10}]}>Consuming this item will restore your hunger and some health. Would you like to eat this food item?</Text>
-        </View>
+            <View>
+              <Text style={[styles.plainText, {marginTop: widthUnit * 2.5}]}>Consuming this item will restore your hunger and some health. Would you like to eat this food item?</Text>
+            </View>
 
-        <View style={customStyles.formContainer}>
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <Image
+                style={{width: widthUnit*15, aspectRatio: 1}}
+                source={foodArray[this.props.value]}
+                resizeMode='contain' />
+            </View>
 
-          <View style={customStyles.buttonContainer}>
-            <TouchableOpacity
-              style={customStyles.button}
-              onPress={()=>{this._eatTheFood(1)}}>
-              <Text style={styles.label}>Yes</Text>
-            </TouchableOpacity>
-          </View>
+            <View>
+              <View style={customStyles.buttonContainer}>
+                <TouchableOpacity
+                  style={customStyles.button}
+                  onPress={()=>{this._eatTheFood(1)}}>
+                  <Text style={styles.label}>Yes</Text>
+                </TouchableOpacity>
+              </View>
 
-          <View style={customStyles.buttonContainer}>
-            <TouchableOpacity
-              style={customStyles.button}
-              onPress={()=>{this._eatTheFood(0)}}>
-              <Text style={styles.label}>No</Text>
-            </TouchableOpacity>
-          </View>
+              <View style={customStyles.buttonContainer}>
+                <TouchableOpacity
+                  style={customStyles.button}
+                  onPress={()=>{this._eatTheFood(0)}}>
+                  <Text style={styles.label}>No</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
 
-        </View>
+        </ImageBackground>
       </View>
     )
   }
@@ -82,31 +88,35 @@ const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
     width: '100%',
-    height: heightUnit*75,
-    backgroundColor: 'darkred',
+    height: '100%',
     justifyContent: 'center',
-    borderRadius: 5,
   },
   headlineContainer: {
-    margin: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   formContainer: {
-    padding: 10,
+
   },
   buttonContainer: {
-    margin: 10,
+    // margin: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
-    backgroundColor: 'black',
-    width: widthUnit*55,
-    height: heightUnit*7.5,
-    borderRadius: 5,
+    backgroundColor: 'darkred',
+    width: '100%',
+    height: heightUnit * 8,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: widthUnit * 2,
+  },
+  itemBg: {
+    width: undefined,
+    height: undefined,
+    flex: 1,
+    justifyContent: 'flex-start',
+    padding: widthUnit * 5,
   },
 })
 

@@ -31,6 +31,13 @@ export default defaultStyle = {
     textShadowOffset: {width: 0, height: 2},
     textShadowRadius: 1,
   },
+  subHeadingBlack: {
+    fontFamily: 'gore',
+    fontSize: widthUnit*8,
+    lineHeight: widthUnit*6,
+    paddingTop: widthUnit*5,
+    color: 'black',
+  },
   label: {
     fontFamily: 'gore',
     fontSize: widthUnit*5,
