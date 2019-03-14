@@ -96,7 +96,7 @@ class Safehouse extends React.Component {
         <View style={[customStyles.container, {justifyContent: 'space-between'}]}>
 
           <View style={[customStyles.textContainer, customStyles.top]}>
-            <Text style={[styles.plainText, customStyles.text]}>If you walk a while longer, you can do one of the following:</Text>
+            <Text style={[styles.plainText]}>If you walk a while longer, you can do one of the following:</Text>
           </View>
 
           <View style={[customStyles.bottom, {paddingLeft: widthUnit, paddingRight: widthUnit}]}>
@@ -152,7 +152,7 @@ class Safehouse extends React.Component {
                   </View>
 
                   <View style={[customStyles.textContainer, {marginTop: widthUnit * 2.5}]}>
-                    <Text style={[styles.plainText, customStyles.text]}>You have made it to the safe house with time to spare. You can use that time to scavenge for resources.</Text>
+                    <Text style={[styles.plainText]}>You have made it to the safe house with time to spare. You can use that time to scavenge for resources.</Text>
                   </View>
                 </View>
 
