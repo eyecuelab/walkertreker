@@ -31,7 +31,7 @@ class PlayerEndOfDay extends React.Component {
       }
     }
     return (
-      <Text style={styles.detail}>{text}</Text>
+      <Text style={styles.plainText}>{text}</Text>
     )
   }
 
@@ -55,25 +55,25 @@ class PlayerEndOfDay extends React.Component {
     )
   }
 
+  // <View style={customStyles.avatarContainer}>
+  // <Avatar player={this.props.player} imageStyles={{width: wp('17.5%'), height: wp('17.5%')}} />
+  // </View>
+  // <View style={customStyles.smallRow}>
+  // <Text style={[styles.label, customStyles.label]}>Health: {this._renderHealthChange()}</Text>
+  // <Text style={[styles.label, customStyles.label]}>Hunger: {this._renderHunger()}</Text>
+  // </View>
   render() {
     return (
       <View style={customStyles.container}>
         <View style={customStyles.row}>
-          <View style={customStyles.avatarContainer}>
-            <Avatar player={this.props.player} imageStyles={{width: wp('17.5%'), height: wp('17.5%')}} />
-          </View>
           <View style={customStyles.nameContainer}>
             <View style={customStyles.column}>
-              <Text style={styles.label}>{this.props.player.displayName}</Text>
+              <Text style={[styles.label, customStyles.name]}>{this.props.player.displayName}</Text>
             </View>
             <View style={customStyles.column}>
               {this._renderText()}
             </View>
             <View style={customStyles.column}>
-              <View style={customStyles.smallRow}>
-                <Text style={[styles.label, customStyles.label]}>Health: {this._renderHealthChange()}</Text>
-                <Text style={[styles.label, customStyles.label]}>Hunger: {this._renderHunger()}</Text>
-              </View>
             </View>
           </View>
         </View>
@@ -95,7 +95,7 @@ const customStyles = StyleSheet.create({
   row: {
     width: '100%',
     flexDirection: 'row',
-    padding: 10,
+    // padding: 10,
   },
   avatarContainer: {
     flex: 1,
@@ -119,6 +119,10 @@ const customStyles = StyleSheet.create({
   label: {
     color: 'white',
     fontSize: heightUnit*2.5,
+  },
+  name: {
+    // color: 'black',
+    fontSize: heightUnit*5
   }
 });
 

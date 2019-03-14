@@ -55,7 +55,7 @@ class EndOfDaySummary extends React.Component {
       }
     }
     return (
-      <Text style={[styles.detail, {marginTop: 10, marginBottom: 20}]}>{text}</Text>
+      <Text style={[styles.plainText, {marginTop: 25, marginBottom: 20}]}>{text}</Text>
     )
   }
 
@@ -79,11 +79,11 @@ class EndOfDaySummary extends React.Component {
                   <Text style={styles.headline}>Night{"\n"}Fall</Text>
                 </View>
                 <View style={customStyles.playersContainer}>
-                  {this._headerTextRender()}
                   <ScrollView
                     style={customStyles.playersScroll}
                     showsVerticalScrollIndicator={true}
                   >
+                  {this._headerTextRender()}
                     {this.state.campaign.players.map(player => {
                       const playerUpdate = this.state.update.players.filter(obj => obj.id === player.id)[0]
                       return (
@@ -95,8 +95,8 @@ class EndOfDaySummary extends React.Component {
                         />
                       )
                     })}
+                    {this._footerTextRender()}
                   </ScrollView>
-                  {this._footerTextRender()}
                 </View>
                 <View style={customStyles.buttonContainer}>
                   <SingleButtonFullWidth
