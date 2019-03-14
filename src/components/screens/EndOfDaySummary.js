@@ -75,7 +75,7 @@ class EndOfDaySummary extends React.Component {
             >
               <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
                 <View style={customStyles.headerContainer}>
-                  <Text style={styles.label}>Day {this.state.currentDay + 1}</Text>
+                  <Text style={styles.label}>Day {this.state.currentDay}</Text>
                   <Text style={styles.headline}>Night{"\n"}Fall</Text>
                 </View>
                 <View style={customStyles.playersContainer}>
