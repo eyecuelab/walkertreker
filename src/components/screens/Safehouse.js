@@ -45,16 +45,30 @@ class Safehouse extends React.Component {
     dispatch({type: c.RESET_SCAVENGE});
   }
 
+  _submitConditionalHeadline = () => {
+    if (scavengingFor != null && justScavenged === null) {
+      return null;
+    } else {
+      return(
+        <View style={{paddingLeft: widthUnit, paddingRight: widthUnit}}>
+          <DayCounter campaign={this.props.campaign}/>
+          <View style={customStyles.headlineContainer}>
+            <Text style={styles.headline}>Safe{"\n"}House</Text>
+          </View>
+        </View>
+      );
+    }
+  }
+
   _submitConditionalRender = () => {
     const { scavengingFor, justScavenged } = this.props.steps;
     // if you are scavenging for something but have not retrieved it yet
     if (scavengingFor != null && justScavenged === null) {
       return (
         <View style={customStyles.textContainer}>
+          <Text style={styles.plainText}>Steps to complete: {this.props.steps[this.props.campaign.currentDay].bonus} / 500</Text>
           <Text style={[styles.headline, customStyles.scavengingText]}>
-            searching{"\n"}
-            for{"\n"}
-            {scavengingFor}.
+            You are searching for {scavengingFor}.
           </Text>
         </View>
       );
@@ -142,14 +156,8 @@ class Safehouse extends React.Component {
               <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
 
                 <View style={[customStyles.container]}>
-                  <View style={{paddingLeft: widthUnit, paddingRight: widthUnit}}>
 
-                    <DayCounter campaign={this.props.campaign}/>
-
-                    <View style={customStyles.headlineContainer}>
-                      <Text style={styles.headline}>Safe{"\n"}House</Text>
-                    </View>
-                  </View>
+                  {this._submitConditionalHeadline()}
 
                   <View style={[customStyles.textContainer, {marginTop: widthUnit * 2.5}]}>
                     <Text style={[styles.plainText]}>You have made it to the safe house with time to spare. You can use that time to scavenge for resources.</Text>
