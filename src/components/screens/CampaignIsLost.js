@@ -7,8 +7,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
+import DayCounter from '../ui/DayCounter';
 
 const attack_bg = require('../../../assets/attack_bg.png');
+
+// import data from '../../constants/endofcampaigndummydata'
 
 class CampaignIsLost extends React.Component {
 
@@ -17,41 +20,38 @@ class CampaignIsLost extends React.Component {
     const data = this.props.navigation.getParam('data')
     const finalCampaignState = data.finalCampaignState
     const causeOfDeath = data.causeOfDeath
-    this.state = { update, campaign, currentDay, didWeMakeIt }
+    const deadPlayers = data.deadPlayers
+    this.state = { finalCampaignState, causeOfDeath, deadPlayers }
   }
 
-  _headerTextRender() {
-    if (this.state.didWeMakeIt) {
-      return (
-        <Text style={styles.label}>The evening comes, and you are safe... for now.</Text>
-      )
-    } else {
-      return (
-        <Text style={styles.label}>Night falls upon the safehouse... but not all of you are here...</Text>
-      )
+  deadPlayersPlainText() {
+    const names = []
+    for (let player of this.state.deadPlayers) {
+      names.push(player.displayName)
     }
-  }
-
-  _footerTextRender() {
-    let text = ''
-    const weapons = this.state.update.inventoryDiff.weaponItems
-    const items = weapons == 1 ? 'item' : 'items'
-    if (this.state.didWeMakeIt) {
-      text = `Rest well tonight, because the journey only gets tougher from here.`
+    let string = ``
+    if (names.length == 1) {
+      string = names[0]
     } else {
-      if (weapons > 0) {
-        text = `Players that went back for their friends consumed ${weapons} weapon ${items} to reduce their damage taken.`
-      } else {
-        text = `Your party couldn't minimize damage taken because you have no weapons. Tomorrow, get to the safehouse before dark and scavenge for weapons!`
+      for (let i = 0; i < names.length - 1; i++) {
+        string = string + `${names[i]}, `
       }
+      string = string + `and ${names[names.length - 1]}`
     }
-    return (
-      <Text style={[styles.detail, {marginTop: 20}]}>{text}</Text>
-    )
+    return string
+  }
+
+  endGameText() {
+    let text = '';
+    if (this.state.causeOfDeath == 'beaten') {
+      text = `Your party, already tired and slowed from previous encounters, failed to meet at the safehouse before nightfall. Suddenly beset on all sides by a horde of undead, ${this.deadPlayersPlainText()} were finally overcome. What happened to them next... is best left unsaid; those still among the living will remember them as they were in better times, and try to carry on.`
+    } if (this.state.causeOfDeath == 'starved') {
+      text = `After so many long days of running and fighting and low on energy and resources, on day ${this.state.finalCampaignState.currentDay}, your party is forced to make a difficult decision. Weak with hunger and unable to continue, you are forced to leave ${this.deadPlayersPlainText()} behind, knowing full well what this means. Part of staying alive in such a situation also means having to live with yourself on days like this.`
+    }
+    return (<Text style={styles.plainText}>{text}</Text>)
   }
 
   render() {
-    const bg = this.state.didWeMakeIt ? safehouse_bg : attack_bg
     return (
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
@@ -60,40 +60,23 @@ class CampaignIsLost extends React.Component {
         <View style={styles.container}>
           <View style={{width: '100%', height: '100%'}}>
             <ImageBackground
-              source={bg}
+              source={attack_bg}
               resizeMode={'cover'}
               style={customStyles.bgImage}
             >
               <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', padding: widthUnit*5}}>
                 <View style={customStyles.headerContainer}>
-                  <Text style={styles.label}>Day {this.state.currentDay + 1}</Text>
-                  <Text style={styles.headline}>Night{"\n"}Fall</Text>
+                  <DayCounter campaign={this.state.finalCampaignState} />
+                  <Text style={styles.headline}>Campaign{"\n"}Lost</Text>
                 </View>
-                <View style={customStyles.playersContainer}>
-                  {this._headerTextRender()}
-                  <ScrollView
-                    style={customStyles.playersScroll}
-                    showsVerticalScrollIndicator={true}
-                  >
-                    {this.state.campaign.players.map(player => {
-                      const playerUpdate = this.state.update.players.filter(obj => obj.id === player.id)[0]
-                      return (
-                        <PlayerEndOfDay key={player.id}
-                          player={player}
-                          playerUpdate={playerUpdate}
-                          today={this.state.currentDay}
-                          didWeMakeIt={this.state.didWeMakeIt}
-                        />
-                      )
-                    })}
-                    {this._footerTextRender()}
-                  </ScrollView>
+                <View style={customStyles.contentContainer}>
+                  {this.endGameText()}
                 </View>
                 <View style={customStyles.buttonContainer}>
                   <SingleButtonFullWidth
-                    title="Back"
+                    title="Start Again"
                     backgroundColor="darkred"
-                    onButtonPress={() => this.props.navigation.navigate('CampaignSummary')}
+                    onButtonPress={() => this.props.navigation.navigate('About')}
                   />
                 </View>
               </View>
@@ -115,25 +98,22 @@ const customStyles = StyleSheet.create({
     marginBottom: heightUnit*2,
     width: '100%',
   },
-  playersContainer: {
+  contentContainer: {
     // paddingTop: heightUnit,
     // paddingBottom: heightUnit,
-    flex: 4,
+    flex: 5,
     width: '100%',
     marginTop: heightUnit*2.5
     // borderColor: 'black',
     // borderWidth: 1,
   },
   buttonContainer: {
-    marginTop: heightUnit*5,
-    marginBottom: heightUnit*5,
+    // marginTop: heightUnit*5,
+    // marginBottom: heightUnit*5,
     width: '100%',
     height: heightUnit*10,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  playerScroll: {
-    width: '100%',
   },
   bgImage: {
     width: undefined,

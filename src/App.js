@@ -66,6 +66,7 @@ class App extends React.Component {
       require('../assets/splash2.png'),
       require('../assets/safehouse_bg.png'),
       require('../assets/event_bg.png'),
+      require('../assets/victory_bg.png'),
       require('../assets/use_item_bg.png'),
       require('../assets/attack_bg.png'),
       require('../assets/food/Apple.png'),
@@ -162,7 +163,6 @@ class App extends React.Component {
           <NewPlayerForm handleModalStateChange={this._toggleNewPlayerModal} />
         </Modal>
         <SocketIO />
-        <GetNotificationToken />
         <NotificationListeners />
         <BackgroundPedometer />
         <AppContainer

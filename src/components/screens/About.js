@@ -40,16 +40,16 @@ export default class About extends React.Component {
       >
         <View style={styles.container}>
           <View style={customStyles.headlineContainer}>
-            <Text style={styles.headline}>About{"\n"}Walker{"\n"}Trekker</Text>
+            <Text style={styles.headline}>About{"\n"}Walker{"\n"}Treker</Text>
           </View>
           <View style={customStyles.textContainer}>
-            <Text style={[styles.plainText, customStyles.text]}>Walker Trekker is a social step program that puts you and your group in a fictional city infested by zombies. Your goal is to have all members of your group reach a new safe house before nightfall each day.</Text>
+            <Text style={[styles.plainText, customStyles.text]}>Walker Treker is a social step program that puts you and your group in a fictional city infested by zombies. Your goal is to have all members of your group reach a new safe house before nightfall each day.</Text>
           </View>
           <View style={customStyles.textContainer}>
             <Text style={[styles.plainText, customStyles.text]}>If anyone doesn't meet the requirement, you will be forced to start over from the previous safe house. And the consequences can be dire for the entire group.</Text>
           </View>
           <View style={customStyles.textContainer}>
-            <Text style={[styles.plainText, customStyles.text]}>Walker Trekker features campaigns that can be configured with various days, difficulty levels, and participants.</Text>
+            <Text style={[styles.plainText, customStyles.text]}>Walker Treker features campaigns that can be configured with various days, difficulty levels, and participants.</Text>
           </View>
           <View style={styles.bottom}>
             <View style={styles.buttonContainer}>

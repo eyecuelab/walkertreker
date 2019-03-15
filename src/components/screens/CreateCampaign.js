@@ -105,13 +105,13 @@ class CreateCampaign extends React.Component {
             <View style={createCampaignStyle.toggleContainer}>
             <ThreeButtonToggle
             title="In-game event"
-            subtitle="Frequency for in-game events throughout the day"
+            subtitle="Frequency for randomly generated in-game events throughout the day"
             button1value="Low"
-            button1label="About 3"
+            button1label="About 1"
             button2value="Mid"
-            button2label="About 5"
+            button2label="About 2"
             button3value="High"
-            button3label="About 8"
+            button3label="About 3"
             titleColor="white"
             handleUpdate={this._updateRandomEvents}
             />
