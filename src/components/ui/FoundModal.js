@@ -9,29 +9,28 @@ import constants from '../../constants';
 const { c, item } = constants;
 const { foodArray, medicineArray, weaponArray } = item;
 const use_item_bg = require('../../../assets/use_item_bg.png');
+const blankAvatar = require('../../../assets/blankavatar.png');
 
 class FoundModal extends React.Component {
 
   _itemToDisplay = () => {
-    const { scavengingFor } = this.props.steps;
-    console.log('scavengingFor',scavengingFor);
-      array = foodArray;
-    } else if (scavengingFor == 'medicine') {
-      array = medicineArray;
-    } else if (scavengingFor === 'weapons') {
-      array = weaponArray;
+    const { scavengingFor, justScavenged } = this.props.steps;
+    if (scavengingFor && justScavenged) {
+      let array;
+      if (scavengingFor === 'food') {
+        array = foodArray;
+      } else if (scavengingFor === 'medicine') {
+        array = medicineArray;
+      } else if (scavengingFor === 'weapons') {
+        array = weaponArray;
+      } else {
+        console.warn('you have a weird value in scavengingFor; fix it!');
+      }
+      const newItemScavenged = array[justScavenged]
+      return newItemScavenged;
     } else {
-      console.warn('you have a weird value in scavengingFor; fix it!');
+      return null;
     }
-    const index = array.length - 1
-    const newItemScavenged = array[index]
-    console.log('newItemScavenged',newItemScavenged);
-    return newItemScavenged;
-  }
-
-  _pressOK = () => {
-    this.props.navigation.navigate('CampaignSummary');
-    this.props.handleModalStateChange();
   }
 
   render() {
@@ -48,7 +47,7 @@ class FoundModal extends React.Component {
             </View>
 
             <View>
-              <Text style={[styles.plainText, {marginTop: widthUnit * 2.5}]}>You managed to find a useful item among the wreckage and debris.</Text>
+              <Text style={[styles.plainText, {marginTop: widthUnit * 2.5}]}>You managed to find something useful among the wreckage and debris.</Text>
             </View>
 
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -62,7 +61,7 @@ class FoundModal extends React.Component {
               <View style={customStyles.buttonContainer}>
                 <TouchableOpacity
                   style={customStyles.button}
-                  onPress={this._pressOK}>
+                  onPress={this.props.onButtonPress}>
                   <Text style={styles.label}>OK</Text>
                 </TouchableOpacity>
               </View>
@@ -113,7 +112,8 @@ const customStyles = StyleSheet.create({
 })
 
 FoundModal.propTypes = {
-  handleModalStateChange: PropTypes.func
+  handleModalStateChange: PropTypes.func,
+  onButtonPress: PropTypes.func
 }
 
 function mapStateToProps(state) {
