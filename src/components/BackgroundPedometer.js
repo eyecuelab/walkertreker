@@ -62,7 +62,7 @@ class BackgroundPedometer extends React.Component {
         dispatch({type: c.IS_PEDOMETER_AVAILABLE, pedometerIsAvailable: response});
       }, (error) => {
         // maybe dispatch an action to the store to update state instead?
-        Alert.alert('Walker Trekker can\'t connect to your phone\'s pedometer. Try closing the app and opening it again.')
+        Alert.alert('Walker Treker can\'t connect to your phone\'s pedometer. Try closing the app and opening it again.')
       }
     );
   }

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "walkertrekker",
-    "slug": "walkertrekker",
+    "name": "Walker Treker",
+    "slug": "walkertreker",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -25,10 +25,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.eyecuelab.walkertrekker"
+      "bundleIdentifier": "com.eyecuelab.walkertreker"
     },
     "android": {
-      "package": "com.eyecuelab.walkertrekker",
+      "package": "com.eyecuelab.walkertreker",
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {
@@ -37,6 +37,6 @@
         },
       },
     },
-    "scheme": "walkertrekker",
+    "scheme": "walkertreker",
   }
 }
