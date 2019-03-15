@@ -7,6 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
+import DayCounter from '../ui/DayCounter';
 
 const attack_bg = require('../../../assets/attack_bg.png');
 
@@ -20,7 +21,7 @@ class CampaignIsLost extends React.Component {
     const finalCampaignState = data.finalCampaignState
     const causeOfDeath = data.causeOfDeath
     const deadPlayers = data.deadPlayers
-    this.state = { finalCampaignState, causeOfDeath: 'starved', deadPlayers }
+    this.state = { finalCampaignState, causeOfDeath, deadPlayers }
   }
 
   deadPlayersPlainText() {
@@ -43,7 +44,7 @@ class CampaignIsLost extends React.Component {
   endGameText() {
     let text = '';
     if (this.state.causeOfDeath == 'beaten') {
-      text = `On day ${this.state.finalCampaignState.currentDay}, your party, already tired and slowed from previous encounters, failed to meet at the safehouse before nightfall. Suddenly beset on all sides by a horde of undead, ${this.deadPlayersPlainText()} were finally overcome. What happened to them next... is best left unsaid; those still among the living will remember them as they were in better times, and try to carry on.`
+      text = `Your party, already tired and slowed from previous encounters, failed to meet at the safehouse before nightfall. Suddenly beset on all sides by a horde of undead, ${this.deadPlayersPlainText()} were finally overcome. What happened to them next... is best left unsaid; those still among the living will remember them as they were in better times, and try to carry on.`
     } if (this.state.causeOfDeath == 'starved') {
       text = `After so many long days of running and fighting and low on energy and resources, on day ${this.state.finalCampaignState.currentDay}, your party is forced to make a difficult decision. Weak with hunger and unable to continue, you are forced to leave ${this.deadPlayersPlainText()} behind, knowing full well what this means. Part of staying alive in such a situation also means having to live with yourself on days like this.`
     }
@@ -65,6 +66,7 @@ class CampaignIsLost extends React.Component {
             >
               <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', padding: widthUnit*5}}>
                 <View style={customStyles.headerContainer}>
+                  <DayCounter campaign={this.state.finalCampaignState} />
                   <Text style={styles.headline}>Campaign{"\n"}Lost</Text>
                 </View>
                 <View style={customStyles.contentContainer}>
