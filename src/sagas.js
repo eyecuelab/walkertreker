@@ -380,11 +380,11 @@ export function *scavenge(action) {
   console.log('MADE IT TO SCAVENGE');
   const newTimesScavenged = action.timesScavengedToday + 1;
   const itemsScavenged = Object.assign({}, action.inventory);
-  const { scavengingFor } = yield select(getSteps);
+  const { scavengingFor, justScavenged } = yield select(getSteps);
   const rando = (x) => Math.floor(Math.random() * x);
   let newItem;
 
-  if (scavengingFor === null) {
+  if (scavengingFor === null || justScavenged) {
     return;
   }
 
@@ -410,7 +410,7 @@ export function *scavenge(action) {
 
   console.log('made it through the scavenge branching');
 
-  yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: action.currentDay, bonus: action.newBonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged});
+  yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: action.currentDay, bonus: action.bonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged});
   yield put({type: c.DONE_SCAVENGING, justScavenged: newItem });
 }
 
