@@ -137,30 +137,20 @@ export function *joinCampaignRequest(action) {
 
 export function *createPlayer(action) {
 
-  // original
   const url = 'https://walkertrekker.herokuapp.com/api/players';
-  // const initObj = {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "appkey": CLIENT_APP_KEY
-  //   },
-  //   body: JSON.stringify({displayName: action.name, phoneNumber: action.number})
-  // };
-  // ideally refactor to: yield call(() => {
-  //   fetch(url, initObj)
-  // })
 
-  let localUri = action.avatar.uri
-  let filename = localUri.split('/').pop();
-  let match = /\.(\w+)$/.exec(filename);
-  let type = match ? `image/${match[1]}` : `image`;
-  let formData = new FormData();
   const data = new FormData()
   data.append('displayName', action.name)
   data.append('phoneNumber', action.number)
   data.append('pushToken', action.pushToken)
-  data.append('avatar', { uri: localUri, name: filename, type });
+  if (action.avatar.uri) {
+    let localUri = action.avatar.uri
+    let filename = localUri.split('/').pop();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+    data.append('avatar', { uri: localUri, name: filename, type });
+  } else {
+  }
   const initObj = {
     method: "POST",
     headers: {
