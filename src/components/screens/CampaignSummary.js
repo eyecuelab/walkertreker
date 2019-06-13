@@ -142,7 +142,8 @@ class CampaignSummary extends React.Component {
                     player={player}
                     bigValue={true}
                     button1label='Progress'
-                    button1value={this._displayStepPercentage(player) + '%'}
+                    // button1value={this._displayStepPercentage(player) + '%'}
+                    button1value={player.steps[this.props.campaign.currentDay] + '/' + player.stepTargets[this.props.campaign.currentDay]}
                     button2label='Health'
                     button2value={this._displayHealthLevel(player)}
                     button3label='Hunger'

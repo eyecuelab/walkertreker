@@ -17,6 +17,8 @@ export function *fetchSteps() {
   const dates = steps.campaignDateArray;
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
+  // Here we could only loop through the dates that are relevent (speed it up)
+  // 
   for (obj of datesCopy) {
     console.log('fetch steps loop, day ' + obj.day); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
     try {
@@ -24,7 +26,6 @@ export function *fetchSteps() {
       const end = new Date(Date.parse(obj.end))
       const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
-
       const dateWithSteps = Object.assign({}, datesCopy[obj.day], {steps: stepsToAdd});
       datesCopy.splice(obj.day, 1, dateWithSteps);
     } catch (error) {
@@ -32,7 +33,7 @@ export function *fetchSteps() {
     }
   }
   yield storeData('stepInfo', JSON.stringify(steps))
-
+  console.log('datesCopy', datesCopy)
   yield put({type: c.STEPS_RECEIVED, campaignDateArray: datesCopy});
 }
 

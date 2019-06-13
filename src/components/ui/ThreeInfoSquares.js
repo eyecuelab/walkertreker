@@ -14,16 +14,16 @@ export default class ThreeInfoSquares extends React.Component {
 
   // TODO: feed all the ButtonToggles an 'isRed' and an 'isGreen' prop as a boolean
 
-  _percentColor = () => {
-    const val = parseInt(this.props.button1value.slice(0, -1));
-    if (val < 50) {
-      return 'red';
-    } else if (val > 100) {
-      return 'green';
-    } else {
-      return 'white'
-    }
-  }
+  // _percentColor = () => {
+  //   const val = parseInt(this.props.button1value.slice(0, -1));
+  //   if (val < 50) {
+  //     return 'red';
+  //   } else if (val > 100) {
+  //     return 'green';
+  //   } else {
+  //     return 'white'
+  //   }
+  // }
 
   _healthColor = () => {
     const val = this.props.button2value;
@@ -64,8 +64,8 @@ export default class ThreeInfoSquares extends React.Component {
               background={bg1}
               value={this.props.button1value}
               label={this.props.button1label}
-              bigValue={this.props.bigValue}
-              color={this._percentColor()} />
+              bigValue={false}
+              color={'white'} />
           </View>
 
           <View style={customStyles.square}>
@@ -73,7 +73,7 @@ export default class ThreeInfoSquares extends React.Component {
               background={bg2}
               value={this.props.button2value}
               label={this.props.button2label}
-              bigValue={this.props.bigValue}
+              bigValue={false}
               color={this._healthColor()} />
           </View>
 

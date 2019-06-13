@@ -30,6 +30,7 @@ sagaMiddleware.run(rootSaga);
 
 class App extends React.Component {
 
+  //turn these into state hooks
   constructor(props) {
     super(props)
     this.state = {
