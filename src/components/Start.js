@@ -22,8 +22,11 @@ class Start extends React.Component {
     }
   }
 
+  
+
   componentDidMount = async () => {
     const { dispatch } = this.props
+
     if (this.state.needPlayer) {
       dispatch({ type: c.FETCH_PLAYER, playId: this.state.localPlayer.id})
     }
@@ -31,6 +34,11 @@ class Start extends React.Component {
       dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
     }
     if (!this.state.needPlayer) {
+
+      //if no localPlayer.id, user enters a phone number
+      //if phone number is in database, needPlayer=true
+      //if phone number not in database, create a new player
+
       this.navigate('About')
     }
   }

@@ -112,13 +112,17 @@ class App extends React.Component {
       id: false,
       campaignId: false
     }
+
+    // this seems buggy? 
     if (!localPlayer) {
+      console.log('gothere')
       localPlayer = dud
       await this.setState({
         newPlayerModalVisible: true,
       })
     } else {
       localPlayer = JSON.parse(localPlayer)
+      console.log('gothere2')
     }
     await this.setState({ localPlayer })
 
@@ -142,7 +146,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Notifications.addListener(this._passNotificationToStart)
+    Notifications.addListener(this._passNotificationToStart);
   }
 
   render() {
@@ -157,6 +161,7 @@ class App extends React.Component {
     }
 
     const prefix = Linking.makeUrl('/');
+    console.log("This is the prefix:", prefix)
 
     return (
       <Provider store={store}>

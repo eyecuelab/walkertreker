@@ -28,6 +28,10 @@ const AppNavigator = createStackNavigator(
       screen: AcceptInvite,
       path: 'invite/:campaignId'
     },
+    // AccountRecovery: {
+    //   screen: AccountRecovery,
+    //   path: 'recovery/:playerId'
+    // },
     WaitForStart: { screen: WaitForStart, },
     CampaignSummary: { screen: CampaignSummary, },
     Safehouse: { screen: Safehouse },

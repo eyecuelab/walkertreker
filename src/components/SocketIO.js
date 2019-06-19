@@ -13,7 +13,6 @@ class SocketIO extends React.Component {
 
   componentDidMount = async () => {
     const { dispatch } = this.props
-
     socket.on('connect_error', (err) => {
       console.log(`Socket connection error: ${err}`)
     })

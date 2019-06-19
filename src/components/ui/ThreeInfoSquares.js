@@ -73,7 +73,7 @@ export default class ThreeInfoSquares extends React.Component {
               background={bg2}
               value={this.props.button2value}
               label={this.props.button2label}
-              bigValue={false}
+              bigValue={this.props.bigValue}
               color={this._healthColor()} />
           </View>
 

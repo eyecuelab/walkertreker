@@ -27,6 +27,7 @@ class NotificationListeners extends React.Component {
   }
 
   _handleNotification(notification) {
+    console.log(notification)
     const type = notification.data.type
     const route = navigation[type]
     if (route !== 'none') {

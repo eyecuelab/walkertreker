@@ -22,7 +22,7 @@ class NewPlayerForm extends React.Component {
       avatar: require('../../../assets/blankavatar.png'),
     }
   }
-
+ 
   _handleSubmit = async () => {
     const { dispatch } = this.props;
     const pushToken = await this.registerForPushNotificationsAsync()
@@ -34,6 +34,15 @@ class NewPlayerForm extends React.Component {
       pushToken,
     })
     this.props.handleModalStateChange()
+  }
+
+  _handleRecovery = async () => {
+    const { dispatch } = this.props;
+    console.log("do the handle recovery")
+    dispatch({
+      type: c.RECOVER_ACCOUNT,
+      
+    })
   }
 
   registerForPushNotificationsAsync = async () => {
@@ -96,6 +105,13 @@ class NewPlayerForm extends React.Component {
                 <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
               </View>
             </View>
+            <View style={customStyles.button}>
+              <SingleButtonFullWidth
+                title="Recover Account"
+                onButtonPress={this._handleRecovery}
+                backgroundColor="darkred"
+              />
+            </View>
           </View>
           <View style={customStyles.buttonContainer}>
             <View style={customStyles.button}>
@@ -106,6 +122,7 @@ class NewPlayerForm extends React.Component {
               />
             </View>
           </View>
+         
         </View>
       </ImageBackground>
     )

@@ -45,6 +45,8 @@ ButtonToggle.propTypes = {
   background: PropTypes.any,
 };
 
+//This only toggles when rendered from the CreateCampaign component but not from the CampaignSummary component
+
 ButtonToggle.defaultProps = {
   active: false,
   bigValue: false,
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
   },
   bigValue: {
     fontFamily: 'gore',
-    fontSize: widthUnit*9,
+    fontSize: widthUnit*8,
   },
   label: {
     fontFamily: 'gore',

@@ -33,7 +33,6 @@ export function *fetchSteps() {
     }
   }
   yield storeData('stepInfo', JSON.stringify(steps))
-  console.log('datesCopy', datesCopy)
   yield put({type: c.STEPS_RECEIVED, campaignDateArray: datesCopy});
 }
 
