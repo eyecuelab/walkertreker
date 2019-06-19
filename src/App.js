@@ -15,6 +15,7 @@ const { c, storeData, retrieveData } = constants;
 
 import Modal from 'react-native-modal';
 import NewPlayerForm from './components/ui/NewPlayerForm';
+import NewPlayerModal from './components/ui/NewPlayerModal';
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
@@ -166,7 +167,7 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <Modal isVisible={this.state.newPlayerModalVisible}>
-          <NewPlayerForm handleModalStateChange={this._toggleNewPlayerModal} />
+          <NewPlayerModal handleModalStateChange={this._toggleNewPlayerModal} />
         </Modal>
         <SocketIO />
         <NotificationListeners />

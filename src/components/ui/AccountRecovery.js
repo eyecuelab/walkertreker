@@ -4,100 +4,59 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpa
 import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-
-import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 import { ScrollView } from 'react-native-gesture-handler';
-const { c } = constants
-const use_item_bg = require('../../../assets/use_item_bg.png');
+const { c } = constants;
 
-class NewPlayerForm extends React.Component {
+
+class RecoverAccountModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      displayName: '',
       phoneNumber: '',
-      avatar: require('../../../assets/blankavatar.png'),
     }
   }
- 
-  _handleSubmit = async () => {
+
+  _handleRecovery = async () => {
     const { dispatch } = this.props;
-    const pushToken = await this.registerForPushNotificationsAsync()
+    console.log("do the handle recovery")
     dispatch({
-      type: c.CREATE_PLAYER,
-      name: this.state.displayName,
-      number: this.state.phoneNumber,
-      avatar: this.state.avatar,
-      pushToken,
+      type: c.RECOVER_ACCOUNT, phoneNumber: this.state.phoneNumber
     })
-    this.props.handleModalStateChange()
   }
 
-  registerForPushNotificationsAsync = async () => {
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-
-    if (finalStatus !== 'granted') {
-      return;
-    }
-
-    const token = await Notifications.getExpoPushTokenAsync();
-    return token;
-  }
-
-  _pickImage = async () => {
-    const avatar = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [1,1],
-    })
-
-    if (!avatar.cancelled) {
-      this.setState({ avatar })
-    }
-
-  }
-
-  render() {
+  render(){
     return(
-      <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
+    <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
         <View style={customStyles.headlineContainer}>
-          <Text style={styles.headline}>New Player</Text>
+          <Text style={styles.headline}>Account Recovery</Text>
+        </View>
+        <View >
+          <Text style={styles.detail}>You will receive a text to recover your account</Text>
         </View>
         <View style={customStyles.formContainer}>
           <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Display Name</Text>
-            <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({displayName: text})} value={this.state.displayName}/>
-          </View>
-          <View style={customStyles.fieldContainer}>
             <Text style={styles.label}>Phone Number</Text>
             <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
-          </View>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Avatar</Text>
-            <View style={customStyles.avatarContainer}>
-              <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
-                <Image
-                  source={this.state.avatar}
-                  style={customStyles.avatar}
-                />
-              </TouchableOpacity>
-              <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
-            </View>
           </View>
         </View>
         <View style={customStyles.buttonContainer}>
           <View style={customStyles.button}>
             <SingleButtonFullWidth
-              title="Submit"
-              onButtonPress={this._handleSubmit}
+              title="Recover Account"
+              onButtonPress={this._handleRecovery}
+              backgroundColor="darkred"
+            />
+          </View>
+        </View>
+        <View style={[customStyles.buttonContainer]}>
+          <View style={customStyles.button}>
+            <SingleButtonFullWidth
+              title="New Player"
+              onButtonPress={this._handleRecovery}
               backgroundColor="darkred"
             />
           </View>
@@ -107,7 +66,6 @@ class NewPlayerForm extends React.Component {
     )
   }
 }
-            // <TouchableOpacity style={customStyles.button} onPress={this._handleSubmit}><Text style={styles.label}>Submit</Text></TouchableOpacity>
 
 const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
@@ -122,7 +80,7 @@ const customStyles = StyleSheet.create({
     padding: widthUnit * 5,
   },
   headlineContainer: {
-    margin: 10,
+    margin: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -134,7 +92,7 @@ const customStyles = StyleSheet.create({
   },
   buttonContainer: {
     // margin: 10,
-    height: heightUnit*20,
+    height: heightUnit*15,
     width: '100%',
     alignSelf: 'flex-end',
     flexDirection: 'row',
@@ -193,15 +151,4 @@ const customStyles = StyleSheet.create({
   },
 })
 
-NewPlayerForm.propTypes = {
-  handleModalStateChange: PropTypes.func
-}
-
-function mapStateToProps(state) {
-  return {
-    player: state.player,
-    campaign: state.campaign,
-  }
-}
-
-export default connect(mapStateToProps)(NewPlayerForm);
+export default RecoverAccountModal;
