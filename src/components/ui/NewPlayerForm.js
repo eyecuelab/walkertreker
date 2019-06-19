@@ -10,6 +10,7 @@ import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
+import { ScrollView } from 'react-native-gesture-handler';
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
@@ -36,14 +37,13 @@ class NewPlayerForm extends React.Component {
     this.props.handleModalStateChange()
   }
 
-  _handleRecovery = async () => {
-    const { dispatch } = this.props;
-    console.log("do the handle recovery")
-    dispatch({
-      type: c.RECOVER_ACCOUNT,
-      
-    })
-  }
+  // _handleRecovery = async () => {
+  //   const { dispatch } = this.props;
+  //   console.log("do the handle recovery")
+  //   dispatch({
+  //     type: c.RECOVER_ACCOUNT,
+  //   })
+  // }
 
   registerForPushNotificationsAsync = async () => {
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
@@ -108,7 +108,7 @@ class NewPlayerForm extends React.Component {
             <View style={customStyles.button}>
               <SingleButtonFullWidth
                 title="Recover Account"
-                onButtonPress={this._handleRecovery}
+                onButtonPress={this._handleSubmit}
                 backgroundColor="darkred"
               />
             </View>

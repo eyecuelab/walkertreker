@@ -115,14 +115,14 @@ class App extends React.Component {
 
     // this seems buggy? 
     if (!localPlayer) {
-      console.log('gothere')
+      console.log('nolocalplayer')
       localPlayer = dud
       await this.setState({
         newPlayerModalVisible: true,
       })
     } else {
       localPlayer = JSON.parse(localPlayer)
-      console.log('gothere2')
+      console.log('localplayer-needplayer')
     }
     await this.setState({ localPlayer })
 
