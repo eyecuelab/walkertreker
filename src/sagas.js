@@ -264,6 +264,26 @@ export function *updatePlayer(action) {
   }
 }
 
+
+export function *recoverAccount(action) {
+  const url = 'https://walkertrekker.herokuapp.com/api/players/recover' + action.phoneNumber
+  const initObj = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    }
+  }
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    yield put({type: c.ACCOUNT_RECOVERED, player: response});
+  } catch (error) {
+    console.warn('error recovering players: ', error);
+  }
+}
+
+
 export function *startCampaign(action) {
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/start/' + action.campId;
   const initObj = {
@@ -493,6 +513,10 @@ export function *watchUpdatePlayer() {
   yield takeEvery(c.UPDATE_PLAYER, updatePlayer);
 }
 
+export function *watchRecoverAccount() {
+  yield takeEvery(c.RECOVER_ACCOUNT, recoverAccount);
+}
+
 export function *watchStartCampaign() {
   yield takeEvery(c.START_CAMPAIGN, startCampaign);
 }
@@ -558,6 +582,7 @@ export default function *rootSaga() {
     watchSteps(),
     watchPlayerActions(),
     watchPlayerUpdated(),
+    watchRecoverAccount(),
     watchScavengedItems(),
     watchGetLastStepState(),
     watchStartScavenge(),

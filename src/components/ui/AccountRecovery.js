@@ -22,7 +22,7 @@ class RecoverAccountModal extends React.Component {
 
   _handleRecovery = async () => {
     const { dispatch } = this.props;
-    console.log("do the handle recovery")
+    console.log(this.state.phoneNumber)
     dispatch({
       type: c.RECOVER_ACCOUNT, phoneNumber: this.state.phoneNumber
     })
@@ -61,7 +61,6 @@ class RecoverAccountModal extends React.Component {
             />
           </View>
         </View>
-        
       </View>
     )
   }
@@ -151,4 +150,4 @@ const customStyles = StyleSheet.create({
   },
 })
 
-export default RecoverAccountModal;
+export default connect()(RecoverAccountModal);

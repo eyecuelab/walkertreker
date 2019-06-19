@@ -24,8 +24,6 @@ class NewPlayerModal extends React.Component {
       recoveryModalToggle: false,
     }
   }
-
-
  
 
   _handleRecoveryModalToggle = () => {
