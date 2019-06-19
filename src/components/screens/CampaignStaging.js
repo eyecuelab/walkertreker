@@ -19,7 +19,6 @@ class CampaignStaging extends React.Component {
     super(props);
     const invites = this.props.navigation.getParam('invites');
     this.state = {
-      // game,
       invites,
       selectedPlayer: 'none',
       whenToStartModalVisible: false,
@@ -34,7 +33,7 @@ class CampaignStaging extends React.Component {
           button1color="darkgray"
           button1onPress={() => console.log('Not enough players to launch game')}
           button2title="Invites"
-          button2onPress={() => this.props.navigation.goBack()}
+          button2onPress={() => this.props.navigation.navigate()}
         />
       );
     } else if (this.state.selectedPlayer !== 'none') {
@@ -94,23 +93,32 @@ class CampaignStaging extends React.Component {
         <Modal isVisible={this.state.whenToStartModalVisible}>
           <WhenToStartForm handleModalStateChange={this._toggleWhenToStartModal} />
         </Modal>
+
         <View style={styles.container}>
+
           <View style={customStyles.contentContainer}>
+
             <View style={customStyles.headerContainer}>
+
               <Text style={styles.headline}>New Campaign</Text>
+
               <View style={[customStyles.headerRow, {marginTop: widthUnit * 2.5}]}>
                 <Text style={[styles.label]}>{this.props.campaign.length} </Text>
                 <Text style={[styles.label, {color: 'black'}]}>Days</Text>
               </View>
+
               <View style={customStyles.headerRow}>
                 <Text style={[styles.label]}>{this.props.campaign.difficultyLevel} </Text>
                 <Text style={[styles.label, {color: 'black'}]}>Difficulty Level</Text>
               </View>
+
               <View style={customStyles.headerRow}>
                 <Text style={[styles.label]}>{this.props.campaign.randomEvents} </Text>
                 <Text style={[styles.label, {color: 'black'}]}>In-game Events</Text>
               </View>
+
             </View>
+
             <View style={customStyles.panelContainer}>
               <ScrollView contentContainerStyle={customStyles.scrollContainer} showsVerticalScrollIndicator={true}>
                 <View style={customStyles.scrollChildContainer}>
@@ -130,8 +138,10 @@ class CampaignStaging extends React.Component {
                 </View>
               </ScrollView>
             </View>
+
           </View>
           {this.submitConditionalRender()}
+
         </View>
       </ImageBackground>
     );

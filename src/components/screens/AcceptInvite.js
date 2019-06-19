@@ -12,6 +12,7 @@ import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
 import defaultStyle from '../../styles/defaultStyle';
 
+
 class AcceptInvite extends React.Component {
   constructor(props) {
     super(props)
@@ -28,12 +29,15 @@ class AcceptInvite extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.campaign.id == null && this.props.campaign.id) {
+    console.log("AcceptInvite(32): CampaignId = " + this.props.campaign.id)
+    console.log("ACCEPT_INVITE(32): ReadyStatus = " + this.state.isReady )
+    if (!this.state.isReady && this.props.campaign.id) {
       this.setState({ isReady: true })
     }
   }
 
   joinCampaign() {
+    console.log("AcceptInvite(38) - Attempting to Join Campaign CampaignID = " + this.props.campaign.id + " with playerID = " + this.props.player.id)
     this.props.dispatch({
       type: c.SEND_JOIN_CAMPAIGN_REQUEST,
       campId: this.props.campaign.id,

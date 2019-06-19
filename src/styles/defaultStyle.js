@@ -16,7 +16,7 @@ export default defaultStyle = {
   // text styles
   headline: {
     fontFamily: 'gore',
-    fontSize: widthUnit*15,
+    fontSize: widthUnit*12,
     lineHeight: widthUnit*12,
     paddingTop: widthUnit*3,
     color: 'white',

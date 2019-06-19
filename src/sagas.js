@@ -140,17 +140,19 @@ export function *createPlayer(action) {
   const url = 'https://walkertrekker.herokuapp.com/api/players';
 
   const data = new FormData()
+
   data.append('displayName', action.name)
   data.append('phoneNumber', action.number)
   data.append('pushToken', action.pushToken)
+
   if (action.avatar.uri) {
     let localUri = action.avatar.uri
     let filename = localUri.split('/').pop();
     let match = /\.(\w+)$/.exec(filename);
     let type = match ? `image/${match[1]}` : `image`;
     data.append('avatar', { uri: localUri, name: filename, type });
-  } else {
   }
+
   const initObj = {
     method: "POST",
     headers: {
@@ -441,6 +443,8 @@ export function *watchSetDates() {
   }
 }
 
+
+//Step Saga's
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
 }
@@ -457,6 +461,9 @@ export function *watchPlayerStepsUpdated() {
   }
 }
 
+///////////////////
+//Campaign Sagas///
+///////////////////
 export function *watchInitialCampaignDetails() {
   yield takeEvery(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails);
 }
@@ -473,6 +480,16 @@ export function *watchJoinCampaign() {
   yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest);
 }
 
+export function *watchStartCampaign() {
+  yield takeEvery(c.START_CAMPAIGN, startCampaign);
+}
+
+export function *watchDestroyCampaign() {
+  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign);
+}
+
+
+//Player Sagas
 export function *watchCreatePlayer() {
   yield takeEvery(c.CREATE_PLAYER, createPlayer);
 }
@@ -491,14 +508,6 @@ export function *watchFetchPlayer() {
 
 export function *watchUpdatePlayer() {
   yield takeEvery(c.UPDATE_PLAYER, updatePlayer);
-}
-
-export function *watchStartCampaign() {
-  yield takeEvery(c.START_CAMPAIGN, startCampaign);
-}
-
-export function *watchDestroyCampaign() {
-  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign);
 }
 
 export function *watchAppStateChange() {
@@ -528,7 +537,7 @@ export function *watchGetLastStepState() {
 }
 
 export function *watchStartScavenge() {
-  yield takeEvery(c.START_SCAVENGE, scavenge);
+  yield takeEvery(c.START_SCAVENGE, scavenge);0
 }
 
 export function *watchHungerAndHealth() {

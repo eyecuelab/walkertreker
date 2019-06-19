@@ -15,7 +15,7 @@ const use_item_bg = require('../../../assets/use_item_bg.png');
 
 class NewPlayerForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props) 
     this.state = {
       displayName: '',
       phoneNumber: '',
@@ -39,6 +39,7 @@ class NewPlayerForm extends React.Component {
   registerForPushNotificationsAsync = async () => {
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     let finalStatus = existingStatus;
+
     if (existingStatus !== 'granted') {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;

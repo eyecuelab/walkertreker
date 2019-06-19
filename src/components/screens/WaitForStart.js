@@ -20,6 +20,11 @@ class WaitForStart extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log(this.props || 'Hello');
+    setInterval(() => {console.log(this.props)}, 20000);
+  }
+
   _toggleConfirmationModal = () => {
     const confirmationModalVisible = !this.state.confirmationModalVisible;
     this.setState({ confirmationModalVisible });
@@ -67,6 +72,7 @@ class WaitForStart extends React.Component {
             </View>
           </View>
         </Modal>
+
         <View style={[styles.container ]}>
           <View style={customStyles.contentContainer}>
             <View style={customStyles.headerContainer}>

@@ -13,6 +13,8 @@
     "prop-types": "^15.6.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-background-fetch": "^2.6.0",
+    "react-native-background-task": "^0.2.1",
     "react-native-modal": "^7.0.2",
     "react-native-responsive-screen": "^1.2.0",
     "react-navigation": "^3.0.9",

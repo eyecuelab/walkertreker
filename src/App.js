@@ -5,7 +5,7 @@ import { AppContainer } from './nav/router';
 import NavigationService from './nav/NavigationService';
 
 import { createStore, applyMiddleware } from 'redux';
-import { Provider, connect } from 'react-redux';
+import { Provider, connect, dispatch } from 'react-redux';
 import { logger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
@@ -18,11 +18,15 @@ import NewPlayerForm from './components/ui/NewPlayerForm';
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
-import GetNotificationToken from './components/GetNotificationToken'
+import GetNotificationToken from './components/GetNotificationToken';
+
+import BackgroundTask from 'react-native-background-task';
 
 if (__DEV__) {
   KeepAwake.activate();
 }
+
+
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
@@ -107,6 +111,7 @@ class App extends React.Component {
     // blank localPlayer in asyncStorage:
     // await storeData('playerInfo', "")
     let localPlayer = await retrieveData('playerInfo')
+    console.log(localPlayer)
     const dud = {
       id: false,
       campaignId: false
@@ -128,7 +133,9 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
-    const { path, queryParams } = await Linking.parseInitialURLAsync()
+    const { path, queryParams } = await Linking.parseInitialURLAsync();
+    console.log("(App:137) Path after loading :" + (path || "no path"));
+    console.log("(App:138) Query Params after loading:" + JSON.stringify(queryParams));
     this.setState({
       isReady: true,
       path,
@@ -141,11 +148,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Notifications.addListener(this._passNotificationToStart)
+    Notifications.addListener(this._passNotificationToStart);
+    console.log("(App:152) - App Component Mounted")
   }
 
   render() {
     if (!this.state.isReady) {
+      console.log("Loading App Initialized");
       return (
         <AppLoading
           startAsync={this._loadResourcesAsync}
@@ -156,7 +165,6 @@ class App extends React.Component {
     }
 
     const prefix = Linking.makeUrl('/');
-
     return (
       <Provider store={store}>
         <Modal isVisible={this.state.newPlayerModalVisible}>

@@ -80,6 +80,6 @@ const customStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    lineHeight: heightUnit*3.75,
+    lineHeight: heightUnit*3.25,
   },
 })
