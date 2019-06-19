@@ -23,6 +23,8 @@ class NewPlayerForm extends React.Component {
       avatar: require('../../../assets/blankavatar.png'),
     }
   }
+
+
  
   _handleSubmit = async () => {
     console.log("newPlayer")
@@ -93,6 +95,9 @@ class NewPlayerForm extends React.Component {
               <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
             </View>
           </View>
+          <Text style={{color: 'white'}} onPress={() => {this.props.handleRecoveryModalToggle()}}>
+            Already have an account? Recover it here. 
+          </Text>
         </View>
         <View style={customStyles.buttonContainer}>
           <View style={customStyles.button}>
@@ -120,7 +125,7 @@ const customStyles = StyleSheet.create({
     // backgroundColor: 'darkred',
     // justifyContent: 'center',
     // borderRadius: 5,
-    padding: widthUnit * 5,
+    padding: widthUnit * 4,
   },
   headlineContainer: {
     margin: 6,

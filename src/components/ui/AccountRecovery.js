@@ -56,7 +56,7 @@ class RecoverAccountModal extends React.Component {
           <View style={customStyles.button}>
             <SingleButtonFullWidth
               title="New Player"
-              onButtonPress={this._handleRecovery}
+              onButtonPress={() => {this.props.handleRecoveryModalToggle()}}
               backgroundColor="darkred"
             />
           </View>

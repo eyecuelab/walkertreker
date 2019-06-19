@@ -25,12 +25,26 @@ class NewPlayerModal extends React.Component {
     }
   }
 
+
+ 
+
   _handleRecoveryModalToggle = () => {
-    this.setState(!this.state.recoveryModalToggle)
+    console.log("toggle")
+    const newRecoveryModalToggle = !this.state.recoveryModalToggle
+    this.setState({recoveryModalToggle: newRecoveryModalToggle})
+    console.log(this.state.recoveryModalToggle)
   }
 
   conditionalRenderModalContent = () => {
-    return this.state.recoveryModalToggle ? <AccountRecovery handleModalStateChange={this.props.handleModalStateChange}/> : <NewPlayerForm handleModalStateChange={this.props.handleModalStateChange}/>
+    console.log('conditional redner')
+    if (this.state.recoveryModalToggle) {
+      return <AccountRecovery 
+      handleModalStateChange={this.props.handleModalStateChange} 
+      handleRecoveryModalToggle={this._handleRecoveryModalToggle}/>
+    } else {
+    return <NewPlayerForm handleModalStateChange={this.props.handleModalStateChange} 
+      handleRecoveryModalToggle={this._handleRecoveryModalToggle}/>
+    }
   }
 
   render() {
