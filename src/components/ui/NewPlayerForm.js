@@ -25,6 +25,7 @@ class NewPlayerForm extends React.Component {
   }
  
   _handleSubmit = async () => {
+    console.log("newPlayer")
     const { dispatch } = this.props;
     const pushToken = await this.registerForPushNotificationsAsync()
     dispatch({
@@ -69,7 +70,7 @@ class NewPlayerForm extends React.Component {
     return(
       <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
         <View style={customStyles.headlineContainer}>
-          <Text style={styles.headline}>New Player</Text>
+          <Text style={styles.headline}>New{'\n'}Player</Text>
         </View>
         <View style={customStyles.formContainer}>
           <View style={customStyles.fieldContainer}>
@@ -122,7 +123,7 @@ const customStyles = StyleSheet.create({
     padding: widthUnit * 5,
   },
   headlineContainer: {
-    margin: 10,
+    margin: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },

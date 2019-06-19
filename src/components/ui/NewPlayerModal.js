@@ -21,7 +21,7 @@ class NewPlayerModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      recoveryModalToggle: true,
+      recoveryModalToggle: false,
     }
   }
 
