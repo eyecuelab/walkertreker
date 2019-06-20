@@ -194,12 +194,14 @@ class InvitePlayers extends React.Component {
       >
         <View style={styles.container}>
           <View style={customStyles.contentContainer}>
+
             <View style={customStyles.headerContainer}>
+
               <View style={customStyles.headerFirst}>
                 <View style={[customStyles.headerRow,]}>
                   <Text style={[styles.headline]}>Invite{"\n"}Players</Text>
                 </View>
-                <View style={[customStyles.headerRow, {marginTop: widthUnit * 2.5}]}>
+                <View style={[customStyles.headerRow]}>
                   <Text style={[styles.label]}>{this.props.campaign.length} </Text>
                   <Text style={[styles.label, {color: 'black'}]}>Days</Text>
                 </View>
@@ -212,14 +214,13 @@ class InvitePlayers extends React.Component {
                   <Text style={[styles.label, {color: 'black'}]}>In-game Events</Text>
                 </View>
               </View>
-              <View style={[customStyles.headerRowLast,]}>
-                <View style={customStyles.headerRow}>
-                  <View style={customStyles.plainTextContainer}>
-                    {this.detailText()}
-                  </View>
-                </View>
+
+
+              <View style={customStyles.headerRow}>
+                {this.detailText()}
               </View>
-            </View>
+          </View>
+
             <View style={customStyles.contactsContainer}>
               <ScrollView showsVerticalScrollIndicator={true}>
                 <ContactsList
@@ -243,8 +244,6 @@ const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   contentContainer: {
-    width: '100%',
-    height: '90%',
     paddingBottom: 10,
   },
   headerContainer: {
@@ -254,29 +253,14 @@ const customStyles = StyleSheet.create({
   },
   headerRow: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    margin: 0,
-    padding: 0,
-    // marginTop: widthUnit * 2.5,
+    justifyContent: 'flex-start'
   },
   headerRowFirst: {
     flex: 2,
     justifyContent: 'space-between',
   },
-  headerRowLast: {
-    flex: 1,
-    position: 'absolute',
-    bottom: heightUnit*2,
-  },
-  plainTextContainer: {
-
-  },
   contactsContainer: {
     flex: 1.5,
-    // backgroundColor: 'green',
-    // width: '100%',
-    // height: '100%',
-    // height: heightUnit*50,
     borderTopColor: 'white',
     borderBottomColor: 'white',
     borderTopWidth: 1,

@@ -60,6 +60,7 @@ class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     const imageAssets = this.cacheImages([
+      require('../assets/logo.png'),
       require('../assets/bg.png'),
       require('../assets/blankavatar.png'),
       require('../assets/buttontexture1.png'),
@@ -111,7 +112,7 @@ class App extends React.Component {
     // blank localPlayer in asyncStorage:
     // await storeData('playerInfo', "")
     let localPlayer = await retrieveData('playerInfo')
-    console.log(localPlayer)
+    console.log("Local Player during load" + localPlayer)
     const dud = {
       id: false,
       campaignId: false
@@ -134,8 +135,7 @@ class App extends React.Component {
 
   _handleFinishLoading = async () => {
     const { path, queryParams } = await Linking.parseInitialURLAsync();
-    console.log("(App:137) Path after loading :" + (path || "no path"));
-    console.log("(App:138) Query Params after loading:" + JSON.stringify(queryParams));
+
     this.setState({
       isReady: true,
       path,
@@ -165,6 +165,7 @@ class App extends React.Component {
     }
 
     const prefix = Linking.makeUrl('/');
+
     return (
       <Provider store={store}>
         <Modal isVisible={this.state.newPlayerModalVisible}>
