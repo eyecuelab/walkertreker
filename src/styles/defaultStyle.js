@@ -11,7 +11,7 @@ export default defaultStyle = {
     alignItems: 'center',
     justifyContent: 'flex-start',
     margin: widthUnit*5,
-    marginTop: heightUnit*7,
+    marginTop: heightUnit*6,
   },
   // text styles
   headline: {

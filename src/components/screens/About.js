@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import { TextAlt } from './../text';
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
@@ -38,6 +38,9 @@ export default class About extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}
       >
+        <TextAlt size='sm'>Test</TextAlt>
+        <TextAlt size='md'>Test</TextAlt>
+        <TextAlt size='lg'>Test</TextAlt>
         <View style={styles.container}>
           <View style={customStyles.headlineContainer}>
             <Text style={styles.headline}>About{"\n"}Walker{"\n"}Treker</Text>

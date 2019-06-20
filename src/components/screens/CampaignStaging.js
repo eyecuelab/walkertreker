@@ -90,6 +90,7 @@ class CampaignStaging extends React.Component {
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}>
+
         <Modal isVisible={this.state.whenToStartModalVisible}>
           <WhenToStartForm handleModalStateChange={this._toggleWhenToStartModal} />
         </Modal>
