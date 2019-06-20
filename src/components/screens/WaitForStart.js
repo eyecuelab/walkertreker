@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ImageBackground, ScrollView, FlatList } from 'r
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import CampaignDetails from '../ui/CampaignDetails';
@@ -10,6 +11,10 @@ import PlayersList from '../ui/PlayersList';
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 const { c } = constants;
+
+import { MainHeader } from './../text';
+import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
+import ScreenContainer from './../containers/ScreenContainer';
 
 class WaitForStart extends React.Component {
 
@@ -20,9 +25,11 @@ class WaitForStart extends React.Component {
     };
   }
 
-  componentDidMount() {
-    console.log(this.props || 'Hello');
-    setInterval(() => {console.log(this.props)}, 20000);
+  componentDidUpdate() {
+    if(this.props.campaign.startDate !== null) {
+      console.log("WaitingForStart(30) : Component Attempting to navigate to start")
+      this.props.navigation.navigate('Start')
+    }
   }
 
   _toggleConfirmationModal = () => {
@@ -73,13 +80,9 @@ class WaitForStart extends React.Component {
           </View>
         </Modal>
 
-        <View style={[styles.container ]}>
+        <ScreenContainer>
           <View style={customStyles.contentContainer}>
-            <View style={customStyles.headerContainer}>
-              <Text style={[styles.headline, {marginBottom: widthUnit * 2.5}]}>New{"\n"}Campaign{"\n"}</Text>
-              <CampaignDetails
-                campaign={this.props.campaign} />
-            </View>
+            <CampaignLobbyHeader campaign={this.props.campaign} title="New Campaign"/>
 
             <View style={[ customStyles.playerContainer ]}>
               <View style={customStyles.playerHeadlineContainer}>
@@ -103,7 +106,7 @@ class WaitForStart extends React.Component {
             </View>
 
           </View>
-        </View>
+        </ScreenContainer>
       </ImageBackground>
     );
   }
