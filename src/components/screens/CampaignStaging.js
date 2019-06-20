@@ -14,7 +14,7 @@ import constants from '../../constants';
 const { c } = constants;
 
 import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
-import ScreenContainer from './../containers/ScreenContainer';
+
 import { SubHeader } from './../text';
 
 

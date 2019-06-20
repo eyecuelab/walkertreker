@@ -5,7 +5,6 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, } from 'react-nat
 import ContactsListItemDisplay from '../ui/ContactsListItemDisplay';
 import defaultStyle from '../../styles/defaultStyle';
 
-import ScreenContainer from './../containers/ScreenContainer';
 
 export default class ContactsList extends React.Component {
 
