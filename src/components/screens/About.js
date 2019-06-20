@@ -38,9 +38,6 @@ export default class About extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}
       >
-        <TextAlt size='sm'>Test</TextAlt>
-        <TextAlt size='md'>Test</TextAlt>
-        <TextAlt size='lg'>Test</TextAlt>
         <View style={styles.container}>
           <View style={customStyles.headlineContainer}>
             <Text style={styles.headline}>About{"\n"}Walker{"\n"}Treker</Text>

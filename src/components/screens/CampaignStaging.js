@@ -13,6 +13,11 @@ import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 const { c } = constants;
 
+import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
+import ScreenContainer from './../containers/ScreenContainer';
+import { SubHeader } from './../text';
+
+
 class CampaignStaging extends React.Component {
 
   constructor(props) {
@@ -95,55 +100,39 @@ class CampaignStaging extends React.Component {
           <WhenToStartForm handleModalStateChange={this._toggleWhenToStartModal} />
         </Modal>
 
-        <View style={styles.container}>
+        <ScreenContainer>
 
           <View style={customStyles.contentContainer}>
 
-            <View style={customStyles.headerContainer}>
-
-              <Text style={styles.headline}>New Campaign</Text>
-
-              <View style={[customStyles.headerRow, {marginTop: widthUnit * 2.5}]}>
-                <Text style={[styles.label]}>{this.props.campaign.length} </Text>
-                <Text style={[styles.label, {color: 'black'}]}>Days</Text>
-              </View>
-
-              <View style={customStyles.headerRow}>
-                <Text style={[styles.label]}>{this.props.campaign.difficultyLevel} </Text>
-                <Text style={[styles.label, {color: 'black'}]}>Difficulty Level</Text>
-              </View>
-
-              <View style={customStyles.headerRow}>
-                <Text style={[styles.label]}>{this.props.campaign.randomEvents} </Text>
-                <Text style={[styles.label, {color: 'black'}]}>In-game Events</Text>
-              </View>
-
-            </View>
+            <CampaignLobbyHeader campaign={this.props.campaign} title="New Campaign"/>
 
             <View style={customStyles.panelContainer}>
               <ScrollView contentContainerStyle={customStyles.scrollContainer} showsVerticalScrollIndicator={true}>
-                <View style={customStyles.scrollChildContainer}>
-                  <Text style={customStyles.subHead}>Players</Text>
+
+
+                  <SubHeader>Players</SubHeader>
                   <View style={[customStyles.contactListContainer, customStyles.contactListFirst]}>
                     <PlayersList
                       onSelectPlayer={this._toggleSelectedPlayer}/>
                   </View>
-                </View>
+
+
                 <View style={[customStyles.contactListContainer, customStyles.contactListSecond]}>
-                  <Text style={customStyles.subHead}>Invited</Text>
+                  <SubHeader>Invited</SubHeader>
                   <ContactsList
                   contacts={this.state.invites}
                   contactsFetched={true}
                   allSelected={true}
                   />
                 </View>
+
               </ScrollView>
             </View>
 
           </View>
           {this.submitConditionalRender()}
 
-        </View>
+        </ScreenContainer>
       </ImageBackground>
     );
   }
@@ -177,7 +166,7 @@ const customStyles = StyleSheet.create({
     borderBottomColor: 'white',
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    // marginTop: 10,
+    marginTop: 10,
   },
   scrollContainer: {
     width: '100%',
