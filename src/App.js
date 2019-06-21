@@ -14,7 +14,6 @@ import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
 import Modal from 'react-native-modal';
-import NewPlayerForm from './components/ui/NewPlayerForm';
 import NewPlayerModal from './components/ui/NewPlayerModal';
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
@@ -140,6 +139,9 @@ class App extends React.Component {
       path,
       queryParams
     });
+    if (this.state.path === 'recovery') {
+      this._toggleNewPlayerModal()
+    }
   }
 
   _passNotificationToStart = (notification) => {

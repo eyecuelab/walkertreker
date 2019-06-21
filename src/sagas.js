@@ -230,7 +230,7 @@ export function *fetchPlayer(action) {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     // .then(response => response.text());
-    // console.log('response', response);
+    console.log('response', response);
     yield put({type: c.PLAYER_FETCHED, player: response});
   } catch (error) {
     console.warn('error fetching players: ', error);
@@ -265,8 +265,9 @@ export function *updatePlayer(action) {
 }
 
 
-export function *recoverAccount(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/players/recover' + action.phoneNumber
+export function *sendRecoverAccount(action) {
+  const url = 'https://walkertrekker.herokuapp.com/api/players/recover/' + action.phoneNumber
+  console.log(url)
   const initObj = {
     method: "GET",
     headers: {
@@ -277,7 +278,7 @@ export function *recoverAccount(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
-    yield put({type: c.ACCOUNT_RECOVERED, player: response});
+    // yield put({type: c.ACCOUNT_RECOVERED, player: response});
   } catch (error) {
     console.warn('error recovering players: ', error);
   }
@@ -514,7 +515,7 @@ export function *watchUpdatePlayer() {
 }
 
 export function *watchRecoverAccount() {
-  yield takeEvery(c.RECOVER_ACCOUNT, recoverAccount);
+  yield takeEvery(c.RECOVER_ACCOUNT, sendRecoverAccount);
 }
 
 export function *watchStartCampaign() {

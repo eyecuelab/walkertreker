@@ -27,14 +27,13 @@ class NewPlayerModal extends React.Component {
  
 
   _handleRecoveryModalToggle = () => {
-    console.log("toggle")
     const newRecoveryModalToggle = !this.state.recoveryModalToggle
     this.setState({recoveryModalToggle: newRecoveryModalToggle})
-    console.log(this.state.recoveryModalToggle)
+    console.log("recoveryModal open", this.state.recoveryModalToggle)
   }
 
   conditionalRenderModalContent = () => {
-    console.log('conditional redner')
+    console.log('conditional render')
     if (this.state.recoveryModalToggle) {
       return <AccountRecovery 
       handleModalStateChange={this.props.handleModalStateChange} 

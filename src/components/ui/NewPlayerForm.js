@@ -140,7 +140,7 @@ const customStyles = StyleSheet.create({
   },
   buttonContainer: {
     // margin: 10,
-    height: heightUnit*20,
+    height: heightUnit*10,
     width: '100%',
     alignSelf: 'flex-end',
     flexDirection: 'row',

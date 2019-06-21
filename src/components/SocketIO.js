@@ -18,7 +18,7 @@ class SocketIO extends React.Component {
     })
 
     socket.on('log', (msg) => {
-      console.log(msg)
+      console.log("socket msg", msg)
     })
 
     socket.on('connect', async () => {

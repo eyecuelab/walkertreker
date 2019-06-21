@@ -22,10 +22,11 @@ class RecoverAccountModal extends React.Component {
 
   _handleRecovery = async () => {
     const { dispatch } = this.props;
-    console.log(this.state.phoneNumber)
+    console.log('recovery nummber', this.state.phoneNumber)
     dispatch({
       type: c.RECOVER_ACCOUNT, phoneNumber: this.state.phoneNumber
     })
+    this.props.handleModalStateChange();
   }
 
   render(){
