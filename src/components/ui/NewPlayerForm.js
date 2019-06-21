@@ -11,6 +11,7 @@ import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
+import { ScrollView } from 'react-native-gesture-handler';
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
@@ -24,7 +25,10 @@ class NewPlayerForm extends React.Component {
     }
   }
 
+
+ 
   _handleSubmit = async () => {
+    console.log("newPlayer")
     const { dispatch } = this.props;
     const pushToken = await this.registerForPushNotificationsAsync()
     dispatch({
@@ -115,8 +119,11 @@ class NewPlayerForm extends React.Component {
             </View>
           </View>
 
+        <Text style={{color: 'white'}} onPress={() => {this.props.handleRecoveryModalToggle()}}>
+            Already have an account? Recover it here. 
+          </Text>
         </View>
-      </ImageBackground>
+    </ImageBackground>
     )
   }
 }
@@ -132,10 +139,10 @@ const customStyles = StyleSheet.create({
     // backgroundColor: 'darkred',
     // justifyContent: 'center',
     // borderRadius: 5,
-    padding: widthUnit * 5,
+    padding: widthUnit * 4,
   },
   headlineContainer: {
-    margin: 10,
+    margin: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -147,7 +154,7 @@ const customStyles = StyleSheet.create({
   },
   buttonContainer: {
     // margin: 10,
-    height: heightUnit*20,
+    height: heightUnit*10,
     width: '100%',
     alignSelf: 'flex-end',
     flexDirection: 'row',

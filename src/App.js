@@ -14,7 +14,7 @@ import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
 import Modal from 'react-native-modal';
-import NewPlayerForm from './components/ui/NewPlayerForm';
+import NewPlayerModal from './components/ui/NewPlayerModal';
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
@@ -26,14 +26,13 @@ if (__DEV__) {
   KeepAwake.activate();
 }
 
-
-
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 class App extends React.Component {
 
+  //turn these into state hooks
   constructor(props) {
     super(props)
     this.state = {
@@ -109,6 +108,22 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
+    
+  };
+
+  _handleLoadingError = error => {
+    console.warn(error);
+  }
+
+  _handleFinishLoading = async () => {
+    const {dispatch} = this.props
+    const { path, queryParams } = await Linking.parseInitialURLAsync();
+
+    await this.setState({
+      path,
+      queryParams
+    });
+
     // blank localPlayer in asyncStorage:
     // await storeData('playerInfo', "")
     let localPlayer = await retrieveData('playerInfo')
@@ -117,30 +132,20 @@ class App extends React.Component {
       id: false,
       campaignId: false
     }
+    
     if (!localPlayer) {
+      console.log('nolocalplayer')
       localPlayer = dud
-      await this.setState({
-        newPlayerModalVisible: true,
-      })
+      this.state.path === 'recovery' ? await this.setState({ newPlayerModalVisible: false }) : await this.setState({ newPlayerModalVisible: true })
     } else {
       localPlayer = JSON.parse(localPlayer)
+      console.log('localplayer-needplayer')
     }
     await this.setState({ localPlayer })
 
-  };
-
-  _handleLoadingError = error => {
-    console.warn(error);
-  }
-
-  _handleFinishLoading = async () => {
-    const { path, queryParams } = await Linking.parseInitialURLAsync();
-
-    this.setState({
-      isReady: true,
-      path,
-      queryParams
-    });
+    await this.setState({
+      isReady: true
+    })
   }
 
   _passNotificationToStart = (notification) => {
@@ -149,7 +154,7 @@ class App extends React.Component {
 
   componentDidMount() {
     Notifications.addListener(this._passNotificationToStart);
-    console.log("(App:152) - App Component Mounted")
+    console.log("App Component Mounted")
   }
 
   render() {
@@ -165,16 +170,19 @@ class App extends React.Component {
     }
 
     const prefix = Linking.makeUrl('/');
-
+    console.log("This is the prefix:", prefix)
     return (
       <Provider store={store}>
         <Modal isVisible={this.state.newPlayerModalVisible}>
-          <NewPlayerForm handleModalStateChange={this._toggleNewPlayerModal} />
+          <NewPlayerModal handleModalStateChange={this._toggleNewPlayerModal} />
         </Modal>
         <SocketIO />
         <NotificationListeners />
         <BackgroundPedometer />
         <AppContainer
+          onNavigationStateChange={(prevState, currentState, action) => {
+            console.log('current state',currentState)
+          }}
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
           }}

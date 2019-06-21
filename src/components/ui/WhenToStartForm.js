@@ -16,8 +16,10 @@ class WhenToStartForm extends React.Component {
     const { dispatch } = this.props;
     let bool;
     if (num === 1) {
+      console.log('bool true')
       bool = true;
     } else if (num === 0) {
+      console.log('bool false')
       bool = false;
     } else {
       console.warn('_handleGameStart is getting a weird argument');

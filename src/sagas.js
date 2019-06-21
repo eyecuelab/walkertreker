@@ -17,6 +17,8 @@ export function *fetchSteps() {
   const dates = steps.campaignDateArray;
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
+  // Here we could only loop through the dates that are relevent (speed it up)
+  // 
   for (obj of datesCopy) {
     console.log('fetch steps loop, day ' + obj.day); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
     try {
@@ -24,7 +26,6 @@ export function *fetchSteps() {
       const end = new Date(Date.parse(obj.end))
       const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
-
       const dateWithSteps = Object.assign({}, datesCopy[obj.day], {steps: stepsToAdd});
       datesCopy.splice(obj.day, 1, dateWithSteps);
     } catch (error) {
@@ -32,7 +33,6 @@ export function *fetchSteps() {
     }
   }
   yield storeData('stepInfo', JSON.stringify(steps))
-
   yield put({type: c.STEPS_RECEIVED, campaignDateArray: datesCopy});
 }
 
@@ -232,7 +232,7 @@ export function *fetchPlayer(action) {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     // .then(response => response.text());
-    // console.log('response', response);
+    console.log('response', response);
     yield put({type: c.PLAYER_FETCHED, player: response});
   } catch (error) {
     console.warn('error fetching players: ', error);
@@ -265,6 +265,27 @@ export function *updatePlayer(action) {
     console.warn('error updating player: ', error)
   }
 }
+
+
+export function *sendRecoverAccount(action) {
+  const url = 'https://walkertrekker.herokuapp.com/api/players/recover/' + action.phoneNumber
+  console.log(url)
+  const initObj = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    }
+  }
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    // yield put({type: c.ACCOUNT_RECOVERED, player: response});
+  } catch (error) {
+    console.warn('error recovering players: ', error);
+  }
+}
+
 
 export function *startCampaign(action) {
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns/start/' + action.campId;
@@ -480,14 +501,6 @@ export function *watchJoinCampaign() {
   yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest);
 }
 
-export function *watchStartCampaign() {
-  yield takeEvery(c.START_CAMPAIGN, startCampaign);
-}
-
-export function *watchDestroyCampaign() {
-  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign);
-}
-
 
 //Player Sagas
 export function *watchCreatePlayer() {
@@ -508,6 +521,18 @@ export function *watchFetchPlayer() {
 
 export function *watchUpdatePlayer() {
   yield takeEvery(c.UPDATE_PLAYER, updatePlayer);
+}
+
+export function *watchRecoverAccount() {
+  yield takeEvery(c.RECOVER_ACCOUNT, sendRecoverAccount);
+}
+
+export function *watchStartCampaign() {
+  yield takeEvery(c.START_CAMPAIGN, startCampaign);
+}
+
+export function *watchDestroyCampaign() {
+  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign);
 }
 
 export function *watchAppStateChange() {
@@ -567,6 +592,7 @@ export default function *rootSaga() {
     watchSteps(),
     watchPlayerActions(),
     watchPlayerUpdated(),
+    watchRecoverAccount(),
     watchScavengedItems(),
     watchGetLastStepState(),
     watchStartScavenge(),
