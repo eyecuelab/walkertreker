@@ -70,13 +70,13 @@ class CreateCampaign extends React.Component {
         style={{width: '100%', height: '100%',}}
       >
         <View style={styles.container}>
-          <Text style={styles.headline}>START A NEW CAMPAIGN</Text>
+          <Text style={styles.headline}>NEW CAMPAIGN</Text>
           <View style={createCampaignStyle.scrollviewContainer}>
-            <ScrollView style={[{}]}>
+            <ScrollView>
             <View style={createCampaignStyle.toggleContainer}>
             <ThreeButtonToggle
             title="Number of days"
-            subtitle="Number of days for your campaign"
+            subtitle=""
             bigValue={true}
             button1value="15"
             button1label="days"
@@ -91,7 +91,7 @@ class CreateCampaign extends React.Component {
             <View style={createCampaignStyle.toggleContainer}>
             <ThreeButtonToggle
             title="Difficulty level"
-            subtitle="An average distance expected each day"
+            subtitle=""
             button1value="Easy"
             button1label="1 mile"
             button2value="Hard"
@@ -105,7 +105,7 @@ class CreateCampaign extends React.Component {
             <View style={createCampaignStyle.toggleContainer}>
             <ThreeButtonToggle
             title="In-game event"
-            subtitle="Frequency for randomly generated in-game events throughout the day"
+            subtitle=""
             button1value="Low"
             button1label="About 1"
             button2value="Mid"
@@ -139,7 +139,7 @@ const createCampaignStyle = StyleSheet.create({
     marginTop: heightUnit*2.5,
   },
   scrollviewContainer: {
-    height: heightUnit*60,
+    height: heightUnit*65,
   }
 })
 

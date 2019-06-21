@@ -13,6 +13,8 @@ class SocketIO extends React.Component {
 
   componentDidMount = async () => {
     const { dispatch } = this.props
+    socket.open()
+    
     socket.on('connect_error', (err) => {
       console.log(`Socket connection error: ${err}`)
     })
@@ -46,7 +48,7 @@ class SocketIO extends React.Component {
 
     setInterval(() => {
       socket.emit('stayAwake');
-    }, 30000)
+    }, 5000)
     socket.on('stayAwake', () => {return;})
   }
 

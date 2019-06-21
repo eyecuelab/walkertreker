@@ -39,8 +39,14 @@ class CampaignSummary extends React.Component {
 
   _displayStepPercentage = (player) => {
     const today = this.props.campaign.currentDay;
-    const percent = Math.floor((((player.steps[today]) / (player.stepTargets[today])) * 100));
-    return percent;
+
+    // Code for Percentage based Display
+    // const percent = Math.floor((((player.steps[today]) / (player.stepTargets[today])) * 100));
+    // return percent;
+
+    // Code for xxxx / yyyy display
+
+    return `${player.steps[today]} / ${player.stepTargets[today]}`
   }
 
   _displayHealthLevel = (player) => {
@@ -81,6 +87,8 @@ class CampaignSummary extends React.Component {
 
   // TODO: when INVENTORY is fleshed out, make sure to put this function in there too
   _submitConditionalRender = () => {
+    if (this.props.player.steps) {
+
     const stepsToday = this.props.player.steps[this.props.campaign.currentDay];
     const stepTargetToday = this.props.player.stepTargets[this.props.campaign.currentDay];
     if (stepsToday > stepTargetToday) {
@@ -120,6 +128,7 @@ class CampaignSummary extends React.Component {
       );
     }
   }
+  }
 
   _showToast = (msg) => {
     ToastAndroid.show(msg, ToastAndroid.SHORT)
@@ -140,10 +149,9 @@ class CampaignSummary extends React.Component {
                   <ThreeInfoSquares
                     title={player.displayName}
                     player={player}
-                    bigValue={true}
+                    bigValue={false}
                     button1label='Progress'
-                    // button1value={this._displayStepPercentage(player) + '%'}
-                    button1value={player.steps[this.props.campaign.currentDay] + '/' + player.stepTargets[this.props.campaign.currentDay]}
+                    button1value={this._displayStepPercentage(player)}
                     button2label='Health'
                     button2value={this._displayHealthLevel(player)}
                     button3label='Hunger'
@@ -155,9 +163,7 @@ class CampaignSummary extends React.Component {
           </ScrollView>
 
           <View style={customStyles.bottom}>
-
             {this._submitConditionalRender()}
-
           </View>
         </View>
       </ImageBackground>

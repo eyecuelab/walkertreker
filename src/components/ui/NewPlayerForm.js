@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpa
 import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
+import {MainHeader, SubHeader, Label} from './../text';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
@@ -43,6 +44,7 @@ class NewPlayerForm extends React.Component {
   registerForPushNotificationsAsync = async () => {
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     let finalStatus = existingStatus;
+
     if (existingStatus !== 'granted') {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
@@ -70,34 +72,53 @@ class NewPlayerForm extends React.Component {
 
   render() {
     return(
-      <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
-        <View style={customStyles.headlineContainer}>
-          <Text style={styles.headline}>New{'\n'}Player</Text>
-        </View>
-        <View style={customStyles.formContainer}>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Display Name</Text>
-            <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({displayName: text})} value={this.state.displayName}/>
+      <ImageBackground
+      source={use_item_bg}
+      resizeMode='cover'
+      style={customStyles.itemBg}
+      >
+        <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
+
+          <View style={customStyles.headlineContainer}>
+            <MainHeader>New Player</MainHeader>
           </View>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Phone Number</Text>
-            <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
-          </View>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Avatar</Text>
+
+          <View style={customStyles.formContainer}>
+
+            <View style={customStyles.fieldContainer}>
+              <Label>Display Name</Label>
+              <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({displayName: text})} value={this.state.displayName}/>
+            </View>
+
+            <View style={customStyles.fieldContainer}>
+              <Label>Phone Number</Label>
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
+            </View>
+
+
             <View style={customStyles.avatarContainer}>
+
               <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
                 <Image
                   source={this.state.avatar}
                   style={customStyles.avatar}
                 />
               </TouchableOpacity>
+
               <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
             </View>
           </View>
-          <Text style={{color: 'white'}} onPress={() => {this.props.handleRecoveryModalToggle()}}>
-            Already have an account? Recover it here. 
-          </Text>
+
+          <View style={customStyles.buttonContainer}>
+            <View style={customStyles.button}>
+              <SingleButtonFullWidth
+                title="Submit"
+                onButtonPress={this._handleSubmit}
+                backgroundColor="darkred"
+              />
+            </View>
+          </View>
+
         </View>
         <View style={customStyles.buttonContainer}>
           <View style={customStyles.button}>
@@ -108,8 +129,7 @@ class NewPlayerForm extends React.Component {
             />
           </View>
         </View>
-        
-      </View>
+    </ImageBackground>
     )
   }
 }

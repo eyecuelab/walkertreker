@@ -50,6 +50,7 @@ class Start extends React.Component {
 
   navigate = (route) => {
     const path = this.props.screenProps.path;
+    console.log(path);
     let routeName = route
     let routeParams = {}
     const resetAction = StackActions.reset({

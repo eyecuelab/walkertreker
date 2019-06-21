@@ -80,11 +80,11 @@ const styles = StyleSheet.create({
   },
   value: {
     fontFamily: 'gore',
-    fontSize: widthUnit*6,
+    fontSize: widthUnit*5,
   },
   bigValue: {
     fontFamily: 'gore',
-    fontSize: widthUnit*8,
+    fontSize: widthUnit*10,
   },
   label: {
     fontFamily: 'gore',
