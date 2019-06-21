@@ -501,14 +501,6 @@ export function *watchJoinCampaign() {
   yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest);
 }
 
-export function *watchStartCampaign() {
-  yield takeEvery(c.START_CAMPAIGN, startCampaign);
-}
-
-export function *watchDestroyCampaign() {
-  yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign);
-}
-
 
 //Player Sagas
 export function *watchCreatePlayer() {

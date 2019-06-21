@@ -174,7 +174,6 @@ class App extends React.Component {
 
     const prefix = Linking.makeUrl('/');
     console.log("This is the prefix:", prefix)
-
     return (
       <Provider store={store}>
         <Modal isVisible={this.state.newPlayerModalVisible}>

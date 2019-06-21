@@ -1,6 +1,6 @@
 import React from 'react';
 import { AsyncStorage, ImageBackground } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
+import { StackActions, NavigationActions, NavigationEvents } from 'react-navigation';
 import { connect } from 'react-redux';
 import constants from '../constants';
 const { c, retrieveData, storeData, navigation } = constants;
@@ -115,6 +115,12 @@ class Start extends React.Component {
         source={require('../../assets/splash2.png')}
         style={{width: '100%', height: '100%'}}
       >
+        <NavigationEvents
+      onWillFocus={payload => console.log('will focus',payload)}
+      onDidFocus={payload => console.log('did focus',payload)}
+      onWillBlur={payload => console.log('will blur',payload)}
+      onDidBlur={payload => console.log('did blur',payload)}
+    />
       </ImageBackground>
     );
   }
