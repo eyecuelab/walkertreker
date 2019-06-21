@@ -5,7 +5,7 @@ import { AppContainer } from './nav/router';
 import NavigationService from './nav/NavigationService';
 
 import { createStore, applyMiddleware } from 'redux';
-import { Provider, connect } from 'react-redux';
+import { Provider, connect, dispatch } from 'react-redux';
 import { logger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
@@ -18,11 +18,15 @@ import NewPlayerForm from './components/ui/NewPlayerForm';
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
-import GetNotificationToken from './components/GetNotificationToken'
+import GetNotificationToken from './components/GetNotificationToken';
+
+import BackgroundTask from 'react-native-background-task';
 
 if (__DEV__) {
   KeepAwake.activate();
 }
+
+
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
@@ -56,6 +60,7 @@ class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     const imageAssets = this.cacheImages([
+      require('../assets/logo.png'),
       require('../assets/bg.png'),
       require('../assets/blankavatar.png'),
       require('../assets/buttontexture1.png'),
@@ -107,6 +112,7 @@ class App extends React.Component {
     // blank localPlayer in asyncStorage:
     // await storeData('playerInfo', "")
     let localPlayer = await retrieveData('playerInfo')
+    console.log("Local Player during load" + localPlayer)
     const dud = {
       id: false,
       campaignId: false
@@ -128,7 +134,8 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
-    const { path, queryParams } = await Linking.parseInitialURLAsync()
+    const { path, queryParams } = await Linking.parseInitialURLAsync();
+
     this.setState({
       isReady: true,
       path,
@@ -141,11 +148,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Notifications.addListener(this._passNotificationToStart)
+    Notifications.addListener(this._passNotificationToStart);
+    console.log("(App:152) - App Component Mounted")
   }
 
   render() {
     if (!this.state.isReady) {
+      console.log("Loading App Initialized");
       return (
         <AppLoading
           startAsync={this._loadResourcesAsync}

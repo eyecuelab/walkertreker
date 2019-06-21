@@ -10,7 +10,10 @@ import PlayersList from '../ui/PlayersList';
 import CampaignDetails from '../ui/CampaignDetails';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
-import defaultStyle from '../../styles/defaultStyle';
+import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
+import ScreenContainer from './../containers/ScreenContainer';
+import { MainHeader, SubHeader } from './../text';
+
 
 class AcceptInvite extends React.Component {
   constructor(props) {
@@ -28,12 +31,15 @@ class AcceptInvite extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.campaign.id == null && this.props.campaign.id) {
+    console.log("AcceptInvite(32): CampaignId = " + this.props.campaign.id)
+    console.log("ACCEPT_INVITE(32): ReadyStatus = " + this.state.isReady )
+    if (!this.state.isReady && this.props.campaign.id) {
       this.setState({ isReady: true })
     }
   }
 
   joinCampaign() {
+    console.log("AcceptInvite(38) - Attempting to Join Campaign CampaignID = " + this.props.campaign.id + " with playerID = " + this.props.player.id)
     this.props.dispatch({
       type: c.SEND_JOIN_CAMPAIGN_REQUEST,
       campId: this.props.campaign.id,
@@ -55,29 +61,31 @@ class AcceptInvite extends React.Component {
           source={this.props.screenProps.backgroundImage}
           style={{width: '100%', height: '100%'}}
         >
-          <View style={styles.container}>
+          <ScreenContainer>
+
             <View style={customStyles.inviteContainer}>
-              <View style={[ customStyles.headerContainer ]}>
-                <Text style={styles.headline}>Accept{"\n"}Invite{"\n"}</Text>
-                <CampaignDetails campaign={this.props.campaign} />
-              </View>
+
+              <CampaignLobbyHeader campaign={this.props.campaign} title="New Campaign"/>
 
               <View style={[ customStyles.playerContainer ]}>
-                <View style={styles.playerHeadlineContainer}>
-                  <Text style={styles.headline}>Players</Text>
-                </View>
+
+                  <MainHeader>Players</MainHeader>
+
+
                 <View style={customStyles.playerListContainer}>
                   <PlayersList />
                 </View>
+
               </View>
             </View>
+
             <TwoButtonOverlay
               button1title='Join Campaign'
               button1onPress={() => this.joinCampaign()}
               button2title='About'
               button2onPress={() => this.navigateToAbout()}
             />
-          </View>
+          </ScreenContainer>
         </ImageBackground>
       )
     } else {
@@ -86,16 +94,15 @@ class AcceptInvite extends React.Component {
           source={this.props.screenProps.backgroundImage}
           style={{width: '100%', height: '100%'}}
         >
-          <View style={styles.container}>
-            <Text style={styles.subHeading}>Loading...</Text>
-          </View>
+          <ScreenContainer>
+            <SubHeader>Loading...</SubHeader>
+          </ScreenContainer>
         </ImageBackground>
       )
     }
   }
 }
 
-const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({

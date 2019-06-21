@@ -30,7 +30,7 @@ export default class ThreeButtonToggle extends React.Component {
     return (
       <View style={threeButtonToggleStyles.container} >
         <Text style={[styles.label, {margin: 5, marginBottom: 0}]}>{this.props.title}</Text>
-        <Text style={[styles.plainText, {margin: 5}]}>{this.props.subtitle}</Text>
+        <Text style={[styles.plainText, {margin: 0}]}>{this.props.subtitle}</Text>
         <View style={threeButtonToggleStyles.buttonContainer}>
           <TouchableHighlight
             style={threeButtonToggleStyles.touchableArea}

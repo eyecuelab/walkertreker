@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import { TextAlt } from './../text';
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
@@ -80,6 +80,6 @@ const customStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    lineHeight: heightUnit*3.75,
+    lineHeight: heightUnit*3.25,
   },
 })

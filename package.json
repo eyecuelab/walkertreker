@@ -13,6 +13,8 @@
     "prop-types": "^15.6.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-background-fetch": "^2.6.0",
+    "react-native-background-task": "^0.2.1",
     "react-native-modal": "^7.0.2",
     "react-native-responsive-screen": "^1.2.0",
     "react-navigation": "^3.0.9",
@@ -21,6 +23,7 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.1",
     "socket.io-client": "^2.1.1",
+    "styled-components": "^4.3.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

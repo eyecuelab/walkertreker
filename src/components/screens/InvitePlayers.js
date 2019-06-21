@@ -13,6 +13,11 @@ import defaultStyle from '../../styles/defaultStyle';
 
 import { parsePhoneNumber } from '../../util/util';
 
+import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
+import {TextAlt} from './../text';
+
+import styled from 'styled-components/native';
+
 class InvitePlayers extends React.Component {
 
   constructor(props) {
@@ -178,14 +183,6 @@ class InvitePlayers extends React.Component {
     }
   }
 
-  detailText = () => {
-    return (
-      <Text style={styles.detail}>
-        Tap to select people you want to invite on your journey. Currently you've selected <Text style={{color: 'black', fontFamily: 'verdanaBold',}}>{this.state.numSelected} people.</Text>
-      </Text>
-    )
-  }
-
   render() {
     return (
       <ImageBackground
@@ -193,33 +190,19 @@ class InvitePlayers extends React.Component {
         style={{width: '100%', height: '100%'}}
       >
         <View style={styles.container}>
+
           <View style={customStyles.contentContainer}>
-            <View style={customStyles.headerContainer}>
-              <View style={customStyles.headerFirst}>
-                <View style={[customStyles.headerRow,]}>
-                  <Text style={[styles.headline]}>Invite{"\n"}Players</Text>
-                </View>
-                <View style={[customStyles.headerRow, {marginTop: widthUnit * 2.5}]}>
-                  <Text style={[styles.label]}>{this.props.campaign.length} </Text>
-                  <Text style={[styles.label, {color: 'black'}]}>Days</Text>
-                </View>
-                <View style={customStyles.headerRow}>
-                  <Text style={[styles.label]}>{this.props.campaign.difficultyLevel} </Text>
-                  <Text style={[styles.label, {color: 'black'}]}>Difficulty Level</Text>
-                </View>
-                <View style={customStyles.headerRow}>
-                  <Text style={[styles.label]}>{this.props.campaign.randomEvents} </Text>
-                  <Text style={[styles.label, {color: 'black'}]}>In-game Events</Text>
-                </View>
+            <View>
+              <CampaignLobbyHeader campaign={this.props.campaign} title="Invite Players"/>
+
+              <View style={customStyles.headerRow}>
+                <TextAlt size="sm">
+                  Tap to select people you want to invite on your journey. Currently you've selected <Text style={{color: 'black', fontFamily: 'verdanaBold',}}>{this.state.numSelected} people.</Text>
+                </TextAlt>
               </View>
-              <View style={[customStyles.headerRowLast,]}>
-                <View style={customStyles.headerRow}>
-                  <View style={customStyles.plainTextContainer}>
-                    {this.detailText()}
-                  </View>
-                </View>
-              </View>
+
             </View>
+
             <View style={customStyles.contactsContainer}>
               <ScrollView showsVerticalScrollIndicator={true}>
                 <ContactsList
@@ -229,7 +212,11 @@ class InvitePlayers extends React.Component {
                 />
               </ScrollView>
             </View>
+
+
           </View>
+
+          {/*Renders Two-Button Component*/}
           {this.submitConditionalRender()}
         </View>
       </ImageBackground>
@@ -241,51 +228,19 @@ const styles = StyleSheet.create(defaultStyle);
 
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
+
 const customStyles = StyleSheet.create({
   contentContainer: {
-    width: '100%',
-    height: '90%',
-    paddingBottom: 10,
-  },
-  headerContainer: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'space-between',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    margin: 0,
-    padding: 0,
-    // marginTop: widthUnit * 2.5,
-  },
-  headerRowFirst: {
-    flex: 2,
-    justifyContent: 'space-between',
-  },
-  headerRowLast: {
-    flex: 1,
-    position: 'absolute',
-    bottom: heightUnit*2,
-  },
-  plainTextContainer: {
-
+    paddingBottom: heightUnit*10,
   },
   contactsContainer: {
     flex: 1.5,
-    // backgroundColor: 'green',
-    // width: '100%',
-    // height: '100%',
-    // height: heightUnit*50,
     borderTopColor: 'white',
     borderBottomColor: 'white',
     borderTopWidth: 1,
     borderBottomWidth: 1,
-  },
-  scrollViewContainer: {
-    width: '100%',
-    height: '100%',
-  },
+    marginTop: heightUnit*1
+  }
 });
 
 function mapStateToProps(state) {

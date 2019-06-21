@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, } from 'react-nat
 import ContactsListItemDisplay from '../ui/ContactsListItemDisplay';
 import defaultStyle from '../../styles/defaultStyle';
 
+
 export default class ContactsList extends React.Component {
 
   constructor(props) {
@@ -43,7 +44,7 @@ export default class ContactsList extends React.Component {
     } else {
       // Can replace this with a spinning wheel or some loading animation
       return (
-        <View style={styles.container}>
+        <View style={[styles.container, {marginTop: 5}]}>
           <Text style={defaultStyleSheet.label}>Fetching contacts...</Text>
         </View>
       )
