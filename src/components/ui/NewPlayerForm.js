@@ -119,15 +119,9 @@ class NewPlayerForm extends React.Component {
             </View>
           </View>
 
-        </View>
-        <View style={customStyles.buttonContainer}>
-          <View style={customStyles.button}>
-            <SingleButtonFullWidth
-              title="Submit"
-              onButtonPress={this._handleSubmit}
-              backgroundColor="darkred"
-            />
-          </View>
+        <Text style={{color: 'white'}} onPress={() => {this.props.handleRecoveryModalToggle()}}>
+            Already have an account? Recover it here. 
+          </Text>
         </View>
     </ImageBackground>
     )

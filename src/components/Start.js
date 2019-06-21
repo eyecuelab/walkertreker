@@ -1,6 +1,6 @@
 import React from 'react';
 import { AsyncStorage, ImageBackground } from 'react-native';
-import { StackActions, NavigationActions, NavigationEvents } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import constants from '../constants';
 const { c, retrieveData, storeData, navigation } = constants;
@@ -35,9 +35,9 @@ class Start extends React.Component {
       dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
     }
     console.log("screenprops", this.props.screenProps.queryParams.playerId)
-    if (this.props.screenProps.queryParams.playerId) {
-      dispatch({ type: c.FETCH_PLAYER, playId: this.props.screenProps.queryParams.playerId})
-    }
+    // if (this.props.screenProps.queryParams.playerId) {
+    //   dispatch({ type: c.FETCH_PLAYER, playId: this.props.screenProps.queryParams.playerId})
+    // }
     if (!this.state.needPlayer) {
 
       //if no localPlayer.id, user enters a phone number
@@ -50,13 +50,10 @@ class Start extends React.Component {
 
   navigate = (route) => {
     const path = this.props.screenProps.path;
-    console.log(path);
+    console.log('path', path)
     let routeName = route
     let routeParams = {}
-    const resetAction = StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName, params: routeParams })]
-    });
+   
     if (this.state.notification) {
       const type = this.state.notification.data.type
       if (navigation[type] !== 'none') {
@@ -76,14 +73,19 @@ class Start extends React.Component {
         playerId: this.props.screenProps.queryParams.playerId,
       }
     }
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName, params: routeParams })]
+    });
     console.log('INITIAL NAVIGATION: ')
     console.log('routeName: ', routeName)
     console.log('routeParams: ', routeParams)
+    console.log('reset action', resetAction)
     this.props.navigation.dispatch(resetAction);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('here i am in start')
+    console.log('start update', prevProps)
     if (prevProps.player.id == null && this.props.player.id !== null) {
       this.setState({ gotPlayer: true })
     }
@@ -115,12 +117,6 @@ class Start extends React.Component {
         source={require('../../assets/splash2.png')}
         style={{width: '100%', height: '100%'}}
       >
-        <NavigationEvents
-      onWillFocus={payload => console.log('will focus',payload)}
-      onDidFocus={payload => console.log('did focus',payload)}
-      onWillBlur={payload => console.log('will blur',payload)}
-      onDidBlur={payload => console.log('did blur',payload)}
-    />
       </ImageBackground>
     );
   }
