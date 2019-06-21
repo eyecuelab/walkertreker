@@ -8,23 +8,17 @@ const { c, retrieveData, storeData, navigation } = constants;
 class Start extends React.Component {
   constructor(props) {
     super(props)
-    const localPlayer = this.props.screenProps.localPlayer
-    const notification = this.props.screenProps.notification
-    const needPlayer = localPlayer.id ? true : false
-    const needCampaign = localPlayer.campaignId ? true : false
     this.state = {
-      localPlayer,
-      needPlayer,
-      needCampaign,
-      notification,
-      gotPlayer: false,
-      gotCampaign: false,
+      notification : this.props.screenProps.notification
+      //player: redux.state.player
+      //campaign: redux.state.campaign
     }
   }
 
   componentDidMount = async () => {
     const { dispatch } = this.props
-    if (this.state.needPlayer) {
+
+    if (this.state.player.id) {
       dispatch({ type: c.FETCH_PLAYER, playId: this.state.localPlayer.id})
     }
     if (this.state.needCampaign) {
@@ -37,7 +31,6 @@ class Start extends React.Component {
 
   navigate = (route) => {
     const path = this.props.screenProps.path;
-    console.log(path);
     let routeName = route
     let routeParams = {}
     if (this.state.notification) {
@@ -53,9 +46,6 @@ class Start extends React.Component {
         campaignId: this.props.screenProps.queryParams.campaignId,
       }
     }
-    console.log('INITIAL NAVIGATION: ')
-    console.log('routeName: ', routeName)
-    console.log('routeParams: ', routeParams)
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName, params: routeParams })]

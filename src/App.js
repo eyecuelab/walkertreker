@@ -26,8 +26,6 @@ if (__DEV__) {
   KeepAwake.activate();
 }
 
-
-
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);

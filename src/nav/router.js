@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createAppContainer, createSwitchNavigator } from "react-navigation";
 
 // screens
 import Start from '../components/Start';
@@ -44,5 +44,24 @@ const AppNavigator = createStackNavigator(
     }
   }
 );
+
+const AuthStack = createStackNavigator(
+  {
+    SignUp : SignUp,
+    AccountRecovery : AccountRecovery
+  }
+)
+
+const StartGameStack = createStackNavigator(
+  {
+    CreateCampaign: CreateCampaign
+  }
+)
+
+const CampaignStack = createStackNavigator(
+  {
+    CampaignStaging: CampaignStaging
+  }
+)
 
 export const AppContainer = createAppContainer(AppNavigator);
