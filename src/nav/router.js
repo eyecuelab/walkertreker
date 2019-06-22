@@ -17,6 +17,9 @@ import RandomEvent from '../components/screens/RandomEvent';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
 
+import AuthCheck from './../components/screens/AuthCheck';
+import SignUp from './../components/screens/SignUp';
+
 const AppNavigator = createStackNavigator(
   {
     Start: { screen: Start },
@@ -47,12 +50,11 @@ const AppNavigator = createStackNavigator(
 
 const AuthStack = createStackNavigator(
   {
-    SignUp : SignUp,
-    AccountRecovery : AccountRecovery
+    SignUp : SignUp
   }
 )
 
-const StartGameStack = createStackNavigator(
+const Setup = createStackNavigator(
   {
     CreateCampaign: CreateCampaign
   }
@@ -64,4 +66,17 @@ const CampaignStack = createStackNavigator(
   }
 )
 
-export const AppContainer = createAppContainer(AppNavigator);
+export const AppContainer = createAppContainer(createSwitchNavigator(
+  {
+    AuthCheck: AuthCheck,
+    Auth: AuthStack,
+    Setup: Setup,
+    Campaign: CampaignStack
+  },
+  {
+    initialRouteName: "AuthCheck",
+    defaultNavigationOptions: {
+      header: null,
+    }
+  }
+));

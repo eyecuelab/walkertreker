@@ -32,8 +32,8 @@ class CreateCampaign extends React.Component {
     }
 
     apiPayload = JSON.parse(JSON.stringify(apiPayload));
-    dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: apiPayload});
-    this.props.navigation.navigate('InvitePlayers');
+    await dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: apiPayload});
+    this.props.navigation.navigate('AuthCheck');
   }
 
   _updateCampaignLength = num => {

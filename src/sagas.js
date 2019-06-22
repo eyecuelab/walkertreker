@@ -46,6 +46,7 @@ export function *updatePlayerSteps(action) {
 }
 
 export function *setInitialCampaignDetails(action) {
+  console.log("setting campaign")
   const url = 'https://walkertrekker.herokuapp.com/api/campaigns';
   const initObj = {
     method: "POST",
@@ -59,6 +60,7 @@ export function *setInitialCampaignDetails(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
+    console.log("storing", response)
     yield storeData('campaignId', JSON.stringify(response.id));
     yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
   } catch (error) {
