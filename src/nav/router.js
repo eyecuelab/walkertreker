@@ -43,7 +43,7 @@ const AppNavigator = createStackNavigator(
     CampaignIsWon: { screen: CampaignIsWon },
   },
   {
-    initialRouteName: "Start",
+    initialRouteName: "RecoverAccount",
     defaultNavigationOptions: {
       header: null,
     }
