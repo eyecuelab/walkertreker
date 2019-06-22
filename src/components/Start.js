@@ -15,24 +15,45 @@ class Start extends React.Component {
     }
   }
 
+  
+
   componentDidMount = async () => {
+    console.log('Start - component did mount')
     const { dispatch } = this.props
 
+<<<<<<< HEAD
     if (this.state.player.id) {
+=======
+    if (this.state.needPlayer) {
+>>>>>>> master
       dispatch({ type: c.FETCH_PLAYER, playId: this.state.localPlayer.id})
     }
     if (this.state.needCampaign) {
       dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
     }
+    console.log("screenprops", this.props.screenProps.queryParams.playerId)
+    // if (this.props.screenProps.queryParams.playerId) {
+    //   dispatch({ type: c.FETCH_PLAYER, playId: this.props.screenProps.queryParams.playerId})
+    // }
     if (!this.state.needPlayer) {
+
+      //if no localPlayer.id, user enters a phone number
+      //if phone number is in database, needPlayer=true
+      //if phone number not in database, create a new player
+
       this.navigate('About')
     }
   }
 
   navigate = (route) => {
     const path = this.props.screenProps.path;
+<<<<<<< HEAD
+=======
+    console.log('path', path)
+>>>>>>> master
     let routeName = route
     let routeParams = {}
+   
     if (this.state.notification) {
       const type = this.state.notification.data.type
       if (navigation[type] !== 'none') {
@@ -46,14 +67,28 @@ class Start extends React.Component {
         campaignId: this.props.screenProps.queryParams.campaignId,
       }
     }
+<<<<<<< HEAD
+=======
+    if (path === 'recovery') {
+      routeName = 'RecoverAccount'
+      routeParams = {
+        playerId: this.props.screenProps.queryParams.playerId,
+      }
+    }
+>>>>>>> master
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName, params: routeParams })]
     });
+    console.log('INITIAL NAVIGATION: ')
+    console.log('routeName: ', routeName)
+    console.log('routeParams: ', routeParams)
+    console.log('reset action', resetAction)
     this.props.navigation.dispatch(resetAction);
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('start update', prevProps)
     if (prevProps.player.id == null && this.props.player.id !== null) {
       this.setState({ gotPlayer: true })
     }

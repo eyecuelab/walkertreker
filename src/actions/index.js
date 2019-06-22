@@ -37,3 +37,5 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyL
     campaignDateArray: dateArray,
   });
 }
+
+// the goalMet data never seems to update to true, same with times scavenged

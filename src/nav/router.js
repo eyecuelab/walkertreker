@@ -16,6 +16,7 @@ import Inventory from '../components/screens/Inventory';
 import RandomEvent from '../components/screens/RandomEvent';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
+import RecoverAccount from '../components/screens/RecoverAccount';
 
 import AuthCheck from './../components/screens/AuthCheck';
 import SignUp from './../components/screens/SignUp';
@@ -30,6 +31,10 @@ const AppNavigator = createStackNavigator(
     AcceptInvite: {
       screen: AcceptInvite,
       path: 'invite/:campaignId'
+    },
+    RecoverAccount: {
+      screen: RecoverAccount,
+      path: 'recovery/:playerId'
     },
     WaitForStart: { screen: WaitForStart, },
     CampaignSummary: { screen: CampaignSummary, },

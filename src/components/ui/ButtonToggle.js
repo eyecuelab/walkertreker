@@ -45,6 +45,8 @@ ButtonToggle.propTypes = {
   background: PropTypes.any,
 };
 
+//This only toggles when rendered from the CreateCampaign component but not from the CampaignSummary component
+
 ButtonToggle.defaultProps = {
   active: false,
   bigValue: false,

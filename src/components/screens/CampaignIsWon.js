@@ -18,7 +18,7 @@ class CampaignIsWon extends React.Component {
   constructor(props) {
     super(props)
     const data = this.props.navigation.getParam('data')
-    const finalCampaignState = data.finalCampaignState
+    const finalCampaignState = {DayCounter: 10}
     this.state = { finalCampaignState,  }
   }
 
@@ -74,7 +74,8 @@ const customStyles = StyleSheet.create({
     // paddingBottom: heightUnit,
     flex: 3,
     width: '100%',
-    marginTop: heightUnit*2.5
+    marginTop: heightUnit*2.5,
+    marginBottom: heightUnit*2.5
     // borderColor: 'black',
     // borderWidth: 1,
   },

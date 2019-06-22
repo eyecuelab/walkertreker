@@ -67,7 +67,7 @@ class RandomEvent extends React.Component {
       A: `You voted for ${this.state.optionAButton}`,
       B: `You voted for ${this.state.optionBButton}`
     }
-    console.log(OPTIONS[opt])
+    console.log("option in voting", OPTIONS[opt])
     this.props.navigation.navigate('CampaignSummary')
   }
 

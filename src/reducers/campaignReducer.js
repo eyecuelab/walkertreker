@@ -5,6 +5,8 @@ let newState;
 
 export default (state = campaign/*testState*/, action) => {
   switch (action.type) {
+
+  // these don't seem like they need to exist
   case c.SET_CAMPAIGN_LENGTH:
     return {
       ...state,

@@ -14,7 +14,7 @@ import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
 import Modal from 'react-native-modal';
-import NewPlayerForm from './components/ui/NewPlayerForm';
+import NewPlayerModal from './components/ui/NewPlayerModal';
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
@@ -32,6 +32,7 @@ sagaMiddleware.run(rootSaga);
 
 class App extends React.Component {
 
+  //turn these into state hooks
   constructor(props) {
     super(props)
     this.state = {
@@ -107,6 +108,7 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
+
     // let localPlayer = await retrieveData('playerInfo')
     //
     // const dud = {
@@ -130,10 +132,10 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
+    const {dispatch} = this.props
     const { path, queryParams } = await Linking.parseInitialURLAsync();
 
-    this.setState({
-      isReady: true,
+    await this.setState({
       path,
       queryParams
     });
@@ -145,7 +147,7 @@ class App extends React.Component {
 
   componentDidMount() {
     Notifications.addListener(this._passNotificationToStart);
-    console.log("(App:152) - App Component Mounted")
+    console.log("App Component Mounted")
   }
 
   render() {
@@ -161,13 +163,16 @@ class App extends React.Component {
     }
 
     const prefix = Linking.makeUrl('/');
-
+    console.log("This is the prefix:", prefix)
     return (
       <Provider store={store}>
         <SocketIO />
         <NotificationListeners />
         <BackgroundPedometer />
         <AppContainer
+          onNavigationStateChange={(prevState, currentState, action) => {
+            console.log('current state',currentState)
+          }}
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
           }}
