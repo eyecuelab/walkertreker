@@ -27,7 +27,7 @@ class NewPlayerForm extends React.Component {
   }
 
 
- 
+
   _handleSubmit = async () => {
     console.log("newPlayer")
     const { dispatch } = this.props;
@@ -79,7 +79,7 @@ class NewPlayerForm extends React.Component {
       style={customStyles.itemBg}
       >
         <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
-        
+
 
           <View style={customStyles.headlineContainer}>
             <MainHeader>New Player</MainHeader>
@@ -123,15 +123,10 @@ class NewPlayerForm extends React.Component {
           </View>
 
         <Text style={{color: 'white'}} onPress={() => {this.props.handleRecoveryModalToggle()}}>
-            Already have an account? Recover it here. 
+            Already have an account? Recover it here.
           </Text>
         </View>
-<<<<<<< HEAD
-
-      </ImageBackground>
-=======
     </ImageBackground>
->>>>>>> master
     )
   }
 }

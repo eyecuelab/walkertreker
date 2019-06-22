@@ -11,7 +11,6 @@ class AuthCheck extends React.Component {
 
   checkForPlayerInStorage = async () => {
     const localPlayer = await retrieveData('playerInfo');
-    const localCampaign = true;
 
     localPlayer && localCampaign ?
     this.props.navigation.navigate('Campaign') :
