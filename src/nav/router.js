@@ -17,6 +17,7 @@ import RandomEvent from '../components/screens/RandomEvent';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
+import NewPlayerForm from '../components/ui/NewPlayerForm';
 
 const AppNavigator = createStackNavigator(
   {
@@ -33,6 +34,7 @@ const AppNavigator = createStackNavigator(
       screen: RecoverAccount,
       path: 'recovery/:playerId'
     },
+    NewPlayerForm: {screen: NewPlayerForm},
     WaitForStart: { screen: WaitForStart, },
     CampaignSummary: { screen: CampaignSummary, },
     Safehouse: { screen: Safehouse },
@@ -43,7 +45,7 @@ const AppNavigator = createStackNavigator(
     CampaignIsWon: { screen: CampaignIsWon },
   },
   {
-    initialRouteName: "Start",
+    initialRouteName: "NewPlayerForm",
     defaultNavigationOptions: {
       header: null,
     }

@@ -5,6 +5,7 @@ import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
+import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import { phoneNumPrettyPrint } from '../../util/util';
 
 
@@ -19,17 +20,22 @@ class RecoverAccountModal extends React.Component {
     super(props)
     this.state = {
       phoneNumber: '',
+      validNumber: true,
     }
   }
 
   _handleRecovery = async () => {
     const { dispatch } = this.props;
     prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
-    console.log('recovery nummber', prettyPhoneNumber)
-    dispatch({
-      type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber
-    })
-    this.props.handleModalStateChange();
+    console.log('recovery number', prettyPhoneNumber)
+    if (prettyPhoneNumber.length === 12) {
+      dispatch({
+        type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber
+      }) 
+      this.props.handleModalStateChange();
+    } else {
+      this.setState({ validNumber: false})
+    }
   }
 
   render(){
@@ -48,23 +54,15 @@ class RecoverAccountModal extends React.Component {
           </View>
         </View>
         <View style={customStyles.buttonContainer}>
-          <View style={customStyles.button}>
-            <SingleButtonFullWidth
-              title="Recover Account"
-              onButtonPress={this._handleRecovery}
-              backgroundColor="darkred"
-            />
-          </View>
-        </View>
-        <View style={[customStyles.buttonContainer]}>
-          <View style={customStyles.button}>
-            <SingleButtonFullWidth
-              title="New Player"
-              onButtonPress={() => {this.props.handleRecoveryModalToggle()}}
-              backgroundColor="darkred"
-            />
-          </View>
-        </View>
+          <TwoButtonOverlay
+            button1title="Recover Account"
+            button1onPress={this._handleRecovery}
+            button1color='darkred'
+            button2title="New Player"
+            button2onPress={() => this.props.handleRecoveryModalToggle()}
+            button2color='darkred'/>
+        
+        </View> 
       </View>
     )
   }

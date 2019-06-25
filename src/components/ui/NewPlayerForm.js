@@ -12,6 +12,7 @@ import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 import { ScrollView } from 'react-native-gesture-handler';
+import ScreenContainer from '../containers/ScreenContainer';
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
@@ -77,6 +78,7 @@ class NewPlayerForm extends React.Component {
       resizeMode='cover'
       style={customStyles.itemBg}
       >
+        <ScreenContainer>
         <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
 
           <View style={customStyles.headlineContainer}>
@@ -124,6 +126,7 @@ class NewPlayerForm extends React.Component {
             </Text>
           </View>
         </View>
+        </ScreenContainer>
     </ImageBackground>
     )
   }
