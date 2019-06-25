@@ -139,7 +139,7 @@ export function *joinCampaignRequest(action) {
 
 export function *createPlayer(action) {
 
-  const url = 'https://walkertrekker.herokuapp.com/api/players';
+  const url = 'http://10.1.10.51:5000/api/players';
 
   const data = new FormData()
 
@@ -166,6 +166,7 @@ export function *createPlayer(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
+    response.error ? console.log('player with that number already exists') :
     yield put({type: c.PLAYER_CREATED, player: response});
   } catch (error) {
     console.warn('error creating player: ', error);

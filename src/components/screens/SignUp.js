@@ -5,14 +5,13 @@ import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import {MainHeader, SubHeader, Label} from './../text';
-
+import { phoneNumPrettyPrint } from '../../util/util';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import WithKeyboardShift from './../../util/WithKeyboardShift';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
-import { ScrollView } from 'react-native-gesture-handler';
 import ScreenContainer from '../containers/ScreenContainer';
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
@@ -23,24 +22,35 @@ class NewPlayerForm extends React.Component {
     this.state = {
       displayName: '',
       phoneNumber: '',
-      avatar: require('../../../assets/blankavatar.png'),
+      avatar: require('../../../assets/blankavatar.png'), 
+      recoveryText: 'Aleady have an account? Recover it here.',
+    }
+    
+  }
+
+  componentDidUpdate() {
+    this.props.player.id ? this.props.navigation.navigate('Setup') : 
+      this.state.newPlayerCreated ?  this.recoveryText() : null;
+  }
+
+  recoveryText = () => {
+    if (this.state.recoveryText !== 'Number already in use. Click here to recover your account.') {
+      this.setState({ recoveryText: 'Number already in use. Click here to recover your account.'})
     }
   }
 
-
-
   _handleSubmit = async () => {
-    console.log("newPlayer")
     const { dispatch } = this.props;
     const pushToken = await this.registerForPushNotificationsAsync()
+    prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
     dispatch({
       type: c.CREATE_PLAYER,
       name: this.state.displayName,
-      number: this.state.phoneNumber,
+      number: prettyPhoneNumber,
       avatar: this.state.avatar,
       pushToken,
     })
-    // nav somewhere
+    this.setState({ newPlayerCreated: true })
   }
 
   registerForPushNotificationsAsync = async () => {
@@ -69,7 +79,6 @@ class NewPlayerForm extends React.Component {
     if (!avatar.cancelled) {
       this.setState({ avatar })
     }
-
   }
 
   render() {
@@ -125,7 +134,7 @@ class NewPlayerForm extends React.Component {
           </View>
           <View style={customStyles.textButtonContainer}>
             <Text style={{color: 'white'}} onPress={() => {this.props.navigation.navigate('AccountRecovery')}}>
-              Already have an account? Recover it here. 
+              {this.state.recoveryText}
             </Text>
           </View>
         </View>

@@ -4,9 +4,10 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpa
 import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import { phoneNumPrettyPrint } from '../../util/util';
+import { MainHeader, SubHeader, TextAlt, Label } from './../text';
+
 
 
 import defaultStyle from '../../styles/defaultStyle';
@@ -36,9 +37,17 @@ class RecoverAccountModal extends React.Component {
       dispatch({
         type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber
       }) 
-      this.props.handleModalStateChange();
+      this.setState({ validNumber: true})
     } else {
       this.setState({ validNumber: false})
+    }
+  }
+
+  noNumberError = () => {
+    if (this.state.validNumber) {
+      return null;
+    } else {
+      return <TextAlt>Failed to find user. Are you sure you entered the correct number?</TextAlt>
     }
   }
 
@@ -52,27 +61,25 @@ class RecoverAccountModal extends React.Component {
         <ScreenContainer>
           <View style={[customStyles.container, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
             <View style={customStyles.headlineContainer}>
-              <Text style={styles.headline}>Account Recovery</Text>
+              <MainHeader>Account Recovery</MainHeader>
             </View>
-            <View >
-              <Text style={styles.detail}>You will receive a text to recover your account</Text>
+            <View>
+              <TextAlt>You will receive a text to recover your account</TextAlt>
             </View>
             <View style={customStyles.formContainer}>
-              <View style={customStyles.fieldContainer}>
-                <Text style={styles.label}>Phone Number</Text>
-                <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} value={this.state.phoneNumber} />
-              </View>
+              <Label>Phone Number</Label>
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} value={this.state.phoneNumber} />
             </View>
-            <View style={customStyles.buttonContainer}>
-              <TwoButtonOverlay
-                button1title="Recover Account"
-                button1onPress={this._handleRecovery}
-                button1color='darkred'
-                button2title="New Player"
-                button2onPress={() => {this.props.navigation.navigate('SignUp')}}
-                button2color='darkred' />
-
+            <View style={customStyles.formContainer}>
+              {this.noNumberError()}
             </View>
+            <TwoButtonOverlay
+              button1title="Recover Account"
+              button1onPress={this._handleRecovery}
+              button1color='darkred'
+              button2title="New Player"
+              button2onPress={() => {this.props.navigation.navigate('SignUp')}}
+              button2color='darkred' />
           </View>
         </ScreenContainer>
       </ImageBackground>
@@ -87,38 +94,18 @@ const customStyles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    // backgroundColor: 'darkred',
-    // justifyContent: 'center',
-    // borderRadius: 5,
-    padding: widthUnit * 5,
   },
   headlineContainer: {
     margin: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: heightUnit*6,
   },
   formContainer: {
     padding: 10,
-  },
-  fieldContainer: {
     margin: 10,
-  },
-  buttonContainer: {
-    // margin: 10,
-    height: heightUnit*15,
-    width: '100%',
-    alignSelf: 'flex-end',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-  button: {
-    backgroundColor: 'black',
-    width: '100%',
-    height: heightUnit*10,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: heightUnit*6,
+    marginBottom: heightUnit*6,
   },
   textInput: {
     width: '100%',
@@ -131,30 +118,6 @@ const customStyles = StyleSheet.create({
     paddingLeft: 10,
     color: 'white',
     fontFamily: 'gore',
-  },
-  avatarContainer: {
-    // flex: 2,
-    // height: '100%',
-    // justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatar: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    width: widthUnit*20,
-    height: widthUnit*20,
-    borderRadius: 100,
-    // backgroundColor: 'black',
-    borderWidth: 1,
-    borderColor: 'black',
-  },
-  avatarCaption: {
-    fontSize: widthUnit*3.5,
-    fontFamily: 'verdana',
-    color: 'white',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    fontStyle: 'italic'
   },
   itemBg: {
     width: undefined,
