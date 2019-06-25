@@ -5,6 +5,8 @@ import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
+import { phoneNumPrettyPrint } from '../../util/util';
+
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
@@ -22,9 +24,10 @@ class RecoverAccountModal extends React.Component {
 
   _handleRecovery = async () => {
     const { dispatch } = this.props;
-    console.log('recovery nummber', this.state.phoneNumber)
+    prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
+    console.log('recovery nummber', prettyPhoneNumber)
     dispatch({
-      type: c.RECOVER_ACCOUNT, phoneNumber: this.state.phoneNumber
+      type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber
     })
     this.props.handleModalStateChange();
   }
