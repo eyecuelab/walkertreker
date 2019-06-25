@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createAppContainer, createSwitchNavigator } from "react-navigation";
 
 // screens
 import Start from '../components/Start';
@@ -18,6 +18,9 @@ import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
 import NewPlayerForm from '../components/ui/NewPlayerForm';
+
+import AuthCheck from './../components/screens/AuthCheck';
+import SignUp from './../components/screens/SignUp';
 
 const AppNavigator = createStackNavigator(
   {
@@ -52,4 +55,35 @@ const AppNavigator = createStackNavigator(
   }
 );
 
-export const AppContainer = createAppContainer(AppNavigator);
+const AuthStack = createStackNavigator(
+  {
+    SignUp : SignUp
+  }
+)
+
+const Setup = createStackNavigator(
+  {
+    CreateCampaign: CreateCampaign
+  }
+)
+
+const CampaignStack = createStackNavigator(
+  {
+    CampaignStaging: CampaignStaging
+  }
+)
+
+export const AppContainer = createAppContainer(createSwitchNavigator(
+  {
+    AuthCheck: AuthCheck,
+    Auth: AuthStack,
+    Setup: Setup,
+    Campaign: CampaignStack
+  },
+  {
+    initialRouteName: "AuthCheck",
+    defaultNavigationOptions: {
+      header: null,
+    }
+  }
+));

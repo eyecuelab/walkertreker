@@ -108,7 +108,23 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
-    
+
+    // let localPlayer = await retrieveData('playerInfo')
+    //
+    // const dud = {
+    //   id: false,
+    //   campaignId: false
+    // }
+    // if (!localPlayer) {
+    //   localPlayer = dud
+    //   await this.setState({
+    //     newPlayerModalVisible: true,
+    //   })
+    // } else {
+    //   localPlayer = JSON.parse(localPlayer)
+    // }
+    // await this.setState({ localPlayer })
+
   };
 
   _handleLoadingError = error => {
@@ -123,29 +139,6 @@ class App extends React.Component {
       path,
       queryParams
     });
-
-    // blank localPlayer in asyncStorage:
-    // await storeData('playerInfo', "")
-    let localPlayer = await retrieveData('playerInfo')
-    console.log("Local Player during load" + localPlayer)
-    const dud = {
-      id: false,
-      campaignId: false
-    }
-    
-    if (!localPlayer) {
-      console.log('nolocalplayer')
-      localPlayer = dud
-      this.state.path === 'recovery' ? await this.setState({ newPlayerModalVisible: false }) : await this.setState({ newPlayerModalVisible: true })
-    } else {
-      localPlayer = JSON.parse(localPlayer)
-      console.log('localplayer-needplayer')
-    }
-    await this.setState({ localPlayer })
-
-    await this.setState({
-      isReady: true
-    })
   }
 
   _passNotificationToStart = (notification) => {
@@ -173,9 +166,6 @@ class App extends React.Component {
     console.log("This is the prefix:", prefix)
     return (
       <Provider store={store}>
-        <Modal isVisible={this.state.newPlayerModalVisible}>
-          <NewPlayerForm handleModalStateChange={this._toggleNewPlayerModal} />
-        </Modal>
         <SocketIO />
         <NotificationListeners />
         <BackgroundPedometer />

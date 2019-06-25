@@ -8,6 +8,7 @@ import {MainHeader, SubHeader, Label} from './../text';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
+import WithKeyboardShift from './../../util/WithKeyboardShift';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
@@ -27,7 +28,7 @@ class NewPlayerForm extends React.Component {
   }
 
 
- 
+
   _handleSubmit = async () => {
     console.log("newPlayer")
     const { dispatch } = this.props;
@@ -81,11 +82,12 @@ class NewPlayerForm extends React.Component {
         <ScreenContainer>
         <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
 
+
           <View style={customStyles.headlineContainer}>
             <MainHeader>New Player</MainHeader>
           </View>
 
-          <View style={customStyles.formContainer}>
+            <View style={customStyles.formContainer}>
 
             <View style={customStyles.fieldContainer}>
               <Label>Display Name</Label>
@@ -110,6 +112,7 @@ class NewPlayerForm extends React.Component {
               <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
             </View>
           </View>
+
 
           <View style={customStyles.buttonContainer}>
             <View style={customStyles.button}>
