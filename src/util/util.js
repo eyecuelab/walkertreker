@@ -26,7 +26,7 @@ export function phoneNumPrettyPrint(str) {
     }
   })
   if (targetArr.length === 10) {
-    targetArr.unshift(1);
+    targetArr.unshift('1');
   } else if (targetArr.length !== 11) {return 'what is the deal with this phone number?'}
   return `+` + targetArr.join('');
 }

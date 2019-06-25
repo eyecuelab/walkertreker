@@ -118,10 +118,11 @@ class NewPlayerForm extends React.Component {
               />
             </View>
           </View>
-
-        <Text style={{color: 'white'}} onPress={() => {this.props.handleRecoveryModalToggle()}}>
-            Already have an account? Recover it here. 
-          </Text>
+          <View style={customStyles.textButtonContainer}>
+            <Text style={{color: 'white'}} onPress={() => {this.props.handleRecoveryModalToggle()}}>
+              Already have an account? Recover it here. 
+            </Text>
+          </View>
         </View>
     </ImageBackground>
     )
@@ -168,6 +169,10 @@ const customStyles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  textButtonContainer: {
+    height: heightUnit*6,
+    padding: widthUnit * 4
   },
   textInput: {
     width: '100%',
