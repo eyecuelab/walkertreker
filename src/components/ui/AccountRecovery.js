@@ -12,7 +12,11 @@ import { phoneNumPrettyPrint } from '../../util/util';
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 import { ScrollView } from 'react-native-gesture-handler';
+import ScreenContainer from '../containers/ScreenContainer';
+
 const { c } = constants;
+const use_item_bg = require('../../../assets/use_item_bg.png');
+
 
 
 class RecoverAccountModal extends React.Component {
@@ -39,35 +43,43 @@ class RecoverAccountModal extends React.Component {
   }
 
   render(){
-    return(
-    <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
-        <View style={customStyles.headlineContainer}>
-          <Text style={styles.headline}>Account Recovery</Text>
-        </View>
-        <View >
-          <Text style={styles.detail}>You will receive a text to recover your account</Text>
-        </View>
-        <View style={customStyles.formContainer}>
-          <View style={customStyles.fieldContainer}>
-            <Text style={styles.label}>Phone Number</Text>
-            <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
+    return (
+      <ImageBackground
+        source={use_item_bg}
+        resizeMode='cover'
+        style={customStyles.itemBg}
+      >
+        <ScreenContainer>
+          <View style={[customStyles.container, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
+            <View style={customStyles.headlineContainer}>
+              <Text style={styles.headline}>Account Recovery</Text>
+            </View>
+            <View >
+              <Text style={styles.detail}>You will receive a text to recover your account</Text>
+            </View>
+            <View style={customStyles.formContainer}>
+              <View style={customStyles.fieldContainer}>
+                <Text style={styles.label}>Phone Number</Text>
+                <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} value={this.state.phoneNumber} />
+              </View>
+            </View>
+            <View style={customStyles.buttonContainer}>
+              <TwoButtonOverlay
+                button1title="Recover Account"
+                button1onPress={this._handleRecovery}
+                button1color='darkred'
+                button2title="New Player"
+                button2onPress={() => {this.props.navigation.navigate('SignUp')}}
+                button2color='darkred' />
+
+            </View>
           </View>
-        </View>
-        <View style={customStyles.buttonContainer}>
-          <TwoButtonOverlay
-            button1title="Recover Account"
-            button1onPress={this._handleRecovery}
-            button1color='darkred'
-            button2title="New Player"
-            button2onPress={() => this.props.handleRecoveryModalToggle()}
-            button2color='darkred'/>
-        
-        </View> 
-      </View>
+        </ScreenContainer>
+      </ImageBackground>
     )
   }
 }
-
+      
 const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');

@@ -17,59 +17,75 @@ import RandomEvent from '../components/screens/RandomEvent';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
-import NewPlayerForm from '../components/ui/NewPlayerForm';
 
 import AuthCheck from './../components/screens/AuthCheck';
 import SignUp from './../components/screens/SignUp';
+import AccountRecovery from './../components/ui/AccountRecovery'
 
-const AppNavigator = createStackNavigator(
-  {
-    Start: { screen: Start },
-    About: { screen: About, },
-    CreateCampaign: { screen: CreateCampaign, },
-    InvitePlayers: { screen: InvitePlayers, },
-    CampaignStaging: { screen: CampaignStaging, },
-    AcceptInvite: {
-      screen: AcceptInvite,
-      path: 'invite/:campaignId'
-    },
-    RecoverAccount: {
-      screen: RecoverAccount,
-      path: 'recovery/:playerId'
-    },
-    NewPlayerForm: {screen: NewPlayerForm},
-    WaitForStart: { screen: WaitForStart, },
-    CampaignSummary: { screen: CampaignSummary, },
-    Safehouse: { screen: Safehouse },
-    EndOfDaySummary: { screen: EndOfDaySummary },
-    Inventory: { screen: Inventory },
-    RandomEvent: { screen: RandomEvent },
-    CampaignIsLost: { screen: CampaignIsLost },
-    CampaignIsWon: { screen: CampaignIsWon },
-  },
-  {
-    initialRouteName: "NewPlayerForm",
-    defaultNavigationOptions: {
-      header: null,
-    }
-  }
-);
+// const AppNavigator = createStackNavigator(
+//   {
+//     Start: { screen: Start },
+//     About: { screen: About, },
+//     CreateCampaign: { screen: CreateCampaign, },
+//     InvitePlayers: { screen: InvitePlayers, },
+//     CampaignStaging: { screen: CampaignStaging, },
+//     AcceptInvite: {
+//       screen: AcceptInvite,
+//       path: 'invite/:campaignId'
+//     },
+//     RecoverAccount: {
+//       screen: RecoverAccount,
+//       path: 'recovery/:playerId'
+//     },
+//     WaitForStart: { screen: WaitForStart, },
+//     CampaignSummary: { screen: CampaignSummary, },
+//     Safehouse: { screen: Safehouse },
+//     EndOfDaySummary: { screen: EndOfDaySummary },
+//     Inventory: { screen: Inventory },
+//     RandomEvent: { screen: RandomEvent },
+//     CampaignIsLost: { screen: CampaignIsLost },
+//     CampaignIsWon: { screen: CampaignIsWon },
+//   },
+//   {
+//     initialRouteName: "NewPlayerForm",
+//     defaultNavigationOptions: {
+//       header: null,
+//     }
+//   }
+// );
 
 const AuthStack = createStackNavigator(
   {
-    SignUp : SignUp
+    SignUp: SignUp,
+    AccountRecovery: AccountRecovery,
+    RecoverAccount: RecoverAccount,
+  },
+  {
+    defaultNavigationOptions: {
+      header: null,
+    }
   }
 )
 
 const Setup = createStackNavigator(
   {
     CreateCampaign: CreateCampaign
+  },
+  { 
+    defaultNavigationOptions: {
+    header: null,
+    }
   }
 )
 
 const CampaignStack = createStackNavigator(
   {
     CampaignStaging: CampaignStaging
+  },
+  { 
+    defaultNavigationOptions: {
+      header: null,
+    }
   }
 )
 
@@ -81,7 +97,7 @@ export const AppContainer = createAppContainer(createSwitchNavigator(
     Campaign: CampaignStack
   },
   {
-    initialRouteName: "AuthCheck",
+    initialRouteName: "Auth",
     defaultNavigationOptions: {
       header: null,
     }

@@ -19,6 +19,7 @@ class AuthCheck extends React.Component {
 
   // Render any loading content that you like here
   render() {
+    console.log('rendered auth check')
     return (
       <View style={styles.container}>
         <ActivityIndicator />

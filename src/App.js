@@ -13,8 +13,6 @@ import rootReducer from './reducers';
 import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
-import Modal from 'react-native-modal';
-import NewPlayerForm from './components/ui/NewPlayerForm';
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
@@ -42,10 +40,10 @@ class App extends React.Component {
     }
   }
 
-  _toggleNewPlayerModal = () => {
-    const newPlayerModalVisible = !this.state.newPlayerModalVisible
-    this.setState({ newPlayerModalVisible })
-  }
+  // _toggleNewPlayerModal = () => {
+  //   const newPlayerModalVisible = !this.state.newPlayerModalVisible
+  //   this.setState({ newPlayerModalVisible })
+  // }
 
   cacheImages(images) {
     return images.map(image => {
@@ -139,6 +137,9 @@ class App extends React.Component {
       path,
       queryParams
     });
+    await this.setState({
+      isReady: true
+    })
   }
 
   _passNotificationToStart = (notification) => {
@@ -181,7 +182,7 @@ class App extends React.Component {
             backgroundImage: require('../assets/bg.png'),
             path: this.state.path,
             queryParams: this.state.queryParams,
-            localPlayer: this.state.localPlayer,
+            // localPlayer: this.state.localPlayer,
             notification: this.state.notification,
           }}
         />
