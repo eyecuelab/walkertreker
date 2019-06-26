@@ -83,7 +83,7 @@ class RecoverAccountModal extends React.Component {
               button1onPress={this._handleRecovery}
               button1color='darkred'
               button2title="New Player"
-              button2onPress={() => {this.props.navigation.navigate('SignUp')}}
+              button2onPress={() => {this.props.navigation.goBack()}}
               button2color='darkred' />
           </View>
         </ScreenContainer>
