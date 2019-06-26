@@ -34,8 +34,8 @@ class NewPlayerForm extends React.Component {
   }
 
   recoveryText = () => {
-    if (this.state.recoveryText !== 'Number already in use. Click here to recover your account.') {
-      this.setState({ recoveryText: 'Number already in use. Click here to recover your account.'})
+    if (this.state.recoveryText !== 'Signup failed. Try again, or click here to recover an account.') {
+      this.setState({ recoveryText: 'Signup failed. Try again, or click here to recover an account.'})
     }
   }
 
@@ -43,29 +43,30 @@ class NewPlayerForm extends React.Component {
     const { dispatch } = this.props;
     const pushToken = await this.registerForPushNotificationsAsync()
     prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
-    dispatch({
-      type: c.CREATE_PLAYER,
-      name: this.state.displayName,
-      number: prettyPhoneNumber,
-      avatar: this.state.avatar,
-      pushToken,
-    })
-    this.setState({ newPlayerCreated: true })
+    if (prettyPhoneNumber.length === 12) {
+      dispatch({
+        type: c.CREATE_PLAYER,
+        name: this.state.displayName,
+        number: prettyPhoneNumber,
+        avatar: this.state.avatar,
+        pushToken,
+      })
+      this.setState({ newPlayerCreated: true }) 
+    } else {
+      this.setState({ recoveryText: 'Are you sure you entered your phone number correctly?'})
+    }
   }
 
   registerForPushNotificationsAsync = async () => {
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     let finalStatus = existingStatus;
-
     if (existingStatus !== 'granted') {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
     }
-
     if (finalStatus !== 'granted') {
       return;
     }
-
     const token = await Notifications.getExpoPushTokenAsync();
     return token;
   }
@@ -75,7 +76,6 @@ class NewPlayerForm extends React.Component {
       allowsEditing: true,
       aspect: [1,1],
     })
-
     if (!avatar.cancelled) {
       this.setState({ avatar })
     }

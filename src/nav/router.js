@@ -58,7 +58,10 @@ const AuthStack = createStackNavigator(
   {
     SignUp: SignUp,
     AccountRecovery: AccountRecovery,
-    RecoverAccount: RecoverAccount,
+    RecoverAccount: {
+      screen: RecoverAccount,
+      path: 'recovery/:playerId'
+    },
   },
   {
     defaultNavigationOptions: {
@@ -97,7 +100,7 @@ export const AppContainer = createAppContainer(createSwitchNavigator(
     Campaign: CampaignStack
   },
   {
-    initialRouteName: "Campaign",
+    initialRouteName: "AuthCheck",
     defaultNavigationOptions: {
       header: null,
     }

@@ -172,7 +172,7 @@ class App extends React.Component {
         <BackgroundPedometer />
         <AppContainer
           onNavigationStateChange={(prevState, currentState, action) => {
-            console.log('current state',currentState)
+            // console.log('current state',currentState)
           }}
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);

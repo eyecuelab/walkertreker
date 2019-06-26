@@ -25,7 +25,9 @@ class RecoverAccountModal extends React.Component {
     super(props)
     this.state = {
       phoneNumber: '',
+      recoveryCode: '',
       validNumber: true,
+      submitted: false,
     }
   }
 
@@ -37,16 +39,19 @@ class RecoverAccountModal extends React.Component {
       dispatch({
         type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber
       }) 
-      this.setState({ validNumber: true})
+      this.setState({ validNumber: true, submitted: true})
     } else {
-      this.setState({ validNumber: false})
+      this.setState({ validNumber: false, submitted: true})
     }
   }
 
   noNumberError = () => {
-    if (this.state.validNumber) {
-      return null;
-    } else {
+    if (this.state.validNumber && this.state.submitted) {
+      return <View>
+              <Label>Recovery Code</Label>
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ recoveryCode: text })} value={this.state.recoveryCode} />
+            </View>
+    } else if (this.state.submitted) {
       return <TextAlt>Failed to find user. Are you sure you entered the correct number?</TextAlt>
     }
   }
@@ -104,8 +109,8 @@ const customStyles = StyleSheet.create({
   formContainer: {
     padding: 10,
     margin: 10,
-    marginTop: heightUnit*6,
-    marginBottom: heightUnit*6,
+    marginTop: heightUnit*5,
+    marginBottom: heightUnit*4,
   },
   textInput: {
     width: '100%',
