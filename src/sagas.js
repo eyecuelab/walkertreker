@@ -232,6 +232,7 @@ export function *fetchPlayer(action) {
   };
 
   try {
+    console.log('playId in saga', action.playId)
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     // .then(response => response.text());

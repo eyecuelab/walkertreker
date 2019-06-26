@@ -28,10 +28,10 @@ class RecoverAccount extends React.Component {
 
   componentWillMount = async () => {
     const { dispatch } = this.props
-    // const playerId = this.props.navigation.getParam('playerId', false)
-    // this.setState({ playerId })
-    // await console.log("from recoverAccount", playerId)
-    // dispatch({ type: c.FETCH_PLAYER, playId: playerId })
+    const playerId = this.props.screenProps.queryParams.playerId
+    this.setState({ playerId })
+    await console.log("from recoverAccount", playerId)
+    dispatch({ type: c.FETCH_PLAYER, playId: playerId })
   }
   componentDidMount() {
     // this.props.navigation.dangerouslyGetParent();
@@ -45,15 +45,15 @@ class RecoverAccount extends React.Component {
         style={{width: '100%', height: '100%'}}>
         <ScreenContainer>
           <View style={customStyles.headlineContainer}>
-              <MainHeader>Recover Account</MainHeader>
+              <MainHeader>Recovering Account</MainHeader>
             </View>
 
             <View style={customStyles.formContainer}>
 
-              <View style={customStyles.fieldContainer}>
+              {/* <View style={customStyles.fieldContainer}>
                 <Label>Enter Recovery Code</Label>
                 <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({recoveryNumber: text})} value={this.state.recoveryNumber}/>
-              </View>
+              </View> */}
             </View>
 
             <TwoButtonOverlay

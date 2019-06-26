@@ -19,6 +19,7 @@ import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
 
 import AuthCheck from './../components/screens/AuthCheck';
+import AuthStart from './../components/screens/AuthStackStart';
 import SignUp from './../components/screens/SignUp';
 import AccountRecovery from './../components/ui/AccountRecovery'
 
@@ -56,6 +57,7 @@ import AccountRecovery from './../components/ui/AccountRecovery'
 
 const AuthStack = createStackNavigator(
   {
+    AuthStart: AuthStart,
     SignUp: SignUp,
     AccountRecovery: AccountRecovery,
     RecoverAccount: {
@@ -64,6 +66,7 @@ const AuthStack = createStackNavigator(
     },
   },
   {
+    initialRouteName: "AuthStart",
     defaultNavigationOptions: {
       header: null,
     }

@@ -165,6 +165,8 @@ class App extends React.Component {
 
     const prefix = Linking.makeUrl('/');
     console.log("This is the prefix:", prefix)
+    console.log(this.state.path, this.state.queryParams)
+    console.log(this.props.navigation)
     return (
       <Provider store={store}>
         <SocketIO />
