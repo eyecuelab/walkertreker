@@ -97,7 +97,7 @@ export const AppContainer = createAppContainer(createSwitchNavigator(
     Campaign: CampaignStack
   },
   {
-    initialRouteName: "Auth",
+    initialRouteName: "Campaign",
     defaultNavigationOptions: {
       header: null,
     }

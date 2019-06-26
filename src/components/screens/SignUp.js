@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpa
 import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import {MainHeader, SubHeader, Label} from './../text';
+import {MainHeader, SubHeader, Label, TextAlt} from './../text';
 import { phoneNumPrettyPrint } from '../../util/util';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
@@ -133,9 +133,9 @@ class NewPlayerForm extends React.Component {
             </View>
           </View>
           <View style={customStyles.textButtonContainer}>
-            <Text style={{color: 'white'}} onPress={() => {this.props.navigation.navigate('AccountRecovery')}}>
+            <TextAlt onPress={() => {this.props.navigation.navigate('AccountRecovery')}}>
               {this.state.recoveryText}
-            </Text>
+            </TextAlt>
           </View>
         </View>
         </ScreenContainer>
