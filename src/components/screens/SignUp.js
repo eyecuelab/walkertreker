@@ -25,12 +25,13 @@ class NewPlayerForm extends React.Component {
       avatar: require('../../../assets/blankavatar.png'), 
       recoveryText: 'Aleady have an account? Recover it here.',
     }
-    
+    this.newPlayerCreated = false;
   }
 
   componentDidUpdate() {
+    console.log('player id from sigh up', this.props.player.id)
     this.props.player.id ? this.props.navigation.navigate('Setup') : 
-      this.state.newPlayerCreated ?  this.recoveryText() : null;
+      this.newPlayerCreated ? this.recoveryText() : null;
   }
 
   recoveryText = () => {
@@ -51,7 +52,7 @@ class NewPlayerForm extends React.Component {
         avatar: this.state.avatar,
         pushToken,
       })
-      this.setState({ newPlayerCreated: true }) 
+      this.newPlayerCreated = true; 
     } else {
       this.setState({ recoveryText: 'Are you sure you entered your phone number correctly?'})
     }

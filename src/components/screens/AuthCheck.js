@@ -17,15 +17,17 @@ class AuthCheck extends React.Component {
     console.log('localPlayer', localPlayer)
     console.log('localCampaign', localCampaign)
 
-    localPlayer ? 
+    localPlayer && localPlayer.id ? 
     dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id }) : null;
-    localCampaign ? 
+    localCampaign && localCampaign.id ? 
     dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: localCampaign.id }) : null;
-
     localPlayer && localCampaign ?
     this.props.navigation.navigate('Campaign') :
     this.props.navigation.navigate(localPlayer ? 'Setup' : 'Auth');
   };
+  
+  componentDidUpdate() {
+  }
 
   // Render any loading content that you like here
   render() {

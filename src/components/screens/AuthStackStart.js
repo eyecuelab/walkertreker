@@ -3,8 +3,8 @@ import { ActivityIndicator, AsyncStorage, Button, StatusBar, StyleSheet, View, T
 import constants from './../../constants';
 
 class AuthStart extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   componentDidMount() {
