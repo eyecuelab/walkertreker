@@ -92,7 +92,6 @@ class CampaignStaging extends React.Component {
 
 
   render() {
-    console.log(this.props.player)
     return(
       <ImageBackground
         source={this.props.screenProps.backgroundImage}

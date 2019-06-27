@@ -21,7 +21,8 @@ import RecoverAccount from '../components/screens/RecoverAccount';
 import AuthCheck from './../components/screens/AuthCheck';
 import AuthStart from './../components/screens/AuthStackStart';
 import SignUp from './../components/screens/SignUp';
-import AccountRecovery from './../components/ui/AccountRecovery'
+import AccountRecovery from './../components/ui/AccountRecovery';
+import CampaignStart from './../components/screens/CampaignStart';
 
 // const AppNavigator = createStackNavigator(
 //   {
@@ -75,7 +76,8 @@ const AuthStack = createStackNavigator(
 
 const Setup = createStackNavigator(
   {
-    CreateCampaign: CreateCampaign
+    CreateCampaign: CreateCampaign,
+    
   },
   { 
     defaultNavigationOptions: {
@@ -86,9 +88,19 @@ const Setup = createStackNavigator(
 
 const CampaignStack = createStackNavigator(
   {
-    CampaignStaging: CampaignStaging
+    CampaignStart: CampaignStart,
+    CampaignStaging: CampaignStaging,
+    WaitForStart: { screen: WaitForStart, },
+    CampaignSummary: { screen: CampaignSummary, },
+    Safehouse: { screen: Safehouse },
+    EndOfDaySummary: { screen: EndOfDaySummary },
+    Inventory: { screen: Inventory },
+    RandomEvent: { screen: RandomEvent },
+    CampaignIsLost: { screen: CampaignIsLost },
+    CampaignIsWon: { screen: CampaignIsWon },
   },
   { 
+    initialRouteName: "CampaignStart",
     defaultNavigationOptions: {
       header: null,
     }

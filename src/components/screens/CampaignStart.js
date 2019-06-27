@@ -8,7 +8,6 @@ class AuthStart extends React.Component {
   }
 
   componentDidMount() {
-    this.props.screenProps.path === 'recovery' ? this.props.navigation.navigate('RecoverAccount') : this.props.navigation.navigate('SignUp') ;
   }
 
   render() {
@@ -16,7 +15,7 @@ class AuthStart extends React.Component {
     return (
       <View style={styles.container}>
         <ActivityIndicator />
-        <Text>Hello From AuthStart</Text>
+        <Text>Hello From Campaign Start</Text>
         <StatusBar barStyle="default" />
       </View>
     );

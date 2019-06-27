@@ -235,8 +235,6 @@ export function *fetchPlayer(action) {
     console.log('playId in saga', action.playId)
     const response = yield fetch(url, initObj)
     .then(response => response.json());
-    // .then(response => response.text());
-    console.log('response', response);
     yield put({type: c.PLAYER_FETCHED, player: response});
   } catch (error) {
     console.warn('error fetching players: ', error);

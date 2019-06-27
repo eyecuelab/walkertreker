@@ -29,13 +29,13 @@ class RecoverAccount extends React.Component {
   componentWillMount = async () => {
     const { dispatch } = this.props
     const playerId = this.props.screenProps.queryParams.playerId
-    this.setState({ playerId })
-    await console.log("from recoverAccount", playerId)
+    await this.setState({ playerId })
+    console.log("from recoverAccount play id", playerId)
     dispatch({ type: c.FETCH_PLAYER, playId: playerId })
   }
+
   componentDidMount() {
-    // this.props.navigation.dangerouslyGetParent();
-    // this.props.navigation.navigate('Start')
+    this.props.navigation.navigate('AuthCheck')
   }
 
   render() {
@@ -117,4 +117,11 @@ const customStyles = StyleSheet.create({
   },
 })
 
-export default connect()(RecoverAccount);
+function mapStateToProps(state) {
+  return {
+    campaign: state.campaign,
+    player: state.player,
+  }
+}
+
+export default connect(mapStateToProps)(RecoverAccount);
