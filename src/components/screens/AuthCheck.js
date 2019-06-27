@@ -1,7 +1,9 @@
 import React from 'react';
-import { ActivityIndicator, AsyncStorage, Button, StatusBar, StyleSheet, View, Text } from 'react-native';
+import { ActivityIndicator, StatusBar, StyleSheet, View, Text } from 'react-native';
 import constants from './../../constants';
-const { c, storeData, retrieveData } = constants;
+import {connect} from 'react-redux';
+
+const { c, retrieveData } = constants;
 
 class AuthCheck extends React.Component {
   constructor() {
@@ -11,8 +13,11 @@ class AuthCheck extends React.Component {
 
   checkForPlayerInStorage = async () => {
     const localPlayer = await retrieveData('playerInfo');
-
-    localPlayer && localCampaign ?
+    if(localPlayer) {
+      console.log('attempting fetch with' + JSON.stringify(localPlayer))
+      this.props.fetchPlayer(localPlayer.id);
+    }
+    localPlayer && localPlayer.campaignId ?
     this.props.navigation.navigate('Campaign') :
     this.props.navigation.navigate(localPlayer ? 'Setup' : 'Auth');
   };
@@ -37,4 +42,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthCheck;
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchPlayer: (playerId) => dispatch({ type: c.FETCH_PLAYER, playId: playerId})
+  }
+}
+
+export default connect(null, mapDispatchToProps)(AuthCheck);

@@ -4,15 +4,11 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpa
 import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import {MainHeader, SubHeader, Label} from './../text';
-
-import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+import {MainHeader, Label} from './../text';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import WithKeyboardShift from './../../util/WithKeyboardShift';
-
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
-import { ScrollView } from 'react-native-gesture-handler';
+
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
@@ -26,6 +22,12 @@ class NewPlayerForm extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    
+    if(this.props.player.id) {
+      this.props.navigation.navigate("Setup");
+    }
+  }
 
 
   _handleSubmit = async () => {
@@ -39,7 +41,6 @@ class NewPlayerForm extends React.Component {
       avatar: this.state.avatar,
       pushToken,
     })
-    this.props.handleModalStateChange()
   }
 
   registerForPushNotificationsAsync = async () => {

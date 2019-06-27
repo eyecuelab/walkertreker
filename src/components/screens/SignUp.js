@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
 import NewPlayerForm from './../ui/NewPlayerForm';
-function SignUp() {
+
+function SignUp(props) {
   return(
-    <NewPlayerForm></NewPlayerForm>
+    <NewPlayerForm navigation={props.navigation}></NewPlayerForm>
   )
 }
 

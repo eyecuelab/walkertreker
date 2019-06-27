@@ -17,7 +17,7 @@ import RandomEvent from '../components/screens/RandomEvent';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
-
+import CampaignRouteNavigator from '../components/campaign/CampaignRouteNavigator';
 import AuthCheck from './../components/screens/AuthCheck';
 import SignUp from './../components/screens/SignUp';
 
@@ -56,18 +56,36 @@ const AppNavigator = createStackNavigator(
 const AuthStack = createStackNavigator(
   {
     SignUp : SignUp
+  },
+  {
+    defaultNavigationOptions: {
+      header: null,
+    }
   }
 )
 
 const Setup = createStackNavigator(
   {
     CreateCampaign: CreateCampaign
+  },
+  {
+    defaultNavigationOptions: {
+      header: null,
+    }
   }
 )
 
 const CampaignStack = createStackNavigator(
   {
-    CampaignStaging: CampaignStaging
+    initialNav: CampaignRouteNavigator,
+    CampaignStaging: CampaignStaging,
+    CampaignSummary: CampaignSummary
+  },
+  {
+    defaultNavigationOptions: {
+      initialRouteName: "initialNav",
+      header: null
+    }
   }
 )
 

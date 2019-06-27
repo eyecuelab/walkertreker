@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, ImageBackground, ToastAndroid, ScrollView } fro
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import constants from '../../constants';
-const { c, storeData, retrieveData } = constants;
+
 
 import defaultStyle from '../../styles/defaultStyle';
 
-import Avatar from '../ui/Avatar';
+
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+
 import DayCounter from '../ui/DayCounter';
 
 class CampaignSummary extends React.Component {
