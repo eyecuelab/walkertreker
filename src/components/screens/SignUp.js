@@ -29,7 +29,6 @@ class NewPlayerForm extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('player id from sigh up', this.props.player.id)
     this.props.player.id ? this.props.navigation.navigate('Setup') : 
       this.newPlayerCreated ? this.recoveryText() : null;
   }
