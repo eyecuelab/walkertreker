@@ -123,7 +123,6 @@ class NewPlayerForm extends React.Component {
             </View>
           </View>
 
-
           <View style={customStyles.buttonContainer}>
             <View style={customStyles.button}>
               <SingleButtonFullWidth
