@@ -4,6 +4,7 @@ export async function storeData(keyString, valueString) {
   try {
     await AsyncStorage.setItem(keyString, valueString);
   } catch (error) {
+    return undefined;
     console.log(keyString + ' data could not be saved - ' + error);
   }
 }
@@ -18,3 +19,5 @@ export async function retrieveData(keyString) {
     console.log(keyString + ' data could not be retrieved - ' + error);
   }
 }
+
+export const LoadState

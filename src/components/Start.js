@@ -8,52 +8,32 @@ const { c, retrieveData, storeData, navigation } = constants;
 class Start extends React.Component {
   constructor(props) {
     super(props)
-    const localPlayer = this.props.screenProps.localPlayer
-    const notification = this.props.screenProps.notification
-    const needPlayer = localPlayer.id ? true : false
-    const needCampaign = localPlayer.campaignId ? true : false
     this.state = {
-      localPlayer,
-      needPlayer,
-      needCampaign,
-      notification,
-      gotPlayer: false,
-      gotCampaign: false,
+      notification : this.props.screenProps.notification
+      //player: redux.state.player
+      //campaign: redux.state.campaign
     }
   }
 
-  
-
   componentDidMount = async () => {
-    console.log('Start - component did mount')
+    console.log('start component mounting')
     const { dispatch } = this.props
 
-    if (this.state.needPlayer) {
+    if (this.state.player.id) {
       dispatch({ type: c.FETCH_PLAYER, playId: this.state.localPlayer.id})
     }
     if (this.state.needCampaign) {
       dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
     }
-    console.log("screenprops", this.props.screenProps.queryParams.playerId)
-    // if (this.props.screenProps.queryParams.playerId) {
-    //   dispatch({ type: c.FETCH_PLAYER, playId: this.props.screenProps.queryParams.playerId})
-    // }
     if (!this.state.needPlayer) {
-
-      //if no localPlayer.id, user enters a phone number
-      //if phone number is in database, needPlayer=true
-      //if phone number not in database, create a new player
-
       this.navigate('About')
     }
   }
 
   navigate = (route) => {
     const path = this.props.screenProps.path;
-    console.log('path', path)
     let routeName = route
     let routeParams = {}
-   
     if (this.state.notification) {
       const type = this.state.notification.data.type
       if (navigation[type] !== 'none') {
@@ -67,26 +47,15 @@ class Start extends React.Component {
         campaignId: this.props.screenProps.queryParams.campaignId,
       }
     }
-    if (path === 'recovery') {
-      routeName = 'RecoverAccount'
-      routeParams = {
-        playerId: this.props.screenProps.queryParams.playerId,
-      }
-    }
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName, params: routeParams })]
     });
-    console.log('INITIAL NAVIGATION: ')
-    console.log('routeName: ', routeName)
-    console.log('routeParams: ', routeParams)
-    console.log('reset action', resetAction)
     this.props.navigation.dispatch(resetAction);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('start update', prevProps)
-    if (prevProps.player.id == null && this.props.player.id !== null) {
+    if (prevProps.player.id == null && this.props.player.id !== null) {x
       this.setState({ gotPlayer: true })
     }
     if (prevProps.campaign.id == null && this.props.campaign.id !== null) {
@@ -99,6 +68,7 @@ class Start extends React.Component {
           this.navigate('CampaignSummary')
         } else if (this.props.player.id == this.props.campaign.host) {
           // player created campaign that has not started, navigate to campaign staging
+          console.log('start')
           this.navigate('CampaignStaging')
         } else {
           // player has joined a campaign that has not started, navigate to wait for start

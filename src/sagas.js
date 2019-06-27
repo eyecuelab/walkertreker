@@ -46,7 +46,8 @@ export function *updatePlayerSteps(action) {
 }
 
 export function *setInitialCampaignDetails(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns';
+  console.log("setting campaign")
+  const url = 'http://10.1.10.108:5000/api/campaigns';
   const initObj = {
     method: "POST",
     headers: {
@@ -59,6 +60,7 @@ export function *setInitialCampaignDetails(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
+    console.log("storing", response)
     yield storeData('campaignId', JSON.stringify(response.id));
     yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
   } catch (error) {
@@ -67,7 +69,7 @@ export function *setInitialCampaignDetails(action) {
 }
 
 export function *sendInvites(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + action.campId;
+  const url = 'http://10.1.10.108:5000/api/campaigns/invite/' + action.campId;
   const theBody = {};
   const phoneNums = Object.keys(action.invites);
   for (pNumber of phoneNums) {
@@ -98,7 +100,7 @@ export function *sendInvites(action) {
 export function *fetchCampaignInfo(action) {
 
   const id = action.id;
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + id;
+  const url = 'http://10.1.10.108:5000/api/campaigns/' + id;
   const initObj = {
     method: "GET",
     headers: {
@@ -117,7 +119,7 @@ export function *fetchCampaignInfo(action) {
 
 export function *joinCampaignRequest(action) {
 
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/join/' + action.campId;
+  const url = 'http://10.1.10.108:5000/api/campaigns/join/' + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -137,7 +139,7 @@ export function *joinCampaignRequest(action) {
 
 export function *createPlayer(action) {
 
-  const url = 'https://walkertrekker.herokuapp.com/api/players';
+  const url = 'http://10.1.10.108:5000/api/players';
 
   const data = new FormData()
 
@@ -172,7 +174,7 @@ export function *createPlayer(action) {
 
 export function *updateCampaign(action) {
 
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+  const url = 'http://10.1.10.108:5000/api/campaigns/' + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -198,7 +200,7 @@ export function *updateCampaign(action) {
 
 export function *leaveCampaign(action) {
 
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/leave/' + action.campId;
+  const url = 'http://10.1.10.108:5000/api/campaigns/leave/' + action.campId;
 
   const initObj = {
     method: "PATCH",
@@ -219,7 +221,7 @@ export function *leaveCampaign(action) {
 }
 
 export function *fetchPlayer(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/players/' + action.playId;
+  const url = 'http://10.1.10.108:5000/api/players/' + action.playId;
   const initObj = {
     method: "GET",
     headers: {
@@ -240,7 +242,7 @@ export function *fetchPlayer(action) {
 }
 
 export function *updatePlayer(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/players';
+  const url = 'http://10.1.10.108:5000/api/players';
   const initObj = {
     method: "PATCH",
     headers: {
@@ -268,7 +270,7 @@ export function *updatePlayer(action) {
 
 
 export function *sendRecoverAccount(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/players/recover/' + action.phoneNumber
+  const url = 'http://10.1.10.108:5000/api/players/recover/' + action.phoneNumber
   console.log(url)
   const initObj = {
     method: "GET",
@@ -288,7 +290,7 @@ export function *sendRecoverAccount(action) {
 
 
 export function *startCampaign(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/start/' + action.campId;
+  const url = 'http://10.1.10.108:5000/api/campaigns/start/' + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -309,7 +311,7 @@ export function *startCampaign(action) {
 }
 
 export function *destroyCampaign(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+  const url = 'http://10.1.10.108:5000/api/campaigns/' + action.campId;
   const initObj = {
     method: "DELETE",
     headers: {
@@ -334,6 +336,7 @@ export function *saveState() {
 }
 
 export function *checkBonusSteps(action) {
+  console.log("actionPAYLOAD!>!>!>!>!>!>!>!" + JSON.stringify(action.player));
   const { steps, stepTargets } = action.player;
   const { currentDay, inventory, startDate } = yield select(getCampaign);
   const { campaignDateArray, scavengingFor } = yield select(getSteps);

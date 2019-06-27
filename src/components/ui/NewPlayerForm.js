@@ -4,14 +4,11 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpa
 import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import {MainHeader, SubHeader, Label} from './../text';
-
-import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+import {MainHeader, Label} from './../text';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
-import { ScrollView } from 'react-native-gesture-handler';
+
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
@@ -25,8 +22,14 @@ class NewPlayerForm extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    
+    if(this.props.player.id) {
+      this.props.navigation.navigate("Setup");
+    }
+  }
 
- 
+
   _handleSubmit = async () => {
     console.log("newPlayer")
     const { dispatch } = this.props;
@@ -38,7 +41,6 @@ class NewPlayerForm extends React.Component {
       avatar: this.state.avatar,
       pushToken,
     })
-    this.props.handleModalStateChange()
   }
 
   registerForPushNotificationsAsync = async () => {
@@ -79,11 +81,12 @@ class NewPlayerForm extends React.Component {
       >
         <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
 
+
           <View style={customStyles.headlineContainer}>
             <MainHeader>New Player</MainHeader>
           </View>
 
-          <View style={customStyles.formContainer}>
+            <View style={customStyles.formContainer}>
 
             <View style={customStyles.fieldContainer}>
               <Label>Display Name</Label>
@@ -109,6 +112,7 @@ class NewPlayerForm extends React.Component {
             </View>
           </View>
 
+
           <View style={customStyles.buttonContainer}>
             <View style={customStyles.button}>
               <SingleButtonFullWidth
@@ -120,7 +124,7 @@ class NewPlayerForm extends React.Component {
           </View>
 
         <Text style={{color: 'white'}} onPress={() => {this.props.handleRecoveryModalToggle()}}>
-            Already have an account? Recover it here. 
+            Already have an account? Recover it here.
           </Text>
         </View>
     </ImageBackground>

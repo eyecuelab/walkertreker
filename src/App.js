@@ -58,6 +58,8 @@ class App extends React.Component {
   }
 
   _loadResourcesAsync = async () => {
+    const { dispatch } = this.props
+
     const imageAssets = this.cacheImages([
       require('../assets/logo.png'),
       require('../assets/bg.png'),
@@ -108,7 +110,23 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
+
+    let localPlayer = await retrieveData('playerInfo')
     
+    const dud = {
+      id: false,
+      campaignId: false
+    }
+    if (!localPlayer) {
+      localPlayer = dud
+      await this.setState({
+        newPlayerModalVisible: true,
+      })
+    } else {
+      localPlayer = JSON.parse(localPlayer) 
+    }
+    await this.setState({ localPlayer })
+
   };
 
   _handleLoadingError = error => {
@@ -116,36 +134,13 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
-    const {dispatch} = this.props
     const { path, queryParams } = await Linking.parseInitialURLAsync();
 
     await this.setState({
+      isReady: true,
       path,
       queryParams
     });
-
-    // blank localPlayer in asyncStorage:
-    // await storeData('playerInfo', "")
-    let localPlayer = await retrieveData('playerInfo')
-    console.log("Local Player during load" + localPlayer)
-    const dud = {
-      id: false,
-      campaignId: false
-    }
-    
-    if (!localPlayer) {
-      console.log('nolocalplayer')
-      localPlayer = dud
-      this.state.path === 'recovery' ? await this.setState({ newPlayerModalVisible: false }) : await this.setState({ newPlayerModalVisible: true })
-    } else {
-      localPlayer = JSON.parse(localPlayer)
-      console.log('localplayer-needplayer')
-    }
-    await this.setState({ localPlayer })
-
-    await this.setState({
-      isReady: true
-    })
   }
 
   _passNotificationToStart = (notification) => {
@@ -155,6 +150,11 @@ class App extends React.Component {
   componentDidMount() {
     Notifications.addListener(this._passNotificationToStart);
     console.log("App Component Mounted")
+    
+  }
+
+  componentWillUnmount() {
+    console.log("state when unmounting ++++++++++++++++++++++++++++++++++++++" + this.props.state);
   }
 
   render() {
@@ -173,15 +173,12 @@ class App extends React.Component {
     console.log("This is the prefix:", prefix)
     return (
       <Provider store={store}>
-        <Modal isVisible={this.state.newPlayerModalVisible}>
-          <NewPlayerModal handleModalStateChange={this._toggleNewPlayerModal} />
-        </Modal>
         <SocketIO />
         <NotificationListeners />
         <BackgroundPedometer />
         <AppContainer
           onNavigationStateChange={(prevState, currentState, action) => {
-            console.log('current state',currentState)
+            
           }}
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
@@ -202,10 +199,10 @@ class App extends React.Component {
 
 registerRootComponent(App)
 
-// function mapStateToProps(state) {
-//   return {
-//
-//   }
-// }
+function mapStateToProps(state){
+  return {
+      
+  }
+}
 
-export default connect(/*mapStateToProps*/)(App);
+export default connect()(App);
