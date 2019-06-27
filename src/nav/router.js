@@ -19,45 +19,55 @@ import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
 import CampaignRouteNavigator from '../components/campaign/CampaignRouteNavigator';
 import AuthCheck from './../components/screens/AuthCheck';
+import AuthStart from './../components/screens/AuthStackStart';
 import SignUp from './../components/screens/SignUp';
+import AccountRecovery from './../components/ui/AccountRecovery';
+import CampaignStart from './../components/screens/CampaignStart';
 
-const AppNavigator = createStackNavigator(
+// const AppNavigator = createStackNavigator(
+//   {
+//     Start: { screen: Start },
+//     About: { screen: About, },
+//     CreateCampaign: { screen: CreateCampaign, },
+//     InvitePlayers: { screen: InvitePlayers, },
+//     CampaignStaging: { screen: CampaignStaging, },
+//     AcceptInvite: {
+//       screen: AcceptInvite,
+//       path: 'invite/:campaignId'
+//     },
+//     RecoverAccount: {
+//       screen: RecoverAccount,
+//       path: 'recovery/:playerId'
+//     },
+//     WaitForStart: { screen: WaitForStart, },
+//     CampaignSummary: { screen: CampaignSummary, },
+//     Safehouse: { screen: Safehouse },
+//     EndOfDaySummary: { screen: EndOfDaySummary },
+//     Inventory: { screen: Inventory },
+//     RandomEvent: { screen: RandomEvent },
+//     CampaignIsLost: { screen: CampaignIsLost },
+//     CampaignIsWon: { screen: CampaignIsWon },
+//   },
+//   {
+//     initialRouteName: "NewPlayerForm",
+//     defaultNavigationOptions: {
+//       header: null,
+//     }
+//   }
+// );
+
+const AuthStack = createStackNavigator(
   {
-    Start: { screen: Start },
-    About: { screen: About, },
-    CreateCampaign: { screen: CreateCampaign, },
-    InvitePlayers: { screen: InvitePlayers, },
-    CampaignStaging: { screen: CampaignStaging, },
-    AcceptInvite: {
-      screen: AcceptInvite,
-      path: 'invite/:campaignId'
-    },
+    AuthStart: AuthStart,
+    SignUp: SignUp,
+    AccountRecovery: AccountRecovery,
     RecoverAccount: {
       screen: RecoverAccount,
       path: 'recovery/:playerId'
     },
-    WaitForStart: { screen: WaitForStart, },
-    CampaignSummary: { screen: CampaignSummary, },
-    Safehouse: { screen: Safehouse },
-    EndOfDaySummary: { screen: EndOfDaySummary },
-    Inventory: { screen: Inventory },
-    RandomEvent: { screen: RandomEvent },
-    CampaignIsLost: { screen: CampaignIsLost },
-    CampaignIsWon: { screen: CampaignIsWon },
   },
   {
-    initialRouteName: "Start",
-    defaultNavigationOptions: {
-      header: null,
-    }
-  }
-);
-
-const AuthStack = createStackNavigator(
-  {
-    SignUp : SignUp
-  },
-  {
+    initialRouteName: "AuthStart",
     defaultNavigationOptions: {
       header: null,
     }

@@ -6,24 +6,33 @@ import {connect} from 'react-redux';
 const { c, retrieveData } = constants;
 
 class AuthCheck extends React.Component {
-  constructor() {
-    super();
-    this.checkForPlayerInStorage();
+  constructor(props) {
+    super(props);
+    // this.checkForPlayerInStorage();
   }
 
-  checkForPlayerInStorage = async () => {
+  componentWillMount = async () => {
+    const { dispatch } = this.props
     const localPlayer = await retrieveData('playerInfo');
-    if(localPlayer) {
-      console.log('attempting fetch with' + JSON.stringify(localPlayer))
-      this.props.fetchPlayer(localPlayer.id);
-    }
-    localPlayer && localPlayer.campaignId ?
+    const localCampaign = await retrieveData('campaignInfo');
+    console.log('localPlayer', localPlayer)
+    console.log('localCampaign', localCampaign)
+
+    localPlayer && localPlayer.id ? 
+    dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id }) : null;
+    localCampaign && localCampaign.id ? 
+    dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: localCampaign.id }) : null;
+    localPlayer && localCampaign ?
     this.props.navigation.navigate('Campaign') :
     this.props.navigation.navigate(localPlayer ? 'Setup' : 'Auth');
   };
+  
+  componentDidUpdate() {
+  }
 
   // Render any loading content that you like here
   render() {
+    console.log('rendered auth check')
     return (
       <View style={styles.container}>
         <ActivityIndicator />
