@@ -18,3 +18,4 @@ export async function retrieveData(keyString) {
     console.log(keyString + ' data could not be retrieved - ' + error);
   }
 }
+

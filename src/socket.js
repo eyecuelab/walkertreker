@@ -11,3 +11,4 @@ const socket = io(endpoint, {
 })
 
 module.exports = socket
+//My Ip 10.0.0.5

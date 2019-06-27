@@ -1,8 +1,9 @@
 import React from 'react';
-import { ActivityIndicator, AsyncStorage, Button, StatusBar, StyleSheet, View, Text } from 'react-native';
+import { ActivityIndicator, StatusBar, StyleSheet, View, Text } from 'react-native';
 import constants from './../../constants';
-const { c, storeData, retrieveData } = constants;
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
+
+const { c, retrieveData } = constants;
 
 class AuthCheck extends React.Component {
   constructor(props) {
@@ -50,4 +51,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(AuthCheck);
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchPlayer: (playerId) => dispatch({ type: c.FETCH_PLAYER, playId: playerId})
+  }
+}
+
+export default connect(null, mapDispatchToProps)(AuthCheck);

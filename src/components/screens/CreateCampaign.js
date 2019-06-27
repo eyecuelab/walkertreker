@@ -17,10 +17,18 @@ class CreateCampaign extends React.Component {
     super(props);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log("Updating State with", this.props.campaign.players.length)
+    if(this.props.campaign.players.length > 0) {
+      this.props.navigation.navigate("Campaign");
+    }
+  }
+
   async _generateCampaign() {
     const { dispatch } = this.props;
     const now = new Date();
     const timezone = -now.getTimezoneOffset()/60;
+    console.log(this.props.player.id)
     let apiPayload = {
       "params": {
         "campaignLength": this.props.campaign.length,
@@ -33,7 +41,6 @@ class CreateCampaign extends React.Component {
 
     apiPayload = JSON.parse(JSON.stringify(apiPayload));
     await dispatch({type: c.SET_INITIAL_CAMPAIGN_DETAILS, payload: apiPayload});
-    this.props.navigation.navigate('AuthCheck');
   }
 
   _updateCampaignLength = num => {

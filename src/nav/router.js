@@ -17,7 +17,7 @@ import RandomEvent from '../components/screens/RandomEvent';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
-
+import CampaignRouteNavigator from '../components/campaign/CampaignRouteNavigator';
 import AuthCheck from './../components/screens/AuthCheck';
 import AuthStart from './../components/screens/AuthStackStart';
 import SignUp from './../components/screens/SignUp';
@@ -76,33 +76,25 @@ const AuthStack = createStackNavigator(
 
 const Setup = createStackNavigator(
   {
-    CreateCampaign: CreateCampaign,
-    
+    CreateCampaign: CreateCampaign
   },
-  { 
+  {
     defaultNavigationOptions: {
-    header: null,
+      header: null,
     }
   }
 )
 
 const CampaignStack = createStackNavigator(
   {
-    CampaignStart: CampaignStart,
+    initialNav: CampaignRouteNavigator,
     CampaignStaging: CampaignStaging,
-    WaitForStart: { screen: WaitForStart, },
-    CampaignSummary: { screen: CampaignSummary, },
-    Safehouse: { screen: Safehouse },
-    EndOfDaySummary: { screen: EndOfDaySummary },
-    Inventory: { screen: Inventory },
-    RandomEvent: { screen: RandomEvent },
-    CampaignIsLost: { screen: CampaignIsLost },
-    CampaignIsWon: { screen: CampaignIsWon },
+    CampaignSummary: CampaignSummary
   },
-  { 
-    initialRouteName: "CampaignStart",
+  {
     defaultNavigationOptions: {
-      header: null,
+      initialRouteName: "initialNav",
+      header: null
     }
   }
 )

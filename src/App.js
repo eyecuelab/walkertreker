@@ -56,6 +56,8 @@ class App extends React.Component {
   }
 
   _loadResourcesAsync = async () => {
+    const { dispatch } = this.props
+
     const imageAssets = this.cacheImages([
       require('../assets/logo.png'),
       require('../assets/bg.png'),
@@ -107,21 +109,21 @@ class App extends React.Component {
     ]);
 
 
-    // let localPlayer = await retrieveData('playerInfo')
-    //
-    // const dud = {
-    //   id: false,
-    //   campaignId: false
-    // }
-    // if (!localPlayer) {
-    //   localPlayer = dud
-    //   await this.setState({
-    //     newPlayerModalVisible: true,
-    //   })
-    // } else {
-    //   localPlayer = JSON.parse(localPlayer)
-    // }
-    // await this.setState({ localPlayer })
+    let localPlayer = await retrieveData('playerInfo')
+    
+    const dud = {
+      id: false,
+      campaignId: false
+    }
+    if (!localPlayer) {
+      localPlayer = dud
+      await this.setState({
+        newPlayerModalVisible: true,
+      })
+    } else {
+      localPlayer = JSON.parse(localPlayer) 
+    }
+    await this.setState({ localPlayer })
 
   };
 
@@ -130,10 +132,10 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
-    const {dispatch} = this.props
     const { path, queryParams } = await Linking.parseInitialURLAsync();
 
     await this.setState({
+      isReady: true,
       path,
       queryParams
     });
@@ -149,6 +151,11 @@ class App extends React.Component {
   componentDidMount() {
     Notifications.addListener(this._passNotificationToStart);
     console.log("App Component Mounted")
+    
+  }
+
+  componentWillUnmount() {
+    console.log("state when unmounting ++++++++++++++++++++++++++++++++++++++" + this.props.state);
   }
 
   render() {
@@ -174,7 +181,7 @@ class App extends React.Component {
         <BackgroundPedometer />
         <AppContainer
           onNavigationStateChange={(prevState, currentState, action) => {
-            // console.log('current state',currentState)
+            
           }}
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
@@ -195,10 +202,10 @@ class App extends React.Component {
 
 registerRootComponent(App)
 
-// function mapStateToProps(state) {
-//   return {
-//
-//   }
-// }
+function mapStateToProps(state){
+  return {
+      
+  }
+}
 
-export default connect(/*mapStateToProps*/)(App);
+export default connect()(App);

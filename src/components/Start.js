@@ -16,6 +16,7 @@ class Start extends React.Component {
   }
 
   componentDidMount = async () => {
+    console.log('start component mounting')
     const { dispatch } = this.props
 
     if (this.state.player.id) {
@@ -67,6 +68,7 @@ class Start extends React.Component {
           this.navigate('CampaignSummary')
         } else if (this.props.player.id == this.props.campaign.host) {
           // player created campaign that has not started, navigate to campaign staging
+          console.log('start')
           this.navigate('CampaignStaging')
         } else {
           // player has joined a campaign that has not started, navigate to wait for start

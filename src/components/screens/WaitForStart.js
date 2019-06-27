@@ -27,7 +27,7 @@ class WaitForStart extends React.Component {
 
   componentDidUpdate() {
     if(this.props.campaign.startDate !== null) {
-      console.log("WaitingForStart(30) : Component Attempting to navigate to start")
+      console.log("WaitingForStart(30) : Component FAttempting to navigate to start")
       this.props.navigation.navigate('Start')
     }
   }
