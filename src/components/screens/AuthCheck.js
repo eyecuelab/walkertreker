@@ -12,19 +12,13 @@ class AuthCheck extends React.Component {
   }
 
   componentWillMount = async () => {
-    const { dispatch } = this.props
-    const localPlayer = await retrieveData('playerInfo');
-    const localCampaign = await retrieveData('campaignInfo');
-    console.log('localPlayer', localPlayer)
-    console.log('localCampaign', localCampaign)
-
-    localPlayer && localPlayer.id ? 
-    dispatch({ type: c.FETCH_PLAYER, playId: localPlayer.id }) : null;
-    localCampaign && localCampaign.id ? 
-    dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: localCampaign.id }) : null;
-    localPlayer && localCampaign ?
+    const {player, campaign} = this.props;
+    console.log("++++++++++ Current state campaign state is ++++++++++ \n" + JSON.stringify(campaign || {hello: 'failure'}))
+    console.log("++++++++++ Current state player state is ++++++++++ \n" + JSON.stringify(player || {hello: 'failure'}))
+    
+    player.id && campaign.id ?
     this.props.navigation.navigate('Campaign') :
-    this.props.navigation.navigate(localPlayer ? 'Setup' : 'Auth');
+    this.props.navigation.navigate(player.id ? 'Setup' : 'Auth');
   };
   
   componentDidUpdate() {
@@ -51,10 +45,17 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => {
+  return {
+    player: state.player,
+    campaign: state.campaign
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     fetchPlayer: (playerId) => dispatch({ type: c.FETCH_PLAYER, playId: playerId})
   }
 }
 
-export default connect(null, mapDispatchToProps)(AuthCheck);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthCheck);

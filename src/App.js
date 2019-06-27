@@ -3,31 +3,24 @@ import { AppState, AsyncStorage, Image, View, Text } from 'react-native';
 import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, Notifications, } from 'expo';
 import { AppContainer } from './nav/router';
 import NavigationService from './nav/NavigationService';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './store';
 
-import { createStore, applyMiddleware } from 'redux';
 import { Provider, connect, dispatch } from 'react-redux';
 import { logger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
-import rootReducer from './reducers';
+import rootReducer from './store/reducers';
 import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
-import GetNotificationToken from './components/GetNotificationToken';
-
-import BackgroundTask from 'react-native-background-task';
 
 if (__DEV__) {
   KeepAwake.activate();
 }
-
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
-sagaMiddleware.run(rootSaga);
-
 class App extends React.Component {
 
   //turn these into state hooks
@@ -39,11 +32,6 @@ class App extends React.Component {
       notification: false
     }
   }
-
-  // _toggleNewPlayerModal = () => {
-  //   const newPlayerModalVisible = !this.state.newPlayerModalVisible
-  //   this.setState({ newPlayerModalVisible })
-  // }
 
   cacheImages(images) {
     return images.map(image => {
@@ -154,10 +142,6 @@ class App extends React.Component {
     
   }
 
-  componentWillUnmount() {
-    console.log("state when unmounting ++++++++++++++++++++++++++++++++++++++" + this.props.state);
-  }
-
   render() {
     if (!this.state.isReady) {
       console.log("Loading App Initialized");
@@ -176,25 +160,27 @@ class App extends React.Component {
     console.log(this.props.navigation)
     return (
       <Provider store={store}>
-        <SocketIO />
-        <NotificationListeners />
-        <BackgroundPedometer />
-        <AppContainer
-          onNavigationStateChange={(prevState, currentState, action) => {
-            
-          }}
-          ref={navigatorRef => {
-            NavigationService.setTopLevelNavigator(navigatorRef);
-          }}
-          uriPrefix={prefix}
-          screenProps={{
-            backgroundImage: require('../assets/bg.png'),
-            path: this.state.path,
-            queryParams: this.state.queryParams,
-            // localPlayer: this.state.localPlayer,
-            notification: this.state.notification,
-          }}
-        />
+        <PersistGate persistor={persistor} loading={null}>
+          <SocketIO />
+          <NotificationListeners />
+          
+          <AppContainer
+            onNavigationStateChange={(prevState, currentState, action) => {
+              
+            }}
+            ref={navigatorRef => {
+              NavigationService.setTopLevelNavigator(navigatorRef);
+            }}
+            uriPrefix={prefix}
+            screenProps={{
+              backgroundImage: require('../assets/bg.png'),
+              path: this.state.path,
+              queryParams: this.state.queryParams,
+              // localPlayer: this.state.localPlayer,
+              notification: this.state.notification,
+            }}
+          />
+        </PersistGate>
       </Provider>
     );
   }

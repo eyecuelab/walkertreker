@@ -18,8 +18,7 @@ class CreateCampaign extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("Updating State with", this.props.campaign.players.length)
-    if(this.props.campaign.players.length > 0) {
+    if(this.props.campaign.players && this.props.campaign.players.length > 0) {
       this.props.navigation.navigate("Campaign");
     }
   }

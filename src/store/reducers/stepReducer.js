@@ -1,7 +1,14 @@
-import constants from '../constants';
+import constants from './../../constants';
 const { c, initialState: { steps } } = constants;
 
-export default (state = steps, action) => {
+export default (state = {
+  campaignDateArray: null,
+  isGettingSteps: false,
+  error: null,
+  pedometerIsAvailable: false,
+  scavengingFor: null,
+  justScavenged: null,
+}, action) => {
   let newState;
   switch (action.type) {
     case c.SET_CAMPAIGN_DATES:
