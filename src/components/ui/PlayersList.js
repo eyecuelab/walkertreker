@@ -39,6 +39,8 @@ class PlayersList extends React.Component {
   }
 
   componentDidMount() {
+    console.log("Campaign In PlayerList++++++++++++++++++++++++++++ \n" + JSON.stringify(this.props.campaign));
+    console.log("Campaign In PlayerList++++++++++++++++++++++++++++ \n" + JSON.stringify(this.props.player));
   }
 
   render() {

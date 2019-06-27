@@ -139,7 +139,7 @@ export function *joinCampaignRequest(action) {
 
 export function *createPlayer(action) {
 
-  const url = 'http://10.1.10.51:5000/api/players';
+  const url = 'http://10.1.10.108:5000/api/players';
 
   const data = new FormData()
 

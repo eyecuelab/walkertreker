@@ -7,13 +7,7 @@ const { retrieveData } = constants;
 class CampaignRouteNavigator extends React.Component {
     constructor() {
         super();
-        this.fetchCampaignInfo();
       }
-    
-    fetchCampaignInfo = async () => {
-        const { dispatch } = this.props;
-        dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: this.state.localPlayer.campaignId})
-    };
 
     componentDidMount(){
     this.props.campaign.startDate !== null ?

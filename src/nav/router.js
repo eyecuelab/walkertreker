@@ -22,7 +22,6 @@ import AuthCheck from './../components/screens/AuthCheck';
 import AuthStart from './../components/screens/AuthStackStart';
 import SignUp from './../components/screens/SignUp';
 import AccountRecovery from './../components/ui/AccountRecovery';
-import CampaignStart from './../components/screens/CampaignStart';
 
 // const AppNavigator = createStackNavigator(
 //   {
