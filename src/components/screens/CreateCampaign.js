@@ -18,6 +18,7 @@ class CreateCampaign extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log("++++++++ Create Campaign +++++++++ \n" + JSON.stringify(this.props.campaign))
     if(this.props.campaign.players && this.props.campaign.players.length > 0) {
       this.props.navigation.navigate("Campaign");
     }
@@ -149,7 +150,7 @@ const createCampaignStyle = StyleSheet.create({
   }
 })
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     campaign: state.campaign,
     player: state.player,
