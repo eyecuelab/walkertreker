@@ -21,6 +21,7 @@ function TextAlt(props) {
     (widthUnit*4)
   };
   color: ${props => props.color || 'white'};
+  fontWeight: ${props => props.weight || 'normal'};
   `
   return (
     <StyledText {...props}>{props.children}</StyledText>

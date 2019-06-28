@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
@@ -10,7 +10,6 @@ import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import WithKeyboardShift from './../../util/WithKeyboardShift';
 
-import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 import ScreenContainer from '../containers/ScreenContainer';
 const { c } = constants
@@ -23,7 +22,8 @@ class NewPlayerForm extends React.Component {
       displayName: '',
       phoneNumber: '',
       avatar: require('../../../assets/blankavatar.png'), 
-      recoveryText: 'Aleady have an account? Recover it here.',
+      recoveryText: 'Aleady have an account?',
+      recoveryTextBold: 'Recover it here'
     }
     this.newPlayerCreated = false;
   }
@@ -34,8 +34,11 @@ class NewPlayerForm extends React.Component {
   }
 
   recoveryText = () => {
-    if (this.state.recoveryText !== 'Signup failed. Try again, or click here to recover an account.') {
-      this.setState({ recoveryText: 'Signup failed. Try again, or click here to recover an account.'})
+    if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
+      this.setState({ recoveryText: 'Signup failed. Try again, or '})
+    }
+    if (this.state.recoveryTextBold !== 'click here to recover an account.') {
+      this.setState({ recoveryText: 'click here to recover an account.'})
     }
   }
 
@@ -82,35 +85,31 @@ class NewPlayerForm extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <ImageBackground
-      source={use_item_bg}
-      resizeMode='cover'
-      style={customStyles.itemBg}
+        source={use_item_bg}
+        resizeMode='cover'
+        style={customStyles.itemBg}
       >
         <ScreenContainer>
-        <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
+          <View style={[customStyles.container, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
 
-
-          <View style={customStyles.headlineContainer}>
-            <MainHeader>New Player</MainHeader>
-          </View>
-
-            <View style={customStyles.formContainer}>
+            <View style={customStyles.headlineContainer}>
+              <MainHeader>New Player</MainHeader>
+            </View>
 
             <View style={customStyles.fieldContainer}>
               <Label>Display Name</Label>
-              <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({displayName: text})} value={this.state.displayName}/>
+              <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({ displayName: text })} value={this.state.displayName} />
+
             </View>
 
             <View style={customStyles.fieldContainer}>
               <Label>Phone Number</Label>
-              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} value={this.state.phoneNumber} />
             </View>
 
-
             <View style={customStyles.avatarContainer}>
-
               <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
                 <Image
                   source={this.state.avatar}
@@ -118,75 +117,55 @@ class NewPlayerForm extends React.Component {
                 />
               </TouchableOpacity>
 
-              <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
+              <TextAlt style={customStyles.avatarCaption}>Touch to select avatar</TextAlt>
             </View>
-          </View>
 
-          <View style={customStyles.buttonContainer}>
-            <View style={customStyles.button}>
-              <SingleButtonFullWidth
-                title="Submit"
-                onButtonPress={this._handleSubmit}
-                backgroundColor="darkred"
-              />
+            <View>
+              <View style={customStyles.button}>
+                <SingleButtonFullWidth
+                  title="Submit"
+                  onButtonPress={this._handleSubmit}
+                  backgroundColor="darkred"
+                />
+              </View>
+            </View>
+            <View style={customStyles.textButtonContainer}>
+              <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('AccountRecovery') }}>{this.state.recoveryText}  <TextAlt color='darkred' weight='bold'>{this.state.recoveryTextBold}</TextAlt></TextAlt>
             </View>
           </View>
-          <View style={customStyles.textButtonContainer}>
-            <TextAlt onPress={() => {this.props.navigation.navigate('AccountRecovery')}}>
-              {this.state.recoveryText}
-            </TextAlt>
-          </View>
-        </View>
         </ScreenContainer>
-    </ImageBackground>
+      </ImageBackground>
     )
   }
 }
-            // <TouchableOpacity style={customStyles.button} onPress={this._handleSubmit}><Text style={styles.label}>Submit</Text></TouchableOpacity>
 
-const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
-    // backgroundColor: 'darkred',
-    // justifyContent: 'center',
-    // borderRadius: 5,
     padding: widthUnit * 4,
   },
   headlineContainer: {
     margin: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  formContainer: {
-    padding: 10,
+    marginBottom: heightUnit*3,
   },
   fieldContainer: {
-    margin: 10,
-  },
-  buttonContainer: {
-    // margin: 10,
-    height: heightUnit*10,
-    width: '100%',
-    alignSelf: 'flex-end',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    margin: 6,
+    marginBottom: heightUnit*3,
   },
   button: {
     backgroundColor: 'black',
     width: '100%',
     height: heightUnit*10,
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: heightUnit*3,
+    marginBottom: heightUnit*2,
   },
   textButtonContainer: {
     height: heightUnit*6,
-    padding: widthUnit*8
+    padding: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     width: '100%',
@@ -201,40 +180,24 @@ const customStyles = StyleSheet.create({
     fontFamily: 'gore',
   },
   avatarContainer: {
-    // flex: 2,
-    // height: '100%',
-    // justifyContent: 'center',
     alignItems: 'center',
   },
   avatar: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
     width: widthUnit*20,
     height: widthUnit*20,
     borderRadius: 100,
-    // backgroundColor: 'black',
+    backgroundColor: 'black',
     borderWidth: 1,
     borderColor: 'black',
   },
   avatarCaption: {
-    fontSize: widthUnit*3.5,
-    fontFamily: 'verdana',
-    color: 'white',
-    // alignItems: 'center',
-    // justifyContent: 'center',
     fontStyle: 'italic'
   },
   itemBg: {
-    width: undefined,
-    height: undefined,
     flex: 1,
     justifyContent: 'flex-start',
   },
 })
-
-NewPlayerForm.propTypes = {
-  handleModalStateChange: PropTypes.func
-}
 
 function mapStateToProps(state) {
   return {
