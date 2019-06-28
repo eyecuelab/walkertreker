@@ -1,9 +1,10 @@
-import constants from '../constants';
+import constants from './../../constants';
 const { c, storeData, initialState: { campaign } } = constants;
-let newState;
-// import testState from '../constants/initialStates/tests/initialStateCampaignTest';
 
-export default (state = campaign/*testState*/, action) => {
+
+export default (state = campaign, action) => {
+  let newState;
+
   switch (action.type) {
 
   // these don't seem like they need to exist
@@ -30,27 +31,21 @@ export default (state = campaign/*testState*/, action) => {
     }
   case c.INITIAL_CAMPAIGN_DATA_RECEIVED:
     newState = Object.assign({}, state, action.campaign);
-    storeData('campaignInfo', JSON.stringify(newState));
     return newState;
   case c.CAMPAIGN_STARTED:
     newState = Object.assign({}, state, action.campaign);
-    storeData('campaignInfo', JSON.stringify(newState));
     return newState;
   case c.CAMPAIGN_INFO_RECEIVED:
     newState = Object.assign({}, state, action.campaign);
-    storeData('campaignInfo', JSON.stringify(newState));
     return newState;
   case c.PLAYER_JOINED_CAMPAIGN:
     newState = Object.assign({}, state, action.campaign);
-    storeData('campaignInfo', JSON.stringify(newState));
     return newState;
   case c.CAMPAIGN_UPDATED:
     newState = Object.assign({}, state, action.campaign);
-    storeData('campaignInfo', JSON.stringify(newState));
     return newState;
   case c.CAMPAIGN_LEFT:
     newState = Object.assign({}, campaign);
-    storeData('campaignInfo', JSON.stringify(newState));
     return newState;
   case c.CAMPAIGN_DESTROYED:
     newState = Object.assign({}, campaign);
