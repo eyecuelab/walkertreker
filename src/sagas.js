@@ -496,7 +496,7 @@ export function *watchInvites() {
   yield takeEvery(c.SEND_INVITES, sendInvites);
 }
 
-export function *watchCampaignGetting() {
+export function *watchFetchCampaign() {
   yield takeEvery(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo);
 }
 
@@ -586,7 +586,7 @@ export default function *rootSaga() {
     watchUpdateCampaign(),
     watchCreatePlayer(),
     watchJoinCampaign(),
-    watchCampaignGetting(),
+    watchFetchCampaign(),
     watchInvites(),
     watchInitialCampaignDetails(),
     watchSetDates(),

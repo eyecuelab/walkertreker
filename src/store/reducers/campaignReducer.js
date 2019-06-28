@@ -2,9 +2,9 @@ import constants from './../../constants';
 const { c, storeData, initialState: { campaign } } = constants;
 
 
-export default (state = {}, action) => {
+export default (state = campaign, action) => {
   let newState;
-  
+
   switch (action.type) {
 
   // these don't seem like they need to exist

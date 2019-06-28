@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppState, AsyncStorage, Image, View, Text } from 'react-native';
+import { Image } from 'react-native';
 import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, Notifications, } from 'expo';
 import { AppContainer } from './nav/router';
 import NavigationService from './nav/NavigationService';
@@ -9,8 +9,6 @@ import { store, persistor } from './store';
 import { Provider, connect, dispatch } from 'react-redux';
 import { logger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from './sagas';
-import rootReducer from './store/reducers';
 import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
