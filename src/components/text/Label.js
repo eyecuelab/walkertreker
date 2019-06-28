@@ -11,7 +11,7 @@ const StyledText = styled.Text`
   font-family: gore;
   font-size: ${props =>
     (props.size === 'sm' && widthUnit*3.5) ||
-    (props.size === 'md' && widthUnit*4.5) ||
+    (props.size === 'md' && widthUnit*4.2) ||
     (props.size === 'lg' && widthUnit*5.5) ||
     (widthUnit*5)
   };

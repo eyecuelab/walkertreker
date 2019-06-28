@@ -9,11 +9,39 @@ import { phoneNumPrettyPrint } from '../../util/util';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import WithKeyboardShift from './../../util/WithKeyboardShift';
+import posed from 'react-native-pose';
+// import AnimatedLabel from '../ui/AnimatedLabel'
 
 import constants from '../../constants';
 import ScreenContainer from '../containers/ScreenContainer';
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
+
+const AnimatedLabel = posed.View({
+  inInput: {
+    scale: 0.9,
+    x: 0,
+    y: 0,
+  },
+  aboveInput: { 
+    scale: 0.8, 
+    x: -10,
+    y: -22,
+  }
+});
+
+// const AnimatedLabel = posed.View({
+//   inInput: {
+//     scale: 0.9,
+//     x: 0,
+//     y: 0 
+//   },
+//   aboveInput: { 
+//     scale: 0.8, 
+//     x: -23,
+//     y: -35
+//   }
+// });
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -24,14 +52,17 @@ class SignUp extends React.Component {
       avatar: require('../../../assets/blankavatar.png'), 
       recoveryText: 'Aleady have an account?',
       recoveryTextBold: 'Recover it here',
-      newPlayerCreated: false,
+      didFocusPhone: 'inInput',
+      didFocusName: 'inInput',
     }
+    this.newPlayerCreated = false
+    this.animationInterval = null
   }
 
+
   componentDidUpdate() {
-    console.log(this.state.newPlayerCreated)
-    this.props.player.id ? this.props.navigation.navigate('Setup') : 
-      this.state.newPlayerCreated ? this.recoveryText() : null;
+    // console.log(this.newPlayerCreated)
+    this.newPlayerCreated ? this.props.player.id ? this.props.navigation.navigate('Setup') : this.recoveryText() : null;
   }
 
   recoveryText = () => {
@@ -54,11 +85,23 @@ class SignUp extends React.Component {
         number: prettyPhoneNumber,
         avatar: this.state.avatar,
         pushToken,
+        isVisible: true
       })
-      this.setState({newPlayerCreated: true})
+      this.newPlayerCreated = true
     } else {
       this.setState({ recoveryText: 'Are you sure you entered your phone number correctly?'})
     }
+  }
+
+  handleFocus = (type) => {
+    console.log('type',type)
+    type === 'phone' ? 
+    this.setState({
+      didFocusPhone: this.state.didFocusPhone === 'inInput' ? 'aboveInput' : 'inInput'
+    }) :
+    this.setState({
+      didFocusName: this.state.didFocusName === 'inInput' ? 'aboveInput' : 'inInput'
+    })
   }
 
   registerForPushNotificationsAsync = async () => {
@@ -100,25 +143,30 @@ class SignUp extends React.Component {
             </View>
 
             <View style={customStyles.fieldContainer}>
-              <Label>Your Display Name</Label>
-              <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({ displayName: text })} value={this.state.displayName} />
-
+              <AnimatedLabel pose={this.state.didFocusName} 
+                style={[customStyles.labelPosition, this.state.didFocusName === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
+                <Label>Display Name</Label>
+              </AnimatedLabel>
+              <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({ displayName: text })} onFocus={() => this.handleFocus('name')} value={this.state.displayName} />
             </View>
 
             <View style={customStyles.fieldContainer}>
-              <Label>Your Phone Number</Label>
-              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} value={this.state.phoneNumber} />
+              <AnimatedLabel pose={this.state.didFocusPhone} 
+                style={[customStyles.labelPosition, this.state.didFocusPhone === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
+                <Label style={{ backgroundColor: 'rgba(0,0,0,1)' }}>Phone Number</Label>
+              </AnimatedLabel>
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} onFocus={() => this.handleFocus('phone')} value={this.state.phoneNumber} />
             </View>
 
             <View style={customStyles.avatarContainer}>
-              <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
+              {/* <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
                 <Image
                   source={this.state.avatar}
                   style={customStyles.avatar}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
-              <TextAlt style={customStyles.avatarCaption}>Touch to select avatar</TextAlt>
+              <TextAlt style={customStyles.avatarCaption}>Touch to add an avatar</TextAlt>
             </View>
 
             <View>
@@ -140,19 +188,21 @@ class SignUp extends React.Component {
   }
 }
 
+
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
     padding: widthUnit * 4,
+    height: '100%'
   },
   headlineContainer: {
     margin: 6,
-    marginBottom: heightUnit*3,
+    marginBottom: heightUnit*6,
   },
   fieldContainer: {
     margin: 6,
-    marginBottom: heightUnit*3,
+    marginBottom: heightUnit*6,
   },
   button: {
     backgroundColor: 'black',
@@ -171,14 +221,22 @@ const customStyles = StyleSheet.create({
   textInput: {
     width: '100%',
     borderColor: '#888',
-    // borderRadius: 5,
-    borderWidth: 1,
+    borderWidth: 2,
     marginTop: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 8,
+    paddingBottom: 8,
     paddingLeft: 10,
     color: 'white',
     fontFamily: 'gore',
+    zIndex: 0
+  },
+  labelPosition: {
+    position: 'absolute',
+    bottom: heightUnit*2.2,
+    left: widthUnit*2,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding: 2,
+    zIndex: 1
   },
   avatarContainer: {
     alignItems: 'center',
@@ -192,7 +250,7 @@ const customStyles = StyleSheet.create({
     borderColor: 'black',
   },
   avatarCaption: {
-    fontStyle: 'italic'
+    // fontStyle: 'italic'
   },
   itemBg: {
     flex: 1,
