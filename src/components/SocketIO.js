@@ -13,8 +13,15 @@ class SocketIO extends React.Component {
 
   componentDidMount = async () => {
     const { dispatch } = this.props
-    socket.open()
     
+    if (this.props.player.id) {
+      socket.emit('connectToPlayer', this.props.player.id);
+    }
+
+    if (this.props.campaign.id) {
+      socket.emit('connectToCampaign', this.props.player.campaignId);
+    }
+
     socket.on('connect_error', (err) => {
       console.log(`Socket connection error: ${err}`)
     })
@@ -53,7 +60,8 @@ class SocketIO extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.player.id == null && this.props.player.id) {
+    if (!prevProps.player.id && this.props.player.id) {
+      console.log("attempting to connect player to SocketIO")
       socket.emit('connectToPlayer', this.props.player.id)
     }
     if (prevProps.player.campaignId == null && this.props.player.campaignId) {
