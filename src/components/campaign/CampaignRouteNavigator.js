@@ -3,17 +3,28 @@ import { ActivityIndicator, StatusBar, StyleSheet, View, Text } from 'react-nati
 import { connect } from 'react-redux';
 import constants from './../../constants';
 const { retrieveData } = constants;
+import { withNavigation } from "react-navigation";
+
 
 class CampaignRouteNavigator extends React.Component {
     constructor() {
         super();
       }
 
-    componentDidMount(){
-    this.props.campaign.startDate !== null ?
-    this.props.navigation.navigate('CampaignSummary') :
-    this.props.navigation.navigate('CampaignStaging')
+
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("didFocus", () => {
+      this.props.campaign.startDate !== null ?
+      this.props.navigation.navigate('CampaignSummary') :
+      this.props.navigation.navigate('CampaignStaging')
+    });
   }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
+  }
+
 
   // Render any loading content that you like here
   render() {
