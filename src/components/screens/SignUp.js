@@ -30,18 +30,6 @@ const AnimatedLabel = posed.View({
   }
 });
 
-// const AnimatedLabel = posed.View({
-//   inInput: {
-//     scale: 0.9,
-//     x: 0,
-//     y: 0 
-//   },
-//   aboveInput: { 
-//     scale: 0.8, 
-//     x: -23,
-//     y: -35
-//   }
-// });
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -94,13 +82,24 @@ class SignUp extends React.Component {
   }
 
   handleFocus = (type) => {
-    console.log('type',type)
     type === 'phone' ? 
     this.setState({
-      didFocusPhone: this.state.didFocusPhone === 'inInput' ? 'aboveInput' : 'inInput'
+      didFocusPhone: 'aboveInput'
     }) :
     this.setState({
-      didFocusName: this.state.didFocusName === 'inInput' ? 'aboveInput' : 'inInput'
+      didFocusName:  'aboveInput'
+    })
+  }
+
+  handleBlur = (type) => {
+    type === 'phone' ? 
+    this.state.phoneNumber ? null :
+    this.setState({
+      didFocusPhone: 'inInput'
+    }) : 
+    this.state.displayName ? null :
+    this.setState({
+      didFocusName: 'inInput'
     })
   }
 
@@ -147,7 +146,11 @@ class SignUp extends React.Component {
                 style={[customStyles.labelPosition, this.state.didFocusName === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
                 <Label>Display Name</Label>
               </AnimatedLabel>
-              <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({ displayName: text })} onFocus={() => this.handleFocus('name')} value={this.state.displayName} />
+              <TextInput style={customStyles.textInput} 
+                onChangeText={(text) => this.setState({ displayName: text })} 
+                onFocus={() => this.handleFocus('name')} 
+                onBlur={() => this.handleBlur('name')}
+                value={this.state.displayName} />
             </View>
 
             <View style={customStyles.fieldContainer}>
@@ -155,7 +158,11 @@ class SignUp extends React.Component {
                 style={[customStyles.labelPosition, this.state.didFocusPhone === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
                 <Label style={{ backgroundColor: 'rgba(0,0,0,1)' }}>Phone Number</Label>
               </AnimatedLabel>
-              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} onFocus={() => this.handleFocus('phone')} value={this.state.phoneNumber} />
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad" 
+                onChangeText={(text) => this.setState({ phoneNumber: text })} 
+                onFocus={() => this.handleFocus('phone')} 
+                onBlur={() => this.handleBlur('phone')}
+                value={this.state.phoneNumber} />
             </View>
 
             <View style={customStyles.avatarContainer}>
@@ -232,8 +239,8 @@ const customStyles = StyleSheet.create({
   },
   labelPosition: {
     position: 'absolute',
-    bottom: heightUnit*2.2,
-    left: widthUnit*2,
+    bottom: heightUnit*2,
+    left: widthUnit*1.8,
     backgroundColor: 'rgba(0,0,0,0.7)',
     padding: 2,
     zIndex: 1
