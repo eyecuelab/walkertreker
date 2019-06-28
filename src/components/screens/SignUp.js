@@ -15,7 +15,7 @@ import ScreenContainer from '../containers/ScreenContainer';
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
-class NewPlayerForm extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -23,15 +23,15 @@ class NewPlayerForm extends React.Component {
       phoneNumber: '',
       avatar: require('../../../assets/blankavatar.png'), 
       recoveryText: 'Aleady have an account?',
-      recoveryTextBold: 'Recover it here'
+      recoveryTextBold: 'Recover it here',
+      newPlayerCreated: false,
     }
-    this.newPlayerCreated = false;
   }
 
   componentDidUpdate() {
-    console.log(this.newPlayerCreated)
+    console.log(this.state.newPlayerCreated)
     this.props.player.id ? this.props.navigation.navigate('Setup') : 
-      this.newPlayerCreated ? this.recoveryText() : null;
+      this.state.newPlayerCreated ? this.recoveryText() : null;
   }
 
   recoveryText = () => {
@@ -55,7 +55,7 @@ class NewPlayerForm extends React.Component {
         avatar: this.state.avatar,
         pushToken,
       })
-      this.newPlayerCreated = true; 
+      this.setState({newPlayerCreated: true})
     } else {
       this.setState({ recoveryText: 'Are you sure you entered your phone number correctly?'})
     }
@@ -100,13 +100,13 @@ class NewPlayerForm extends React.Component {
             </View>
 
             <View style={customStyles.fieldContainer}>
-              <Label>Display Name</Label>
+              <Label>Your Display Name</Label>
               <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({ displayName: text })} value={this.state.displayName} />
 
             </View>
 
             <View style={customStyles.fieldContainer}>
-              <Label>Phone Number</Label>
+              <Label>Your Phone Number</Label>
               <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} value={this.state.phoneNumber} />
             </View>
 
@@ -170,9 +170,9 @@ const customStyles = StyleSheet.create({
   },
   textInput: {
     width: '100%',
-    borderColor: 'white',
-    borderRadius: 5,
-    borderWidth: 2,
+    borderColor: '#888',
+    // borderRadius: 5,
+    borderWidth: 1,
     marginTop: 5,
     paddingTop: 5,
     paddingBottom: 5,
@@ -207,4 +207,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(NewPlayerForm);
+export default connect(mapStateToProps)(SignUp);
