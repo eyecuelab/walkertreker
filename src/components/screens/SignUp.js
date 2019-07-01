@@ -142,7 +142,7 @@ class SignUp extends React.Component {
             </View>
 
             <View style={customStyles.fieldContainer}>
-              <AnimatedLabel pose={this.state.didFocusName} 
+              <AnimatedLabel pose={this.state.didFocusName}
                 style={[customStyles.labelPosition, this.state.didFocusName === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
                 <Label>Display Name</Label>
               </AnimatedLabel>

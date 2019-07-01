@@ -11,7 +11,6 @@ import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 
 
-
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 import { ScrollView } from 'react-native-gesture-handler';
