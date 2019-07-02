@@ -88,7 +88,9 @@ const CampaignStack = createStackNavigator(
   {
     initialNav: CampaignRouteNavigator,
     CampaignStaging: CampaignStaging,
-    CampaignSummary: CampaignSummary
+    CampaignSummary: CampaignSummary,
+    RandomEvent: { screen: RandomEvent },
+
   },
   {
     defaultNavigationOptions: {
