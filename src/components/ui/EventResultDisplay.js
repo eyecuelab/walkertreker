@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
@@ -11,15 +11,11 @@ const event_bg = require('../../../assets/event_bg.png');
 
 
 
-class EventDisplay extends React.Component {
+class EventResultDisplay extends React.Component {
   constructor(props) {
     super(props)
   }
 
-  handleButtonPress(opt) {
-    console.log('option from display', opt)
-    this.props.onVote(opt)
-  }
 
   render() {
     return (
@@ -33,36 +29,20 @@ class EventDisplay extends React.Component {
                   source={event_bg}
                   resizeMode={'cover'}
                   style={customStyles.randomEventBg}>
+    
                   <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
                     <View style={[customStyles.container, {flex: 3}]}>
                       <Text style={styles.label}>{this.props.timeLeft}</Text>
     
                       <View style={customStyles.headlineContainer}>
-                        <Text style={styles.headline}>Group{'\n'}Decision</Text>
+                        <Text style={styles.headline}>Group{'\n'}Decision{'\n'}Result</Text>
                       </View>
-                      <ScrollView>
-                        <View style={[customStyles.textContainer, customStyles.marginTop]}>
-                          <Text style={[styles.plainText, customStyles.text]}>{this.props.antecedent}</Text>
-                        </View>
-                      </ScrollView>
-                    </View>
     
-                    <View style={[customStyles.container, {flex: 1, alignContent: 'flex-end', padding: widthUnit}]}>
-                      <View style={customStyles.buttonContainer}>
-                        <SingleButtonFullWidth
-                          title={this.props.optionAButton}
-                          backgroundColor="darkred"
-                          onButtonPress={() => this.handleButtonPress('A')}
-                        />
-                      </View>
-                      <View style={customStyles.buttonContainer}>
-                        <SingleButtonFullWidth
-                          title={this.props.optionBButton}
-                          backgroundColor="darkred"
-                          onButtonPress={() => this.handleButtonPress('B')}
-                        />
+                      <View style={[customStyles.textContainer, customStyles.marginTop]}>
+                        <Text style={[styles.plainText, customStyles.text]}>{this.props.event.optionAText}</Text>
                       </View>
                     </View>
+
                   </View>
     
     
@@ -100,31 +80,18 @@ const customStyles = StyleSheet.create({
   text: {
     lineHeight: heightUnit * 3.75,
   },
-  buttonContainer: {
-    marginTop: heightUnit,
-    width: '100%',
-    height: heightUnit * 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   container: {
     // margin: widthUnit*2,
     flex: 1,
     justifyContent: 'flex-start',
-    // padding: widthUnit,
-    // paddingTop: widthUnit*2,
-    // backgroundColor: 'pink',
+
   },
   randomEventBg: {
     width: undefined,
     height: undefined,
     flex: 1,
-    // padding: widthUnit*3,
-    // borderWidth: widthUnit*2,
-    // borderColor: 'black',
-    // marginLeft: widthUnit*3,
+
     justifyContent: 'flex-start',
-    // opacity: 0.2,
   },
   bottom: {
     flex: 1,
@@ -138,4 +105,4 @@ const customStyles = StyleSheet.create({
   }
 })
 
-export default EventDisplay;
+export default EventResultDisplay;

@@ -90,6 +90,7 @@ const CampaignStack = createStackNavigator(
     CampaignStaging: CampaignStaging,
     CampaignSummary: CampaignSummary,
     RandomEvent: { screen: RandomEvent },
+    Inventory: { screen: Inventory }, 
 
   },
   {

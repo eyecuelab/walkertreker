@@ -174,7 +174,8 @@ export function *createPlayer(action) {
 }
 
 export function *updateCampaign(action) {
-
+  console.log("in update campaign saga")
+  console.log("in update campaign saga", action.campId)
   const url = 'http://10.1.10.51:5000/api/campaigns/' + action.campId;
   const initObj = {
     method: "PATCH",
@@ -186,6 +187,7 @@ export function *updateCampaign(action) {
       "campaignUpdate": {
         "currentDay": action.currentDay,
         "inventory": action.inventory,
+        "completedEvents": action.completedEvents,
       }
     })
   };
@@ -511,7 +513,7 @@ export function *watchCreatePlayer() {
 }
 
 export function *watchUpdateCampaign() {
-  yield takeEvery(c.UPDATE_CAMPAIGN, updateCampaign);
+  yield takeEvery([c.UPDATE_CAMPAIGN, c.RECEIVED_EVENT], updateCampaign);
 }
 
 export function *watchLeaveCampaign() {
