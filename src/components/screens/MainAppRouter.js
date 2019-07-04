@@ -1,18 +1,16 @@
 import React from 'react';
 import { ActivityIndicator, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import constants from './../../constants';
+import constants from '../../constants';
 const { retrieveData } = constants;
 
-class CampaignRouteNavigator extends React.Component {
+class MainAppRouter extends React.Component {
     constructor() {
         super();
       }
 
     componentDidMount(){
-    this.props.campaign.startDate !== null ?
-    this.props.navigation.navigate('CampaignSummary') :
-    this.props.navigation.navigate('CampaignStaging')
+      const {campaign, }
   }
 
   // Render any loading content that you like here
@@ -42,4 +40,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(CampaignRouteNavigator);
+export default connect(mapStateToProps)(MainAppRouter);

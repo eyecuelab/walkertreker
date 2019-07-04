@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, Notifications, } from 'expo';
+import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Notifications, Linking } from 'expo';
 import { AppContainer } from './nav/router';
 import NavigationService from './nav/NavigationService';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -16,12 +16,12 @@ import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
 
+import { withNavigation } from 'react-navigation';
+
 if (__DEV__) {
   KeepAwake.activate();
 }
 class App extends React.Component {
-
-  //turn these into state hooks
   constructor(props) {
     super(props)
     this.state = {
@@ -118,26 +118,28 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
-    const { path, queryParams } = await Linking.parseInitialURLAsync();
-
-    await this.setState({
-      isReady: true,
-      path,
-      queryParams
-    });
     await this.setState({
       isReady: true
     })
+    Linking.addEventListener('url', event => this.handleOpenURL(event.url));
   }
-
+  
   _passNotificationToStart = (notification) => {
     this.setState({ notification })
   }
 
-  componentDidMount() {
-    Notifications.addListener(this._passNotificationToStart);
-    console.log("App Component Mounted")
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this.handleOpenURL);
+  }
+
+  async handleOpenURL(url) {
+    let { path, queryParams } = await Linking.parse(url);
     
+    const action = AppContainer.router.getActionForPathAndParams(path, queryParams);
+    
+    store.dispatch( { type: c.SET_REDIRECT_ACTION,  redirectAction: action } )
+
+    NavigationService.navigate('AuthCheck');
   }
 
   render() {
@@ -151,11 +153,7 @@ class App extends React.Component {
         />
       );
     }
-
-    const prefix = Linking.makeUrl('/');
-    console.log("This is the prefix:", prefix)
-    console.log(this.state.path, this.state.queryParams)
-    console.log(this.props.navigation)
+    
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
@@ -166,10 +164,10 @@ class App extends React.Component {
             onNavigationStateChange={(prevState, currentState, action) => {
               
             }}
-            ref={navigatorRef => {
-              NavigationService.setTopLevelNavigator(navigatorRef);
+            ref={ (navigatorRef) => {
+               NavigationService.setTopLevelNavigator(navigatorRef);
             }}
-            uriPrefix={prefix}
+            
             screenProps={{
               backgroundImage: require('../assets/bg.png'),
               path: this.state.path,
@@ -186,10 +184,10 @@ class App extends React.Component {
 
 registerRootComponent(App)
 
-function mapStateToProps(state){
+const mapStateToProps = (state) => {
   return {
-      
+    player: state.player,
   }
 }
 
-export default connect()(App);
+export default connect(mapStateToProps)(App);

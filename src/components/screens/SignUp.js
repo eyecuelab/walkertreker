@@ -29,9 +29,9 @@ class NewPlayerForm extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('player id from sigh up', this.props.player.id)
-    this.props.player.id ? this.props.navigation.navigate('Setup') : 
-      this.newPlayerCreated ? this.recoveryText() : null;
+    const {player, navigation, redirect, dispatch} = this.props;
+    player.id ? (redirect.redirectAction ? dispatch({type: c.HANDLE_REDIRECT_ACTION, redirectAction: redirect.redirectAction}) : navigation.navigate('MainApp')) :
+    this.newPlayerCreated ? this.recoveryText() : null; 
   }
 
   recoveryText = () => {
@@ -241,6 +241,7 @@ function mapStateToProps(state) {
   return {
     player: state.player,
     campaign: state.campaign,
+    redirect: state.redirect
   }
 }
 
