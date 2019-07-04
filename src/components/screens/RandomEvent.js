@@ -24,7 +24,7 @@ class RandomEvent extends React.Component {
       start: now,
       end: then,
       timeLeft: '',
-      active: true,
+      open: true,
       haveAllVotes: false
     }
   }
@@ -44,7 +44,7 @@ class RandomEvent extends React.Component {
     const msRemaining = this.state.end.getTime() - now.getTime()
     if (msRemaining <= 0) { 
       timeLeft = '00:00'
-      this.setState({ active: false })
+      this.setState({ open: false })
     }
     else {
       const minutes = Math.floor(msRemaining / 60000);
@@ -70,14 +70,20 @@ class RandomEvent extends React.Component {
     }
   }
 
-  _vote(opt) {
+  _vote = (opt) => {
     const OPTIONS = {
       A: `You voted for ${this.evt.optionAButton}`,
       B: `You voted for ${this.evt.optionBButton}`
     }
     console.log("option in voting", OPTIONS[opt])
+    this.props.dispatch({ 
+      type: c.CAST_VOTE, 
+      campId: this.props.campaign.id, 
+      playerId: this.props.player.id, 
+      eventId: this.evt.id
+    })
     this.updateCompletedEvents()
-    this.setState({ active: false })
+    this.setState({ open: false })
     // this.props.navigation.navigate('CampaignSummary')
   }
 
@@ -89,7 +95,7 @@ class RandomEvent extends React.Component {
   }
 
   render() {
-    if (this.state.active) {
+    if (this.state.open) {
       return (
         <EventDisplay backgroundImage={this.props.screenProps.backgroundImage}
           onVote={(opt) => this._vote(opt)}
@@ -115,6 +121,7 @@ function mapStateToProps(state) {
     // appState: state.appState,
     steps: state.steps,
     campaign: state.campaign,
+    player: state.player,
     currentEvent: state.event
   }
 }

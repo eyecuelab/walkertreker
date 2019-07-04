@@ -68,3 +68,5 @@ export const RECEIVED_EVENT = 'RECEIVED_EVENT';
 
 export const NEW_EVENT = 'NEW_EVENT';
 export const END_EVENT = 'END_EVENT';
+
+export const CAST_VOTE = 'CAST_VOTE';

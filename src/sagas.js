@@ -47,7 +47,7 @@ export function *updatePlayerSteps(action) {
 
 export function *setInitialCampaignDetails(action) {
   console.log("setting campaign")
-  const url = 'http://10.1.10.51:5000/api/campaigns';
+  const url = 'http://192.168.1.5:5000/api/campaigns';
   const initObj = {
     method: "POST",
     headers: {
@@ -69,7 +69,7 @@ export function *setInitialCampaignDetails(action) {
 }
 
 export function *sendInvites(action) {
-  const url = 'http://10.1.10.51:5000/api/campaigns/invite/' + action.campId;
+  const url = 'http://192.168.1.5:5000/api/campaigns/invite/' + action.campId;
   const theBody = {};
   const phoneNums = Object.keys(action.invites);
   for (pNumber of phoneNums) {
@@ -100,7 +100,7 @@ export function *sendInvites(action) {
 export function *fetchCampaignInfo(action) {
 
   const id = action.id;
-  const url = 'http://10.1.10.51:5000/api/campaigns/' + id;
+  const url = 'http://192.168.1.5:5000/api/campaigns/' + id;
   const initObj = {
     method: "GET",
     headers: {
@@ -119,7 +119,7 @@ export function *fetchCampaignInfo(action) {
 
 export function *joinCampaignRequest(action) {
 
-  const url = 'http://10.1.10.51:5000/api/campaigns/join/' + action.campId;
+  const url = 'http://192.168.1.5:5000/api/campaigns/join/' + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -139,7 +139,7 @@ export function *joinCampaignRequest(action) {
 
 export function *createPlayer(action) {
 
-  const url = 'http://10.1.10.51:5000/api/players';
+  const url = 'http://192.168.1.5:5000/api/players';
 
   const data = new FormData()
 
@@ -176,7 +176,7 @@ export function *createPlayer(action) {
 export function *updateCampaign(action) {
   console.log("in update campaign saga")
   console.log("in update campaign saga", action.campId)
-  const url = 'http://10.1.10.51:5000/api/campaigns/' + action.campId;
+  const url = 'http://192.168.1.5:5000/api/campaigns/' + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -203,7 +203,7 @@ export function *updateCampaign(action) {
 
 export function *leaveCampaign(action) {
 
-  const url = 'http://10.1.10.51:5000/api/campaigns/leave/' + action.campId;
+  const url = 'http://192.168.1.5:5000/api/campaigns/leave/' + action.campId;
 
   const initObj = {
     method: "PATCH",
@@ -224,7 +224,7 @@ export function *leaveCampaign(action) {
 }
 
 export function *fetchPlayer(action) {
-  const url = 'http://10.1.10.51:5000/api/players/' + action.playId;
+  const url = 'http://192.168.1.5:5000/api/players/' + action.playId;
   const initObj = {
     method: "GET",
     headers: {
@@ -244,7 +244,7 @@ export function *fetchPlayer(action) {
 }
 
 export function *updatePlayer(action) {
-  const url = 'http://10.1.10.51:5000/api/players';
+  const url = 'http://192.168.1.5:5000/api/players';
   const initObj = {
     method: "PATCH",
     headers: {
@@ -272,7 +272,7 @@ export function *updatePlayer(action) {
 
 
 export function *sendRecoverAccount(action) {
-  const url = 'http://10.1.10.51:5000/api/players/recover/' + action.phoneNumber
+  const url = 'http://192.168.1.5:5000/api/players/recover/' + action.phoneNumber
   console.log(url)
   const initObj = {
     method: "GET",
@@ -292,7 +292,7 @@ export function *sendRecoverAccount(action) {
 
 
 export function *startCampaign(action) {
-  const url = 'http://10.1.10.51:5000/api/campaigns/start/' + action.campId;
+  const url = 'http://192.168.1.5:5000/api/campaigns/start/' + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -313,7 +313,7 @@ export function *startCampaign(action) {
 }
 
 export function *destroyCampaign(action) {
-  const url = 'http://10.1.10.51:5000/api/campaigns/' + action.campId;
+  const url = 'http://192.168.1.5:5000/api/campaigns/' + action.campId;
   const initObj = {
     method: "DELETE",
     headers: {
@@ -328,6 +328,28 @@ export function *destroyCampaign(action) {
     yield put({type: c.CAMPAIGN_DESTROYED});
   } catch (error) {
     console.warn('error starting campaign: ', error)
+  }
+}
+
+export function *castPlayerVote(action) {
+  console.log("player casting vote", action)
+  const url = 'http://192.168.1.5:5000/api/vote/' + action.eventId;
+  const initObj = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify(action.payload)
+  }
+
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json());
+    console.log("storing", response)
+    yield put({type: c.PLAYER_VOTE_CAST, vote: response});
+  } catch (error) {
+    console.warn('error casting player vote details: ', error);
   }
 }
 
@@ -460,6 +482,8 @@ export function *getLastStepState() {
   }
 }
 
+
+
 // watcher sagas ==============================
 
 export function *watchSetDates() {
@@ -574,6 +598,11 @@ export function *watchHungerAndHealth() {
   yield takeEvery(c.UPDATE_HUNGER_HEALTH, updateHungerAndHealth)
 }
 
+// event sagas
+export function *watchCastVote() {
+  yield takeLatest(c.CAST_VOTE, castPlayerVote)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
@@ -602,5 +631,6 @@ export default function *rootSaga() {
     watchGetLastStepState(),
     watchStartScavenge(),
     watchHungerAndHealth(),
+    watchCastVote(),
   ])
 }
