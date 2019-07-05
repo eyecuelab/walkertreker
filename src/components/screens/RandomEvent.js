@@ -89,7 +89,7 @@ class RandomEvent extends React.Component {
     })
     this.updateCompletedEvents()
     this.setState({ open: false })
-    // this.props.navigation.navigate('CampaignSummary')
+    this.props.navigation.navigate('CampaignSummary')
   }
 
   updateCompletedEvents = () => {
@@ -100,23 +100,15 @@ class RandomEvent extends React.Component {
   }
 
   render() {
-    if (this.state.open) {
-      return (
-        <EventDisplay backgroundImage={this.props.screenProps.backgroundImage}
-          onVote={(opt) => this._vote(opt)}
-          timeLeft={this.state.timeLeft}
-          antecedent={this.evt.antecedent}
-          optionAButton={this.evt.optionAButton}
-          optionBButton={this.evt.optionBButton}
-        />
-      );
-    } else {
-      return (
-        <EventResultDisplay backgroundImage={this.props.screenProps.backgroundImage}
-          event={this.evt}
-        />
-      )
-    }
+    return (
+      <EventDisplay backgroundImage={this.props.screenProps.backgroundImage}
+        onVote={(opt) => this._vote(opt)}
+        timeLeft={this.state.timeLeft}
+        antecedent={this.evt.antecedent}
+        optionAButton={this.evt.optionAButton}
+        optionBButton={this.evt.optionBButton}
+      />
+    );
   }
 }
 
