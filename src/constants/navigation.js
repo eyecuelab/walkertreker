@@ -4,7 +4,7 @@ export const NAVIGATION = {
   campaignIsLost: 'CampaignIsLost',
   campaignIsWon: 'CampaignIsWon',
   eventStart: 'RandomEvent',
-  randomEventEnd: 'RandomEventResult',
+  eventResult: 'RandomEventResult',
   endOfDayUpdate: 'EndOfDaySummary',
   noPlayerSteps: 'none',
   hungerAlert: 'none',

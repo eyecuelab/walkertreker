@@ -25,13 +25,14 @@ class RandomEvent extends React.Component {
       end: then,
       timeLeft: '',
       open: true,
-      haveAllVotes: false
+      haveAllVotes: false,
+      eventId: ''
     }
   }
 
   componentDidMount = () => {
     this.timer = setInterval(() => this._updateTime(), 1000)
-    console.log("SCREEN PROPS", this.props.screenProps.notification.data.data.data.eventID)
+    console.log("SCREEN PROPS", this.props.screenProps.notification.data.data.data)
   }
 
   componentWillUnmount = () => {
@@ -57,8 +58,11 @@ class RandomEvent extends React.Component {
   }
 
   getEventToDisplay = async (props) => {
-    const evtId = this.props.screenProps.notification.data.data.data.eventID
-    this.evt = events[evtId-1]
+    const evtNumber = this.props.screenProps.notification.data.data.data.eventNumber
+    this.eventId = this.props.screenProps.notification.data.data.data.eventId
+    console.log("eventNumber from SCREEN PROPS", evtNumber)
+    this.evt = events[evtNumber-1]
+    console.log("eventttttttttttttt", this.evt)
     this.props.dispatch({ type: c.NEW_EVENT, event: this.evt})
   }
 
@@ -76,11 +80,12 @@ class RandomEvent extends React.Component {
       B: `You voted for ${this.evt.optionBButton}`
     }
     console.log("option in voting", OPTIONS[opt])
+    console.log("opt in voting", opt)
     this.props.dispatch({ 
       type: c.CAST_VOTE, 
-      campId: this.props.campaign.id, 
       playerId: this.props.player.id, 
-      eventId: this.evt.id
+      eventId: this.eventId,
+      vote: opt,
     })
     this.updateCompletedEvents()
     this.setState({ open: false })

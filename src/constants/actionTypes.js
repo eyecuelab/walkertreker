@@ -70,3 +70,4 @@ export const NEW_EVENT = 'NEW_EVENT';
 export const END_EVENT = 'END_EVENT';
 
 export const CAST_VOTE = 'CAST_VOTE';
+export const PLAYER_VOTE_CAST = 'PLAYER_VOTE_CAST';

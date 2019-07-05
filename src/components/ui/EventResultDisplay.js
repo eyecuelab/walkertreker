@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import DayCounter from '../ui/DayCounter';
+import { MainHeader, SubHeader, TextAlt, Label } from './../text';
 import constants from '../../constants';
 const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
@@ -13,6 +14,7 @@ const event_bg = require('../../../assets/event_bg.png');
 
 class EventResultDisplay extends React.Component {
   constructor(props) {
+    console.log(props)
     super(props)
   }
 
@@ -32,14 +34,15 @@ class EventResultDisplay extends React.Component {
     
                   <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
                     <View style={[customStyles.container, {flex: 3}]}>
-                      <Text style={styles.label}>{this.props.timeLeft}</Text>
     
                       <View style={customStyles.headlineContainer}>
                         <Text style={styles.headline}>Group{'\n'}Decision{'\n'}Result</Text>
                       </View>
+
+                      <SubHeader>Your group decided to {this.props.resultHeader}</SubHeader>
     
                       <View style={[customStyles.textContainer, customStyles.marginTop]}>
-                        <Text style={[styles.plainText, customStyles.text]}>{this.props.event.optionAText}</Text>
+                        <Text style={[styles.plainText, customStyles.text]}>{this.props.resultText}</Text>
                       </View>
                     </View>
 
