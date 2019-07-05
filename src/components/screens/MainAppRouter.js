@@ -10,7 +10,14 @@ class MainAppRouter extends React.Component {
       }
 
     componentDidMount(){
-      const {campaign, }
+      const {campaign, navigation} = this.props;
+      if(!campaign.id) {
+        navigation.navigate("CreateCampaign");
+      } else if(campaign.startDate) {
+        navigation.navigate("CampaignSummary");
+      } else {
+        navigation.navigate("CampaignStaging");
+      }
   }
 
   // Render any loading content that you like here
@@ -18,7 +25,7 @@ class MainAppRouter extends React.Component {
     return (
       <View style={styles.container}>
         <ActivityIndicator />
-        <Text>Hello</Text>
+        <Text>MainAppRouter</Text>
         <StatusBar barStyle="default" />
       </View>
     );

@@ -467,9 +467,9 @@ export function *watchGetLastStepState() {
 //REDIRECT SAGAS
 ///////////////////
 export function *handleRedirectAction(action) {
-  console.log("attempting to handleNavigationRedirect with action - ", action.redirectAction
+  console.log("attempting to handleNavigationRedirect with path - ", action.path
   )
-  yield NavigationService.navigateWithAction(action.redirectAction);
+  yield NavigationService.navigate(action.path, action.queryParams);
   yield put({type: c.CLEAR_REDIRECT_ACTION});
 }
 

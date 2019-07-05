@@ -1,18 +1,23 @@
 import React from 'react';
 import constants from './../../constants';
 import { connect } from 'react-redux';
+import { Linking } from 'expo';
+
+
 
 
 const { c } = constants;
 
 class AuthCheck extends React.Component {
-  componentDidMount() {
+
+  async componentDidMount() {
     const { player, navigation, redirect, dispatch } = this.props;
+    console.log("screen props" + JSON.stringify(this.props.screenProps));
     if(!player.id) {
       navigation.navigate('Auth');
     } else {
-      console.log(redirect.redirectAction)
-      redirect.redirectAction ? dispatch({type: c.HANDLE_REDIRECT_ACTION, redirectAction: redirect.redirectAction}) : navigation.navigate('MainApp')
+      console.log("Attempting redirect with props", redirect.path, redirect.queryParams)
+      redirect.path ? dispatch({type: c.HANDLE_REDIRECT_ACTION, path: redirect.path, queryParams: redirect.queryParams}) : navigation.navigate('MainApp')
     }
   }
     

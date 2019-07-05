@@ -21,6 +21,7 @@ import CampaignRouteNavigator from '../components/screens/MainAppRouter';
 import AuthCheck from './../components/screens/AuthCheck';
 import SignUp from './../components/screens/SignUp';
 import AccountRecovery from './../components/ui/AccountRecovery';
+import MainAppRouter from './../components/screens/MainAppRouter';
 
 const AuthStack = createStackNavigator(
   {
@@ -38,12 +39,15 @@ const AuthStack = createStackNavigator(
   }
 )
 
- const MainApp = createStackNavigator(
+
+
+ const MainApp = createSwitchNavigator(
   {
     MainAppRouter: { screen : MainAppRouter },
     CreateCampaign: { screen : CreateCampaign },
     CampaignStaging: { screen : CampaignStaging },
-    CampaignSummary: { screen : CampaignSummary }
+    CampaignSummary: { screen : CampaignSummary },
+    InvitePlayers: { screen : InvitePlayers }
   },
   {
     defaultNavigationOptions: {
@@ -71,3 +75,4 @@ export const AppContainer = createAppContainer(createSwitchNavigator(
     }
   }
 ));
+

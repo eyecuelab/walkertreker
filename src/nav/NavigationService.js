@@ -18,15 +18,15 @@ function navigate(routeName, params) {
   );
 }
 
-function navigateWithAction(action) {
-  console.log("action is - ", action)
-  _navigator.dispatch(action);
+function navigateWithPathAndParams(path, queryParams) {
+  _navigator.dispatch(path, queryParams);
 }
 
 // add other navigation functions that you need and export them
 
 export default {
+  _navigator,
   navigate,
   setTopLevelNavigator,
-  navigateWithAction
+  navigateWithPathAndParams
 };

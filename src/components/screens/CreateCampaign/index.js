@@ -14,7 +14,7 @@ const { c } = constants;
 class CreateCampaign extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if(this.props.campaign.players && this.props.campaign.players.length > 0) {
-      this.props.navigation.navigate("Campaign");
+      this.props.navigation.navigate("CampaignStaging");
     }
   }
 

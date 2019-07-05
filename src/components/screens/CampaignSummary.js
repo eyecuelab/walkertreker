@@ -4,9 +4,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { connect } from 'react-redux';
 import constants from '../../constants';
 
-
 import defaultStyle from '../../styles/defaultStyle';
-
 
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
@@ -21,20 +19,20 @@ class CampaignSummary extends React.Component {
     if (toast) {
       this._showToast(toast.msg)
     }
-  }
+ }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.campaign.players !== null) {
-      for (let newPlayer of this.props.campaign.players) {
-        const id = newPlayer.id
-        let filtered = prevProps.campaign.players.filter(player => player.id === id)
-        const oldPlayer = filtered[0]
-        const today = this.props.campaign.currentDay
-        if (newPlayer.steps[today] !== oldPlayer.steps[today]) {
-          this._showToast(`${newPlayer.displayName}'s steps have updated.`)
-        }
-      }
-    }
+    // if (prevProps.campaign.players !== null) {
+    //   for (let newPlayer of this.props.campaign.players) {
+    //     const id = newPlayer.id
+    //     let filtered = prevProps.campaign.players.filter(player => player.id === id)
+    //     const oldPlayer = filtered[0]
+    //     const today = this.props.campaign.currentDay
+    //     if (newPlayer.steps[today] !== oldPlayer.steps[today]) {
+    //       this._showToast(`${newPlayer.displayName}'s steps have updated.`)
+    //     }
+    //   }
+    // }
   }
 
   _displayStepPercentage = (player) => {

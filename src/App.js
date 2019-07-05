@@ -118,9 +118,11 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
+
     await this.setState({
       isReady: true
-    })
+    });
+
     Linking.addEventListener('url', event => this.handleOpenURL(event.url));
   }
   
@@ -135,9 +137,7 @@ class App extends React.Component {
   async handleOpenURL(url) {
     let { path, queryParams } = await Linking.parse(url);
     
-    const action = AppContainer.router.getActionForPathAndParams(path, queryParams);
-    
-    store.dispatch( { type: c.SET_REDIRECT_ACTION,  redirectAction: action } )
+    store.dispatch( { type : c.SET_REDIRECT_ACTION, path: path, queryParams: queryParams });
 
     NavigationService.navigate('AuthCheck');
   }
@@ -164,15 +164,19 @@ class App extends React.Component {
             onNavigationStateChange={(prevState, currentState, action) => {
               
             }}
-            ref={ (navigatorRef) => {
-               NavigationService.setTopLevelNavigator(navigatorRef);
+
+            ref={ async (navigatorRef) => {
+              const { path, queryParams } = await Linking.parseInitialURLAsync();
+    
+            if (path) {
+              console.log("inside AppContainer" + navigatorRef.router);
+              store.dispatch( { type: c.SET_REDIRECT_ACTION ,  path: path, queryParams: queryParams }  );
+            }
+              NavigationService.setTopLevelNavigator(navigatorRef);
             }}
             
             screenProps={{
               backgroundImage: require('../assets/bg.png'),
-              path: this.state.path,
-              queryParams: this.state.queryParams,
-              // localPlayer: this.state.localPlayer,
               notification: this.state.notification,
             }}
           />
