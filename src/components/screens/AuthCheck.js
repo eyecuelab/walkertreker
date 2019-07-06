@@ -1,34 +1,52 @@
 import React from 'react';
 import constants from './../../constants';
 import { connect } from 'react-redux';
-import { Linking } from 'expo';
-
-
+import {ImageBackground, Text} from 'react-native';
 
 
 const { c } = constants;
 
 class AuthCheck extends React.Component {
-
   async componentDidMount() {
-    const { player, navigation, redirect, dispatch } = this.props;
-    console.log("screen props" + JSON.stringify(this.props.screenProps));
-    if(!player.id) {
-      navigation.navigate('Auth');
+    const { player, navigation, dispatch, redirect } = this.props;
+    
+
+    const redirectAction = this._checkForRedirectAction();
+    
+    if(!player.id && redirect.path !== 'recovery' ) {
+      
+        navigation.navigate('Auth');
+     
+    } else if(redirectAction){
+      navigation.navigate(redirectAction); 
+      dispatch({ type: c.CLEAR_REDIRECT_ACTION });
     } else {
-      console.log("Attempting redirect with props", redirect.path, redirect.queryParams)
-      redirect.path ? dispatch({type: c.HANDLE_REDIRECT_ACTION, path: redirect.path, queryParams: redirect.queryParams}) : navigation.navigate('MainApp')
+      console.log("attempting to navigate to main app")
+      navigation.navigate('MainApp');
+    }
+  }
+
+  _checkForRedirectAction() {
+    const { redirect, navigation } = this.props;
+    if (redirect.path) {
+      return navigation.dangerouslyGetParent().router.getActionForPathAndParams(redirect.path, redirect.queryParams);
+    } else if (redirect.redirectAction) {
+      return redirect.redirectAction;
     }
   }
     
   render() {
     return (
-      null
+      <ImageBackground
+        source={this.props.screenProps.backgroundImage}
+        style={{width: '100%', height: '100%'}}
+      >
+      </ImageBackground>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state) => { 
   return {
     player: state.player,
     redirect: state.redirect

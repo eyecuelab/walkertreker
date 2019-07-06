@@ -1,9 +1,11 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer, createSwitchNavigator } from "react-navigation";
+import { connect } from 'react-redux';
+import { Linking } from 'expo';
+import constants from './../constants';
+const { c } = constants;
 
 // screens
-import Start from '../components/Start';
-import About from '../components/screens/About';
 import CreateCampaign from '../components/screens/CreateCampaign/';
 import InvitePlayers from '../components/screens/InvitePlayers';
 import CampaignStaging from '../components/screens/CampaignStaging';
@@ -17,11 +19,12 @@ import RandomEvent from '../components/screens/RandomEvent';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
-import CampaignRouteNavigator from '../components/screens/MainAppRouter';
 import AuthCheck from './../components/screens/AuthCheck';
 import SignUp from './../components/screens/SignUp';
 import AccountRecovery from './../components/ui/AccountRecovery';
 import MainAppRouter from './../components/screens/MainAppRouter';
+
+
 
 const AuthStack = createStackNavigator(
   {
@@ -39,11 +42,9 @@ const AuthStack = createStackNavigator(
   }
 )
 
-
-
- const MainApp = createSwitchNavigator(
+ const MainApp = createStackNavigator(
   {
-    MainAppRouter: { screen : MainAppRouter },
+    MainAppRouter: { screen: MainAppRouter },
     CreateCampaign: { screen : CreateCampaign },
     CampaignStaging: { screen : CampaignStaging },
     CampaignSummary: { screen : CampaignSummary },
@@ -56,7 +57,7 @@ const AuthStack = createStackNavigator(
   }
 )
 
-export const AppContainer = createAppContainer(createSwitchNavigator(
+const MainSwitchNavigator = createSwitchNavigator(
   {
     AuthCheck: AuthCheck,
     Auth: {screen: AuthStack, path : ''},
@@ -64,7 +65,7 @@ export const AppContainer = createAppContainer(createSwitchNavigator(
       screen: MainApp,
       path: ''
     },
-    join: {
+    Accept: {
       screen: AcceptInvite,
       path: 'join'
     },
@@ -74,5 +75,6 @@ export const AppContainer = createAppContainer(createSwitchNavigator(
       header: null,
     }
   }
-));
+);
 
+export const AppContainer = createAppContainer( MainSwitchNavigator );

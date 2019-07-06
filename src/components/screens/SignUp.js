@@ -30,7 +30,7 @@ class NewPlayerForm extends React.Component {
 
   componentDidUpdate() {
     const {player, navigation, redirect, dispatch} = this.props;
-    player.id ? (redirect.redirectAction ? dispatch({type: c.HANDLE_REDIRECT_ACTION, redirectAction: redirect.redirectAction}) : navigation.navigate('MainApp')) :
+    player.id ? navigation.navigate('AuthCheck') :
     this.newPlayerCreated ? this.recoveryText() : null; 
   }
 

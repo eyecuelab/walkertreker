@@ -4,13 +4,18 @@ import { connect } from 'react-redux';
 import constants from '../../constants';
 const { retrieveData } = constants;
 
-class MainAppRouter extends React.Component {
-    constructor() {
-        super();
-      }
+import { NavigationEvents } from 'react-navigation';
 
-    componentDidMount(){
-      const {campaign, navigation} = this.props;
+
+class MainAppRouter extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleRedirect = this.handleRedirect.bind(this);
+  }
+
+  handleRedirect() {
+    console.log('props are', this.props)
+    const { campaign, navigation } = this.props;
       if(!campaign.id) {
         navigation.navigate("CreateCampaign");
       } else if(campaign.startDate) {
@@ -23,11 +28,9 @@ class MainAppRouter extends React.Component {
   // Render any loading content that you like here
   render() {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator />
-        <Text>MainAppRouter</Text>
-        <StatusBar barStyle="default" />
-      </View>
+      <NavigationEvents
+      onDidFocus={this.handleRedirect}
+      />
     );
   }
 }

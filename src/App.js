@@ -118,16 +118,22 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
+    Linking.addEventListener('url', event => this.handleOpenURL(event.url));
 
     await this.setState({
       isReady: true
-    });
-
-    Linking.addEventListener('url', event => this.handleOpenURL(event.url));
+    })
   }
   
   _passNotificationToStart = (notification) => {
     this.setState({ notification })
+  }
+
+  async componentDidMount() {
+    const { path, queryParams } = await Linking.parseInitialURLAsync();
+    if (path) {
+      store.dispatch( { type: "SET_REDIRECT_PATH_AND_PARAMS", path: path, queryParams: queryParams } )
+    }
   }
 
   componentWillUnmount() {
@@ -137,13 +143,40 @@ class App extends React.Component {
   async handleOpenURL(url) {
     let { path, queryParams } = await Linking.parse(url);
     
-    store.dispatch( { type : c.SET_REDIRECT_ACTION, path: path, queryParams: queryParams });
+    store.dispatch( { type: c.SET_REDIRECT_PATH_AND_PARAMS, path: path, queryParams: queryParams } )
 
     NavigationService.navigate('AuthCheck');
   }
 
   render() {
-    if (!this.state.isReady) {
+
+    const prefix = Linking.makeUrl('/');
+    if(this.state.isReady) {
+      return (
+        <Provider store={store}>
+          <PersistGate persistor={persistor} loading={null}>
+            <SocketIO />
+            <NotificationListeners />
+            
+            <AppContainer
+  
+              ref={ (navigatorRef) => {
+                 NavigationService.setTopLevelNavigator(navigatorRef);
+                 console.log("appcontainer set as top level")
+              }}
+              
+              screenProps={{
+                backgroundImage: require('../assets/bg.png'),
+                notification: this.state.notification,
+              }}
+            />
+          </PersistGate>
+        </Provider>
+      )
+    }
+    
+
+    else {
       console.log("Loading App Initialized");
       return (
         <AppLoading
@@ -154,35 +187,8 @@ class App extends React.Component {
       );
     }
     
-    return (
-      <Provider store={store}>
-        <PersistGate persistor={persistor} loading={null}>
-          <SocketIO />
-          <NotificationListeners />
-          
-          <AppContainer
-            onNavigationStateChange={(prevState, currentState, action) => {
-              
-            }}
-
-            ref={ async (navigatorRef) => {
-              const { path, queryParams } = await Linking.parseInitialURLAsync();
     
-            if (path) {
-              console.log("inside AppContainer" + navigatorRef.router);
-              store.dispatch( { type: c.SET_REDIRECT_ACTION ,  path: path, queryParams: queryParams }  );
-            }
-              NavigationService.setTopLevelNavigator(navigatorRef);
-            }}
-            
-            screenProps={{
-              backgroundImage: require('../assets/bg.png'),
-              notification: this.state.notification,
-            }}
-          />
-        </PersistGate>
-      </Provider>
-    );
+    
   }
 }
 
