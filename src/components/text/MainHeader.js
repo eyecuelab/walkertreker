@@ -17,7 +17,7 @@ const StyledText = styled.Text`
 
 function MainHeader(props) {
   return (
-    <StyledText {...props}>{props.children}</StyledText>
+    <StyledText>{props.children}</StyledText>
   )
 }
 

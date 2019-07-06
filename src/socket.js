@@ -10,6 +10,9 @@ const endpoint = 'http://10.1.10.51:5000'
 // kim's home ip:
 // const endpoint = 'http://192.168.1.5:5000'
 
+// Ward' home ip:
+// const endpoint = 'http://10.0.0.5:5000'
+
 // remote:
 // const endpoint = 'walkertrekker.herokuapp.com'
 
@@ -18,4 +21,3 @@ const socket = io(endpoint, {
 })
 
 module.exports = socket
-//My Ip 10.1.0.51

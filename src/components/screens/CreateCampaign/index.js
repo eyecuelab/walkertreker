@@ -4,12 +4,12 @@ import { v4 } from 'uuid';
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import TwoButtonOverlay from '../ui/TwoButtonOverlay';
-import ThreeButtonToggle from '../ui/ThreeButtonToggle';
+import TwoButtonOverlay from '../../ui/TwoButtonOverlay';
+import ThreeButtonToggle from '../../ui/ThreeButtonToggle';
 
-import defaultStyle from '../../styles/defaultStyle';
-import constants from '../../constants';
-const { c, retrieveData } = constants;
+import defaultStyle from '../../../styles/defaultStyle';
+import constants from '../../../constants';
+const { c } = constants;
 
 class CreateCampaign extends React.Component {
 
@@ -23,9 +23,8 @@ class CreateCampaign extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("++++++++ Create Campaign +++++++++ \n" + JSON.stringify(this.props.campaign))
     if(this.props.campaign.players && this.props.campaign.players.length > 0) {
-      this.props.navigation.navigate("Campaign");
+      this.props.navigation.navigate("CampaignStaging");
     }
   }
 

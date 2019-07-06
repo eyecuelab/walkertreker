@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Linking, Notifications, } from 'expo';
+import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Notifications, Linking } from 'expo';
 import { AppContainer } from './nav/router';
 import NavigationService from './nav/NavigationService';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -16,12 +16,12 @@ import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
 
+import { withNavigation } from 'react-navigation';
+
 if (__DEV__) {
   KeepAwake.activate();
 }
 class App extends React.Component {
-
-  //turn these into state hooks
   constructor(props) {
     super(props)
     this.state = {
@@ -118,30 +118,65 @@ class App extends React.Component {
   }
 
   _handleFinishLoading = async () => {
-    const { path, queryParams } = await Linking.parseInitialURLAsync();
+    Linking.addEventListener('url', event => this.handleOpenURL(event.url));
 
-    await this.setState({
-      path,
-      queryParams
-    });
-    await console.log("Finished Loading")
     await this.setState({
       isReady: true
     })
   }
-
+  
   _passNotificationToStart = (notification) => {
     this.setState({ notification })
   }
 
-  componentDidMount() {
-    Notifications.addListener(this._passNotificationToStart);
-    console.log("App Component Mounted")
+  async componentDidMount() {
+    const { path, queryParams } = await Linking.parseInitialURLAsync();
+    if (path) {
+      store.dispatch( { type: "SET_REDIRECT_PATH_AND_PARAMS", path: path, queryParams: queryParams } )
+    }
+  }
+
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this.handleOpenURL);
+  }
+
+  async handleOpenURL(url) {
+    let { path, queryParams } = await Linking.parse(url);
     
+    store.dispatch( { type: c.SET_REDIRECT_PATH_AND_PARAMS, path: path, queryParams: queryParams } )
+
+    NavigationService.navigate('AuthCheck');
   }
 
   render() {
-    if (!this.state.isReady) {
+
+    const prefix = Linking.makeUrl('/');
+    if(this.state.isReady) {
+      return (
+        <Provider store={store}>
+          <PersistGate persistor={persistor} loading={null}>
+            <SocketIO />
+            <NotificationListeners />
+            
+            <AppContainer
+  
+              ref={ (navigatorRef) => {
+                 NavigationService.setTopLevelNavigator(navigatorRef);
+                 console.log("appcontainer set as top level")
+              }}
+              
+              screenProps={{
+                backgroundImage: require('../assets/bg.png'),
+                notification: this.state.notification,
+              }}
+            />
+          </PersistGate>
+        </Provider>
+      )
+    }
+    
+
+    else {
       console.log("Loading App Initialized");
       return (
         <AppLoading
@@ -151,44 +186,18 @@ class App extends React.Component {
         />
       );
     }
-
-    const prefix = Linking.makeUrl('/');
-    console.log("This is the prefix:", prefix)
-    console.log(this.props.navigation)
-    return (
-      <Provider store={store}>
-        <PersistGate persistor={persistor} loading={null}>
-          <SocketIO />
-          <NotificationListeners />
-          
-          <AppContainer
-            onNavigationStateChange={(prevState, currentState, action) => {
-              
-            }}
-            ref={navigatorRef => {
-              NavigationService.setTopLevelNavigator(navigatorRef);
-            }}
-            uriPrefix={prefix}
-            screenProps={{
-              backgroundImage: require('../assets/bg.png'),
-              path: this.state.path,
-              queryParams: this.state.queryParams,
-              // localPlayer: this.state.localPlayer,
-              notification: this.state.notification,
-            }}
-          />
-        </PersistGate>
-      </Provider>
-    );
+    
+    
+    
   }
 }
 
 registerRootComponent(App)
 
-function mapStateToProps(state){
+const mapStateToProps = (state) => {
   return {
-      
+    player: state.player,
   }
 }
 
-export default connect()(App);
+export default connect(mapStateToProps)(App);

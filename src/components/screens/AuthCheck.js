@@ -1,61 +1,56 @@
 import React from 'react';
-import { ActivityIndicator, StatusBar, StyleSheet, View, Text } from 'react-native';
 import constants from './../../constants';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import {ImageBackground, Text} from 'react-native';
 
-const { c, retrieveData } = constants;
+
+const { c } = constants;
 
 class AuthCheck extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.checkForPlayerInStorage();
-  }
-
-  componentWillMount = async () => {
-    const {player, campaign} = this.props;
-    console.log("++++++++++ Current state campaign state is ++++++++++ \n" + JSON.stringify(campaign || {hello: 'failure'}))
-    console.log("++++++++++ Current state player state is ++++++++++ \n" + JSON.stringify(player || {hello: 'failure'}))
+  async componentDidMount() {
+    const { player, navigation, dispatch, redirect } = this.props;
     
-    player.id && campaign.id ?
-    this.props.navigation.navigate('Campaign') :
-    this.props.navigation.navigate(player.id ? 'Setup' : 'Auth');
-  };
-  
-  componentDidUpdate() {
+
+    const redirectAction = this._checkForRedirectAction();
+    
+    if(!player.id && redirect.path !== 'recovery' ) {
+      
+        navigation.navigate('Auth');
+     
+    } else if(redirectAction){
+      navigation.navigate(redirectAction); 
+      dispatch({ type: c.CLEAR_REDIRECT_ACTION });
+    } else {
+      console.log("attempting to navigate to main app")
+      navigation.navigate('MainApp');
+    }
   }
 
-  // Render any loading content that you like here
+  _checkForRedirectAction() {
+    const { redirect, navigation } = this.props;
+    if (redirect.path) {
+      return navigation.dangerouslyGetParent().router.getActionForPathAndParams(redirect.path, redirect.queryParams);
+    } else if (redirect.redirectAction) {
+      return redirect.redirectAction;
+    }
+  }
+    
   render() {
-    console.log('rendered auth check')
     return (
-      <View style={styles.container}>
-        <ActivityIndicator />
-        <Text>Hello</Text>
-        <StatusBar barStyle="default" />
-      </View>
-    );
+      <ImageBackground
+        source={this.props.screenProps.backgroundImage}
+        style={{width: '100%', height: '100%'}}
+      >
+      </ImageBackground>
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state) => { 
   return {
     player: state.player,
-    campaign: state.campaign
+    redirect: state.redirect
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchPlayer: (playerId) => dispatch({ type: c.FETCH_PLAYER, playId: playerId})
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AuthCheck);
+export default connect(mapStateToProps)(AuthCheck);

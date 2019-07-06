@@ -39,7 +39,7 @@ class CampaignStaging extends React.Component {
           button1color="darkgray"
           button1onPress={() => console.log('Not enough players to launch game')}
           button2title="Invites"
-          button2onPress={() => this.props.navigation.navigate()}
+          button2onPress={() => this.props.navigation.navigate('InvitePlayers')}
         />
       );
     } else if (this.state.selectedPlayer !== 'none') {

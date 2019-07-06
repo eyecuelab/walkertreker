@@ -28,15 +28,14 @@ class RecoverAccount extends React.Component {
 
   componentWillMount = async () => {
     const { dispatch } = this.props
-    const playerId = this.props.screenProps.queryParams.playerId
+    const playerId = this.props.navigation.getParam('playerId', false)
+    console.log(playerId)
     await this.setState({ playerId })
     console.log("from recoverAccount play id", playerId)
     dispatch({ type: c.FETCH_PLAYER, playId: playerId })
   }
 
-  componentDidMount() {
-    this.props.navigation.navigate('AuthCheck')
-  }
+  
 
   render() {
     return(

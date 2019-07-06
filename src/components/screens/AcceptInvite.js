@@ -24,6 +24,7 @@ class AcceptInvite extends React.Component {
   }
 
   componentDidMount = async () => {
+    console.log("ACCEPTINVITE MOUNTED")
     const { dispatch } = this.props
     const campaignId = this.props.navigation.getParam('campaignId', false)
     this.setState({ campaignId })
@@ -31,8 +32,6 @@ class AcceptInvite extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("AcceptInvite(32): CampaignId = " + this.props.campaign.id)
-    console.log("ACCEPT_INVITE(32): ReadyStatus = " + this.state.isReady )
     if (!this.state.isReady && this.props.campaign.id) {
       this.setState({ isReady: true })
     }
@@ -45,7 +44,7 @@ class AcceptInvite extends React.Component {
       campId: this.props.campaign.id,
       playId: this.props.player.id,
     })
-    this.props.navigation.navigate('WaitForStart')
+    this.props.navigation.navigate('CampaignSummary')
   }
 
   navigateToAbout() {
@@ -95,7 +94,7 @@ class AcceptInvite extends React.Component {
           style={{width: '100%', height: '100%'}}
         >
           <ScreenContainer>
-            <SubHeader>Loading...</SubHeader>
+            <SubHeader>AcceptInviteScreen</SubHeader>
           </ScreenContainer>
         </ImageBackground>
       )

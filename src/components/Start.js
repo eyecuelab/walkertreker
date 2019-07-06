@@ -47,7 +47,7 @@ class Start extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.player.id == null && this.props.player.id !== null) {x
+    if (prevProps.player.id == null && this.props.player.id !== null) {
       this.setState({ gotPlayer: true })
     }
     if (prevProps.campaign.id == null && this.props.campaign.id !== null) {

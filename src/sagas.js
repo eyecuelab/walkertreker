@@ -1,6 +1,7 @@
 import { put, take, takeEvery, takeLatest, all, call, select } from 'redux-saga/effects';
 import { Pedometer } from "expo";
 import { CLIENT_APP_KEY } from 'react-native-dotenv';
+import  NavigationService  from './nav/NavigationService';
 
 import constants from './constants';
 const { c, storeData, retrieveData, item } = constants;
@@ -485,9 +486,33 @@ export function *getLastStepState() {
   }
 }
 
+export function *watchGetLastStepState() {
+  yield takeLatest(c.GET_LAST_STEP_STATE, getLastStepState);
+}
+
+///////////////////
+//REDIRECT SAGAS
+///////////////////
+export function *handleRedirectAction(action) {
+  console.log("attempting to handleNavigationRedirect with path - in SAGA ", action.redirectAction 
+  )
+  yield NavigationService.navigate(action.redirectAction);
+  
+  yield put({type: c.CLEAR_REDIRECT_ACTION});
+}
+
+export function *watchHandleRedirectAction() {
+  yield takeEvery(c.HANDLE_REDIRECT_ACTION, handleRedirectAction);
+}
 
 
-// watcher sagas ==============================
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+////////////// watcher sagas /////////////////////
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+
 
 export function *watchSetDates() {
   while (true) {
@@ -495,6 +520,8 @@ export function *watchSetDates() {
     yield put({type: c.GET_STEPS});
   }
 }
+
+
 
 
 //Step Saga's
@@ -589,9 +616,7 @@ export function *watchScavengedItems() {
   yield put({type: c.UPDATE_CAMPAIGN, campId: campaign.id, inventory: action.inventory});
 }
 
-export function *watchGetLastStepState() {
-  yield takeLatest(c.GET_LAST_STEP_STATE, getLastStepState);
-}
+
 
 export function *watchStartScavenge() {
   yield takeEvery(c.START_SCAVENGE, scavenge);0
@@ -634,6 +659,7 @@ export default function *rootSaga() {
     watchGetLastStepState(),
     watchStartScavenge(),
     watchHungerAndHealth(),
+    watchHandleRedirectAction(),
     watchCastVote(),
   ])
 }

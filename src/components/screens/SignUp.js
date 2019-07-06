@@ -49,8 +49,9 @@ class SignUp extends React.Component {
 
 
   componentDidUpdate() {
-    // console.log(this.newPlayerCreated)
-    this.newPlayerCreated ? this.props.player.id ? this.props.navigation.navigate('Setup') : this.recoveryText() : null;
+    const {player, navigation, redirect, dispatch} = this.props;
+    player.id ? navigation.navigate('AuthCheck') :
+    this.newPlayerCreated ? this.recoveryText() : null; 
   }
 
   recoveryText = () => {
@@ -269,6 +270,7 @@ function mapStateToProps(state) {
   return {
     player: state.player,
     campaign: state.campaign,
+    redirect: state.redirect
   }
 }
 
