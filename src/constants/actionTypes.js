@@ -63,3 +63,11 @@ export const GO_TO_SAFEHOUSE = 'GO_TO_SAFEHOUSE';
 export const UPDATE_HUNGER_HEALTH = 'UPDATE_HUNGER_HEALTH';
 export const UPDATE_HEALTH = 'UPDATE_HEALTH';
 export const UPDATE_HUNGER = 'UPDATE_HUNGER';
+
+export const RECEIVED_EVENT = 'RECEIVED_EVENT';
+
+export const NEW_EVENT = 'NEW_EVENT';
+export const END_EVENT = 'END_EVENT';
+
+export const CAST_VOTE = 'CAST_VOTE';
+export const PLAYER_VOTE_CAST = 'PLAYER_VOTE_CAST';

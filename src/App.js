@@ -121,10 +121,10 @@ class App extends React.Component {
     const { path, queryParams } = await Linking.parseInitialURLAsync();
 
     await this.setState({
-      isReady: true,
       path,
       queryParams
     });
+    await console.log("Finished Loading")
     await this.setState({
       isReady: true
     })
@@ -154,7 +154,6 @@ class App extends React.Component {
 
     const prefix = Linking.makeUrl('/');
     console.log("This is the prefix:", prefix)
-    console.log(this.state.path, this.state.queryParams)
     console.log(this.props.navigation)
     return (
       <Provider store={store}>

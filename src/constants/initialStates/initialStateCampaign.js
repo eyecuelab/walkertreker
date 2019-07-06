@@ -14,4 +14,5 @@
         medicineItems: 0,
     },
     players: [],
+    completedEvents: [],
   }
