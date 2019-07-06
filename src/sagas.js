@@ -626,14 +626,10 @@ export function *watchHungerAndHealth() {
   yield takeEvery(c.UPDATE_HUNGER_HEALTH, updateHungerAndHealth)
 }
 
-<<<<<<< HEAD
-
-=======
 // event sagas
 export function *watchCastVote() {
   yield takeLatest(c.CAST_VOTE, castPlayerVote)
 }
->>>>>>> master
 
 // root saga ==============================
 
@@ -663,10 +659,7 @@ export default function *rootSaga() {
     watchGetLastStepState(),
     watchStartScavenge(),
     watchHungerAndHealth(),
-<<<<<<< HEAD
     watchHandleRedirectAction(),
-=======
     watchCastVote(),
->>>>>>> master
   ])
 }

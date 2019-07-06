@@ -11,11 +11,8 @@ const rootReducer = combineReducers({
   campaign: campaignReducer,
   steps: stepReducer,
   player: playerReducer,
-<<<<<<< HEAD
-  redirect: redirectReducer
-=======
+  redirect: redirectReducer,
   event: eventReducer,
->>>>>>> master
 });
 
 export default rootReducer;
