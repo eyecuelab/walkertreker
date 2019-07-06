@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import { phoneNumPrettyPrint } from '../../util/util';
 import { MainHeader, SubHeader, TextAlt, Label } from './../text';
+import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 
 
 
@@ -67,17 +68,30 @@ class RecoverAccountModal extends React.Component {
           <View style={[customStyles.container, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
             <View style={customStyles.headlineContainer}>
               <MainHeader>Account Recovery</MainHeader>
+              <TextAlt style={{marginTop: 12}}>You will receive a text to recover your account</TextAlt>
             </View>
-            <View>
-              <TextAlt>You will receive a text to recover your account</TextAlt>
-            </View>
-            <View style={customStyles.formContainer}>
+
+            <View style={customStyles.fieldContainer}>
               <Label>Phone Number</Label>
               <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} value={this.state.phoneNumber} />
             </View>
+            
             <View style={customStyles.formContainer}>
               {this.noNumberError()}
             </View>
+            <View>
+              <View style={customStyles.button}>
+                <SingleButtonFullWidth
+                  title="Recover"
+                  onButtonPress={this._handleRecovery}
+                  backgroundColor="darkred"
+                />
+              </View>
+            </View>
+            <View style={customStyles.textButtonContainer}>
+              <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('SignUp') }}>Go back to <TextAlt color='darkred' weight='bold'>New Player Sign Up</TextAlt></TextAlt>
+            </View>
+                    {/* <View style={customStyles.textButtonContainer}>
             <TwoButtonOverlay
               button1title="Recover Account"
               button1onPress={this._handleRecovery}
@@ -85,6 +99,7 @@ class RecoverAccountModal extends React.Component {
               button2title="New Player"
               button2onPress={() => {this.props.navigation.goBack()}}
               button2color='darkred' />
+          </View> */}
           </View>
         </ScreenContainer>
       </ImageBackground>
@@ -97,20 +112,24 @@ const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    padding: widthUnit * 4,
+    height: '100%'
   },
   headlineContainer: {
-    margin: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: heightUnit*6,
+    margin: 6,
+    marginBottom: heightUnit*3,
   },
-  formContainer: {
-    padding: 10,
-    margin: 10,
-    marginTop: heightUnit*5,
-    marginBottom: heightUnit*4,
+  fieldContainer: {
+    margin: 6,
+    marginBottom: heightUnit*3,
+  },
+  button: {
+    backgroundColor: 'black',
+    width: '100%',
+    height: heightUnit*10,
+    borderRadius: 5,
+    marginTop: heightUnit*24,
+    marginBottom: heightUnit*2,
   },
   textInput: {
     width: '100%',
@@ -124,12 +143,17 @@ const customStyles = StyleSheet.create({
     color: 'white',
     fontFamily: 'gore',
   },
+  textButtonContainer: {
+    height: heightUnit*6,
+    padding: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   itemBg: {
-    width: undefined,
-    height: undefined,
     flex: 1,
     justifyContent: 'flex-start',
   },
 })
+
 
 export default connect()(RecoverAccountModal);

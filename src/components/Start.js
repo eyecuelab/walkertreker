@@ -10,8 +10,6 @@ class Start extends React.Component {
     super(props)
     this.state = {
       notification : this.props.screenProps.notification
-      //player: redux.state.player
-      //campaign: redux.state.campaign
     }
   }
 
@@ -40,12 +38,6 @@ class Start extends React.Component {
         routeName = navigation[type]
       }
       routeParams = this.state.notification.data.data ? { data: this.state.notification.data.data } : {}
-    }
-    if (path === 'invite') {
-      routeName = 'AcceptInvite'
-      routeParams = {
-        campaignId: this.props.screenProps.queryParams.campaignId,
-      }
     }
     const resetAction = StackActions.reset({
       index: 0,

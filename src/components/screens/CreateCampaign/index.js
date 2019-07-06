@@ -12,6 +12,16 @@ import constants from '../../../constants';
 const { c } = constants;
 
 class CreateCampaign extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      length: '15',
+      difficultyLevel: 'easy',
+      randomEvents: 'low',
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if(this.props.campaign.players && this.props.campaign.players.length > 0) {
       this.props.navigation.navigate("CampaignStaging");
@@ -25,9 +35,9 @@ class CreateCampaign extends React.Component {
     console.log(this.props.player.id)
     let apiPayload = {
       "params": {
-        "campaignLength": this.props.campaign.length,
-        "difficultyLevel": this.props.campaign.difficultyLevel,
-        "randomEvents": this.props.campaign.randomEvents,
+        "campaignLength": this.state.length,
+        "difficultyLevel": this.state.difficultyLevel,
+        "randomEvents": this.state.randomEvents,
       },
       "playerId": this.props.player.id,
       "timezone": timezone
@@ -43,7 +53,7 @@ class CreateCampaign extends React.Component {
     if (num === 0) {newLength = '15'}
     else if (num === 1) {newLength = '30'}
     else if (num === 2) {newLength = '90'}
-    dispatch({type: c.SET_CAMPAIGN_LENGTH, length: newLength})
+    this.setState({length: newLength})
   }
 
   _updateCampaignDifficulty = num => {
@@ -52,7 +62,7 @@ class CreateCampaign extends React.Component {
     if (num === 0) {newDifficulty = 'easy';}
     else if (num === 1) {newDifficulty = 'hard';}
     else if (num === 2) {newDifficulty = 'xtreme';}
-    dispatch({type: c.SET_DIFFICULTY, difficultyLevel: newDifficulty})
+    this.setState({difficultyLevel: newDifficulty})
   }
 
   _updateRandomEvents = num => {
@@ -61,7 +71,7 @@ class CreateCampaign extends React.Component {
     if (num === 0) {newEvents = 'low';}
     else if (num === 1) {newEvents = 'mid';}
     else if (num === 2) {newEvents = 'high';}
-    dispatch({type: c.SET_EVENT_FREQUENCY, randomEvents: newEvents})
+    this.setState({randomEvents: newEvents})
   }
 
   render() {

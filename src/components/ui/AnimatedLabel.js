@@ -1,12 +1,24 @@
+import posed from 'react-native-pose';
 import React from 'react';
 
-import styled, { css } from 'styled-components/native';
+function AnimatedLabel(props) {
+  const AnimatedLabelprops = {
+    inInput: {
+      scale: 0.9,
+      x: 0,
+      y: 0,
+    },
+    aboveInput: { 
+      scale: 0.8, 
+      x: -10,
+      y: -22,
+    }
+  }
+  
+  const AnimatedLabel = styled(posed.View(AnimatedLabelProps)``)
 
-//////////////////////////////////////
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-const widthUnit = wp('1%');
-const heightUnit = hp('1%');
-/////////////////////////////////////
+}
+
 
 
 function TextAlt(props) {

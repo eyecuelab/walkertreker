@@ -17,6 +17,7 @@
     "react-native-background-fetch": "^2.6.0",
     "react-native-background-task": "^0.2.1",
     "react-native-modal": "^7.0.2",
+    "react-native-pose": "^0.9.1",
     "react-native-responsive-screen": "^1.2.0",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",

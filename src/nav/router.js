@@ -16,6 +16,7 @@ import Safehouse from '../components/screens/Safehouse';
 import EndOfDaySummary from '../components/screens/EndOfDaySummary';
 import Inventory from '../components/screens/Inventory';
 import RandomEvent from '../components/screens/RandomEvent';
+import RandomEventResult from '../components/screens/RandomEventResult';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
 import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
@@ -48,11 +49,14 @@ const AuthStack = createStackNavigator(
     CreateCampaign: { screen : CreateCampaign },
     CampaignStaging: { screen : CampaignStaging },
     CampaignSummary: { screen : CampaignSummary },
-    InvitePlayers: { screen : InvitePlayers }
+    InvitePlayers: { screen : InvitePlayers },
+    RandomEvent: { screen: RandomEvent },
+    RandomEventResult: { screen: RandomEventResult },
+    Inventory: { screen: Inventory }, 
   },
   {
     defaultNavigationOptions: {
-      header: null
+      header: null,
     }
   }
 )

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
@@ -9,24 +9,44 @@ import { phoneNumPrettyPrint } from '../../util/util';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import WithKeyboardShift from './../../util/WithKeyboardShift';
+import posed from 'react-native-pose';
+// import AnimatedLabel from '../ui/AnimatedLabel'
 
-import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 import ScreenContainer from '../containers/ScreenContainer';
 const { c } = constants
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
-class NewPlayerForm extends React.Component {
+const AnimatedLabel = posed.View({
+  inInput: {
+    scale: 0.9,
+    x: 0,
+    y: 0,
+  },
+  aboveInput: { 
+    scale: 0.8, 
+    x: -10,
+    y: -22,
+  }
+});
+
+
+class SignUp extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       displayName: '',
       phoneNumber: '',
       avatar: require('../../../assets/blankavatar.png'), 
-      recoveryText: 'Aleady have an account? Recover it here.',
+      recoveryText: 'Aleady have an account?',
+      recoveryTextBold: 'Recover it here',
+      didFocusPhone: 'inInput',
+      didFocusName: 'inInput',
     }
-    this.newPlayerCreated = false;
+    this.newPlayerCreated = false
+    this.animationInterval = null
   }
+
 
   componentDidUpdate() {
     const {player, navigation, redirect, dispatch} = this.props;
@@ -35,8 +55,11 @@ class NewPlayerForm extends React.Component {
   }
 
   recoveryText = () => {
-    if (this.state.recoveryText !== 'Signup failed. Try again, or click here to recover an account.') {
-      this.setState({ recoveryText: 'Signup failed. Try again, or click here to recover an account.'})
+    if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
+      this.setState({ recoveryText: 'Signup failed. Try again, or '})
+    }
+    if (this.state.recoveryTextBold !== 'click here to recover an account.') {
+      this.setState({ recoveryText: 'click here to recover an account.'})
     }
   }
 
@@ -51,11 +74,34 @@ class NewPlayerForm extends React.Component {
         number: prettyPhoneNumber,
         avatar: this.state.avatar,
         pushToken,
+        isVisible: true
       })
-      this.newPlayerCreated = true; 
+      this.newPlayerCreated = true
     } else {
       this.setState({ recoveryText: 'Are you sure you entered your phone number correctly?'})
     }
+  }
+
+  handleFocus = (type) => {
+    type === 'phone' ? 
+    this.setState({
+      didFocusPhone: 'aboveInput'
+    }) :
+    this.setState({
+      didFocusName:  'aboveInput'
+    })
+  }
+
+  handleBlur = (type) => {
+    type === 'phone' ? 
+    this.state.phoneNumber ? null :
+    this.setState({
+      didFocusPhone: 'inInput'
+    }) : 
+    this.state.displayName ? null :
+    this.setState({
+      didFocusName: 'inInput'
+    })
   }
 
   registerForPushNotificationsAsync = async () => {
@@ -83,159 +129,142 @@ class NewPlayerForm extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <ImageBackground
-      source={use_item_bg}
-      resizeMode='cover'
-      style={customStyles.itemBg}
+        source={use_item_bg}
+        resizeMode='cover'
+        style={customStyles.itemBg}
       >
         <ScreenContainer>
-        <View style={[customStyles.container, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
+          <View style={[customStyles.container, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
 
-
-          <View style={customStyles.headlineContainer}>
-            <MainHeader>New Player</MainHeader>
-          </View>
-
-            <View style={customStyles.formContainer}>
-
-            <View style={customStyles.fieldContainer}>
-              <Label>Display Name</Label>
-              <TextInput style={customStyles.textInput} onChangeText={(text) => this.setState({displayName: text})} value={this.state.displayName}/>
+            <View style={customStyles.headlineContainer}>
+              <MainHeader>New Player</MainHeader>
             </View>
 
             <View style={customStyles.fieldContainer}>
-              <Label>Phone Number</Label>
-              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}/>
+              <AnimatedLabel pose={this.state.didFocusName}
+                style={[customStyles.labelPosition, this.state.didFocusName === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
+                <Label>Display Name</Label>
+              </AnimatedLabel>
+              <TextInput style={customStyles.textInput} 
+                onChangeText={(text) => this.setState({ displayName: text })} 
+                onFocus={() => this.handleFocus('name')} 
+                onBlur={() => this.handleBlur('name')}
+                value={this.state.displayName} />
             </View>
 
+            <View style={customStyles.fieldContainer}>
+              <AnimatedLabel pose={this.state.didFocusPhone} 
+                style={[customStyles.labelPosition, this.state.didFocusPhone === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
+                <Label style={{ backgroundColor: 'rgba(0,0,0,1)' }}>Phone Number</Label>
+              </AnimatedLabel>
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad" 
+                onChangeText={(text) => this.setState({ phoneNumber: text })} 
+                onFocus={() => this.handleFocus('phone')} 
+                onBlur={() => this.handleBlur('phone')}
+                value={this.state.phoneNumber} />
+            </View>
 
             <View style={customStyles.avatarContainer}>
-
-              <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
+              {/* <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
                 <Image
                   source={this.state.avatar}
                   style={customStyles.avatar}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
-              <Text style={customStyles.avatarCaption}>Touch to select avatar</Text>
+              <TextAlt style={customStyles.avatarCaption}>Touch to add an avatar</TextAlt>
+            </View>
+
+            <View>
+              <View style={customStyles.button}>
+                <SingleButtonFullWidth
+                  title="Submit"
+                  onButtonPress={this._handleSubmit}
+                  backgroundColor="darkred"
+                />
+              </View>
+            </View>
+            <View style={customStyles.textButtonContainer}>
+              <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('AccountRecovery') }}>{this.state.recoveryText}  <TextAlt color='darkred' weight='bold'>{this.state.recoveryTextBold}</TextAlt></TextAlt>
             </View>
           </View>
-
-          <View style={customStyles.buttonContainer}>
-            <View style={customStyles.button}>
-              <SingleButtonFullWidth
-                title="Submit"
-                onButtonPress={this._handleSubmit}
-                backgroundColor="darkred"
-              />
-            </View>
-          </View>
-          <View style={customStyles.textButtonContainer}>
-            <TextAlt onPress={() => {this.props.navigation.navigate('AccountRecovery')}}>
-              {this.state.recoveryText}
-            </TextAlt>
-          </View>
-        </View>
         </ScreenContainer>
-    </ImageBackground>
+      </ImageBackground>
     )
   }
 }
-            // <TouchableOpacity style={customStyles.button} onPress={this._handleSubmit}><Text style={styles.label}>Submit</Text></TouchableOpacity>
 
-const styles = StyleSheet.create(defaultStyle);
+
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
-    // backgroundColor: 'darkred',
-    // justifyContent: 'center',
-    // borderRadius: 5,
     padding: widthUnit * 4,
+    height: '100%'
   },
   headlineContainer: {
     margin: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  formContainer: {
-    padding: 10,
+    marginBottom: heightUnit*6,
   },
   fieldContainer: {
-    margin: 10,
-  },
-  buttonContainer: {
-    // margin: 10,
-    height: heightUnit*10,
-    width: '100%',
-    alignSelf: 'flex-end',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    margin: 6,
+    marginBottom: heightUnit*6,
   },
   button: {
     backgroundColor: 'black',
     width: '100%',
     height: heightUnit*10,
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: heightUnit*3,
+    marginBottom: heightUnit*2,
   },
   textButtonContainer: {
     height: heightUnit*6,
-    padding: widthUnit*8
+    padding: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     width: '100%',
-    borderColor: 'white',
-    borderRadius: 5,
+    borderColor: '#888',
     borderWidth: 2,
     marginTop: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 8,
+    paddingBottom: 8,
     paddingLeft: 10,
     color: 'white',
     fontFamily: 'gore',
+    zIndex: 0
+  },
+  labelPosition: {
+    position: 'absolute',
+    bottom: heightUnit*2,
+    left: widthUnit*1.8,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding: 2,
+    zIndex: 1
   },
   avatarContainer: {
-    // flex: 2,
-    // height: '100%',
-    // justifyContent: 'center',
     alignItems: 'center',
   },
   avatar: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
     width: widthUnit*20,
     height: widthUnit*20,
     borderRadius: 100,
-    // backgroundColor: 'black',
+    backgroundColor: 'black',
     borderWidth: 1,
     borderColor: 'black',
   },
   avatarCaption: {
-    fontSize: widthUnit*3.5,
-    fontFamily: 'verdana',
-    color: 'white',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    fontStyle: 'italic'
+    // fontStyle: 'italic'
   },
   itemBg: {
-    width: undefined,
-    height: undefined,
     flex: 1,
     justifyContent: 'flex-start',
   },
 })
-
-NewPlayerForm.propTypes = {
-  handleModalStateChange: PropTypes.func
-}
 
 function mapStateToProps(state) {
   return {
@@ -245,4 +274,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(NewPlayerForm);
+export default connect(mapStateToProps)(SignUp);

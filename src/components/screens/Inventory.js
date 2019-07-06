@@ -22,6 +22,7 @@ const bg3 = require('../../../assets/buttontexture3.png');
 class Inventory extends React.Component {
 
   constructor(props) {
+    console.log("props in inventory", props)
     super(props);
     this.state = {
       foodModalVisible: false,
