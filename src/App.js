@@ -94,8 +94,6 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
-    this._passNotificationToStart()
-
     let localPlayer = await retrieveData('playerInfo')
     
     const dud = {
@@ -131,6 +129,7 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
+    Notifications.addListener(this._passNotificationToStart);
     const { path, queryParams } = await Linking.parseInitialURLAsync();
     if (path) {
       store.dispatch( { type: "SET_REDIRECT_PATH_AND_PARAMS", path: path, queryParams: queryParams } )
