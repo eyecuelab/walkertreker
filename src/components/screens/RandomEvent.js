@@ -58,6 +58,7 @@ class RandomEvent extends React.Component {
   }
 
   getEventToDisplay = async (props) => {
+    console.log("screenprops", this.props.screenProps)
     const evtNumber = this.props.screenProps.notification.data.data.data.eventNumber
     this.eventId = this.props.screenProps.notification.data.data.data.eventId
     console.log("eventNumber from SCREEN PROPS", evtNumber)

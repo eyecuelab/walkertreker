@@ -94,6 +94,7 @@ class App extends React.Component {
       ...imageAssets,
     ]);
 
+    this._passNotificationToStart()
 
     let localPlayer = await retrieveData('playerInfo')
     
