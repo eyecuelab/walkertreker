@@ -20,7 +20,9 @@ class RandomEventResult extends React.Component {
     const data = this.props.screenProps.notification.data.data.data
     console.log("RESULT", data.result)
     this.result = data.result
+    this.playerVotes = data.playerVotes
     this.evt = events[data.eventId-1]
+    console.log("playervoteobject", data.playerVotes)
   }
 
   checkResultToShow = () => {
@@ -33,6 +35,7 @@ class RandomEventResult extends React.Component {
     return (
       <EventResultDisplay backgroundImage={this.props.screenProps.backgroundImage}
         resultText={this.resultText} resultHeader={this.resultHeader}
+        playerVotes={this.playerVotes}
       />
     )
   }
