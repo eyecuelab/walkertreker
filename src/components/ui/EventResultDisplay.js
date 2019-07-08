@@ -32,16 +32,19 @@ class EventResultDisplay extends React.Component {
               <Text style={[styles.plainText, customStyles.text]}>{this.props.resultText}</Text>
             </View>
     } else {
-      return <View>
-              {Object.entries(this.props.playerVotes).map(([key, value], index) => {
-                return  <View key={index}>
-                          <Text>{key}</Text>
-                          <Text>{value}</Text>
-                        </View>
-              })}
-            </View>
+      playerVotes = this.props.playerVotes
+      const entriesList = []
+      Object.entries(playerVotes).map(([key, value], index) => {
+         entriesList.push(`${key} voted ${value}`)
+      })
+      return (<View style={[customStyles.textContainer, customStyles.marginTop]}>
+                {entriesList.map((entry, index) => {
+                  return (<TextAlt style={customStyles.text} key={index} size='lg'>{entry}</TextAlt>)
+                })}
+              </View>)
     }
   }
+  
 
   render() {
     return (
@@ -107,6 +110,7 @@ const customStyles = StyleSheet.create({
     padding: widthUnit,
   },
   text: {
+    marginTop: heightUnit * 3.75,
     lineHeight: heightUnit * 3.75,
   },
   randomEventBg: {
