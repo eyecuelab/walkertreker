@@ -20,9 +20,12 @@ class RandomEventResult extends React.Component {
     const data = this.props.screenProps.notification.data.data.data
     console.log("RESULT", data.result)
     this.result = data.result
-    this.playerVotes = data.playerVotes
     this.evt = events[data.eventId-1]
-    console.log("playervoteobject", data.playerVotes)
+    let playerVotes = 
+      Object.assign({}, ...Object.keys(data.playerVotes).map(k => ( 
+        {[k]: data.playerVotes[k] === 'A' ? this.evt.optionAButton : this.evt.optionBButton } )));
+    console.log(playerVotes)
+    this.playerVotes = playerVotes
   }
 
   checkResultToShow = () => {

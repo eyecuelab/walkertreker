@@ -639,9 +639,13 @@ export default function *rootSaga() {
 }
 
 
-// Kim home endpoint
-const endpoint = `http://192.168.1.5:5000`
+// LOCAL Kim home endpoint
+// const endpoint = `http://192.168.1.5:5000`
 
 
-// eyecue endpoint
+// LOCAL eyecue endpoint
 // const endpoint = 'http://192.168.1.5:5000'
+
+
+// REMOTE
+const endpoint = 'https://walkertrekker.herokuapp.com'
