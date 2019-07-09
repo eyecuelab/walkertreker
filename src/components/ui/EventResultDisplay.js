@@ -29,19 +29,19 @@ class EventResultDisplay extends React.Component {
   conditionalShowVotes = () => {
     if (!this.state.showGroupVotes) {
       return <View style={[customStyles.textContainer, customStyles.marginTop]}>
-              <Text style={[styles.plainText, customStyles.text]}>{this.props.resultText}</Text>
-            </View>
+        <Text style={[styles.plainText, customStyles.text]}>{this.props.resultText}</Text>
+      </View>
     } else {
       playerVotes = this.props.playerVotes
       const entriesList = []
       Object.entries(playerVotes).map(([key, value], index) => {
-         entriesList.push(`${key} voted ${value}`)
+        entriesList.push(`${key} voted to ${value}`)
       })
       return (<View style={[customStyles.textContainer, customStyles.marginTop]}>
-                {entriesList.map((entry, index) => {
-                  return (<TextAlt style={customStyles.text} key={index} size='lg'>{entry}</TextAlt>)
-                })}
-              </View>)
+        {entriesList.map((entry, index) => {
+          return (<TextAlt style={customStyles.text} key={index} size='lg'>{entry}</TextAlt>)
+        })}
+      </View>)
     }
   }
   
@@ -79,7 +79,7 @@ class EventResultDisplay extends React.Component {
                 button1title="See Group Votes"
                 button1onPress={this._toggleGroupVotes}
                 button2title="Campaign"
-                button2onPress={() => this.props.navigation.goBack()}
+                button2onPress={() => this.props.navigateBack()}
               />}
           </ScreenContainer>
         </ImageBackground>

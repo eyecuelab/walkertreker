@@ -11,7 +11,7 @@ const events  = [
     optionBButton: `Backtrack`,
     optionBText: `You double back before the men can react and take an alternate route. Unfortunately, the new path is not as direct, adding additional distance to your destination.`,
     optionBResult: {
-      stepTargets: 0.5
+      stepTargets: 0.1
     }
   },
   {
