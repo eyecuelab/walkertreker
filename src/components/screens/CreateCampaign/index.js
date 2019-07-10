@@ -22,10 +22,15 @@ class CreateCampaign extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(this.props.campaign.players && this.props.campaign.players.length > 0) {
-      this.props.navigation.navigate("CampaignStaging");
-    }
+  componentDidUpdate() {
+    this.props.navigation.navigate("CampaignStaging");
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(this.props.campaign.players)
+    const shouldUpdate = nextProps.campaign.players && nextProps.campaign.players.length > 0 && this.props.campaign.players && this.props.campaign.players.length === 0 ;
+    console.log("CreateCampaign Should Update", shouldUpdate);
+    return shouldUpdate;
   }
 
   async _generateCampaign() {

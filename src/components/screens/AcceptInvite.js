@@ -44,7 +44,7 @@ class AcceptInvite extends React.Component {
       campId: this.props.campaign.id,
       playId: this.props.player.id,
     })
-    this.props.navigation.navigate('CampaignSummary')
+    this.props.navigation.navigate('WaitForStart')
   }
 
   navigateToAbout() {

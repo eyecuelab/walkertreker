@@ -130,6 +130,7 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
+    Notifications.addListener(this._passNotificationToStart);
     const { path, queryParams } = await Linking.parseInitialURLAsync();
     if (path) {
       store.dispatch( { type: "SET_REDIRECT_PATH_AND_PARAMS", path: path, queryParams: queryParams } )
@@ -157,12 +158,11 @@ class App extends React.Component {
           <PersistGate persistor={persistor} loading={null}>
             <SocketIO />
             <NotificationListeners />
-            
+            <BackgroundPedometer />
             <AppContainer
   
               ref={ (navigatorRef) => {
                  NavigationService.setTopLevelNavigator(navigatorRef);
-                 console.log("appcontainer set as top level")
               }}
               
               screenProps={{
@@ -186,9 +186,6 @@ class App extends React.Component {
         />
       );
     }
-    
-    
-    
   }
 }
 

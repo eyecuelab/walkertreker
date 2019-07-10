@@ -32,7 +32,7 @@ class RandomEvent extends React.Component {
 
   componentDidMount = () => {
     this.timer = setInterval(() => this._updateTime(), 1000)
-    console.log("SCREEN PROPS", this.props.screenProps.notification.data.data.data)
+    
   }
 
   componentWillUnmount = () => {

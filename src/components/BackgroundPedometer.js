@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import constants from './../constants';
 
+
+
 const { setAppState, setCampaignDates } = actions;
 const { c, retrieveData } = constants;
 
@@ -33,6 +35,7 @@ class BackgroundPedometer extends React.Component {
     }, 1000);
 
     setInterval(() => {
+      
       if (
         this.props.appState === 'active' &&
         this.props.steps.campaignDateArray !== null &&
@@ -76,7 +79,9 @@ class BackgroundPedometer extends React.Component {
       campaignDateArray === null &&
       pedometerIsAvailable
     ) {
+      console.log("Attempting to construct Date log")
       const stepGoalDayOne = stepTargets[0];
+      console.log("start date is +++++++++++++++++++++++++++++++++++++++++++ ", startDate)
       let day0 = new Date(startDate);
       day0 = new Date(day0.setTime(day0.getTime() + 86400000));
       const day0Start = new Date(day0);

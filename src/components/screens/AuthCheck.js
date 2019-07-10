@@ -8,6 +8,8 @@ const { c } = constants;
 
 class AuthCheck extends React.Component {
   async componentDidMount() {
+    console.log("AuthCheck Moutning")
+
     const { player, navigation, dispatch, redirect } = this.props;
     
 
@@ -21,7 +23,7 @@ class AuthCheck extends React.Component {
       navigation.navigate(redirectAction); 
       dispatch({ type: c.CLEAR_REDIRECT_ACTION });
     } else {
-      console.log("attempting to navigate to main app")
+      console.log("navigating to mainApp \n\n\n\n\n")
       navigation.navigate('MainApp');
     }
   }

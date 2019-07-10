@@ -13,6 +13,8 @@ export const setCampaignDates = (firstDayStart, firstDayEnd, length, difficultyL
   let end;
   for (let i = 0; i < length; i++) {
     let aGoal;
+    console.log("First Day start argument in setCampaignDates ", firstDayStart)
+
     start = new Date(firstDayStart);
     end = new Date(firstDayEnd);
     if (i === 0) {
