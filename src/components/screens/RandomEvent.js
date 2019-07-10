@@ -10,7 +10,6 @@ const event_bg = require('../../../assets/event_bg.png');
 
 import defaultStyle from '../../styles/defaultStyle';
 import EventDisplay from '../ui/EventDisplay'
-import EventResultDisplay from '../ui/EventResultDisplay'
 import DayCounter from '../ui/DayCounter';
 
 class RandomEvent extends React.Component {
