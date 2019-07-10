@@ -52,7 +52,7 @@ class Journal extends React.Component {
             <Text style={customStyles.headerStyle}>Campaign {'\n'}Journal</Text>
     
               <ScrollView style={{width: '100%', height: '100%'}}>
-                {Object.keys(this.state.entryObj).map((day, index)=> {
+                {Object.keys(this.state.entryObj).reverse().map((day, index)=> {
                   return <JournalDisplay key={index} entries={this.state.entryObj[day]} entryDay={day}/>
                 })}
               </ScrollView>
