@@ -27,9 +27,13 @@ class RandomEvent extends React.Component {
       eventId: ''
     }
   }
+  
+  componentWillMount() {
+    this.getTimeNow()
+  }
 
   componentDidMount = async () => {
-    await this.getTimeNow()
+    // this.getTimeNow()
     this.timer = setInterval(() => this._updateTime(), 1000)
   }
 
@@ -41,15 +45,9 @@ class RandomEvent extends React.Component {
     const createdAt = this.props.screenProps.notification.data.data.data.createdAt.toString();
     let start = new Date(createdAt);
     start = new Date(start.getTime() + this.props.campaign.timezone*3600000);
-    console.log("created at IN RANDOMEVENT", this.props.campaign.timezone*3600000)
-    console.log("created at IN RANDOMEVENT", start)
     const then = new Date(start.getTime() + 15*60000)
-    console.log("created at IN RANDOMEVENT", then)
-    let now = new Date();
-    now = new Date(now.getTime())
-    console.log("created at IN RANDOMEVENT",  now)
-    const msRemaining = then.getTime() - now.getTime()
-    console.log("created at IN RANDOMEVENT", msRemaining)
+    const localTime = Date.now()
+    const msRemaining = then.getTime() - localTime
     this.setState({ start: start, end: then, msRemaining: msRemaining})
   }
 

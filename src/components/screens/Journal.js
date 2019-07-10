@@ -20,11 +20,36 @@ class Journal extends React.Component {
 
   componentWillMount(){
     console.log("IN JOURNAL", this.props.campaign.journals)
+    this.getEntriesByDay()
+  }
+
+  getEntriesByDay(){
+    
+    let currentDay = 0
+    let entryObj = {}
+    let index = 0;
+
+    this.props.campaign.journals.forEach((entry) => {
+      if (entry.entryDay !== currentDay) {
+        index=0
+        console.log("Adding a new day object")
+        entryObj = Object.assign({}, entryObj, {[entry.entryDay]: {[index]: entry}})
+        currentDay ++;
+      } else {
+        console.log('adding to object')
+        newDay = {[entry.entryDay] : {...entryObj[entry.entryDay], [index]: entry}}
+        console.log("new Day", {...entryObj[entry.entryDay]})
+        console.log("new Day", newDay)
+        entryObj = Object.assign({}, entryObj, newDay)
+      }
+      index++;
+      console.log("ENTRY OBJECT:", entryObj)
+    })
   }
 
   render() {
     const entries = this.props.campaign.journals;
-    console.log(entries)
+    // console.log(entries)
     return (
       <ImageBackground
           source={this.props.backgroundImage}

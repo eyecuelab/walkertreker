@@ -62,12 +62,7 @@ const customStyles = StyleSheet.create({
     width: undefined,
     height: undefined,
     flex: 1,
-    // padding: widthUnit*3,
-    // borderWidth: widthUnit*2,
-    // borderColor: 'black',
-    // marginLeft: widthUnit*3,
     justifyContent: 'flex-start',
-    // opacity: 0.2,
   },
   bottom: {
     flex: 1,

@@ -27,7 +27,6 @@ import AccountRecovery from './../components/ui/AccountRecovery';
 import MainAppRouter from './../components/screens/MainAppRouter';
 
 
-
 const AuthStack = createStackNavigator(
   {
     SignUp: SignUp,

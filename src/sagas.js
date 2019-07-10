@@ -321,7 +321,6 @@ export function *destroyCampaign(action) {
       "appkey": CLIENT_APP_KEY
     },
   };
-
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
