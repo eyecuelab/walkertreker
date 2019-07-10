@@ -640,11 +640,11 @@ export default function *rootSaga() {
 
 
 // LOCAL Kim home endpoint
-// const endpoint = `http://192.168.1.5:5000`
+const endpoint = `http://192.168.1.5:5000`
 
 
 // LOCAL eyecue endpoint
-const endpoint = 'http://10.1.10.51:5000'
+// const endpoint = 'http://10.1.10.51:5000'
 
 
 // REMOTE

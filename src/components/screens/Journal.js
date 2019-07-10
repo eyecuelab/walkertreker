@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { connect } from 'react-redux';
+import ScreenContainer from './../containers/ScreenContainer';  
 
 import constants from '../../constants';
 const { c, events } = constants;
@@ -17,18 +18,49 @@ class Journal extends React.Component {
     super(props)
   }
 
- 
-  componentWillUnmount = () => {
+  componentWillMount(){
+    console.log("IN JOURNAL", this.props.campaign.journals)
   }
 
-  
   render() {
+    const entries = this.props.campaign.journals;
+    console.log(entries)
     return (
-      <JounralDisplay/>
+      <ImageBackground
+          source={this.props.backgroundImage}
+          style={{width: '100%', height: '100%'}} >
+          <ScreenContainer>
+    
+            <View style={{width: '100%', height: '100%'}}>
+              <ImageBackground
+                source={event_bg}
+                resizeMode={'cover'}
+                style={customStyles.randomEventBg}>
+                <View >
+                  {entries.map((entry, index)=> {
+                    return <JournalDisplay key={index} entryText={entry.entry} entryDay={entry.entryDay}/>
+                  })}
+                </View>
+              </ImageBackground>
+            </View>
+    
+          </ScreenContainer>
+        </ImageBackground>
     );
   }
 }
 
+const styles = StyleSheet.create(defaultStyle);
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
+const customStyles = StyleSheet.create({
+  randomEventBg: {
+    width: undefined,
+    height: undefined,
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+})
 
 function mapStateToProps(state) {
   return {

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
-import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import DayCounter from '../ui/DayCounter';
 import ScreenContainer from './../containers/ScreenContainer';  
 
@@ -20,26 +19,9 @@ class JournalDisplay extends React.Component {
 
   render() {
     return (
-        <ImageBackground
-          source={this.props.backgroundImage}
-          style={{width: '100%', height: '100%'}} >
-          <ScreenContainer>
-    
-              <View style={{width: '100%', height: '100%'}}>
-                <ImageBackground
-                  source={event_bg}
-                  resizeMode={'cover'}
-                  style={customStyles.randomEventBg}>
-                  <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
-                    
-                  </View>
-    
-    
-                </ImageBackground>
-              </View>
-    
-          </ScreenContainer>
-        </ImageBackground>
+      <View style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
+        <Text>{this.props.entryText}</Text>
+      </View>
     );
   }
 }
