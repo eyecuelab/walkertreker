@@ -20,7 +20,6 @@ class Journal extends React.Component {
   }
 
   componentWillMount(){
-    // console.log("IN JOURNAL", this.props.campaign.journals)
     this.getEntriesByDay()
   }
 
@@ -28,19 +27,21 @@ class Journal extends React.Component {
     let currentDay = 0
     let entryObj = {}
     let index = 0;
-    this.props.campaign.journals.forEach((entry) => {
-      if (entry.entryDay !== currentDay) {
-        index=0;
-        entryObj = Object.assign({}, entryObj, {[entry.entryDay]: {[index]: entry}})
-        currentDay ++;
-      } else {
-        newDay = {[entry.entryDay] : {...entryObj[entry.entryDay], [index]: entry}}
-        entryObj = Object.assign({}, entryObj, newDay)
-      }
-      index++;
-    })
-    console.log("ENTRY OBJECT:", entryObj)
-    this.setState({entryObj})
+    if (this.props.campaign.journals) {
+      this.props.campaign.journals.forEach((entry) => {
+        if (entry.entryDay !== currentDay) {
+          index=0;
+          entryObj = Object.assign({}, entryObj, {[entry.entryDay]: {[index]: entry}})
+          currentDay ++;
+        } else {
+          newDay = {[entry.entryDay] : {...entryObj[entry.entryDay], [index]: entry}}
+          entryObj = Object.assign({}, entryObj, newDay)
+        }
+        index++;
+      })
+      console.log("ENTRY OBJECT:", entryObj)
+      this.setState({entryObj})
+    }
   }
 
   render() {

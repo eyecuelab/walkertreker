@@ -10,7 +10,6 @@ import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import WithKeyboardShift from './../../util/WithKeyboardShift';
 import posed from 'react-native-pose';
-// import AnimatedLabel from '../ui/AnimatedLabel'
 
 import constants from '../../constants';
 import ScreenContainer from '../containers/ScreenContainer';
@@ -34,6 +33,7 @@ const AnimatedLabel = posed.View({
 class SignUp extends React.Component {
   constructor(props) {
     super(props)
+    console.log("in sign up")
     this.state = {
       displayName: '',
       phoneNumber: '',
@@ -42,32 +42,41 @@ class SignUp extends React.Component {
       recoveryTextBold: 'Recover it here',
       didFocusPhone: 'inInput',
       didFocusName: 'inInput',
+      newPlayerCreated: false,
     }
-    this.newPlayerCreated = false
     this.animationInterval = null
   }
 
 
   componentDidUpdate() {
-    const {player, navigation, redirect, dispatch} = this.props;
-    player.id ? navigation.navigate('AuthCheck') :
-    this.newPlayerCreated ? this.recoveryText() : null; 
+    console.log("player props", this.props.player)
+    console.log("player id", this.props.player.id)
+    this.props.player.id ? this.props.navigation.navigate('AuthCheck') :
+    this.state.newPlayerCreated ? this.recoveryText() : null; 
   }
 
-  recoveryText = () => {
+  recoveryText = async () => {
+    console.log(this.state)
     if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
-      this.setState({ recoveryText: 'Signup failed. Try again, or '})
+      console.log('setting recoverytext')
+      await this.setState({ recoveryText: 'Signup failed. Try again, or '})
     }
     if (this.state.recoveryTextBold !== 'click here to recover an account.') {
-      this.setState({ recoveryText: 'click here to recover an account.'})
-    }
+      console.log('setting recoverytextBOLD')
+      await this.setState({ recoveryText: 'click here to recover an account.'})
+    } else {}
+
   }
 
   _handleSubmit = async () => {
+    console.log("submitted")
     const { dispatch } = this.props;
-    const pushToken = await this.registerForPushNotificationsAsync()
-    prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
+    let prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
+    console.log(prettyPhoneNumber.length)
     if (prettyPhoneNumber.length === 12) {
+      const pushToken = await this.registerForPushNotificationsAsync();
+      console.log("push token after function", await pushToken)
+      console.log(pushToken)
       dispatch({
         type: c.CREATE_PLAYER,
         name: this.state.displayName,
@@ -76,9 +85,11 @@ class SignUp extends React.Component {
         pushToken,
         isVisible: true
       })
-      this.newPlayerCreated = true
+      this.state.newPlayerCreated ? null : this.setState({ newPlayerCreated: true })
+      console.log("in handle submit", this.state.recoveryText)
     } else {
-      this.setState({ recoveryText: 'Are you sure you entered your phone number correctly?'})
+      console.log("in handle submit else", this.state.recoveryText)
+      await this.setState({ recoveryText: 'Are you sure you entered your phone number correctly?'})
     }
   }
 
@@ -105,18 +116,24 @@ class SignUp extends React.Component {
   }
 
   registerForPushNotificationsAsync = async () => {
+    console.log("in push register")
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     let finalStatus = existingStatus;
+    console.log(finalStatus)
     if (existingStatus !== 'granted') {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
       return;
+    } else {
+      const token = await Notifications.getExpoPushTokenAsync();
+      console.log("permission granted", token)
+      return token;
     }
-    const token = await Notifications.getExpoPushTokenAsync();
-    return token;
   }
+
+  
 
   _pickImage = async () => {
     const avatar = await ImagePicker.launchImageLibraryAsync({
@@ -167,12 +184,6 @@ class SignUp extends React.Component {
             </View>
 
             <View style={customStyles.avatarContainer}>
-              {/* <TouchableOpacity style={customStyles.avatarTouchContainer} onPress={this._pickImage}>
-                <Image
-                  source={this.state.avatar}
-                  style={customStyles.avatar}
-                />
-              </TouchableOpacity> */}
 
               <TextAlt style={customStyles.avatarCaption}>Touch to add an avatar</TextAlt>
             </View>
@@ -196,13 +207,13 @@ class SignUp extends React.Component {
   }
 }
 
-
+const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
     padding: widthUnit * 4,
-    height: '100%'
+    height: '100%',
   },
   headlineContainer: {
     margin: 6,
@@ -258,7 +269,7 @@ const customStyles = StyleSheet.create({
     borderColor: 'black',
   },
   avatarCaption: {
-    // fontStyle: 'italic'
+    fontStyle: 'italic',
   },
   itemBg: {
     flex: 1,
