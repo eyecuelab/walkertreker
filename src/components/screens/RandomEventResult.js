@@ -16,11 +16,67 @@ class RandomEventResult extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.resolveEventConsequences()
+    this.updateJournal()
+  }
+
+  updateInventory = (item, invenItem) => {
+    const newInven = invenItem
+    item ? item > 0 ? newInven.push(item) : newInven.splice(Math.floor(Math.random()*invenItem.length), 1) : null; 
+    return newInven
+  }
+
+  resolveEventConsequences = () => {
+    const result = this.result === 'A' ? this.evt.optionAResult : this.evt.optionBResult;
+    let inventory = {...this.props.campaign.inventory}
+    let newInventory = {};
+    let newPlayerObj = {...this.props.player}
+    const currentDay = this.props.campaign.currentDay
+    console.log("DAY: ", currentDay);
+
+    newInventory.foodItems = this.updateInventory(result.food, inventory.foodItems);
+    newInventory.medicineItems = this.updateInventory(result.meds, inventory.medicineItems);
+    newInventory.weaponItems = this.updateInventory(result.weapons, inventory.weaponItems);
+    console.log("the new inventory", newInventory)
+
+    result.stepTarget ? newPlayerObj.stepTargets[currentDay] += (newPlayerObj.stepTargets[currentDay]*result.stepTarget): newPlayerObj;
+
+    result.health ? newPlayerObj.health = newPlayerObj.health - result.health : null; 
+
+    this.props.dispatch({ type: c.UPDATE_PLAYER, 
+      playId: newPlayerObj.id, 
+      health: newPlayerObj.health, 
+      stepTargets: newPlayerObj.stepTargets,
+      player: newPlayerObj
+    })
+    this.props.dispatch({ type: c.UPDATE_CAMPAIGN, 
+      campId: this.props.campaign.id, 
+      inventory: inventory === newInventory ? inventory : newInventory
+    })
+  }
+  
+  updateJournal = () => {
+    const eventEntry = this.evt.journal + this.resultHeader
+    const journalId = this.props.screenProps.notification.data.data.data.journalId
+    this.props.dispatch({ type: c.UPDATE_JOURNAL, 
+      journalId: journalId,
+      entry: eventEntry,
+    })
+  }
+
   getEventResult = () => {
     const data = this.props.screenProps.notification.data.data.data
-    console.log("RESULT", data.result)
     this.result = data.result
     this.evt = events[data.eventId-1]
+    let playerVotes = 
+      Object.assign({}, ...Object.keys(data.playerVotes).map(key => ( 
+        {[key]: data.playerVotes[key] === 'A' ? this.evt.optionAButton : this.evt.optionBButton } )));
+    this.playerVotes = playerVotes
+  }
+
+  navigateBack = () => {
+    this.props.navigation.goBack();
   }
 
   checkResultToShow = () => {
@@ -33,6 +89,7 @@ class RandomEventResult extends React.Component {
     return (
       <EventResultDisplay backgroundImage={this.props.screenProps.backgroundImage}
         resultText={this.resultText} resultHeader={this.resultHeader}
+        playerVotes={this.playerVotes} navigateBack = {this.navigateBack}
       />
     )
   }

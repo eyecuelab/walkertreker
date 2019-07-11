@@ -10,7 +10,6 @@ const event_bg = require('../../../assets/event_bg.png');
 
 import defaultStyle from '../../styles/defaultStyle';
 import EventDisplay from '../ui/EventDisplay'
-import EventResultDisplay from '../ui/EventResultDisplay'
 import DayCounter from '../ui/DayCounter';
 
 class RandomEvent extends React.Component {
@@ -18,38 +17,58 @@ class RandomEvent extends React.Component {
   constructor(props) {
     super(props)
     this.getEventToDisplay()
-    const now = new Date();
-    const then = new Date(now.getTime() + 15*60000) // 15 minutes from now
     this.state = {
-      start: now,
-      end: then,
+      start: '',
+      end: '',
       timeLeft: '',
+      msRemaining: '',
       open: true,
       haveAllVotes: false,
       eventId: ''
     }
   }
+  
+  componentWillMount() {
+    this.getTimeNow()
+  }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    // this.getTimeNow()
     this.timer = setInterval(() => this._updateTime(), 1000)
-    console.log("SCREEN PROPS", this.props.screenProps.notification.data.data.data)
   }
 
   componentWillUnmount = () => {
     clearInterval(this.timer)
   }
 
+  getTimeNow = () => {
+    const createdAt = this.props.screenProps.notification.data.data.data.createdAt.toString();
+    let start = new Date(createdAt);
+    console.log("Start time of event", start)
+    start = new Date(start.getTime());
+    const then = new Date(start.getTime() + 15*60000)
+    console.log("then time of event", then)
+    const localTime = Date.now()
+    const msRemaining = then.getTime() - localTime
+
+    this.setState({ start: start, end: then, msRemaining: msRemaining})
+  }
+
   _updateTime = () => {
-    let timeLeft = this.state.timeLeft
-    const now = new Date()
-    const msRemaining = this.state.end.getTime() - now.getTime()
-    if (msRemaining <= 0) { 
+    let newMs = this.state.msRemaining
+    newMs -= 1000;
+    this.setState({ msRemaining: newMs })
+    // let timeLeft = this.state.timeLeft
+    // const createdAt = this.props.screenProps.notification.data.data.data.createdAt;
+    // const now = new Date(createdAt)
+    // const msRemaining = this.state.end.getTime() - now.getTime()
+    if (this.state.msRemaining <= 0) { 
       timeLeft = '00:00'
       this.setState({ open: false })
     }
     else {
-      const minutes = Math.floor(msRemaining / 60000);
-      const seconds = Math.floor((msRemaining % 60000) / 1000);
+      const minutes = Math.floor(this.state.msRemaining / 60000);
+      const seconds = Math.floor((this.state.msRemaining % 60000) / 1000);
       const minStr = (minutes < 10) ? `0${minutes}` : `${minutes}`;
       const secStr = (seconds < 10) ? `0${seconds}` : `${seconds}`;
       timeLeft = `${minStr}:${secStr}`
@@ -60,9 +79,7 @@ class RandomEvent extends React.Component {
   getEventToDisplay = async (props) => {
     const evtNumber = this.props.screenProps.notification.data.data.data.eventNumber
     this.eventId = this.props.screenProps.notification.data.data.data.eventId
-    console.log("eventNumber from SCREEN PROPS", evtNumber)
     this.evt = events[evtNumber-1]
-    console.log("eventttttttttttttt", this.evt)
     this.props.dispatch({ type: c.NEW_EVENT, event: this.evt})
   }
 
@@ -79,7 +96,6 @@ class RandomEvent extends React.Component {
       A: `You voted for ${this.evt.optionAButton}`,
       B: `You voted for ${this.evt.optionBButton}`
     }
-    console.log("option in voting", OPTIONS[opt])
     console.log("opt in voting", opt)
     this.props.dispatch({ 
       type: c.CAST_VOTE, 

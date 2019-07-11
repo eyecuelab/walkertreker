@@ -15,6 +15,7 @@ import CampaignSummary from '../components/screens/CampaignSummary';
 import Safehouse from '../components/screens/Safehouse';
 import EndOfDaySummary from '../components/screens/EndOfDaySummary';
 import Inventory from '../components/screens/Inventory';
+import Journal from '../components/screens/Journal';
 import RandomEvent from '../components/screens/RandomEvent';
 import RandomEventResult from '../components/screens/RandomEventResult';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
@@ -24,7 +25,6 @@ import AuthCheck from './../components/screens/AuthCheck';
 import SignUp from './../components/screens/SignUp';
 import AccountRecovery from './../components/ui/AccountRecovery';
 import MainAppRouter from './../components/screens/MainAppRouter';
-
 
 
 const AuthStack = createStackNavigator(
@@ -53,11 +53,13 @@ const AuthStack = createStackNavigator(
     RandomEvent: { screen: RandomEvent },
     RandomEventResult: { screen: RandomEventResult },
     Inventory: { screen: Inventory }, 
+    Journal: { screen: Journal },
   },
   {
     defaultNavigationOptions: {
       header: null,
-    }
+    },
+    initialRouteName: 'Journal',
   }
 )
 

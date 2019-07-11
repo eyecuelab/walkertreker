@@ -13,7 +13,7 @@ import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
 import SocketIO from './components/SocketIO';
-import BackgroundPedometer from './components/BackgroundPedometer';
+// import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
 
 import { withNavigation } from 'react-navigation';
@@ -90,10 +90,10 @@ class App extends React.Component {
         'gore': require('../assets/fonts/goreRough.otf'),
         'verdana': require('../assets/fonts/verdana.ttf'),
         'verdanaBold': require('../assets/fonts/verdanaBold.ttf'),
+        'Gill Sans MT Condensed': require('../assets/fonts/GILC____.ttf'),
       }),
       ...imageAssets,
     ]);
-
 
     let localPlayer = await retrieveData('playerInfo')
     
@@ -130,6 +130,7 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
+    Notifications.addListener(this._passNotificationToStart);
     const { path, queryParams } = await Linking.parseInitialURLAsync();
     if (path) {
       store.dispatch( { type: "SET_REDIRECT_PATH_AND_PARAMS", path: path, queryParams: queryParams } )
@@ -155,6 +156,7 @@ class App extends React.Component {
       return (
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={null}>
+            {/* <BackgroundPedometer /> */}
             <SocketIO />
             <NotificationListeners />
             

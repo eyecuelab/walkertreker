@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
-import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import DayCounter from '../ui/DayCounter';
+import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import { MainHeader, SubHeader, TextAlt, Label } from './../text';
+import ScreenContainer from './../containers/ScreenContainer';  
+
 import constants from '../../constants';
 const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
@@ -14,17 +15,44 @@ const event_bg = require('../../../assets/event_bg.png');
 
 class EventResultDisplay extends React.Component {
   constructor(props) {
-    console.log(props)
     super(props)
+    this.state = {
+      showGroupVotes: false,
+    }
   }
 
+  _toggleGroupVotes = () => {
+    this.setState({ showGroupVotes: true })
+    console.log(this.props.playerVotes)
+  }
+
+  conditionalShowVotes = () => {
+    if (!this.state.showGroupVotes) {
+      return <View style={[customStyles.textContainer, customStyles.marginTop]}>
+        <Text style={[styles.plainText, customStyles.text]}>{this.props.resultText}</Text>
+      </View>
+    } else {
+      let playerVotes = this.props.playerVotes
+      console.log(playerVotes)
+      const entriesList = []
+      Object.entries(playerVotes).map(([key, value], index) => {
+        entriesList.push(`${key} voted to ${value}`)
+      })
+      return (<View style={[customStyles.textContainer, customStyles.marginTop]}>
+        {entriesList.map((entry, index) => {
+          return (<TextAlt style={customStyles.text} key={index} size='lg'>{entry}</TextAlt>)
+        })}
+      </View>)
+    }
+  }
+  
 
   render() {
     return (
         <ImageBackground
           source={this.props.backgroundImage}
           style={{width: '100%', height: '100%'}} >
-          <View style={styles.container}>
+          <ScreenContainer>
     
               <View style={{width: '100%', height: '100%'}}>
                 <ImageBackground
@@ -36,14 +64,10 @@ class EventResultDisplay extends React.Component {
                     <View style={[customStyles.container, {flex: 3}]}>
     
                       <View style={customStyles.headlineContainer}>
-                        <Text style={styles.headline}>Group{'\n'}Decision{'\n'}Result</Text>
+                        <Text style={styles.headline}>Your group decided to {this.props.resultHeader}</Text>
                       </View>
-
-                      <SubHeader>Your group decided to {this.props.resultHeader}</SubHeader>
     
-                      <View style={[customStyles.textContainer, customStyles.marginTop]}>
-                        <Text style={[styles.plainText, customStyles.text]}>{this.props.resultText}</Text>
-                      </View>
+                      {this.conditionalShowVotes()}
                     </View>
 
                   </View>
@@ -51,8 +75,14 @@ class EventResultDisplay extends React.Component {
     
                 </ImageBackground>
               </View>
-    
-          </View>
+
+              {<TwoButtonOverlay
+                button1title="See Group Votes"
+                button1onPress={this._toggleGroupVotes}
+                button2title="Campaign"
+                button2onPress={() => this.props.navigateBack()}
+              />}
+          </ScreenContainer>
         </ImageBackground>
     );
   }
@@ -81,13 +111,8 @@ const customStyles = StyleSheet.create({
     padding: widthUnit,
   },
   text: {
+    marginTop: heightUnit * 3.75,
     lineHeight: heightUnit * 3.75,
-  },
-  container: {
-    // margin: widthUnit*2,
-    flex: 1,
-    justifyContent: 'flex-start',
-
   },
   randomEventBg: {
     width: undefined,

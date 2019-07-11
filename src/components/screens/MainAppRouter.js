@@ -14,7 +14,6 @@ class MainAppRouter extends React.Component {
   }
 
   handleRedirect() {
-    console.log('props are', this.props)
     const { campaign, navigation } = this.props;
       if(!campaign.id) {
         navigation.navigate("CreateCampaign");
