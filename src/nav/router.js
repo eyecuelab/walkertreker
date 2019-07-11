@@ -59,7 +59,6 @@ const AuthStack = createStackNavigator(
     defaultNavigationOptions: {
       header: null,
     },
-    initialRouteName: 'Journal',
   }
 )
 
