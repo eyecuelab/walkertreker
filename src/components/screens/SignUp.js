@@ -33,7 +33,6 @@ const AnimatedLabel = posed.View({
 class SignUp extends React.Component {
   constructor(props) {
     super(props)
-    console.log("in sign up")
     this.state = {
       displayName: '',
       phoneNumber: '',
@@ -49,34 +48,27 @@ class SignUp extends React.Component {
 
 
   componentDidUpdate() {
-    console.log("player props", this.props.player)
-    console.log("player id", this.props.player.id)
+
     this.props.player.id ? this.props.navigation.navigate('AuthCheck') :
     this.state.newPlayerCreated ? this.recoveryText() : null; 
   }
 
-  recoveryText = async () => {
+  recoveryText = () => {
     console.log(this.state)
     if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
-      console.log('setting recoverytext')
-      await this.setState({ recoveryText: 'Signup failed. Try again, or '})
+      this.setState({ recoveryText: 'Signup failed. Try again, or '})
     }
     if (this.state.recoveryTextBold !== 'click here to recover an account.') {
-      console.log('setting recoverytextBOLD')
-      await this.setState({ recoveryText: 'click here to recover an account.'})
+      this.setState({ recoveryTextBold: 'click here to recover an account.'})
     } else {}
 
   }
 
   _handleSubmit = async () => {
-    console.log("submitted")
     const { dispatch } = this.props;
     let prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
-    console.log(prettyPhoneNumber.length)
     if (prettyPhoneNumber.length === 12) {
       const pushToken = await this.registerForPushNotificationsAsync();
-      console.log("push token after function", await pushToken)
-      console.log(pushToken)
       dispatch({
         type: c.CREATE_PLAYER,
         name: this.state.displayName,
@@ -86,9 +78,7 @@ class SignUp extends React.Component {
         isVisible: true
       })
       this.state.newPlayerCreated ? null : this.setState({ newPlayerCreated: true })
-      console.log("in handle submit", this.state.recoveryText)
     } else {
-      console.log("in handle submit else", this.state.recoveryText)
       await this.setState({ recoveryText: 'Are you sure you entered your phone number correctly?'})
     }
   }
@@ -116,10 +106,8 @@ class SignUp extends React.Component {
   }
 
   registerForPushNotificationsAsync = async () => {
-    console.log("in push register")
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     let finalStatus = existingStatus;
-    console.log(finalStatus)
     if (existingStatus !== 'granted') {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
@@ -128,12 +116,10 @@ class SignUp extends React.Component {
       return;
     } else {
       const token = await Notifications.getExpoPushTokenAsync();
-      console.log("permission granted", token)
       return token;
     }
   }
 
-  
 
   _pickImage = async () => {
     const avatar = await ImagePicker.launchImageLibraryAsync({
