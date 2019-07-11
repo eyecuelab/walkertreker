@@ -13,7 +13,7 @@ import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
 import SocketIO from './components/SocketIO';
-import BackgroundPedometer from './components/BackgroundPedometer';
+// import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
 
 import { withNavigation } from 'react-navigation';
@@ -90,6 +90,7 @@ class App extends React.Component {
         'gore': require('../assets/fonts/goreRough.otf'),
         'verdana': require('../assets/fonts/verdana.ttf'),
         'verdanaBold': require('../assets/fonts/verdanaBold.ttf'),
+        'Gill Sans MT Condensed': require('../assets/fonts/GILC____.ttf'),
       }),
       ...imageAssets,
     ]);
@@ -155,7 +156,7 @@ class App extends React.Component {
       return (
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={null}>
-            <BackgroundPedometer />
+            {/* <BackgroundPedometer /> */}
             <SocketIO />
             <NotificationListeners />
             

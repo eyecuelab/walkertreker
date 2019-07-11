@@ -22,10 +22,8 @@ class RandomEventResult extends React.Component {
   }
 
   updateInventory = (item, invenItem) => {
-    console.log("inventory before change", invenItem)
     const newInven = invenItem
     item ? item > 0 ? newInven.push(item) : newInven.splice(Math.floor(Math.random()*invenItem.length), 1) : null; 
-    console.log("inventory after change", newInven)
     return newInven
   }
 
@@ -61,7 +59,6 @@ class RandomEventResult extends React.Component {
   updateJournal = () => {
     const eventEntry = this.evt.journal + this.resultHeader
     const journalId = this.props.screenProps.notification.data.data.data.journalId
-    console.log("EVENT ENTRY", eventEntry, journalId)
     this.props.dispatch({ type: c.UPDATE_JOURNAL, 
       journalId: journalId,
       entry: eventEntry,

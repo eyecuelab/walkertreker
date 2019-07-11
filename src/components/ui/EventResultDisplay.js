@@ -32,7 +32,8 @@ class EventResultDisplay extends React.Component {
         <Text style={[styles.plainText, customStyles.text]}>{this.props.resultText}</Text>
       </View>
     } else {
-      playerVotes = this.props.playerVotes
+      let playerVotes = this.props.playerVotes
+      console.log(playerVotes)
       const entriesList = []
       Object.entries(playerVotes).map(([key, value], index) => {
         entriesList.push(`${key} voted to ${value}`)

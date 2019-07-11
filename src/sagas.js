@@ -174,8 +174,6 @@ export function *createPlayer(action) {
 }
 
 export function *updateCampaign(action) {
-  console.log("in update campaign saga")
-  console.log("in update campaign saga", action.campId)
   const url = `${endpoint}/api/campaigns/` + action.campId;
   const initObj = {
     method: "PATCH",
@@ -234,7 +232,6 @@ export function *fetchPlayer(action) {
   };
 
   try {
-    console.log('playId in saga', action.playId)
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     yield put({type: c.PLAYER_FETCHED, player: response});
@@ -344,7 +341,6 @@ export function *castPlayerVote(action) {
       vote: action.vote,
     })
   }
-  console.log(initObj)
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
@@ -356,7 +352,6 @@ export function *castPlayerVote(action) {
 }
 
 export function *updateJournal(action) {
-  console.log("IN UPDATE JOURNAL SAGA", action)
   const url = `${endpoint}/api/journals/` + action.journalId;
   const initObj = {
     method: "PATCH",
@@ -370,7 +365,6 @@ export function *updateJournal(action) {
       }
     })
   }
-  console.log("INIT OBJ", initObj)
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json())
@@ -387,7 +381,6 @@ export function *saveState() {
 }
 
 export function *checkBonusSteps(action) {
-  console.log("actionPAYLOAD!>!>!>!>!>!>!>!" + JSON.stringify(action.player));
   const { steps, stepTargets } = action.player;
   const { currentDay, inventory, startDate } = yield select(getCampaign);
   const { campaignDateArray, scavengingFor } = yield select(getSteps);

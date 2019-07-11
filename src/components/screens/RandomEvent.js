@@ -44,10 +44,13 @@ class RandomEvent extends React.Component {
   getTimeNow = () => {
     const createdAt = this.props.screenProps.notification.data.data.data.createdAt.toString();
     let start = new Date(createdAt);
-    start = new Date(start.getTime() + this.props.campaign.timezone*3600000);
+    console.log("Start time of event", start)
+    start = new Date(start.getTime());
     const then = new Date(start.getTime() + 15*60000)
+    console.log("then time of event", then)
     const localTime = Date.now()
     const msRemaining = then.getTime() - localTime
+
     this.setState({ start: start, end: then, msRemaining: msRemaining})
   }
 
