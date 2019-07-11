@@ -6,6 +6,7 @@ import {ImageBackground, Text} from 'react-native';
 
 const { c } = constants;
 
+
 class AuthCheck extends React.Component {
   async componentDidMount() {
     console.log("AuthCheck Moutning")

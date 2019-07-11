@@ -59,10 +59,7 @@ class WaitForStart extends React.Component {
 
   render() {
     return (
-      <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}
-      >
+      <View>
         <Modal isVisible={this.state.confirmationModalVisible} >
           <View style={customStyles.modalContainer}>
             <View style={customStyles.modalHeadline}>
@@ -107,7 +104,7 @@ class WaitForStart extends React.Component {
 
           </View>
         </ScreenContainer>
-      </ImageBackground>
+      </View>
     );
   }
 }

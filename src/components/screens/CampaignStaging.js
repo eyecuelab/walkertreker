@@ -93,9 +93,8 @@ class CampaignStaging extends React.Component {
 
   render() {
     return(
-      <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}>
+      
+      <View>
 
         <Modal isVisible={this.state.whenToStartModalVisible}>
           <WhenToStartForm handleModalStateChange={this._toggleWhenToStartModal} />
@@ -134,7 +133,8 @@ class CampaignStaging extends React.Component {
           {this.submitConditionalRender()}
 
         </ScreenContainer>
-      </ImageBackground>
+      
+      </View>
     );
   }
 }

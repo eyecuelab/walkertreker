@@ -24,7 +24,8 @@ import AuthCheck from './../components/screens/AuthCheck';
 import SignUp from './../components/screens/SignUp';
 import AccountRecovery from './../components/ui/AccountRecovery';
 import MainAppRouter from './../components/screens/MainAppRouter';
-
+import Lobby from './../components/screens/Lobby';
+import {store} from './../store';
 
 
 const AuthStack = createStackNavigator(
@@ -43,21 +44,33 @@ const AuthStack = createStackNavigator(
   }
 )
 
- const MainApp = createStackNavigator(
+const LobbyNavigator = createStackNavigator({
+  Lobby: { screen : Lobby },
+  InvitePlayers: { screen : InvitePlayers }
+})
+
+
+
+const MainApp = createSwitchNavigator(
   {
     MainAppRouter: { screen: MainAppRouter },
     CreateCampaign: { screen : CreateCampaign },
-    CampaignStaging: { screen : CampaignStaging },
+    Lobby : { screen : LobbyNavigator},
     CampaignSummary: { screen : CampaignSummary },
-    InvitePlayers: { screen : InvitePlayers },
     RandomEvent: { screen: RandomEvent },
     RandomEventResult: { screen: RandomEventResult },
-    Inventory: { screen: Inventory }, 
+    Inventory: { screen: Inventory },
+    
+    Join: {
+      screen: AcceptInvite,
+      path: 'join'
+    }, 
   },
   {
     defaultNavigationOptions: {
       header: null,
-    }
+    },
+    initialRouteName: "MainAppRouter" 
   }
 )
 
@@ -65,20 +78,17 @@ const MainSwitchNavigator = createSwitchNavigator(
   {
     AuthCheck: AuthCheck,
     Auth: {screen: AuthStack, path : ''},
-    MainApp: {
-      screen: MainApp,
-      path: ''
-    },
-    Accept: {
-      screen: AcceptInvite,
-      path: 'join'
-    },
+    MainApp: { screen: MainApp, path: ''},
   },
   {
     defaultNavigationOptions: {
       header: null,
-    }
+    },
+    initialRouteName: "AuthCheck"
   }
 );
+
+
+
 
 export const AppContainer = createAppContainer( MainSwitchNavigator );

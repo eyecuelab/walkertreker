@@ -23,11 +23,10 @@ class CreateCampaign extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.navigation.navigate("CampaignStaging");
+    this.props.navigation.navigate("Lobby");
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(this.props.campaign.players)
     const shouldUpdate = nextProps.campaign.players && nextProps.campaign.players.length > 0 && this.props.campaign.players && this.props.campaign.players.length === 0 ;
     console.log("CreateCampaign Should Update", shouldUpdate);
     return shouldUpdate;
@@ -37,7 +36,6 @@ class CreateCampaign extends React.Component {
     const { dispatch } = this.props;
     const now = new Date();
     const timezone = -now.getTimezoneOffset()/60;
-    console.log(this.props.player.id)
     let apiPayload = {
       "params": {
         "campaignLength": this.state.length,

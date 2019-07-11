@@ -16,14 +16,13 @@ class MainAppRouter extends React.Component {
   }
 
   handleRedirect() {
-    console.log("handling redirect in MainAppRouter \n\n\n\n")
     const { campaign, navigation } = this.props;
       if(!campaign.id) {
         navigation.navigate("CreateCampaign");
       } else if(campaign.startDate) {
         navigation.navigate("CampaignSummary");
       } else {
-        navigation.navigate("CampaignStaging");
+        navigation.navigate("Lobby");
       }
   }
 
