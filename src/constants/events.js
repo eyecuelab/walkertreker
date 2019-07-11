@@ -12,7 +12,8 @@ const events  = [
     optionBText: `You double back before the men can react and take an alternate route. Unfortunately, the new path is not as direct, adding additional distance to your destination.`,
     optionBResult: {
       stepTargets: 0.1
-    }
+    },
+    journal: 'Encoutered armed men demanding food as toll for crossing a barricade. We decided to ',
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `You continue, pretending not to hear his suffering. For years to come, that sad moaning haunts your dreams.`,
     optionBResult: {},
+    journal: 'Found an injured elderly man. We decided to ',
   },
   {
     id: 3,
@@ -43,6 +45,7 @@ const events  = [
       weapons: -2,
       health: -15
     },
+    journal: 'Encountered a bloody zombie child. We decided to ',
   },
   {
     id: 4,
@@ -55,13 +58,14 @@ const events  = [
       food: 3,
     },
     optionBButton: `Ignore`,
-    optionBText: `You decline and move past without a word. Sadly he shakes his head, knowing that he stand much of a chance unarmed.`,
+    optionBText: `You decline and move past without a word. Sadly he shakes his head, knowing that he doesn't stand much of a chance unarmed.`,
     optionBResult: {},
+    journal: 'Encouted a man asking if we could spare a weapon. We decided to ',
   },
   {
     id: 5,
     type: 'random',
-    antecedent: `In the distance, you see a shadowy figure clinging to the top of an unlit streetlamp. Beneath him, a zombie claws at the air in impotent hunger. The zombie hasn't spotted you yet–it would be easy enough to slip by, unnoticed and unharmed. What do you do?`,
+    antecedent: `In the distance, you see a shadowy figure clinging to the top of an unlit streetlamp. Beneath her, a zombie claws at the air in impotent hunger. The zombie hasn't spotted you yet–it would be easy enough to slip by, unnoticed and unharmed. What do you do?`,
     optionAButton: `Attack Now`,
     optionAText: `With the element of surprise, the zombie goes down easy enough. You call up to the figure, but it doesn't respond. Sadly, you realize you were too late. Another casualty of the apocalypse.`,
     optionAResult: {
@@ -70,6 +74,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `Quietly, you pass by, unnoticed. Best not to get involved, right?`,
     optionBResult: {},
+    journal: 'Saw a zombie trying to get at a figure clutching a streetlamp. We decided to ',
   },
   {
     id: 6,
@@ -84,6 +89,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `You move past. Some things are better left unknown.`,
     optionBResult: {},
+    journal: 'Found our old house, full of memories. We decided to ',
   },
   {
     id: 7,
@@ -98,6 +104,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `"I'm sorry friend," you say,"Nothing personal, but we don't have anything to spare."`,
     optionBResult: {},
+    journal: 'Found an injured stranger offering food for meds. We decided to ',
   },
   {
     id: 8,
@@ -111,6 +118,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `The little survivor seems to be getting on fine on their own. Probably will outlast you, anyway.`,
     optionBResult: {},
+    journal: 'Found a young kid in some wreckage. We decided to ',
   },
   {
     id: 9,
@@ -124,6 +132,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `Who knows what's in those tunnels. Up here, you at least have somewhere to run, right?`,
     optionBResult: {},
+    journal: 'Found an open manhole leading to the sewers. We decided to ',
   },
   {
     id: 10,
@@ -140,6 +149,7 @@ const events  = [
     optionBResult: {
       food: 6
     },
+    journal: 'Encountered a starving horse. We decided to ',
   },
   {
     id: 11,
@@ -153,11 +163,12 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `You've got enough problems on your own without going looking for trouble.`,
     optionBResult: {},
+    journal: 'Heard gunfire in the distance. We decided to ',
   },
   {
     id: 12,
     type: 'random',
-    antecedent: `Rounding a corner, you spot an emergency clinic set up in a empty shopping mall parking lot. Surprisingly, the lights are on and the clinic is open! A harried doctor in white lab coat approaches. "We're trying to create penicillin," he says, "and we need bread. Do you have any to spare?" `,
+    antecedent: `Rounding a corner, you spot an emergency clinic set up in a empty shopping mall parking lot. Surprisingly, the lights are on and the clinic is open! A harried doctor in white lab coat approaches. "We're trying to create penicillin," she says, "and we need bread. Do you have any to spare?" `,
     optionAButton: `Give Food`,
     optionAText: `You hand the food over. "The life you save might be your own! Here, have some of our first batch of medicine."`,
     optionAResult: {
@@ -167,6 +178,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `It's not worth the risk of tampering with the food supply.`,
     optionBResult: {},
+    journal: 'A medical clinic asks us for spare bread to make medicine. We decided to ',
   },
   {
     id: 13,
@@ -183,6 +195,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `The box could be filled with anything, and it's not worth the risk. If you ever come back this way, maybe you'll check it out then.`,
     optionBResult: {},
+    journal: 'An airplane dropped a crate of supplies right into a zombie mob. We decided to ',
   },
   {
     id: 14,
@@ -196,6 +209,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `You quickly backtrack and continue towards the safehouse. Nothing good will come from looting an old theater.`,
     optionBResult: {},
+    journal: 'Came across a movie theater that may have food left inside. We decided to ',
   },
   {
     id: 15,
@@ -209,6 +223,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `Better to lose a few pounds than lose everything to illness. You throw the can away. Better safe than sorry.`,
     optionBResult: {},
+    journal: 'Found some suspicious cans of beans at the Quick-E mart. We decided to ',
   },
   {
     id: 16,
@@ -224,34 +239,37 @@ const events  = [
     optionBResult: {
       food: 3
     },
+    journal: 'Came across a kid trapped with zombies in a school cafeteria still stocked with food. We decided to ',
   },
   {
     id: 17,
     type: 'random',
-    antecedent: `A wrong turn has you in a dead end alley. A mob of zombies suddenly appear, cutting off your escape route. There's no way out. You're surprised how calm you feel. You nod to each other, accepting the inevitable. Suddenly a high-pitched battle cry fills the air! A man dressed in black leaps from a nearby rooftop, sword in hand, and begins cutting down the dead. Do you join in the fight or make a run for it?`,
+    antecedent: `A wrong turn has you in a dead end alley. A mob of zombies suddenly appear, cutting off your escape route. There's no way out. You're surprised how calm you feel. You nod to each other, accepting the inevitable. Suddenly a high-pitched battle cry fills the air! A woman dressed in black leaps from a nearby rooftop, sword in hand, and begins cutting down the dead. Do you join in the fight or make a run for it?`,
     optionAButton: `Join the Fight`,
-    optionAText: `Weapons drawn, you join the fight and together you manage to fight off the zombies. "Nice work," he says. "Thanks for the help. Here, take my extra sword, you might need it." He hands you the gleaming blade.`,
+    optionAText: `Weapons drawn, you join the fight and together you manage to fight off the zombies. "Nice work," she says. "Thanks for the help. Here, take my extra sword, you might need it." She hands you the gleaming blade.`,
     optionAResult: {
       weapons: 1,
       health: -5,
     },
     optionBButton: `Run Away`,
-    optionBText: `As he expertly dispatches the zombies, you make your escape, slipping past the melee without a scratch.`,
+    optionBText: `As she expertly dispatches the zombies, you make your escape, slipping past the melee without a scratch.`,
     optionBResult: {},
+    journal: 'Took a wrong turn, found a woman cutting down zombies with a sword. We decided to ',
   },
   {
     id: 18,
     type: 'random',
-    antecedent: `A filthy man looks at you in a confused silence. His hair is a tangled rat's nest and grime covers his body. "Are you ok?" you ask. A grocery bag hangs at his side, stuffed with canned food. Now you notice the knife in his hand. "We're not going to hurt you", you try again in hushed tones. Like a switch flipping, he brandishes the knife and screams, "Get away from my food!" He crouches, ready to attack.`,
+    antecedent: `A filthy woman looks at you in a confused silence. Her hair is a tangled rat's nest and grime covers her body. "Are you ok?" you ask. A grocery bag hangs at her side, stuffed with canned food. Now you notice the knife in her hand. "We're not going to hurt you", you try again in hushed tones. Like a switch flipping, she brandishes the knife and screams, "Get away from my food!" She crouches, ready to attack.`,
     optionAButton: `Fight Back`,
-    optionAText: `He charges you and fights with wild abandon, and after a difficult struggle, you're forced to kill him.`,
+    optionAText: `She charges you and fights with wild abandon, and after a difficult struggle, you're forced to kill her.`,
     optionAResult: {
       food: 3,
       health: -10,
     },
     optionBButton: `Run Away`,
-    optionBText: `The feral look in his eyes scares you and you run away.`,
+    optionBText: `The feral look in her eyes scares you and you run away.`,
     optionBResult: {},
+    journal: 'Encoutered an armed woman garding food, ready to attack. We decided to ',
   },
   {
     id: 19,
@@ -265,6 +283,7 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `This guy was locked up for a reason, and you don't want another mouth to feed. Better to move on. He back out of the station to his anguished cries.`,
     optionBResult: {},
+    journal: 'Found a man still locked in the police station cells. We decided to ',
   },
 ]
 

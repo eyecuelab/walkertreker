@@ -20,7 +20,6 @@ class JournalDisplay extends React.Component {
   }
 
   render() {
-    console.log("JOURNAL DISPLAY", this.props)
     const entriesObj = this.props.entries
     return (
       <View style={customStyles.dayEntry}>

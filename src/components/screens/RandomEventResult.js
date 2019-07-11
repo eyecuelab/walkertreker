@@ -18,28 +18,33 @@ class RandomEventResult extends React.Component {
 
   componentDidMount() {
     this.resolveEventConsequences()
+    this.updateJournal()
   }
 
   updateInventory = (item, invenItem) => {
-    item ? item > 0 ? invenItem.push(item) : invenItem.splice(Math.floor(Math.random()*invenItem.length), 1) : null; 
+    console.log("inventory before change", invenItem)
+    const newInven = invenItem
+    item ? item > 0 ? newInven.push(item) : newInven.splice(Math.floor(Math.random()*invenItem.length), 1) : null; 
+    console.log("inventory after change", newInven)
+    return newInven
   }
 
   resolveEventConsequences = () => {
-    
     const result = this.result === 'A' ? this.evt.optionAResult : this.evt.optionBResult;
-    let newInventory = {...this.props.campaign.inventory}
+    let inventory = {...this.props.campaign.inventory}
+    let newInventory = {};
     let newPlayerObj = {...this.props.player}
     const currentDay = this.props.campaign.currentDay
-    console.log(currentDay);
+    console.log("DAY: ", currentDay);
 
-    this.updateInventory(result.food, newInventory.foodItems);
-    this.updateInventory(result.meds, newInventory.medicineItems);
-    this.updateInventory(result.weapons, newInventory.weaponItems);
-    console.log(newInventory)
+    newInventory.foodItems = this.updateInventory(result.food, inventory.foodItems);
+    newInventory.medicineItems = this.updateInventory(result.meds, inventory.medicineItems);
+    newInventory.weaponItems = this.updateInventory(result.weapons, inventory.weaponItems);
+    console.log("the new inventory", newInventory)
 
     result.stepTarget ? newPlayerObj.stepTargets[currentDay] += (newPlayerObj.stepTargets[currentDay]*result.stepTarget): newPlayerObj;
 
-    result.health ? newPlayerObj.health - result.health : null; 
+    result.health ? newPlayerObj.health = newPlayerObj.health - result.health : null; 
 
     this.props.dispatch({ type: c.UPDATE_PLAYER, 
       playId: newPlayerObj.id, 
@@ -49,7 +54,17 @@ class RandomEventResult extends React.Component {
     })
     this.props.dispatch({ type: c.UPDATE_CAMPAIGN, 
       campId: this.props.campaign.id, 
-      inventory: newInventory
+      inventory: inventory === newInventory ? inventory : newInventory
+    })
+  }
+  
+  updateJournal = () => {
+    const eventEntry = this.evt.journal + this.resultHeader
+    const journalId = this.props.screenProps.notification.data.data.data.journalId
+    console.log("EVENT ENTRY", eventEntry, journalId)
+    this.props.dispatch({ type: c.UPDATE_JOURNAL, 
+      journalId: journalId,
+      entry: eventEntry,
     })
   }
 

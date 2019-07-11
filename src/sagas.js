@@ -355,6 +355,31 @@ export function *castPlayerVote(action) {
   }
 }
 
+export function *updateJournal(action) {
+  console.log("IN UPDATE JOURNAL SAGA", action)
+  const url = `${endpoint}/api/journals/` + action.journalId;
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      journalUpdate: {
+        entry: action.entry,
+      }
+    })
+  }
+  console.log("INIT OBJ", initObj)
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    console.log("response of updateJournal from Event", response)
+  } catch (err) {
+    console.warn('error updating journal entry: ', err);
+  }
+}
+
 export function *saveState() {
   const lastState = yield select();
   console.log(JSON.stringify(lastState));
@@ -605,6 +630,10 @@ export function *watchCastVote() {
   yield takeLatest(c.CAST_VOTE, castPlayerVote)
 }
 
+export function *watchUpdateJournal() {
+  yield takeLatest(c.UPDATE_JOURNAL, updateJournal)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
@@ -634,18 +663,19 @@ export default function *rootSaga() {
     watchStartScavenge(),
     watchHungerAndHealth(),
     watchCastVote(),
+    watchUpdateJournal(),
   ])
 }
 
 
 // LOCAL Kim home endpoint
-const endpoint = `http://192.168.1.5:5000`
+// const endpoint = `http://192.168.1.5:5000`
 
 // LOCAL Kim coffeeshop endpoint
 // const endpoint = `http://172.16.103.172:5000`
 
 // LOCAL eyecue endpoint
-// const endpoint = 'http://10.1.10.51:5000'
+const endpoint = 'http://10.1.10.51:5000'
 
 // REMOTE
 // const endpoint = 'https://walkertrekker.herokuapp.com'
