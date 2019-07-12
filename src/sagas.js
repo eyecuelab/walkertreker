@@ -20,7 +20,7 @@ export function *fetchSteps() {
   // Here we could only loop through the dates that are relevent (speed it up)
   // 
   for (obj of datesCopy) {
-    console.log('fetch steps loop, day ' + JSON.stringify(obj)); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
+    console.log('fetch steps loop, day ', obj.start); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
     try {
       const start = new Date(Date.parse(obj.start))
       const end = new Date(Date.parse(obj.end))
@@ -487,7 +487,6 @@ export function *updateHungerAndHealth(action) {
 export function *getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData('lastState');
-  console.log("lastStateString is \n\n", lastStateString, "\n\n end of lastStateString")
   let lastState;
   if (lastStateString != undefined) {
     lastState = JSON.parse(lastStateString)
@@ -668,7 +667,7 @@ export default function *rootSaga() {
 
 
 // LOCAL eyecue endpoint
-// const endpoint = 'http://10.1.10.51:5000'
+const endpoint = 'http://10.1.10.51:5000'
 
 // REMOTE
-const endpoint = 'https://walkertrekker.herokuapp.com'
+// const endpoint = 'https://walkertrekker.herokuapp.com'
