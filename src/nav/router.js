@@ -16,6 +16,7 @@ import CampaignSummary from '../components/screens/CampaignSummary';
 import Safehouse from '../components/screens/Safehouse';
 import EndOfDaySummary from '../components/screens/EndOfDaySummary';
 import Inventory from '../components/screens/Inventory';
+import Journal from '../components/screens/Journal';
 import RandomEvent from '../components/screens/RandomEvent';
 import RandomEventResult from '../components/screens/RandomEventResult';
 import CampaignIsLost from '../components/screens/CampaignIsLost';
@@ -29,7 +30,6 @@ import Journal from './../components/screens/Journal';
 import Lobby from './../components/screens/Lobby';
 import {store} from './../store';
 import TabBarIcon from '../components/ui/TabBarIcon';
-
 
 const AuthStack = createStackNavigator(
   {
@@ -114,18 +114,31 @@ const MainApp = createSwitchNavigator(
   {
     MainAppRouter: { screen: MainAppRouter },
     CreateCampaign: { screen : CreateCampaign },
+<<<<<<< HEAD
     Lobby : { screen : LobbyNavigator},
     Campaign : { screen : CampaignNavigator },
     Join: {
       screen: AcceptInvite,
       path: 'join'
     }, 
+=======
+    CampaignStaging: { screen : CampaignStaging },
+    CampaignSummary: { screen : CampaignSummary },
+    InvitePlayers: { screen : InvitePlayers },
+    RandomEvent: { screen: RandomEvent },
+    RandomEventResult: { screen: RandomEventResult },
+    Inventory: { screen: Inventory }, 
+    Journal: { screen: Journal },
+>>>>>>> master
   },
   {
     defaultNavigationOptions: {
       header: null,
     },
+<<<<<<< HEAD
     initialRouteName: "MainAppRouter" 
+=======
+>>>>>>> master
   }
 )
 

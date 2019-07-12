@@ -1,7 +1,6 @@
 import { put, take, takeEvery, takeLatest, all, call, select } from 'redux-saga/effects';
 import { Pedometer } from "expo";
 import { CLIENT_APP_KEY } from 'react-native-dotenv';
-import  NavigationService  from './nav/NavigationService';
 
 import constants from './constants';
 const { c, storeData, retrieveData, item } = constants;
@@ -48,7 +47,7 @@ export function *updatePlayerSteps(action) {
 
 export function *setInitialCampaignDetails(action) {
   console.log("setting campaign")
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns';
+  const url = `${endpoint}/api/campaigns`;
   const initObj = {
     method: "POST",
     headers: {
@@ -70,7 +69,7 @@ export function *setInitialCampaignDetails(action) {
 }
 
 export function *sendInvites(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/invite/' + action.campId;
+  const url = `${endpoint}/api/campaigns/invite/` + action.campId;
   const theBody = {};
   const phoneNums = Object.keys(action.invites);
   for (pNumber of phoneNums) {
@@ -101,7 +100,7 @@ export function *sendInvites(action) {
 export function *fetchCampaignInfo(action) {
 
   const id = action.id;
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + id;
+  const url = `${endpoint}/api/campaigns/` + id;
   const initObj = {
     method: "GET",
     headers: {
@@ -120,7 +119,7 @@ export function *fetchCampaignInfo(action) {
 
 export function *joinCampaignRequest(action) {
 
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/join/' + action.campId;
+  const url = `${endpoint}/api/campaigns/join/` + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -140,7 +139,7 @@ export function *joinCampaignRequest(action) {
 
 export function *createPlayer(action) {
 
-  const url = 'https://walkertrekker.herokuapp.com/api/players';
+  const url = `${endpoint}/api/players`;
 
   const data = new FormData()
 
@@ -175,9 +174,7 @@ export function *createPlayer(action) {
 }
 
 export function *updateCampaign(action) {
-  console.log("in update campaign saga")
-  console.log("in update campaign saga", action.campId)
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+  const url = `${endpoint}/api/campaigns/` + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -204,7 +201,7 @@ export function *updateCampaign(action) {
 
 export function *leaveCampaign(action) {
 
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/leave/' + action.campId;
+  const url = `${endpoint}/api/campaigns/leave/` + action.campId;
 
   const initObj = {
     method: "PATCH",
@@ -225,7 +222,7 @@ export function *leaveCampaign(action) {
 }
 
 export function *fetchPlayer(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/players/' + action.playId;
+  const url = `${endpoint}/api/players/` + action.playId;
   const initObj = {
     method: "GET",
     headers: {
@@ -235,7 +232,6 @@ export function *fetchPlayer(action) {
   };
 
   try {
-    console.log('playId in saga', action.playId)
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     yield put({type: c.PLAYER_FETCHED, player: response});
@@ -245,7 +241,7 @@ export function *fetchPlayer(action) {
 }
 
 export function *updatePlayer(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/players';
+  const url = `${endpoint}/api/players`;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -273,7 +269,7 @@ export function *updatePlayer(action) {
 
 
 export function *sendRecoverAccount(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/players/recover/' + action.phoneNumber
+  const url = `${endpoint}/api/players/recover/` + action.phoneNumber
   console.log(url)
   const initObj = {
     method: "GET",
@@ -293,7 +289,7 @@ export function *sendRecoverAccount(action) {
 
 
 export function *startCampaign(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/start/' + action.campId;
+  const url = `${endpoint}/api/campaigns/start/` + action.campId;
   const initObj = {
     method: "PATCH",
     headers: {
@@ -314,7 +310,7 @@ export function *startCampaign(action) {
 }
 
 export function *destroyCampaign(action) {
-  const url = 'https://walkertrekker.herokuapp.com/api/campaigns/' + action.campId;
+  const url = `${endpoint}/api/campaigns/` + action.campId;
   const initObj = {
     method: "DELETE",
     headers: {
@@ -322,7 +318,6 @@ export function *destroyCampaign(action) {
       "appkey": CLIENT_APP_KEY
     },
   };
-
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
@@ -334,7 +329,7 @@ export function *destroyCampaign(action) {
 
 export function *castPlayerVote(action) {
   console.log("player casting vote", action)
-  const url = 'https://walkertrekker.herokuapp.com/api/votes/' + action.eventId;
+  const url = `${endpoint}/api/votes/` + action.eventId;
   const initObj = {
     method: "POST",
     headers: {
@@ -346,7 +341,6 @@ export function *castPlayerVote(action) {
       vote: action.vote,
     })
   }
-  console.log(initObj)
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
@@ -357,6 +351,29 @@ export function *castPlayerVote(action) {
   }
 }
 
+export function *updateJournal(action) {
+  const url = `${endpoint}/api/journals/` + action.journalId;
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      journalUpdate: {
+        entry: action.entry,
+      }
+    })
+  }
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    console.log("response of updateJournal from Event", response)
+  } catch (err) {
+    console.warn('error updating journal entry: ', err);
+  }
+}
+
 export function *saveState() {
   const lastState = yield select();
   console.log("SAVING LAST STATE AS - ", JSON.stringify(lastState), "\n SAVESTATE END \n ========================== \n");
@@ -364,7 +381,6 @@ export function *saveState() {
 }
 
 export function *checkBonusSteps(action) {
-  console.log("actionPAYLOAD!>!>!>!>!>!>!>!" + JSON.stringify(action.player));
   const { steps, stepTargets } = action.player;
   const { currentDay, inventory, startDate } = yield select(getCampaign);
   const { campaignDateArray, scavengingFor } = yield select(getSteps);
@@ -487,33 +503,9 @@ export function *getLastStepState() {
   }
 }
 
-export function *watchGetLastStepState() {
-  yield takeLatest(c.GET_LAST_STEP_STATE, getLastStepState);
-}
-
-///////////////////
-//REDIRECT SAGAS
-///////////////////
-export function *handleRedirectAction(action) {
-  console.log("attempting to handleNavigationRedirect with path - in SAGA ", action.redirectAction 
-  )
-  yield NavigationService.navigate(action.redirectAction);
-  
-  yield put({type: c.CLEAR_REDIRECT_ACTION});
-}
-
-export function *watchHandleRedirectAction() {
-  yield takeEvery(c.HANDLE_REDIRECT_ACTION, handleRedirectAction);
-}
 
 
-
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-////////////// watcher sagas /////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-
+// watcher sagas ==============================
 
 export function *watchSetDates() {
   while (true) {
@@ -521,8 +513,6 @@ export function *watchSetDates() {
     yield put({type: c.GET_STEPS});
   }
 }
-
-
 
 
 //Step Saga's
@@ -617,7 +607,9 @@ export function *watchScavengedItems() {
   yield put({type: c.UPDATE_CAMPAIGN, campId: campaign.id, inventory: action.inventory});
 }
 
-
+export function *watchGetLastStepState() {
+  yield takeLatest(c.GET_LAST_STEP_STATE, getLastStepState);
+}
 
 export function *watchStartScavenge() {
   yield takeEvery(c.START_SCAVENGE, scavenge);0
@@ -630,6 +622,10 @@ export function *watchHungerAndHealth() {
 // event sagas
 export function *watchCastVote() {
   yield takeLatest(c.CAST_VOTE, castPlayerVote)
+}
+
+export function *watchUpdateJournal() {
+  yield takeLatest(c.UPDATE_JOURNAL, updateJournal)
 }
 
 // root saga ==============================
@@ -660,7 +656,20 @@ export default function *rootSaga() {
     watchGetLastStepState(),
     watchStartScavenge(),
     watchHungerAndHealth(),
-    watchHandleRedirectAction(),
     watchCastVote(),
+    watchUpdateJournal(),
   ])
 }
+
+
+// LOCAL Kim home endpoint
+// const endpoint = `http://192.168.1.5:5000`
+
+// LOCAL Kim coffeeshop endpoint
+// const endpoint = `http://172.16.103.172:5000`
+
+// LOCAL eyecue endpoint
+// const endpoint = 'http://10.1.10.51:5000'
+
+// REMOTE
+const endpoint = 'https://walkertrekker.herokuapp.com'

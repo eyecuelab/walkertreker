@@ -5,6 +5,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import DayCounter from '../ui/DayCounter';
+import ScreenContainer from './../containers/ScreenContainer';  
+
 import constants from '../../constants';
 const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
@@ -26,7 +28,7 @@ class EventDisplay extends React.Component {
         <ImageBackground
           source={this.props.backgroundImage}
           style={{width: '100%', height: '100%'}} >
-          <View style={styles.container}>
+          <ScreenContainer>
     
               <View style={{width: '100%', height: '100%'}}>
                 <ImageBackground
@@ -69,7 +71,7 @@ class EventDisplay extends React.Component {
                 </ImageBackground>
               </View>
     
-          </View>
+          </ScreenContainer>
         </ImageBackground>
     );
   }
@@ -106,14 +108,6 @@ const customStyles = StyleSheet.create({
     height: heightUnit * 8,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  container: {
-    // margin: widthUnit*2,
-    flex: 1,
-    justifyContent: 'flex-start',
-    // padding: widthUnit,
-    // paddingTop: widthUnit*2,
-    // backgroundColor: 'pink',
   },
   randomEventBg: {
     width: undefined,
