@@ -30,7 +30,7 @@ class Journal extends React.Component {
     if (this.props.campaign.journals) {
       this.props.campaign.journals.forEach((entry) => {
         if (entry.entryDay !== currentDay) {
-          index=0;
+          index = 0;
           entryObj = Object.assign({}, entryObj, {[entry.entryDay]: {[index]: entry}})
           currentDay ++;
         } else {

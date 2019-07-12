@@ -7,13 +7,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 
 import { Provider, connect, dispatch } from 'react-redux';
-import { logger } from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
 import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
 import SocketIO from './components/SocketIO';
-// import BackgroundPedometer from './components/BackgroundPedometer';
+import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
 
 import { withNavigation } from 'react-navigation';
@@ -156,7 +154,7 @@ class App extends React.Component {
       return (
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={null}>
-            {/* <BackgroundPedometer /> */}
+            <BackgroundPedometer />
             <SocketIO />
             <NotificationListeners />
             
