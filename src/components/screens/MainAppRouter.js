@@ -10,7 +10,9 @@ import { NavigationEvents } from 'react-navigation';
 class MainAppRouter extends React.Component {
   constructor(props) {
     super(props)
+    console.log("MainAppRouter mounted");
     this.handleRedirect = this.handleRedirect.bind(this);
+    this.handleRedirect();
   }
 
   handleRedirect() {
@@ -18,18 +20,16 @@ class MainAppRouter extends React.Component {
       if(!campaign.id) {
         navigation.navigate("CreateCampaign");
       } else if(campaign.startDate) {
-        navigation.navigate("CampaignSummary");
+        navigation.navigate("Campaign");
       } else {
-        navigation.navigate("CampaignStaging");
+        navigation.navigate("Lobby");
       }
   }
 
   // Render any loading content that you like here
   render() {
     return (
-      <NavigationEvents
-      onDidFocus={this.handleRedirect}
-      />
+      <Text>There some text from MainAppRouter here</Text>
     );
   }
 }

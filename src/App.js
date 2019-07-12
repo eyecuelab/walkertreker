@@ -45,6 +45,12 @@ class App extends React.Component {
     const { dispatch } = this.props
 
     const imageAssets = this.cacheImages([
+      require('../assets/Icons/Home_Active.png'),
+      require('../assets/Icons/Home_Inactive.png'),
+      require('../assets/Icons/Inventory_Active.png'),
+      require('../assets/Icons/Inventory_Inactive.png'),
+      require('../assets/Icons/Journal_Active.png'),
+      require('../assets/Icons/Journal_Inactive.png'),
       require('../assets/logo.png'),
       require('../assets/bg.png'),
       require('../assets/blankavatar.png'),
@@ -159,12 +165,11 @@ class App extends React.Component {
             {/* <BackgroundPedometer /> */}
             <SocketIO />
             <NotificationListeners />
-            
+            <BackgroundPedometer />
             <AppContainer
   
               ref={ (navigatorRef) => {
                  NavigationService.setTopLevelNavigator(navigatorRef);
-                 console.log("appcontainer set as top level")
               }}
               
               screenProps={{
@@ -188,9 +193,6 @@ class App extends React.Component {
         />
       );
     }
-    
-    
-    
   }
 }
 

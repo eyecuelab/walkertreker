@@ -376,7 +376,7 @@ export function *updateJournal(action) {
 
 export function *saveState() {
   const lastState = yield select();
-  console.log(JSON.stringify(lastState));
+  console.log("SAVING LAST STATE AS - ", JSON.stringify(lastState), "\n SAVESTATE END \n ========================== \n");
   yield storeData('lastState', JSON.stringify(lastState));
 }
 
@@ -487,6 +487,7 @@ export function *updateHungerAndHealth(action) {
 export function *getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData('lastState');
+  console.log("lastStateString is \n\n\n", lastStateString, "end of lastStateString")
   let lastState;
   if (lastStateString != undefined) {
     lastState = JSON.parse(lastStateString)
@@ -668,7 +669,7 @@ export default function *rootSaga() {
 // const endpoint = `http://172.16.103.172:5000`
 
 // LOCAL eyecue endpoint
-const endpoint = 'http://10.1.10.51:5000'
+// const endpoint = 'http://10.1.10.51:5000'
 
 // REMOTE
-// const endpoint = 'https://walkertrekker.herokuapp.com'
+const endpoint = 'https://walkertrekker.herokuapp.com'

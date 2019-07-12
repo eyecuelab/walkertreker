@@ -13,6 +13,7 @@ import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
 import ScreenContainer from './../containers/ScreenContainer';
 import { MainHeader, SubHeader } from './../text';
+import ErrorMessage from './../ui/ErrorMessage';
 
 
 class AcceptInvite extends React.Component {
@@ -20,31 +21,34 @@ class AcceptInvite extends React.Component {
     super(props)
     this.state = {
       isReady: false,
+      errorMessage: this.props.campaign.id ? "Sorry, you are already in a campaign." : null 
     }
   }
 
   componentDidMount = async () => {
-    console.log("ACCEPTINVITE MOUNTED")
-    const { dispatch } = this.props
+    const { dispatch, player } = this.props
     const campaignId = this.props.navigation.getParam('campaignId', false)
     this.setState({ campaignId })
     dispatch({ type: c.FETCH_CAMPAIGN_INFO, id: campaignId })
   }
 
   componentDidUpdate(prevProps) {
-    if (!this.state.isReady && this.props.campaign.id) {
+    const { campaign } = this.props;
+    if (!this.state.isReady && campaign.id) {
+      if (campaign.startDate) {
+        this.setState({errorMessage: "Sorry, it looks like that campaign has already started."})
+      }
       this.setState({ isReady: true })
     }
   }
 
   joinCampaign() {
-    console.log("AcceptInvite(38) - Attempting to Join Campaign CampaignID = " + this.props.campaign.id + " with playerID = " + this.props.player.id)
     this.props.dispatch({
       type: c.SEND_JOIN_CAMPAIGN_REQUEST,
       campId: this.props.campaign.id,
       playId: this.props.player.id,
     })
-    this.props.navigation.navigate('CampaignSummary')
+    this.props.navigation.navigate('Lobby')
   }
 
   navigateToAbout() {
@@ -61,29 +65,30 @@ class AcceptInvite extends React.Component {
           style={{width: '100%', height: '100%'}}
         >
           <ScreenContainer>
-
             <View style={customStyles.inviteContainer}>
 
-              <CampaignLobbyHeader campaign={this.props.campaign} title="New Campaign"/>
+          {this.state.errorMessage ?  <ErrorMessage errorMessage={this.state.errorMessage} /> : 
+            <View>
+              <CampaignLobbyHeader campaign={this.props.campaign} title="Join Campaign"/>
 
               <View style={[ customStyles.playerContainer ]}>
-
-                  <MainHeader>Players</MainHeader>
-
-
+                
+                <MainHeader>Players</MainHeader>
+                
                 <View style={customStyles.playerListContainer}>
                   <PlayersList />
                 </View>
 
               </View>
+              
+              <TwoButtonOverlay
+                button1title='Join Campaign'
+                button1onPress={() => this.joinCampaign()}
+                button2title='About'
+                button2onPress={() => this.navigateToAbout()}
+              />
+            </View>}
             </View>
-
-            <TwoButtonOverlay
-              button1title='Join Campaign'
-              button1onPress={() => this.joinCampaign()}
-              button2title='About'
-              button2onPress={() => this.navigateToAbout()}
-            />
           </ScreenContainer>
         </ImageBackground>
       )

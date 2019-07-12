@@ -35,6 +35,10 @@ class RandomEvent extends React.Component {
   componentDidMount = async () => {
     // this.getTimeNow()
     this.timer = setInterval(() => this._updateTime(), 1000)
+<<<<<<< HEAD
+    
+=======
+>>>>>>> master
   }
 
   componentWillUnmount = () => {

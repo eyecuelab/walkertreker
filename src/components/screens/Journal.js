@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+
+class Journal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+=======
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -42,10 +52,16 @@ class Journal extends React.Component {
       console.log("ENTRY OBJECT:", entryObj)
       this.setState({entryObj})
     }
+>>>>>>> master
   }
 
   render() {
     return (
+<<<<<<< HEAD
+      <View>
+        <Text> Journal </Text>
+      </View>
+=======
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}>
@@ -60,10 +76,14 @@ class Journal extends React.Component {
     
           </ScreenContainer>
         </ImageBackground>
+>>>>>>> master
     );
   }
 }
 
+<<<<<<< HEAD
+export default Journal;
+=======
 const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
@@ -87,3 +107,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Journal);
+>>>>>>> master
