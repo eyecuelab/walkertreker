@@ -376,7 +376,7 @@ export function *updateJournal(action) {
 
 export function *saveState() {
   const lastState = yield select();
-  console.log(JSON.stringify(lastState));
+  console.log("SAVING LAST STATE AS - ", JSON.stringify(lastState), "\n SAVESTATE END \n ========================== \n");
   yield storeData('lastState', JSON.stringify(lastState));
 }
 
@@ -487,6 +487,7 @@ export function *updateHungerAndHealth(action) {
 export function *getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData('lastState');
+  console.log("lastStateString is \n\n", lastStateString, "\n\n end of lastStateString")
   let lastState;
   if (lastStateString != undefined) {
     lastState = JSON.parse(lastStateString)

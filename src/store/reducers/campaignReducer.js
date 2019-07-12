@@ -25,9 +25,13 @@ export default (state = campaign, action) => {
     }
   // this one might need to be refactored still; invited is now a thing on the server
   case c.INVITES_SENT:
+    updatedInvites = Object.assign({}, state.invites, action.invites)
+    console.log(state.invites)
+    console.log(action.invites);
+    console.log(updatedInvites);
     return {
       ...state,
-      invited: action.invites,
+      invites: updatedInvites
     }
   case c.INITIAL_CAMPAIGN_DATA_RECEIVED:
     newState = Object.assign({}, state, action.campaign);

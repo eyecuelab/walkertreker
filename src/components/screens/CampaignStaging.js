@@ -35,10 +35,10 @@ class CampaignStaging extends React.Component {
     if (this.props.campaign.numPlayers == 1) {
       return (
         <TwoButtonOverlay
-          button1title="Waiting..."
+          button1title="Need More Players..."
           button1color="darkgray"
           button1onPress={() => console.log('Not enough players to launch game')}
-          button2title="Invites"
+          button2title="Invite"
           button2onPress={() => this.props.navigation.navigate('InvitePlayers')}
         />
       );
@@ -48,7 +48,7 @@ class CampaignStaging extends React.Component {
           button1title="Kick Player"
           button1color="darkred"
           button1onPress={() => this._openKickPlayerConfirmation()}
-          button2title="Invite Players"
+          button2title="Invite"
           button2onPress={() => this.props.navigation.goBack()}
         />
       );
@@ -57,8 +57,8 @@ class CampaignStaging extends React.Component {
         <TwoButtonOverlay
           button1title="Begin Game"
           button1onPress={this._toggleWhenToStartModal}
-          button2title="Invite Players"
-          button2onPress={() => this.props.navigation.goBack()}
+          button2title="Invite"
+          button2onPress={() => this.props.navigation.navigate('InvitePlayers')}
         />
       );
     }
@@ -93,9 +93,11 @@ class CampaignStaging extends React.Component {
 
   render() {
     return(
+      
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}>
+        style={{width: '100%', height: '100%'}}
+      >
 
         <Modal isVisible={this.state.whenToStartModalVisible}>
           <WhenToStartForm handleModalStateChange={this._toggleWhenToStartModal} />
@@ -121,7 +123,7 @@ class CampaignStaging extends React.Component {
                 <View style={[customStyles.contactListContainer, customStyles.contactListSecond]}>
                   <SubHeader>Invited</SubHeader>
                   <ContactsList
-                  contacts={this.state.invites}
+                  contacts={this.props.campaign.invites}
                   contactsFetched={true}
                   allSelected={true}
                   />
@@ -134,6 +136,7 @@ class CampaignStaging extends React.Component {
           {this.submitConditionalRender()}
 
         </ScreenContainer>
+      
       </ImageBackground>
     );
   }

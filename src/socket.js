@@ -12,7 +12,7 @@ import io from 'socket.io-client';
 
 
 // Ward' home ip:
-// const endpoint = 'http://10.0.0.5:5000'
+// const endpoint = 'http://10.0.0.5:5000';
 
 // remote:
 const endpoint = 'walkertrekker.herokuapp.com'
