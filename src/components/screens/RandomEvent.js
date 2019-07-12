@@ -43,11 +43,15 @@ class RandomEvent extends React.Component {
 
   getTimeNow = () => {
     const createdAt = this.props.screenProps.notification.data.data.data.createdAt.toString();
+
     let start = new Date(createdAt);
+
     console.log("Start time of event", start)
     start = new Date(start.getTime());
+
     const then = new Date(start.getTime() + 15*60000)
     console.log("then time of event", then)
+
     const localTime = Date.now()
     const msRemaining = then.getTime() - localTime
 

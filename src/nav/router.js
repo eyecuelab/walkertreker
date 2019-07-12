@@ -49,6 +49,8 @@ const AuthStack = createStackNavigator(
     CreateCampaign: { screen : CreateCampaign },
     CampaignStaging: { screen : CampaignStaging },
     CampaignSummary: { screen : CampaignSummary },
+    CampaignIsWon: { screen : CampaignIsWon },
+    CampaignIsLost: { screen : CampaignIsLost },
     InvitePlayers: { screen : InvitePlayers },
     RandomEvent: { screen: RandomEvent },
     RandomEventResult: { screen: RandomEventResult },
@@ -59,7 +61,7 @@ const AuthStack = createStackNavigator(
     defaultNavigationOptions: {
       header: null,
     },
-    // initialRouteName: 'Journal',
+    // initialRouteName: 'CampaignIsWon',
   }
 )
 

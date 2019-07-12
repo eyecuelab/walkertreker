@@ -108,7 +108,7 @@ class App extends React.Component {
       localPlayer = JSON.parse(localPlayer) 
     }
     await this.setState({ localPlayer })
-
+    console.log(localPlayer)
   };
 
   _handleLoadingError = error => {

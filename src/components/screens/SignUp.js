@@ -54,14 +54,14 @@ class SignUp extends React.Component {
   }
 
   recoveryText = () => {
-    console.log(this.state)
-    if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
-      this.setState({ recoveryText: 'Signup failed. Try again, or '})
-    }
-    if (this.state.recoveryTextBold !== 'click here to recover an account.') {
-      this.setState({ recoveryTextBold: 'click here to recover an account.'})
-    } else {}
-
+    setTimeout(() => {
+      if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
+        this.setState({ recoveryText: 'Signup failed. Try again, or '})
+      }
+      if (this.state.recoveryTextBold !== 'click here to recover an account.') {
+        this.setState({ recoveryTextBold: 'click here to recover an account.'})
+      } else {}
+    }, 200)
   }
 
   _handleSubmit = async () => {
