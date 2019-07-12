@@ -5,6 +5,7 @@ import redirectReducer from './redirectReducer';
 import { combineReducers } from 'redux';
 import eventReducer from './eventReducer';
 import appState from './appStateReducer';
+import invitationReducer from './invitationReducer';
 
 
 // we'll need a new root reducer and rewritten reducers for saga
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   player: playerReducer,
   redirect: redirectReducer,
   event: eventReducer,
-  appState: appState
+  appState: appState,
+  invitations: invitationReducer
 });
 
 export default rootReducer;

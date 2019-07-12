@@ -62,12 +62,11 @@ class InvitePlayers extends React.Component {
           }
           contact.imageAvailable ? imageUri = contact.image.uri : imageUri = 'none';
           if (numbers.length > 0) {
-            contacts = Object.assign({}, contacts, {
-              [key]: { id: key, name, numbers, imageAvailable, imageUri, invited: false, selected: false, }
-            });
-          }
+            contacts[key] =  { id: key, name, numbers, imageAvailable, imageUri, invited: false, selected: false }
+          };
+          
         });
-        await this.setState({ contacts,  });
+        await this.setState({ contacts });
       } else {
         throw new Error('No contacts found');
       }

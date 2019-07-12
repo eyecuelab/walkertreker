@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import TwoButtonOverlay from '../../ui/TwoButtonOverlay';
 import ThreeButtonToggle from '../../ui/ThreeButtonToggle';
-
+import SingleButtonFullWidth from '../../ui/SingleButtonFullWidth';
 import defaultStyle from '../../../styles/defaultStyle';
 import constants from '../../../constants';
 const { c } = constants;
@@ -32,7 +32,7 @@ class CreateCampaign extends React.Component {
     return shouldUpdate;
   }
 
-  async _generateCampaign() {
+  _generateCampaign = async () => {
     const { dispatch } = this.props;
     const now = new Date();
     const timezone = -now.getTimezoneOffset()/60;
@@ -132,12 +132,9 @@ class CreateCampaign extends React.Component {
             </View>
             </ScrollView>
           </View>
-          <TwoButtonOverlay
-          button1title="New Campaign"
-          button1onPress={() => this._generateCampaign()}
-          button2title="Back"
-          button2onPress={() => this.props.navigation.goBack()}
-          />
+          <View style={createCampaignStyle.buttonContainer}>
+            <SingleButtonFullWidth title="Create Campaign" onButtonPress={this._generateCampaign}/>
+          </View>
         </View>
       </ImageBackground>
     );
@@ -149,6 +146,13 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const createCampaignStyle = StyleSheet.create({
+  buttonContainer: {
+    backgroundColor: 'black',
+    width: '100%',
+    height: heightUnit*8,
+    position: 'absolute',
+    bottom: 0
+  },
   toggleContainer: {
     marginTop: heightUnit*2.5,
   },

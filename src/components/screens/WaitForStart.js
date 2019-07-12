@@ -25,13 +25,6 @@ class WaitForStart extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    if(this.props.campaign.startDate !== null) {
-      console.log("WaitingForStart(30) : Component FAttempting to navigate to start")
-      this.props.navigation.navigate('Start')
-    }
-  }
-
   _toggleConfirmationModal = () => {
     const confirmationModalVisible = !this.state.confirmationModalVisible;
     this.setState({ confirmationModalVisible });
@@ -59,7 +52,10 @@ class WaitForStart extends React.Component {
 
   render() {
     return (
-      <View>
+      <ImageBackground
+      source={this.props.screenProps.backgroundImage}
+      style={{width: '100%', height: '100%'}}
+      >
         <Modal isVisible={this.state.confirmationModalVisible} >
           <View style={customStyles.modalContainer}>
             <View style={customStyles.modalHeadline}>
@@ -104,7 +100,7 @@ class WaitForStart extends React.Component {
 
           </View>
         </ScreenContainer>
-      </View>
+      </ImageBackground>
     );
   }
 }

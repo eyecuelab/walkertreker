@@ -44,6 +44,7 @@ class AuthCheck extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}
       >
+      <Text>Hello from AuthCheck</Text>
       </ImageBackground>
     )
   }

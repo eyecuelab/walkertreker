@@ -3,22 +3,39 @@ import { connect } from 'react-redux';
 import { View, Text, ImageBackground } from 'react-native';
 import WaitForStart from './WaitForStart';
 import CampaignStaging from './CampaignStaging';
+import { StackActions, NavigationActions } from 'react-navigation';
+
+
+
 
 class Lobby extends Component {
   constructor(props) {
     super(props);
+    this.navigate();
   }
 
-  render() {
+  navigate(route) {
     const { player, campaign: { host }, navigation } = this.props;
+    LobbyScreen = player.id === host ? "CampaignStaging" : "WaitForStart";
+
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: LobbyScreen })],
+    });
+    navigation.dispatch(resetAction);
+  }
+
+  componentDidUpdate() {
+    if(this.props.campaign.startDate) {
+      console.log("Lobby Updating with StartDate")
+      this.props.navigation.navigate("Campaign");
+    } 
+  }
+
+
+  render() {
     return (
-      <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}>
-      
-      {player.id === host ? <CampaignStaging navigation={navigation}/> : <WaitForStart navigation={navigation}/>}
-      
-      </ImageBackground>
+      <Text>SPLASH</Text>
     );
   }
 }

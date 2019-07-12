@@ -20,7 +20,7 @@ class MainAppRouter extends React.Component {
       if(!campaign.id) {
         navigation.navigate("CreateCampaign");
       } else if(campaign.startDate) {
-        navigation.navigate("CampaignSummary");
+        navigation.navigate("Campaign");
       } else {
         navigation.navigate("Lobby");
       }
@@ -29,7 +29,7 @@ class MainAppRouter extends React.Component {
   // Render any loading content that you like here
   render() {
     return (
-      null
+      <Text>There some text from MainAppRouter here</Text>
     );
   }
 }
