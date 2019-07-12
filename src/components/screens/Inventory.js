@@ -110,7 +110,7 @@ class Inventory extends React.Component {
         <View style={[styles.container, {alignItems: 'flex-start'}]}>
           <View style={{flex: 1}}>
             <DayCounter campaign={this.props.campaign} />
-            <Text style={styles.headline}>GROUP INVENTORY</Text>
+            <Text style={styles.headline}>Inventory</Text>
           </View>
 
           <View style={{flex: 4.2}}>

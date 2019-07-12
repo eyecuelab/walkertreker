@@ -19,7 +19,7 @@ class CampaignSummary extends React.Component {
     if (toast) {
       this._showToast(toast.msg)
     }
- }
+  }
 
   componentDidUpdate(prevProps) {
     // if (prevProps.campaign.players !== null) {
@@ -139,7 +139,7 @@ class CampaignSummary extends React.Component {
         style={{width: '100%', height: '100%'}}>
         <View style={styles.container}>
           <DayCounter campaign={this.props.campaign} />
-          <Text style={styles.headline}>Campaign Summary</Text>
+          <Text style={styles.headline}>Summary</Text>
           <ScrollView style={customStyles.scrollContainer}>
             {this.props.campaign.players.map(player => {
               return (

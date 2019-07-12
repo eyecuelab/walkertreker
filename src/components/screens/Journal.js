@@ -11,6 +11,7 @@ const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
 
 import defaultStyle from '../../styles/defaultStyle';
+import DayCounter from '../ui/DayCounter';
 import JournalDisplay from '../ui/JournalDisplay'
 
 class Journal extends React.Component {
@@ -50,7 +51,8 @@ class Journal extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}>
           <ScreenContainer>
-            <Text style={customStyles.headerStyle}>Campaign {'\n'}Journal</Text>
+            <DayCounter campaign={this.props.campaign} />
+            <Text style={styles.headline}>Journal</Text>
     
               <ScrollView style={{width: '100%', height: '100%'}}>
                 {Object.keys(this.state.entryObj).reverse().map((day, index)=> {

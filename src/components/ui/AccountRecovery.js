@@ -1,25 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
-import { ImagePicker, Permissions, Notifications } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import { phoneNumPrettyPrint } from '../../util/util';
 import { MainHeader, SubHeader, TextAlt, Label } from './../text';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-
-
-
+import posed from 'react-native-pose';
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
-import { ScrollView } from 'react-native-gesture-handler';
 import ScreenContainer from '../containers/ScreenContainer';
 
 const { c } = constants;
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
-
+const AnimatedLabel = posed.View({
+  inInput: {
+    scale: 0.9,
+    x: 0,
+    y: 0,
+  },
+  aboveInput: { 
+    scale: 0.8, 
+    x: -10,
+    y: -22,
+  }
+});
 
 class RecoverAccountModal extends React.Component {
   constructor(props) {
@@ -29,7 +35,20 @@ class RecoverAccountModal extends React.Component {
       recoveryCode: '',
       validNumber: true,
       submitted: false,
+      didFocusInput: 'inInput',
     }
+  }
+
+  handleFocus = () => {
+    this.setState({
+      didFocusInput:  'aboveInput'
+    })
+  }
+
+  handleBlur = () => {
+    this.setState({
+      didFocusInput: 'inInput'
+    })
   }
 
   _handleRecovery = async () => {
@@ -72,8 +91,15 @@ class RecoverAccountModal extends React.Component {
             </View>
 
             <View style={customStyles.fieldContainer}>
-              <Label>Phone Number</Label>
-              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ phoneNumber: text })} value={this.state.phoneNumber} />
+              <AnimatedLabel pose={this.state.didFocusInput}
+                style={[customStyles.labelPosition, this.state.didFocusInput === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
+                <Label>Phone Number</Label>
+              </AnimatedLabel>
+              <TextInput style={customStyles.textInput} keyboardType="phone-pad"
+                onChangeText={(text) => this.setState({ phoneNumber: text })} 
+                onFocus={() => this.handleFocus()} 
+                onBlur={() => this.handleBlur()}
+                value={this.state.phoneNumber} />
             </View>
             
             <View style={customStyles.formContainer}>
@@ -133,15 +159,23 @@ const customStyles = StyleSheet.create({
   },
   textInput: {
     width: '100%',
-    borderColor: 'white',
-    borderRadius: 5,
+    borderColor: '#888',
     borderWidth: 2,
     marginTop: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 8,
+    paddingBottom: 8,
     paddingLeft: 10,
     color: 'white',
     fontFamily: 'gore',
+    zIndex: 0
+  },
+  labelPosition: {
+    position: 'absolute',
+    bottom: heightUnit*2,
+    left: widthUnit*1.8,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding: 2,
+    zIndex: 1
   },
   textButtonContainer: {
     height: heightUnit*6,
