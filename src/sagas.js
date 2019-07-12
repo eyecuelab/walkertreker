@@ -487,7 +487,7 @@ export function *updateHungerAndHealth(action) {
 export function *getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData('lastState');
-  console.log("lastStateString is \n\n\n", lastStateString, "end of lastStateString")
+  console.log("lastStateString is \n\n", lastStateString, "\n\n end of lastStateString")
   let lastState;
   if (lastStateString != undefined) {
     lastState = JSON.parse(lastStateString)

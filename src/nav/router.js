@@ -107,27 +107,27 @@ const CampaignNavigator = createBottomTabNavigator({
   },
 });
 
-
-
 const MainApp = createSwitchNavigator(
   {
     MainAppRouter: { screen: MainAppRouter },
     CreateCampaign: { screen : CreateCampaign },
-    CampaignStaging: { screen : CampaignStaging },
-    CampaignSummary: { screen : CampaignSummary },
-    InvitePlayers: { screen : InvitePlayers },
+    Lobby : { screen : LobbyNavigator},
+    Campaign : { screen : CampaignNavigator },
     RandomEvent: { screen: RandomEvent },
     RandomEventResult: { screen: RandomEventResult },
-    Inventory: { screen: Inventory }, 
-    Journal: { screen: Journal },
+    Join: {
+      screen: AcceptInvite,
+      path: 'join'
+    },
   },
   {
     defaultNavigationOptions: {
       header: null,
     },
-    initialRouteName: 'MainAppRouter'
+    initialRouteName: "MainAppRouter"
   }
 )
+
 
 const MainSwitchNavigator = createSwitchNavigator(
   {

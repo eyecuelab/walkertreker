@@ -21,6 +21,7 @@ class AuthCheck extends React.Component {
         navigation.navigate('Auth');
      
     } else if(redirectAction){
+      console.log("redirect", redirectAction)
       navigation.navigate(redirectAction); 
       dispatch({ type: c.CLEAR_REDIRECT_ACTION });
     } else {
