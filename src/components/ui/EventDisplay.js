@@ -6,6 +6,8 @@ import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import DayCounter from '../ui/DayCounter';
 import ScreenContainer from './../containers/ScreenContainer';  
+import { MainText } from './../text';
+
 
 import constants from '../../constants';
 const { c, events } = constants;
@@ -35,7 +37,7 @@ class EventDisplay extends React.Component {
                   source={event_bg}
                   resizeMode={'cover'}
                   style={customStyles.randomEventBg}>
-                  <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
+                  <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.1)', padding: widthUnit*5}}>
                     <View style={[customStyles.container, {flex: 3}]}>
                       <Text style={styles.label}>{this.props.timeLeft}</Text>
     
@@ -44,11 +46,11 @@ class EventDisplay extends React.Component {
                       </View>
                       <ScrollView>
                         <View style={[customStyles.textContainer, customStyles.marginTop]}>
-                          <Text style={[styles.plainText, customStyles.text]}>{this.props.antecedent}</Text>
+                          <MainText>{this.props.antecedent}</MainText>
                         </View>
                       </ScrollView>
                     </View>
-    
+
                     <View style={[customStyles.container, {flex: 1, alignContent: 'flex-end', padding: widthUnit}]}>
                       <View style={customStyles.buttonContainer}>
                         <SingleButtonFullWidth
@@ -101,6 +103,8 @@ const customStyles = StyleSheet.create({
   },
   text: {
     lineHeight: heightUnit * 3.75,
+    fontFamily: 'Gill Sans MT Condensed',
+    fontSize: widthUnit*5.5,
   },
   buttonContainer: {
     marginTop: heightUnit,

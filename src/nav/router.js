@@ -94,14 +94,14 @@ const CampaignNavigator = createBottomTabNavigator({
   },
 });
 
-
-
 const MainApp = createSwitchNavigator(
   {
     MainAppRouter: { screen: MainAppRouter },
     CreateCampaign: { screen : CreateCampaign },
     Lobby : { screen : LobbyNavigator},
     Campaign : { screen : CampaignNavigator },
+    RandomEvent: { screen: RandomEvent },
+    RandomEventResult: { screen: RandomEventResult },
     Join: {
       screen: AcceptInvite,
       path: 'join'
@@ -117,6 +117,7 @@ const MainApp = createSwitchNavigator(
     initialRouteName: "MainAppRouter" 
   }
 )
+
 
 const MainSwitchNavigator = createSwitchNavigator(
   {

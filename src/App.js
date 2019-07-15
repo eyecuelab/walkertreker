@@ -7,8 +7,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 
 import { Provider, connect, dispatch } from 'react-redux';
-import { logger } from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
 import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
@@ -116,7 +114,7 @@ class App extends React.Component {
       localPlayer = JSON.parse(localPlayer) 
     }
     await this.setState({ localPlayer })
-
+    console.log("LOCAL PLAYER : ", localPlayer)
   };
 
   _handleLoadingError = error => {
@@ -162,7 +160,7 @@ class App extends React.Component {
       return (
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={null}>
-            {/* <BackgroundPedometer /> */}
+            <BackgroundPedometer />
             <SocketIO />
             <NotificationListeners />
             <BackgroundPedometer />

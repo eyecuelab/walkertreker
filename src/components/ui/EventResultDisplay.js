@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'reac
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
-import { MainHeader, SubHeader, TextAlt, Label } from './../text';
+import { MainText, SubHeader, TextAlt, Label } from './../text';
 import ScreenContainer from './../containers/ScreenContainer';  
 
 import constants from '../../constants';
@@ -23,24 +23,24 @@ class EventResultDisplay extends React.Component {
 
   _toggleGroupVotes = () => {
     this.setState({ showGroupVotes: true })
-    console.log(this.props.playerVotes)
+    console.log("Player vote: ", this.props.playerVotes)
   }
 
   conditionalShowVotes = () => {
     if (!this.state.showGroupVotes) {
       return <View style={[customStyles.textContainer, customStyles.marginTop]}>
-        <Text style={[styles.plainText, customStyles.text]}>{this.props.resultText}</Text>
+        <MainText>{this.props.resultText}</MainText>
       </View>
     } else {
       let playerVotes = this.props.playerVotes
-      console.log(playerVotes)
+      console.log("All Player votes: ", playerVotes)
       const entriesList = []
       Object.entries(playerVotes).map(([key, value], index) => {
         entriesList.push(`${key} voted to ${value}`)
       })
       return (<View style={[customStyles.textContainer, customStyles.marginTop]}>
         {entriesList.map((entry, index) => {
-          return (<TextAlt style={customStyles.text} key={index} size='lg'>{entry}</TextAlt>)
+          return (<MainText style={customStyles.text} key={index} size='lg'>{entry}</MainText>)
         })}
       </View>)
     }
@@ -111,8 +111,10 @@ const customStyles = StyleSheet.create({
     padding: widthUnit,
   },
   text: {
+    fontFamily: 'Gill Sans MT Condensed',
     marginTop: heightUnit * 3.75,
     lineHeight: heightUnit * 3.75,
+    fontSize: widthUnit*5.5,
   },
   randomEventBg: {
     width: undefined,

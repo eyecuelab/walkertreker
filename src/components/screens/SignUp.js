@@ -6,7 +6,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { connect } from 'react-redux';
 import {MainHeader, SubHeader, Label, TextAlt} from './../text';
 import { phoneNumPrettyPrint } from '../../util/util';
-import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import WithKeyboardShift from './../../util/WithKeyboardShift';
 import posed from 'react-native-pose';
@@ -48,20 +47,23 @@ class SignUp extends React.Component {
 
 
   componentDidUpdate() {
-
     this.props.player.id ? this.props.navigation.navigate('AuthCheck') :
     this.state.newPlayerCreated ? this.recoveryText() : null; 
   }
 
-  recoveryText = () => {
-    console.log(this.state)
-    if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
-      this.setState({ recoveryText: 'Signup failed. Try again, or '})
-    }
-    if (this.state.recoveryTextBold !== 'click here to recover an account.') {
-      this.setState({ recoveryTextBold: 'click here to recover an account.'})
-    } else {}
+  componentWillUnmount() {
+    this.timeout ? clearTimeout(this.timeout) : null;
+  }
 
+  recoveryText = () => {
+    this.timeout = setTimeout(() => {
+      if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
+        this.setState({ recoveryText: 'Signup failed. Try again, or '})
+      }
+      if (this.state.recoveryTextBold !== 'click here to recover an account.') {
+        this.setState({ recoveryTextBold: 'click here to recover an account.'})
+      }
+    }, 600)
   }
 
   _handleSubmit = async () => {
@@ -169,12 +171,7 @@ class SignUp extends React.Component {
                 value={this.state.phoneNumber} />
             </View>
 
-            <View style={customStyles.avatarContainer}>
-
-              <TextAlt style={customStyles.avatarCaption}>Touch to add an avatar</TextAlt>
-            </View>
-
-            <View>
+            <View style={customStyles.buttonPosition}>
               <View style={customStyles.button}>
                 <SingleButtonFullWidth
                   title="Submit"
@@ -182,9 +179,9 @@ class SignUp extends React.Component {
                   backgroundColor="darkred"
                 />
               </View>
-            </View>
-            <View style={customStyles.textButtonContainer}>
-              <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('AccountRecovery') }}>{this.state.recoveryText}  <TextAlt color='darkred' weight='bold'>{this.state.recoveryTextBold}</TextAlt></TextAlt>
+              <View style={customStyles.textButtonContainer}>
+                <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('AccountRecovery') }}>{this.state.recoveryText}  <TextAlt color='darkred' weight='bold'>{this.state.recoveryTextBold}</TextAlt></TextAlt>
+              </View>
             </View>
           </View>
         </ScreenContainer>
@@ -207,7 +204,7 @@ const customStyles = StyleSheet.create({
   },
   fieldContainer: {
     margin: 6,
-    marginBottom: heightUnit*6,
+    marginBottom: heightUnit*3,
   },
   button: {
     backgroundColor: 'black',
@@ -242,6 +239,13 @@ const customStyles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.7)',
     padding: 2,
     zIndex: 1
+  },
+  buttonPosition: {
+    margin: 6,
+    position: 'absolute',
+    bottom: heightUnit*5,
+    left: widthUnit*1.8,
+    width: '100%',
   },
   avatarContainer: {
     alignItems: 'center',

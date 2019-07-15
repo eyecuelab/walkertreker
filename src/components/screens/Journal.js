@@ -5,12 +5,12 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView} 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ScreenContainer from './../containers/ScreenContainer';  
 import { MainHeader, SubHeader } from './../text';
-import DayCounter from './../ui/DayCounter';
 import constants from '../../constants';
 const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
 
 import defaultStyle from '../../styles/defaultStyle';
+import DayCounter from '../ui/DayCounter';
 import JournalDisplay from '../ui/JournalDisplay'
 
 class Journal extends React.Component {
@@ -28,9 +28,15 @@ class Journal extends React.Component {
     let entryObj = {}
     let index = 0;
     if (this.props.campaign.journals) {
-      this.props.campaign.journals.forEach((entry) => {
+      // need to sort entries by day first
+      var sortedJournals = this.props.campaign.journals.slice(0);
+      sortedJournals.sort(function(a,b) {
+          return a.entryDay - b.entryDay;
+      });
+      // then create the entry object for display
+      sortedJournals.forEach((entry) => {
         if (entry.entryDay !== currentDay) {
-          index=0;
+          index = 0;
           entryObj = Object.assign({}, entryObj, {[entry.entryDay]: {[index]: entry}})
           currentDay ++;
         } else {

@@ -14,6 +14,8 @@ const events  = [
       stepTargets: 0.1
     },
     journal: 'Encoutered armed men demanding food as toll for crossing a barricade. We decided to ',
+    journalA: 'Encounted armed men demanding food to let us cross a barricade. What choice did we have but it git it to them?',
+    journalB: 'Encounted armed men demanding food to let us cross a barricade. Had to walk a bit further to backtrack, but we need our food.',
   },
   {
     id: 2,
@@ -28,7 +30,9 @@ const events  = [
     optionBButton: `Ignore`,
     optionBText: `You continue, pretending not to hear his suffering. For years to come, that sad moaning haunts your dreams.`,
     optionBResult: {},
-    journal: 'Found an injured elderly man. We decided to ',
+    journal: 'Found an injured elderly man, moaning in pain. We decided to ',
+    journalA: 'Found an injured elderly man, moaning in pain. We used our precious meds to help him, and he gave us a gun.',
+    journalB: 'Found an injured elderly man in need of meds, but we couldn\'t spare any. I wonder if he survived.',
   },
   {
     id: 3,
@@ -46,6 +50,8 @@ const events  = [
       health: -15
     },
     journal: 'Encountered a bloody zombie child. We decided to ',
+    journalA: 'A bloody zombie child charged at us. Better safe than sorry, we didn\'t hesitate to attack.',
+    journalB: 'Encountered a bloody child. Unsure of it\'s humanness, we hesitated, and it attacked viciously.',
   },
   {
     id: 4,

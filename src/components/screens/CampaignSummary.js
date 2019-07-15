@@ -19,7 +19,7 @@ class CampaignSummary extends React.Component {
     if (toast) {
       this._showToast(toast.msg)
     }
- }
+  }
 
   componentDidUpdate(prevProps) {
     // if (prevProps.campaign.players !== null) {

@@ -83,14 +83,12 @@ class BackgroundPedometer extends React.Component {
       const stepGoalDayOne = stepTargets[0];
       console.log("start date is +++++++++++++++++++++++++++++++++++++++++++ ", startDate)
       let day0 = new Date(startDate);
-      console.log("BACKGROUND PEDOMETER DAY0", day0)
-      day0 = new Date(day0.setTime(day0.getTime() + 86400000));
+      day0 = new Date(day0.setTime(day0.getTime()));
       const day0Start = new Date(day0);
       const day0End = new Date(day0);
       day0Start.setHours(6,0,0,0);
       day0End.setHours(20,0,0,0);
       console.log("BACKGROUND PEDOMETER DAY0", day0Start)
-
 
       dispatch(setCampaignDates(day0Start, day0End, length, difficultyLevel, stepGoalDayOne));
     }
