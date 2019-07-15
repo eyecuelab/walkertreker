@@ -25,6 +25,12 @@ class WaitForStart extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    if(this.props.campaign.startDate) {
+      this.props.navigation.navigate("Campaign");
+    } 
+  }
+
   _toggleConfirmationModal = () => {
     const confirmationModalVisible = !this.state.confirmationModalVisible;
     this.setState({ confirmationModalVisible });

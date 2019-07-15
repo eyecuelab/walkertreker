@@ -31,6 +31,13 @@ class CampaignStaging extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    console.log("campaign start date ?", this.props.campaign.startDate)
+    if(this.props.campaign.startDate) {
+      this.props.navigation.navigate("Campaign");
+    } 
+  }
+
   submitConditionalRender = () => {
     if (this.props.campaign.numPlayers == 1) {
       return (
