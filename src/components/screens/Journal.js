@@ -5,7 +5,6 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView} 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ScreenContainer from './../containers/ScreenContainer';  
 import { MainHeader, SubHeader } from './../text';
-import DayCounter from './../ui/DayCounter';
 import constants from '../../constants';
 const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
