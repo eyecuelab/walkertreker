@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView} 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ScreenContainer from './../containers/ScreenContainer';  
 import { MainHeader, SubHeader } from './../text';
-
+import DayCounter from './../ui/DayCounter';
 import constants from '../../constants';
 const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
@@ -58,7 +58,10 @@ class Journal extends React.Component {
         style={{width: '100%', height: '100%'}}>
           <ScreenContainer>
             <DayCounter campaign={this.props.campaign} />
-            <Text style={styles.headline}>Journal</Text>
+            
+            <View style={{flex: 1, alignItems: "center"}}>
+              <MainHeader>Journal</MainHeader>
+            </View>
     
               <ScrollView style={{width: '100%', height: '100%'}}>
                 {Object.keys(this.state.entryObj).reverse().map((day, index)=> {

@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import constants from '../../constants';
 
 import defaultStyle from '../../styles/defaultStyle';
-
+import { MainHeader } from './../text';
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-
+import ScreenContainer from './../containers/ScreenContainer';
 import DayCounter from '../ui/DayCounter';
 
 class CampaignSummary extends React.Component {
@@ -98,12 +98,6 @@ class CampaignSummary extends React.Component {
               backgroundColor='black'
               onButtonPress={this._onButtonPressSafehouse} />
           </View>
-          <View style={customStyles.buttonContainer}>
-            <SingleButtonFullWidth
-              title='Inventory'
-              backgroundColor='black'
-              onButtonPress={this._onButtonPressInventory} />
-          </View>
         </View>
       );
     } else {
@@ -114,12 +108,6 @@ class CampaignSummary extends React.Component {
               title='Safehouse'
               backgroundColor='darkgray'
               onButtonPress={this._onButtonPressNothing} />
-          </View>
-          <View style={customStyles.buttonContainer}>
-            <SingleButtonFullWidth
-              title='Inventory'
-              backgroundColor='black'
-              onButtonPress={this._onButtonPressInventory} />
           </View>
         </View>
       );
@@ -136,9 +124,12 @@ class CampaignSummary extends React.Component {
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}>
-        <View style={styles.container}>
+        <ScreenContainer>
           <DayCounter campaign={this.props.campaign} />
-          <Text style={styles.headline}>Summary</Text>
+          <View style={{flex: 1, alignItems: "center"}}>
+            <MainHeader>SUMMARY</MainHeader>
+          </View>
+          
           <ScrollView style={customStyles.scrollContainer}>
             {this.props.campaign.players.map(player => {
               return (
@@ -162,7 +153,7 @@ class CampaignSummary extends React.Component {
           <View style={customStyles.bottom}>
             {this._submitConditionalRender()}
           </View>
-        </View>
+        </ScreenContainer>
       </ImageBackground>
     );
   }

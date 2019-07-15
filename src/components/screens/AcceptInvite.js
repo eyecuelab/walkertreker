@@ -68,7 +68,7 @@ class AcceptInvite extends React.Component {
             <View style={customStyles.inviteContainer}>
 
           {this.state.errorMessage ?  <ErrorMessage errorMessage={this.state.errorMessage} /> : 
-            <View>
+            <View style={{height: "100%"}}>
               <CampaignLobbyHeader campaign={this.props.campaign} title="Join Campaign"/>
 
               <View style={[ customStyles.playerContainer ]}>
@@ -113,7 +113,7 @@ const customStyles = StyleSheet.create({
   inviteContainer: {
     // flex: 1,
     width: '100%',
-    height: '85%',
+    height: '100%',
     flexDirection: 'column',
     // justifyContent: 'flex-start',
     // borderWidth: 1,
