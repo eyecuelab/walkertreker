@@ -76,7 +76,7 @@ class RandomEventResult extends React.Component {
   }
 
   navigateBack = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("Campaign");
   }
 
   checkResultToShow = () => {

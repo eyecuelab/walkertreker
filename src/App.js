@@ -13,7 +13,7 @@ import constants from './constants';
 const { c, storeData, retrieveData } = constants;
 
 import SocketIO from './components/SocketIO';
-// import BackgroundPedometer from './components/BackgroundPedometer';
+import BackgroundPedometer from './components/BackgroundPedometer';
 import NotificationListeners from './components/NotificationListeners';
 
 import { withNavigation } from 'react-navigation';

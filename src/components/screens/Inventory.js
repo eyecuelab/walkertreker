@@ -7,6 +7,8 @@ import constants from '../../constants';
 const { c, item } = constants;
 const { foodArray, medicineArray, weaponArray } = item;
 
+import ScreenContainer from './../containers/ScreenContainer';
+import {MainHeader} from './../text';
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
@@ -107,11 +109,15 @@ class Inventory extends React.Component {
             value={this.state.modalValue} />
         </Modal>
 
-        <View style={[styles.container, {alignItems: 'flex-start'}]}>
-          <View style={{flex: 1}}>
-            <DayCounter campaign={this.props.campaign} />
-            <Text style={styles.headline}>GROUP INVENTORY</Text>
+        <ScreenContainer>
+          <DayCounter campaign={this.props.campaign} />
+         
+          <View style={{flex: 1, alignItems: "center"}}>
+            <MainHeader>INVENTORY</MainHeader>
           </View>
+            
+            
+
 
           <View style={{flex: 4.2}}>
             <ScrollView style={{flex: 1}}>
@@ -178,18 +184,7 @@ class Inventory extends React.Component {
 
             </ScrollView>
           </View>
-
-          <View style={[customStyles.bottom, {backgroundColor: 'rgba(0,0,0,0)'}]}>
-
-            <View style={customStyles.buttonContainer}>
-              <SingleButtonFullWidth
-                title='Go Back'
-                backgroundColor='black'
-                onButtonPress={()=>this.props.navigation.goBack()} />
-            </View>
-
-          </View>
-        </View>
+        </ScreenContainer>
       </ImageBackground>
     );
   }

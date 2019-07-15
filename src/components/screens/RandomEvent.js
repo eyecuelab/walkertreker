@@ -35,10 +35,6 @@ class RandomEvent extends React.Component {
   componentDidMount = async () => {
     // this.getTimeNow()
     this.timer = setInterval(() => this._updateTime(), 1000)
-<<<<<<< HEAD
-    
-=======
->>>>>>> master
   }
 
   componentWillUnmount = () => {
@@ -109,7 +105,7 @@ class RandomEvent extends React.Component {
     })
     this.updateCompletedEvents()
     this.setState({ open: false })
-    this.props.navigation.navigate('CampaignSummary')
+    this.props.navigation.navigate('Campaign')
   }
 
   updateCompletedEvents = () => {
