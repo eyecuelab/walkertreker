@@ -25,14 +25,6 @@ class Lobby extends Component {
     navigation.dispatch(resetAction);
   }
 
-  componentDidUpdate() {
-    if(this.props.campaign.startDate) {
-      console.log("Lobby Updating with StartDate")
-      this.props.navigation.navigate("Campaign");
-    } 
-  }
-
-
   render() {
     return (
       <Text>SPLASH</Text>

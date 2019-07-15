@@ -56,20 +56,6 @@ const LobbyNavigator = createStackNavigator(
   }
 )
 
-// const CampaignNavigator = createStackNavigator(
-//   {
-//     CampaignSummary: { screen : CampaignSummary },
-//     RandomEvent: { screen: RandomEvent },
-//     RandomEventResult: { screen: RandomEventResult },
-    
-//   },
-//   {
-//     defaultNavigationOptions: {
-//       header: null,
-//     }
-//   }
-// )
-
 const CampaignNavigator = createBottomTabNavigator({
   Home: {screen: CampaignSummary},
   Inventory: { screen: Inventory },
@@ -80,15 +66,15 @@ const CampaignNavigator = createBottomTabNavigator({
       const { routeName } = navigation.state;
       if(routeName === 'Home') {
         const source = focused ? require('./../../assets/Icons/Home_Active.png') : require('./../../assets/Icons/Home_Inactive.png')
-        return <Image source={source} style={{width: 25, height: 25}} />
+        return <Image source={source} style={{width: 20, height: 20}} />
       } 
       else if (routeName === 'Inventory') {
         const source = focused ? require('./../../assets/Icons/Inventory_Active.png') : require('./../../assets/Icons/Inventory_Inactive.png')
-        return <Image source={source} style={{width: 25, height: 25}} />
+        return <Image source={source} style={{width: 20, height: 20}} />
       }
       else if (routeName === 'Journal') {
         const source = focused ? require('./../../assets/Icons/Journal_Active.png') : require('./../../assets/Icons/Journal_Inactive.png')
-        return <Image source={source} style={{width: 25, height: 25}} />
+        return <Image source={source} style={{width: 15, height: 20}} />
       }
 
         
@@ -98,8 +84,13 @@ const CampaignNavigator = createBottomTabNavigator({
   tabBarOptions: {
     activeTintColor: '#45E85D',
     inactiveTintColor: '#FFF',
-    inactiveBackgroundColor: "#A92425",
-    activeBackgroundColor: "#A92425"
+    inactiveBackgroundColor: "#6E0E0F",
+    activeBackgroundColor: "#6E0E0F",
+    style: {
+      height: 50, 
+      elevation: 4,
+      borderTopWidth: 0
+    }
   },
 });
 
@@ -114,7 +105,10 @@ const MainApp = createSwitchNavigator(
     Join: {
       screen: AcceptInvite,
       path: 'join'
-    }, 
+    },
+    RandomEvent: {screen : RandomEvent},
+    RandomEventResult: {screen : RandomEventResult},
+    Safehouse: {screen: Safehouse} 
   },
   {
     defaultNavigationOptions: {
