@@ -37,7 +37,7 @@ class EventDisplay extends React.Component {
                   source={event_bg}
                   resizeMode={'cover'}
                   style={customStyles.randomEventBg}>
-                  <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
+                  <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.1)', padding: widthUnit*5}}>
                     <View style={[customStyles.container, {flex: 3}]}>
                       <Text style={styles.label}>{this.props.timeLeft}</Text>
     
@@ -50,7 +50,7 @@ class EventDisplay extends React.Component {
                         </View>
                       </ScrollView>
                     </View>
-                    
+
                     <View style={[customStyles.container, {flex: 1, alignContent: 'flex-end', padding: widthUnit}]}>
                       <View style={customStyles.buttonContainer}>
                         <SingleButtonFullWidth

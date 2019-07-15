@@ -171,10 +171,6 @@ class SignUp extends React.Component {
                 value={this.state.phoneNumber} />
             </View>
 
-            <View style={customStyles.avatarContainer}>
-              <TextAlt style={customStyles.avatarCaption}>Touch to add an avatar</TextAlt>
-            </View>
-
             <View style={customStyles.buttonPosition}>
               <View style={customStyles.button}>
                 <SingleButtonFullWidth
