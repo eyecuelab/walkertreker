@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView }
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
-import ScreenContainer from './../containers/ScreenContainer'; 
+import ScreenContainer from '../containers/ScreenContainer'; 
 import { MainHeader, SubHeader, TextAlt } from './../text';
 
 

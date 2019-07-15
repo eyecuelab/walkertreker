@@ -5,7 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import DayCounter from '../ui/DayCounter';
-import ScreenContainer from './../containers/ScreenContainer';  
+import ScreenContainer from '../containers/ScreenContainer';  
 import { MainText } from './../text';
 
 

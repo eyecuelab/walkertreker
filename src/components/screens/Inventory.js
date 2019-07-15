@@ -7,7 +7,7 @@ import constants from '../../constants';
 const { c, item } = constants;
 const { foodArray, medicineArray, weaponArray } = item;
 
-import ScreenContainer from './../containers/ScreenContainer';
+import ScreenContainer from '../containers/ScreenContainer';
 import {MainHeader} from './../text';
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';

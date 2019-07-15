@@ -14,7 +14,7 @@ const { c } = constants;
 
 import { MainHeader } from './../text';
 import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
-import ScreenContainer from './../containers/ScreenContainer';
+import ScreenContainer from '../containers/ScreenContainer';
 
 class WaitForStart extends React.Component {
 

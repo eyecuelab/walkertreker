@@ -5,7 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import defaultStyle from '../../styles/defaultStyle';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import { MainText, SubHeader, TextAlt, Label } from './../text';
-import ScreenContainer from './../containers/ScreenContainer';  
+import ScreenContainer from '../containers/ScreenContainer';  
 
 import constants from '../../constants';
 const { c, events } = constants;
