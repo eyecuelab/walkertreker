@@ -67,10 +67,6 @@ class RecoverAccountModal extends React.Component {
   }
 
   noNumberError = () => {
-      // return <View>
-      //         <Label>Recovery Code</Label>
-      //         <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ recoveryCode: text })} value={this.state.recoveryCode} />
-      //       </View>
     if (!this.state.validNumber && this.state.submitted) {
       return <TextAlt>Failed to find user. Are you sure you entered the correct number?</TextAlt>
     }

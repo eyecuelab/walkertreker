@@ -48,8 +48,10 @@ class SignUp extends React.Component {
 
   componentDidUpdate() {
     console.log("AUTH STATE", this.props.auth);
-    this.props.player.id ? this.props.navigation.navigate('MainApp') :
-    this.state.newPlayerCreated ? this.recoveryText() : null; 
+    let auth = this.props.auth
+    if (!auth.gettingPlayerId && !auth.gettingCampaignId) {
+      auth.gotPlayerId ? this.props.navigation.navigate('MainApp') : this.state.newPlayerCreated ? this.recoveryText() : null;
+    }   
   }
 
   componentWillUnmount() {
