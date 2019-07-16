@@ -172,8 +172,13 @@ export function *createPlayer(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
-    response.error ? console.log('player with that number already exists') :
-    yield put({type: c.PLAYER_CREATED, player: response}), yield put({type: c.HAVE_PLAYERID, gotPlayerId: true});
+    if (response.error) {
+      console.log('player with that number already exists')
+      yield put({type: c.GETTING_PLAYERID, gettingPlayerId: false});
+    } else {
+      yield put({type: c.PLAYER_CREATED, player: response})
+      yield put({type: c.HAVE_PLAYERID, gotPlayerId: true});
+    }
   } catch (error) {
     yield put({type: c.GETTING_PLAYERID, gettingPlayerId: false});
     console.warn('error creating player: ', error);

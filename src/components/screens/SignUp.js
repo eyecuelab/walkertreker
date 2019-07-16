@@ -28,7 +28,6 @@ const AnimatedLabel = posed.View({
   }
 });
 
-
 class SignUp extends React.Component {
   constructor(props) {
     super(props)
@@ -54,19 +53,14 @@ class SignUp extends React.Component {
     }   
   }
 
-  componentWillUnmount() {
-    this.timeout ? clearTimeout(this.timeout) : null;
-  }
 
   recoveryText = () => {
-    this.timeout = setTimeout(() => {
-      if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
-        this.setState({ recoveryText: 'Signup failed. Try again, or '})
-      }
-      if (this.state.recoveryTextBold !== 'click here to recover an account.') {
-        this.setState({ recoveryTextBold: 'click here to recover an account.'})
-      }
-    }, 600)
+    if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
+      this.setState({ recoveryText: 'Signup failed. Try again, or '})
+    }
+    if (this.state.recoveryTextBold !== 'click here to recover an account.') {
+      this.setState({ recoveryTextBold: 'click here to recover an account.'})
+    }
   }
 
   _handleSubmit = async () => {
