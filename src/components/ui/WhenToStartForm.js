@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import {SubHeader} from './../text';
+import {MainHeader} from './../text';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
@@ -34,7 +34,7 @@ class WhenToStartForm extends React.Component {
       <View style={customStyles.container}>
 
         <View style={customStyles.headlineContainer}>
-          <SubHeader>When Will Your Journey Begin?</SubHeader>
+          <MainHeader>When Will Your Journey Begin?</MainHeader>
         </View>
 
         <View style={customStyles.formContainer}>
@@ -51,7 +51,7 @@ class WhenToStartForm extends React.Component {
             <TouchableOpacity
               style={customStyles.button}
               onPress={()=>{this._handleGameStart(0)}}>
-              <Text style={styles.label}>Tomorrow Morning</Text>
+              <Text style={[styles.label, {textAlign: "center"}]} >Tomorrow Morning</Text>
             </TouchableOpacity>
           </View>
 
@@ -66,10 +66,10 @@ const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
-    padding: 10,
     width: '100%',
     height: heightUnit*50,
     backgroundColor: 'darkred',
+    alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
   },
@@ -93,6 +93,7 @@ const customStyles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    textAlign: 'center'
   },
 })
 

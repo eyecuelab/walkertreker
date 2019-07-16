@@ -10,6 +10,8 @@ const { c, item } = constants;
 const { foodArray, medicineArray, weaponArray } = item;
 const safehouse_bg = require('../../../assets/safehouse_bg.png');
 
+import { CampaignHeader } from './../ui/CampaignHeader';
+import { ScreenContainer } from './../containers/ScreenContainer';
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import DayCounter from '../ui/DayCounter';
@@ -70,17 +72,7 @@ class Safehouse extends React.Component {
       return null;
     } else {
       return(
-        <View>
-          <View style={{paddingLeft: widthUnit, paddingRight: widthUnit}}>
-            <DayCounter campaign={this.props.campaign}/>
-            <View style={customStyles.headlineContainer}>
-              <Text style={styles.headline}>Safe{"\n"}House</Text>
-            </View>
-          </View>
-          <View style={[customStyles.textContainer, {marginTop: widthUnit * 2.5}]}>
-            <Text style={[styles.plainText]}>You have made it to the safe house with time to spare. You can use that time to scavenge for resources.</Text>
-          </View>
-        </View>
+        <CampaignHeader title="Safehouse"/>
       );
     }
   }
@@ -154,30 +146,20 @@ class Safehouse extends React.Component {
   render() {
     return (
       <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}} >
+              source={safehouse_bg}
+              resizeMode={'cover'}
+              style={customStyles.safehouseBg}>
 
         <Modal isVisible={this.state.foundModalVisible}>
           <FoundModal
             handleModalStateChange={this._toggleFoundModal}
             onButtonPress={this._pressOK} />
         </Modal>
+        
+        <ScreenContainer>
+          {this._submitConditionalHeadline()}
 
-        <View style={styles.container}>
-
-          <View style={{width: '100%', height: '100%'}}>
-            <ImageBackground
-              source={safehouse_bg}
-              resizeMode={'cover'}
-              style={customStyles.safehouseBg}>
-
-              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
-
-                <View style={[customStyles.container]}>
-
-                  {this._submitConditionalHeadline()}
-
-                </View>
+                
 
                 <View style={[customStyles.container, {flex: 1.5}]}>
                   {this._submitConditionalRender()}
@@ -191,14 +173,8 @@ class Safehouse extends React.Component {
                       onButtonPress={()=>this.props.navigation.navigate("Campaign")} />
                   </View>
                 </View>
-
-              </View>
-            </ImageBackground>
-          </View>
-
-
-
-        </View>
+        
+        </ScreenContainer>
       </ImageBackground>
     );
   }
