@@ -69,6 +69,7 @@ class SignUp extends React.Component {
   _handleSubmit = async () => {
     const { dispatch } = this.props;
     let prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
+    console.log(prettyPhoneNumber)
     if (prettyPhoneNumber.length === 12) {
       const pushToken = await this.registerForPushNotificationsAsync();
       dispatch({

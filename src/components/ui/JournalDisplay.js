@@ -3,17 +3,8 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
-import DayCounter from '../ui/DayCounter';
-import ScreenContainer from './../containers/ScreenContainer'; 
-import { MainHeader, SubHeader, TextAlt } from './../text';
 
-
-import constants from '../../constants';
-import { watchScavengedItems } from '../../sagas';
-const { c, events } = constants;
-const event_bg = require('../../../assets/event_bg.png');
-
-
+import { TextAlt } from './../text';
 
 class JournalDisplay extends React.Component {
   constructor(props) {

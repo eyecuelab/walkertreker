@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import ScreenContainer from './../containers/ScreenContainer';  
-import { MainHeader, SubHeader } from './../text';
-import constants from '../../constants';
-const { c, events } = constants;
-const event_bg = require('../../../assets/event_bg.png');
+import ScreenContainer from '../containers/ScreenContainer';  
+import { MainHeader } from './../text';
 
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';

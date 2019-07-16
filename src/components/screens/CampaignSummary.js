@@ -8,7 +8,7 @@ import defaultStyle from '../../styles/defaultStyle';
 import { MainHeader } from './../text';
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import ScreenContainer from './../containers/ScreenContainer';
+import ScreenContainer from '../containers/ScreenContainer';
 import DayCounter from '../ui/DayCounter';
 
 class CampaignSummary extends React.Component {
