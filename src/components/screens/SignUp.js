@@ -47,7 +47,8 @@ class SignUp extends React.Component {
 
 
   componentDidUpdate() {
-    this.props.player.id ? this.props.navigation.navigate('AuthCheck') :
+    console.log("AUTH STATE", this.props.auth);
+    this.props.player.id ? this.props.navigation.navigate('MainApp') :
     this.state.newPlayerCreated ? this.recoveryText() : null; 
   }
 
@@ -72,6 +73,7 @@ class SignUp extends React.Component {
     console.log(prettyPhoneNumber)
     if (prettyPhoneNumber.length === 12) {
       const pushToken = await this.registerForPushNotificationsAsync();
+      dispatch({ type: c.GETTING_PLAYERID, gettingPlayerId: true})
       dispatch({
         type: c.CREATE_PLAYER,
         name: this.state.displayName,
@@ -272,7 +274,8 @@ function mapStateToProps(state) {
   return {
     player: state.player,
     campaign: state.campaign,
-    redirect: state.redirect
+    redirect: state.redirect,
+    auth: state.auth,
   }
 }
 

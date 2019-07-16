@@ -46,6 +46,7 @@ class RecoverAccountModal extends React.Component {
   }
 
   handleBlur = () => {
+    this.state.phoneNumber ? null :
     this.setState({
       didFocusInput: 'inInput'
     })
@@ -66,12 +67,11 @@ class RecoverAccountModal extends React.Component {
   }
 
   noNumberError = () => {
-    if (this.state.validNumber && this.state.submitted) {
-      return <View>
-              <Label>Recovery Code</Label>
-              <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ recoveryCode: text })} value={this.state.recoveryCode} />
-            </View>
-    } else if (this.state.submitted) {
+      // return <View>
+      //         <Label>Recovery Code</Label>
+      //         <TextInput style={customStyles.textInput} keyboardType="phone-pad" onChangeText={(text) => this.setState({ recoveryCode: text })} value={this.state.recoveryCode} />
+      //       </View>
+    if (!this.state.validNumber && this.state.submitted) {
       return <TextAlt>Failed to find user. Are you sure you entered the correct number?</TextAlt>
     }
   }
