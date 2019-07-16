@@ -2,9 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Button, TextInput, TouchableOpacity, Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import { StackActions, NavigationActions } from 'react-navigation';
 import ScreenContainer from '../containers/ScreenContainer';
-import { MainHeader, SubHeader, TextAlt, Label } from './../text';
+import { MainHeader } from './../text';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
 const use_item_bg = require('../../../assets/use_item_bg.png');
@@ -32,10 +31,10 @@ class RecoverAccount extends React.Component {
     console.log(playerId)
     await this.setState({ playerId })
     console.log("from recoverAccount play id", playerId)
+    dispatch({ type: c.GETTING_CAMPAIGNID, gettingCampaignId: true })
+    dispatch({ type: c.GETTING_PLAYERID, gettingPlayerId: true })
     dispatch({ type: c.FETCH_PLAYER, playId: playerId })
   }
-
-  
 
   render() {
     return(
@@ -62,7 +61,6 @@ class RecoverAccount extends React.Component {
               button2title="New Player"
               button2onPress={() => this.props.navigation.goBack()}
               button2color='darkred'
-
             />
            
         </ScreenContainer>

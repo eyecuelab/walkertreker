@@ -11,7 +11,7 @@ import CampaignDetails from '../ui/CampaignDetails';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
 import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
-import ScreenContainer from './../containers/ScreenContainer';
+import ScreenContainer from '../containers/ScreenContainer';
 import { MainHeader, SubHeader } from './../text';
 import ErrorMessage from './../ui/ErrorMessage';
 

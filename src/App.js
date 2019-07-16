@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Notifications, Linking } from 'expo';
+import { AppLoading, Asset, Font, registerRootComponent, KeepAwake, Notifications, Linking, ActivityIndicator } from 'expo';
 import { AppContainer } from './nav/router';
 import NavigationService from './nav/NavigationService';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -141,6 +141,11 @@ class App extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    console.log("AUTH STATE", this.props.auth);
+  }
+
+
   componentWillUnmount() {
     Linking.removeEventListener('url', this.handleOpenURL);
   }
@@ -159,7 +164,7 @@ class App extends React.Component {
     if(this.state.isReady) {
       return (
         <Provider store={store}>
-          <PersistGate persistor={persistor} loading={null}>
+          <PersistGate persistor={persistor} loading={ActivityIndicator}>
             <BackgroundPedometer />
             <SocketIO />
             <NotificationListeners />
@@ -199,6 +204,7 @@ registerRootComponent(App)
 const mapStateToProps = (state) => {
   return {
     player: state.player,
+    auth: state.auth,
   }
 }
 

@@ -24,6 +24,33 @@ import SignUp from './../components/screens/SignUp';
 import AccountRecovery from './../components/ui/AccountRecovery';
 import MainAppRouter from './../components/screens/MainAppRouter';
 import Lobby from './../components/screens/Lobby';
+import TEST_SCREEN from './../components/screens/TEST_SCREEN'
+
+
+const FadeTransition = (index, position) => {
+  const sceneRange = [index - 1, index];
+  const outputOpacity = [0, 1];
+  const transition = position.interpolate({
+    inputRange: sceneRange,
+    outputRange: outputOpacity
+  });
+
+  return {
+    opacity: transition
+  }
+}
+
+NavigationConfig = () => {
+ return {
+   screenInterpolator: (sceneProps) => {
+     const { position, scene } = sceneProps;
+     const { index } = scene;
+
+     return FadeTransition(index, position);
+   }
+ }
+}
+
 
 
 const AuthStack = createStackNavigator(
@@ -38,7 +65,8 @@ const AuthStack = createStackNavigator(
   {
     defaultNavigationOptions: {
       header: null,
-    }
+    },
+    transitionConfig: NavigationConfig
   }
 )
 
@@ -119,17 +147,20 @@ const MainApp = createSwitchNavigator(
 )
 
 
+
+
 const MainSwitchNavigator = createSwitchNavigator(
   {
     AuthCheck: AuthCheck,
     Auth: {screen: AuthStack, path : ''},
     MainApp: { screen: MainApp, path: ''},
+    TEST_SCREEN: { screen: TEST_SCREEN}
   },
   {
     defaultNavigationOptions: {
       header: null,
     },
-    initialRouteName: "AuthCheck"
+    initialRouteName: "AuthCheck",
   }
 );
 

@@ -63,7 +63,9 @@ export function *setInitialCampaignDetails(action) {
     console.log("storing", response)
     yield storeData('campaignId', JSON.stringify(response.id));
     yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
+    yield put({type: c.HAVE_CAMPAIGNID, gotCampaignId: true});
   } catch (error) {
+    yield put({type: c.GETTING_CAMPAIGNID, gettingCampaignId: false});
     console.warn('error setting campaign details: ', error);
   }
 }
@@ -112,7 +114,9 @@ export function *fetchCampaignInfo(action) {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     yield put({type: c.CAMPAIGN_INFO_RECEIVED, campaign: response});
+    yield put({type: c.HAVE_CAMPAIGNID, gotCampaignId: true});
   } catch (error) {
+    yield put({type: c.GETTING_CAMPAIGNID, gettingCampaignId: false});
     console.warn('error fetching campaign: ', error);
   }
 }
@@ -132,7 +136,9 @@ export function *joinCampaignRequest(action) {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     yield put({type: c.PLAYER_JOINED_CAMPAIGN, campaign: response});
+    yield put({type: c.HAVE_CAMPAIGNID, gotCampaignId: true});
   } catch (error) {
+    yield put({type: c.GETTING_CAMPAIGNID, gettingCampaignId: false});
     console.warn('error joining campaign: ', error);
   }
 }
@@ -166,9 +172,15 @@ export function *createPlayer(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
-    response.error ? console.log('player with that number already exists') :
-    yield put({type: c.PLAYER_CREATED, player: response});
+    if (response.error) {
+      console.log('player with that number already exists')
+      yield put({type: c.GETTING_PLAYERID, gettingPlayerId: false});
+    } else {
+      yield put({type: c.PLAYER_CREATED, player: response})
+      yield put({type: c.HAVE_PLAYERID, gotPlayerId: true});
+    }
   } catch (error) {
+    yield put({type: c.GETTING_PLAYERID, gettingPlayerId: false});
     console.warn('error creating player: ', error);
   }
 }
@@ -235,7 +247,9 @@ export function *fetchPlayer(action) {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
     yield put({type: c.PLAYER_FETCHED, player: response});
+    yield put({type: c.HAVE_PLAYERID, gotPlayerId: true});
   } catch (error) {
+    yield put({type: c.GETTING_PLAYERID, gettingPlayerId: false});
     console.warn('error fetching players: ', error);
   }
 }

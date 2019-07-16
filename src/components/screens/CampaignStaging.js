@@ -13,7 +13,7 @@ import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 const { c } = constants;
 
-import ScreenContainer from './../containers/ScreenContainer';  
+import ScreenContainer from '../containers/ScreenContainer';  
 import CampaignLobbyHeader from './../ui/CampaignLobbyHeader';
 
 import { SubHeader } from './../text';

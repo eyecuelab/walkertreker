@@ -52,6 +52,7 @@ class BackgroundPedometer extends React.Component {
 
   componentDidUpdate() {
     this._constructDateLog();
+    console.log("THIS IS THE STATE OF AUTH FROM THE PEDOMETER", this.props.auth)
   }
 
   componentWillUnmount() {
@@ -121,6 +122,7 @@ function mapStateToProps(state) {
     steps: state.steps,
     campaign: state.campaign,
     player: state.player,
+    auth: state.auth,
   }
 }
 

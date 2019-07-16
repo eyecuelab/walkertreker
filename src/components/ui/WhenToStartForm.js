@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, AsyncStorage, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
+import {SubHeader} from './../text';
 
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 
@@ -33,7 +34,7 @@ class WhenToStartForm extends React.Component {
       <View style={customStyles.container}>
 
         <View style={customStyles.headlineContainer}>
-          <Text style={styles.headline}>When will your journey begin?</Text>
+          <SubHeader>When Will Your Journey Begin?</SubHeader>
         </View>
 
         <View style={customStyles.formContainer}>
@@ -65,6 +66,7 @@ const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
+    padding: 10,
     width: '100%',
     height: heightUnit*50,
     backgroundColor: 'darkred',

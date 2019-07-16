@@ -38,11 +38,6 @@ class PlayersList extends React.Component {
     }
   }
 
-  componentDidMount() {
-    console.log("Campaign In PlayerList++++++++++++++++++++++++++++ \n" + JSON.stringify(this.props.campaign));
-    console.log("Campaign In PlayerList++++++++++++++++++++++++++++ \n" + JSON.stringify(this.props.player));
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -50,7 +45,6 @@ class PlayersList extends React.Component {
       </View>
     );
   }
-
 }
 
 const defaultStyleSheet = StyleSheet.create(defaultStyle);

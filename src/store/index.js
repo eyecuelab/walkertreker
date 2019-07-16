@@ -5,7 +5,6 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from './../sagas';
 import rootReducer from './reducers';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-import { c } from './../constants/index.js';
 
 
 
@@ -33,10 +32,12 @@ export const persistor = persistStore(store, null, () => {
     const campaignId = store.getState().campaign.id || null;
     if (playerId) {
         console.log("ATTEMPTING TO FETCH PLAYER +++++++++++++++++ \n");
+        store.dispatch({ type: 'GETTING_PLAYERID', gettingPlayerId: true })
         store.dispatch({type: 'FETCH_PLAYER', playId: playerId});
     }
     if (campaignId) {
         console.log("ATTEMPTING TO FETCH CAMPAIGN +++++++++++++++++ \n");
+        store.dispatch({ type: 'GETTING_CAMPAIGNID', gettingCampaignId: true })
         store.dispatch({type: 'FETCH_CAMPAIGN_INFO', id: campaignId});
     }
     

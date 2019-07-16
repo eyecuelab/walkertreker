@@ -14,7 +14,7 @@ const events  = [
       stepTargets: 0.1
     },
     journal: 'Encoutered armed men demanding food as toll for crossing a barricade. We decided to ',
-    journalA: 'Encounted armed men demanding food to let us cross a barricade. What choice did we have but it git it to them?',
+    journalA: 'Encounted armed men demanding food to let us cross a barricade. What choice did we have but it give it to them?',
     journalB: 'Encounted armed men demanding food to let us cross a barricade. Had to walk a bit further to backtrack, but we need our food.',
   },
   {
