@@ -60,7 +60,7 @@ class Safehouse extends React.Component {
   }
 
   _pressOK = () => {
-    this.props.navigation.navigate('CampaignSummary');
+    this.props.navigation.navigate('Campaign');
     this._confirmItem();
   }
 
@@ -188,7 +188,7 @@ class Safehouse extends React.Component {
                     <SingleButtonFullWidth
                       title='Go Back'
                       backgroundColor='black'
-                      onButtonPress={()=>this.props.navigation.goBack()} />
+                      onButtonPress={()=>this.props.navigation.navigate("Campaign")} />
                   </View>
                 </View>
 

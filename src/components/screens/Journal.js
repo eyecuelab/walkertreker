@@ -55,15 +55,17 @@ class Journal extends React.Component {
           <ScreenContainer>
             <DayCounter campaign={this.props.campaign} />
             
-            <View style={{flex: 1, alignItems: "center"}}>
+            <View style={{ alignItems: "center"}}>
               <MainHeader>Journal</MainHeader>
             </View>
-    
-              <ScrollView style={{width: '100%', height: '100%'}}>
+            <View style={{height: "100%"}}>
+                <ScrollView style={{width: '100%', height: '100%'}}>
                 {Object.keys(this.state.entryObj).reverse().map((day, index)=> {
                   return <JournalDisplay key={index} entries={this.state.entryObj[day]} entryDay={day}/>
                 })}
-              </ScrollView>
+                </ScrollView>
+            </View>
+              
     
           </ScreenContainer>
         </ImageBackground>
