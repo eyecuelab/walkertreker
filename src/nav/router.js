@@ -94,15 +94,15 @@ const CampaignNavigator = createBottomTabNavigator({
       const { routeName } = navigation.state;
       if(routeName === 'Home') {
         const source = focused ? require('./../../assets/Icons/Home_Active.png') : require('./../../assets/Icons/Home_Inactive.png')
-        return <Image source={source} style={{width: 20, height: 20}} />
+        return <Image source={source} style={{width: 25, height: 25}} />
       } 
       else if (routeName === 'Inventory') {
         const source = focused ? require('./../../assets/Icons/Inventory_Active.png') : require('./../../assets/Icons/Inventory_Inactive.png')
-        return <Image source={source} style={{width: 20, height: 20}} />
+        return <Image source={source} style={{width: 25, height: 25}} />
       }
       else if (routeName === 'Journal') {
         const source = focused ? require('./../../assets/Icons/Journal_Active.png') : require('./../../assets/Icons/Journal_Inactive.png')
-        return <Image source={source} style={{width: 15, height: 20}} />
+        return <Image source={source} style={{width: 20, height: 25}} />
       }
 
         
@@ -114,6 +114,7 @@ const CampaignNavigator = createBottomTabNavigator({
     inactiveTintColor: '#FFF',
     inactiveBackgroundColor: "#6E0E0F",
     activeBackgroundColor: "#6E0E0F",
+    showLabel: false,
     style: {
       height: 50, 
       elevation: 4,

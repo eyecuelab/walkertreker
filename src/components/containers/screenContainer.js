@@ -9,6 +9,7 @@ const heightUnit = hp('1%');
 
 const ScreenContainer = styled.View`
   flex: 1;
+  height: 100%;
   justify-content: flex-start;
   margin: ${widthUnit*5}px;
   margin-top: ${heightUnit*7}px;

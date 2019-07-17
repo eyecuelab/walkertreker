@@ -12,8 +12,7 @@ function SubHeader(props) {
   const StyledText = styled.Text`
   font-family: gore;
   font-size: ${widthUnit*8};
-  line-height: ${widthUnit*6};
-  padding-top: ${widthUnit*5};
+  
 
   color: ${props => props.color || "white"};
 

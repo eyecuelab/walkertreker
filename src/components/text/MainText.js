@@ -17,8 +17,9 @@ function MainText(props) {
     (props.size === 'sm' && widthUnit*4.5) ||
     (props.size === 'md' && widthUnit*6) ||
     (props.size === 'lg' && widthUnit*7) ||
-    (widthUnit*5.5)
+    (widthUnit*6)
   };
+  letterSpacing: 1.15;
   color: ${props => props.color || 'white'};
   fontWeight: ${props => props.weight || 'normal'};
   `
