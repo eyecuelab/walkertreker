@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ScreenContainer from '../containers/ScreenContainer';  
 import { MainHeader, MainText, SubHeader } from './../text';
@@ -25,7 +25,6 @@ class Journal extends React.Component {
   }
 
   getEntriesByDay(){
-    console.log("THESE ARE THE JOURNAL ENTRIES", this.props.campaign.journals)
     let currentDay = 0
     let entryObj = {}
     let index = 0;
@@ -84,16 +83,18 @@ class Journal extends React.Component {
 
                 {Object.keys(this.state.entryObj).map((day, index)=> {
                     day = parseInt(day)
-                    return <View key={index} style={customStyles.dayOnSlider} >
-                            <View style={customStyles.sliderLine}></View>
-      
-                            { day === this.state.focusedDay ? 
+                    return <TouchableWithoutFeedback key={index} onPress={()=>{this._handleDaySliderClick(day)}}>
+                             <View style={customStyles.dayOnSlider}>
+                              <View style={customStyles.sliderLine}></View>
+        
+                              { day === this.state.focusedDay ? 
 
-                            <SubHeader style={{textAlign: 'center'}} onPress={()=>{this._handleDaySliderClick(day)}}>Day {day}</SubHeader> :
+                              <SubHeader style={{textAlign: 'center'}}>Day {day}</SubHeader> :
 
-                            <SubHeader style={customStyles.unfocusedDay} onPress={()=>{this._handleDaySliderClick(day)}}>Day {day}</SubHeader>  }
+                              <SubHeader style={customStyles.unfocusedDay}>Day {day}</SubHeader>  }
 
-                          </View>
+                            </View>
+                          </TouchableWithoutFeedback>
                 })}
                 <View style={customStyles.dayOnSlider} >
                   <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>

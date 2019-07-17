@@ -6,6 +6,8 @@ import defaultStyle from '../../styles/defaultStyle';
 
 import { TextAlt } from './../text';
 import JournalEntry from './JournalEntry';
+import constants from '../../constants';
+const { events } = constants;
 
 class JournalDisplay extends React.Component {
   constructor(props) {
@@ -18,12 +20,20 @@ class JournalDisplay extends React.Component {
       <View style={customStyles.dayEntry}>
         <TextAlt style={customStyles.dayCount}>Day {this.props.entryDay}</TextAlt>
         {Object.keys(entriesObj).map((key) => {
-         return (
-            <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} 
-              entry={entriesObj[key].entry} 
-              eventId={entriesObj[key].eventId} 
-              votingList={entriesObj[key].votingList}/>
-        )})}
+          if (events[entriesObj[key].eventNumber]) {
+            return (
+               <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} 
+                 entry={entriesObj[key].entry} 
+                 eventNumber={entriesObj[key].eventNumber} 
+                 votingList={entriesObj[key].votingList}
+                 eventResult={events[entriesObj[key].eventNumber].optionAText}/>
+           )} else {
+            return (
+              <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} 
+                entry={entriesObj[key].entry} />
+            )}
+          }
+        )}
       </View>
     );
   }

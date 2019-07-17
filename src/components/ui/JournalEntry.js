@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import defaultStyle from '../../styles/defaultStyle';
-import constants from '../../constants';
-const { events } = constants;
 
 import { MainText } from './../text';
 
@@ -18,14 +15,14 @@ class JournalEntry extends React.Component {
       <View style={customStyles.entryBox} >
         <View>
           <MainText style={customStyles.entryLine}>{this.props.entry}</MainText>
-          {this.props.eventId ? 
+          {this.props.eventNumber ? 
             <View style={customStyles.playerVotes}>
               {this.props.votingList.map((vote, index) => {
-                return <MainText style={{fontFamily: 'Gill Sans MT Condensed Bold'}} key={index}>{vote}</MainText>               
+                return <MainText style={{fontFamily: 'Gill Sans MT Condensed Bold'}} key={index}>{vote}</MainText>
               })}
             </View>
               : null }
-            <MainText>{}</MainText>
+            <MainText>{this.props.eventResult}</MainText>
         </View>
       </View>
     )
@@ -40,6 +37,7 @@ const customStyles = StyleSheet.create({
   },
   entryBox: {
     marginTop: heightUnit*1.5,
+    marginLeft: widthUnit*1.5,
     paddingBottom: heightUnit*2,
     flex: 1,
     flexDirection: 'row',
@@ -54,7 +52,6 @@ const customStyles = StyleSheet.create({
     width: widthUnit*1,
   },
   entryLine: {
-    marginLeft: widthUnit*2,
     fontSize: widthUnit*5.5,
   }
 
