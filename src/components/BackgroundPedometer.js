@@ -52,7 +52,6 @@ class BackgroundPedometer extends React.Component {
 
   componentDidUpdate() {
     this._constructDateLog();
-    console.log("THIS IS THE STATE OF AUTH FROM THE PEDOMETER", this.props.auth)
   }
 
   componentWillUnmount() {

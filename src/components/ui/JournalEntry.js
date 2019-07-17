@@ -4,43 +4,26 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView }
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
 
-import { TextAlt } from './../text';
-import JournalEntry from './JournalEntry';
+import { MainText } from './../text';
 
-class JournalDisplay extends React.Component {
+class JournalEntry extends React.Component {
   constructor(props) {
     super(props)
   }
 
   render() {
-    const entriesObj = this.props.entries
     return (
-      <View style={customStyles.dayEntry}>
-        <TextAlt style={customStyles.dayCount}>Day {this.props.entryDay}</TextAlt>
-        {Object.keys(entriesObj).map((key) => {
-         return (
-            <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} entry={entriesObj[key].entry}/>
-        )})}
+      <View style={customStyles.entryBox} >
+        <View style={customStyles.border}></View>
+        <MainText numberOfLines={2} style={customStyles.entryLine}>{this.props.entry}</MainText>
       </View>
-    );
+    )
   }
 }
 
-
-const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
-  dayEntry: {
-    backgroundColor: 'rgba(0,0,0,0.4)', 
-    padding: widthUnit*5,
-    marginTop: widthUnit*5,
-    flex: 1,
-  },
-  dayCount: {
-    fontFamily: 'gore',
-    justifyContent: 'flex-start',
-  },
   entryBox: {
     marginTop: heightUnit*1.5,
     flex: 1,
@@ -54,7 +37,6 @@ const customStyles = StyleSheet.create({
     width: widthUnit*1,
   },
   entryLine: {
-    // lineHeight: widthUnit*7,
     marginLeft: widthUnit*2,
     color: 'white',
     fontFamily: 'Gill Sans MT Condensed',
@@ -63,4 +45,4 @@ const customStyles = StyleSheet.create({
 
 })
 
-export default JournalDisplay;
+export default JournalEntry;
