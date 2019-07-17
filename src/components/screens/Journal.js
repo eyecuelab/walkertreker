@@ -10,13 +10,12 @@ import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
 import JournalDisplay from '../ui/JournalDisplay'
 
-const screenWidth = Dimensions.get('window').width
 class Journal extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      focusedDay: this.props.campaign.currentDay + 1,
+      focusedDay: this.props.campaign.currentDay,
     }
   }
 
@@ -24,7 +23,20 @@ class Journal extends React.Component {
     this.getEntriesByDay()
   }
 
-  getEntriesByDay(){
+  
+  
+  evaluateFocusedDay = () => {
+    console.log("EVALUATOIN OF DAY", this.props.campaign.currentDay+1 in this.state.entryObj)
+    console.log("EVALUATOIN OF DAY", this.props.campaign.currentDay)
+
+    this.props.campaign.currentDay+1 in this.state.entryObj ? 
+      this.setState({focusedDay: this.props.campaign.currentDay + 1}) : 
+      this.setState({focusedDay: this.props.campaign.currentDay});
+
+    console.log(this.state.focusedDay)
+  }
+
+  getEntriesByDay = async () => {
     let currentDay = 0
     let entryObj = {}
     let index = 0;
@@ -47,7 +59,8 @@ class Journal extends React.Component {
         index++;
       })
       console.log("ENTRY OBJECT:", entryObj)
-      this.setState({entryObj})
+      await this.setState({entryObj})
+      this.evaluateFocusedDay()
     }
   }
 
@@ -61,6 +74,7 @@ class Journal extends React.Component {
   }
 
   render() {
+    console.log("RENDER TIME")
     return (
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
@@ -110,7 +124,7 @@ class Journal extends React.Component {
             </View>
             <ScrollView style={{width: '100%', height: '100%' }}>
               
-            <JournalDisplay entries={this.state.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
+              <JournalDisplay entries={this.state.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
 
             </ScrollView>
           </ScreenContainer>
