@@ -11,7 +11,9 @@ class JournalEntry extends React.Component {
   }
 
   componentWillMount() {
-    this.entries = this.props.entry.split('//')
+    console.log("ENTRIES IN JOURNAL ENTRY", this.props.entry)
+    this.props.entry ? this.entries = this.props.entry.split('//') : null;
+    console.log("ENTRIES IN JOURNAL ENTRY", this.entries)
   }
 
   render() {
@@ -26,7 +28,7 @@ class JournalEntry extends React.Component {
               })}
             </View>
               : null }
-            <MainText>{this.entries[1]}</MainText>
+            {this.entries[1] ? <MainText>{this.entries[1]}</MainText> : null}
         </View>
       </View>
     )
