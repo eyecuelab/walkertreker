@@ -13,9 +13,10 @@ function MainText(props) {
   const StyledText = styled.Text`
   font-family: Gill Sans MT Condensed;
   line-height: ${widthUnit*7};
+  letter-spacing: ${widthUnit*0.3}
   font-size: ${props =>
     (props.size === 'sm' && widthUnit*4.5) ||
-    (props.size === 'md' && widthUnit*6) ||
+    (props.size === 'md' && widthUnit*6.5) ||
     (props.size === 'lg' && widthUnit*7) ||
     (widthUnit*5.5)
   };
