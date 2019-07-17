@@ -106,9 +106,6 @@ class Journal extends React.Component {
               
             <JournalDisplay entries={this.state.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
 
-            {/* {Object.keys(this.state.entryObj).reverse().map((day, index)=> {
-              return <JournalDisplay key={index} entries={this.state.entryObj[day]} entryDay={day}/>
-            })} */}
             </ScrollView>
           </ScreenContainer>
         </ImageBackground>

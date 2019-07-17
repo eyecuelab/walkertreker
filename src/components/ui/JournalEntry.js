@@ -12,10 +12,20 @@ class JournalEntry extends React.Component {
   }
 
   render() {
+    console.log("Voting list in ENTRY component", this.props.votingList)
     return (
       <View style={customStyles.entryBox} >
         <View style={customStyles.border}></View>
-        <MainText numberOfLines={2} style={customStyles.entryLine}>{this.props.entry}</MainText>
+        <View>
+          <MainText  style={customStyles.entryLine}>{this.props.entry}</MainText>
+          {this.props.eventId ? 
+            <View>
+              {this.props.votingList.map((vote, index) => {
+                return <MainText style={{padding: widthUnit*1}} size='md' fontWeight='bold' key={index}>{vote}</MainText>               
+              })}
+            </View>
+              : null }
+        </View>
       </View>
     )
   }
@@ -33,7 +43,7 @@ const customStyles = StyleSheet.create({
   border: {
     borderLeftWidth: 1.3, 
     borderColor: '#aaa',
-    height: '80%',
+    height: '90%',
     width: widthUnit*1,
   },
   entryLine: {

@@ -376,6 +376,7 @@ export function *updateJournal(action) {
     body: JSON.stringify({
       journalUpdate: {
         entry: action.entry,
+        votingList: action.votingList,
       }
     })
   }

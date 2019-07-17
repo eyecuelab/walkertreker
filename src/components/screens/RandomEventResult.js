@@ -57,11 +57,12 @@ class RandomEventResult extends React.Component {
   }
   
   updateJournal = () => {
-    const eventEntry = this.evt.journal + this.resultHeader
+    const eventEntry = this.evt.antecedent;
     const journalId = this.props.screenProps.notification.data.data.data.journalId
     this.props.dispatch({ type: c.UPDATE_JOURNAL, 
       journalId: journalId,
       entry: eventEntry,
+      votingList: this.votesList,
     })
   }
 
@@ -72,7 +73,12 @@ class RandomEventResult extends React.Component {
     let playerVotes = 
       Object.assign({}, ...Object.keys(data.playerVotes).map(key => ( 
         {[key]: data.playerVotes[key] === 'A' ? this.evt.optionAButton : this.evt.optionBButton } )));
-    this.playerVotes = playerVotes
+       let votesList = []
+      Object.entries(playerVotes).map(([key, value], index) => {
+        votesList.push(`${key} voted to ${value}`)
+      })
+      console.log("ENTRY LIST", votesList)
+      this.votesList = votesList
   }
 
   navigateBack = () => {
@@ -80,6 +86,7 @@ class RandomEventResult extends React.Component {
   }
 
   checkResultToShow = () => {
+    console.log("Result in randomeventresult \n", this.result, this.evt)
     this.result === 'A' ? this.resultText = this.evt.optionAText : this.resultText = this.evt.optionBText;
     this.result === 'A' ? this.resultHeader = this.evt.optionAButton : this.resultHeader = this.evt.optionBButton;
   }
@@ -89,7 +96,7 @@ class RandomEventResult extends React.Component {
     return (
       <EventResultDisplay backgroundImage={this.props.screenProps.backgroundImage}
         resultText={this.resultText} resultHeader={this.resultHeader}
-        playerVotes={this.playerVotes} navigateBack = {this.navigateBack}
+        playerVotes={this.playerVotes} navigateBack = {this.navigateBack} votesList={this.votesList}
       />
     )
   }

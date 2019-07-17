@@ -19,7 +19,10 @@ class JournalDisplay extends React.Component {
         <TextAlt style={customStyles.dayCount}>Day {this.props.entryDay}</TextAlt>
         {Object.keys(entriesObj).map((key) => {
          return (
-            <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} entry={entriesObj[key].entry}/>
+            <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} 
+              entry={entriesObj[key].entry} 
+              eventId={entriesObj[key].eventId} 
+              votingList={entriesObj[key].votingList}/>
         )})}
       </View>
     );
