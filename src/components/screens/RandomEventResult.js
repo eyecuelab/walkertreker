@@ -57,7 +57,7 @@ class RandomEventResult extends React.Component {
   }
   
   updateJournal = () => {
-    const eventEntry = this.evt.antecedent;
+    const eventEntry = `${this.evt.antecedent}//${this.resultText}` ;
     const journalId = this.props.screenProps.notification.data.data.data.journalId
     this.props.dispatch({ type: c.UPDATE_JOURNAL, 
       journalId: journalId,

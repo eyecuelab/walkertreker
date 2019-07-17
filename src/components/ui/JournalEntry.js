@@ -10,11 +10,15 @@ class JournalEntry extends React.Component {
     super(props)
   }
 
+  componentWillMount() {
+    this.entries = this.props.entry.split('//')
+  }
+
   render() {
     return (
       <View style={customStyles.entryBox} >
         <View>
-          <MainText style={customStyles.entryLine}>{this.props.entry}</MainText>
+          <MainText style={customStyles.entryLine}>{this.entries[0]}</MainText>
           {this.props.eventNumber ? 
             <View style={customStyles.playerVotes}>
               {this.props.votingList.map((vote, index) => {
@@ -22,7 +26,7 @@ class JournalEntry extends React.Component {
               })}
             </View>
               : null }
-            <MainText>{this.props.eventResult}</MainText>
+            <MainText>{this.entries[1]}</MainText>
         </View>
       </View>
     )
@@ -33,7 +37,8 @@ const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   playerVotes: {
-    padding: widthUnit*2,
+    paddingTop: widthUnit*2,
+    paddingBottom: widthUnit*2,
   },
   entryBox: {
     marginTop: heightUnit*1.5,

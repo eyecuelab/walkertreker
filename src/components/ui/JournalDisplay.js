@@ -13,7 +13,7 @@ class JournalDisplay extends React.Component {
   constructor(props) {
     super(props)
   }
-
+  
   render() {
     const entriesObj = this.props.entries
     return (
@@ -25,8 +25,7 @@ class JournalDisplay extends React.Component {
                <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} 
                  entry={entriesObj[key].entry} 
                  eventNumber={entriesObj[key].eventNumber} 
-                 votingList={entriesObj[key].votingList}
-                 eventResult={events[entriesObj[key].eventNumber].optionAText}/>
+                 votingList={entriesObj[key].votingList} />
            )} else {
             return (
               <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} 
