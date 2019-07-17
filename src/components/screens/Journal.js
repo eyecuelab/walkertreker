@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ScreenContainer from '../containers/ScreenContainer';  
 import { MainHeader, MainText, SubHeader } from './../text';
@@ -10,10 +10,14 @@ import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
 import JournalDisplay from '../ui/JournalDisplay'
 
+const screenWidth = Dimensions.get('window').width
 class Journal extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      focusedDay: this.props.campaign.currentDay + 1,
+    }
   }
 
   componentWillMount(){
@@ -48,6 +52,11 @@ class Journal extends React.Component {
     }
   }
 
+  _handleDaySliderClick = (day) => {
+    this.scroll.scrollTo({x:widthUnit*30*(day-1)})
+    this.setState({ focusedDay: day})
+  }
+
   render() {
     return (
       <ImageBackground
@@ -63,35 +72,44 @@ class Journal extends React.Component {
               <ScrollView horizontal='true'
                           decelerationRate={0}
                           snapToInterval={widthUnit*30}
-                          snapToAlignment={"center"}>
-                <View style={customStyles.dayOnSlider}>
+                          snapToAlignment={"center"}
+                          pagingEnabled={true}
+                          ref={(node)=> this.scroll = node}
+                          showsHorizontalScrollIndicator={false}>
+                <View style={customStyles.dayOnSlider} >
                   <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>
                   <SubHeader style={{textAlign: 'center'}}></SubHeader>
                 </View>
-                {Object.keys(this.state.entryObj).reverse().map((day, index)=> {
-                    return <View key={index} style={customStyles.dayOnSlider}>
+
+
+                {Object.keys(this.state.entryObj).map((day, index)=> {
+                    day = parseInt(day)
+                    return <View key={index} style={customStyles.dayOnSlider} >
                             <View style={customStyles.sliderLine}></View>
-                            <SubHeader style={{textAlign: 'center'}}>Day {day}</SubHeader>
+      
+                            { day === this.state.focusedDay ? 
+
+                            <SubHeader style={{textAlign: 'center'}} onPress={()=>{this._handleDaySliderClick(day)}}>Day {day}</SubHeader> :
+
+                            <SubHeader style={customStyles.unfocusedDay} onPress={()=>{this._handleDaySliderClick(day)}}>Day {day}</SubHeader>  }
+
                           </View>
-                  })}
-                <View style={customStyles.dayOnSlider}>
-                  <View style={customStyles.sliderLine}></View>
-                  <SubHeader style={{textAlign: 'center'}}>DAY 5</SubHeader>
+                })}
+                <View style={customStyles.dayOnSlider} >
+                  <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>
+                  <SubHeader style={{textAlign: 'center'}}></SubHeader>
                 </View>
-                <View style={customStyles.dayOnSlider}>
-                  <View style={customStyles.sliderLine}></View>
-                  <SubHeader style={{textAlign: 'center'}}>DAY 6</SubHeader>
-                </View>
+
               </ScrollView>
             </View>
-            {/* <View style={{height: "80%"}}> */}
-                <ScrollView style={{width: '100%', height: '100%'}}>
-                {Object.keys(this.state.entryObj).reverse().map((day, index)=> {
-                  return <JournalDisplay key={index} entries={this.state.entryObj[day]} entryDay={day}/>
-                })}
-                </ScrollView>
-            {/* </View> */}
-            
+            <ScrollView style={{width: '100%', height: '100%' }}>
+              
+            <JournalDisplay entries={this.state.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
+
+            {/* {Object.keys(this.state.entryObj).reverse().map((day, index)=> {
+              return <JournalDisplay key={index} entries={this.state.entryObj[day]} entryDay={day}/>
+            })} */}
+            </ScrollView>
           </ScreenContainer>
         </ImageBackground>
     );
@@ -102,6 +120,13 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
+  unfocusedDay: {
+    textAlign: 'center', 
+    opacity: 0.5,
+    fontSize: widthUnit*6,
+    lineHeight: widthUnit*5,
+    paddingTop: widthUnit*4,
+  },
   daySlider: {
     marginTop: heightUnit*4,
     height: heightUnit*12,
