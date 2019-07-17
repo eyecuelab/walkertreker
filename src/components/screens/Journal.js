@@ -56,6 +56,10 @@ class Journal extends React.Component {
     this.setState({ focusedDay: day})
   }
 
+  scrollToInitialPosition = () => {
+    this.scroll.scrollTo({x:widthUnit*30*(this.state.focusedDay-1)})
+  }
+
   render() {
     return (
       <ImageBackground
@@ -70,6 +74,7 @@ class Journal extends React.Component {
             <View style={customStyles.daySlider}>
               <ScrollView horizontal='true'
                           decelerationRate={0}
+                          onLayout={this.scrollToInitialPosition}
                           snapToInterval={widthUnit*30}
                           snapToAlignment={"center"}
                           pagingEnabled={true}

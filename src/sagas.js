@@ -246,6 +246,7 @@ export function *fetchPlayer(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
+    console.log("IN SAGA, PLAYER FETCHED FOSHO", response)
     yield put({type: c.PLAYER_FETCHED, player: response});
     yield put({type: c.HAVE_PLAYERID, gotPlayerId: true});
   } catch (error) {
@@ -391,7 +392,6 @@ export function *updateJournal(action) {
 
 export function *saveState() {
   const lastState = yield select();
-  console.log("SAVING LAST STATE AS - ", JSON.stringify(lastState), "\n SAVESTATE END \n ========================== \n");
   yield storeData('lastState', JSON.stringify(lastState));
 }
 
@@ -677,7 +677,7 @@ export default function *rootSaga() {
 
 
 // LOCAL Kim home endpoint
-// const endpoint = `http://192.168.1.5:5000`
+const endpoint = `http://192.168.1.5:5000`
 
 
 
@@ -685,4 +685,4 @@ export default function *rootSaga() {
 // const endpoint = 'http://10.1.10.51:5000'
 
 // REMOTE
-const endpoint = 'https://walkertrekker.herokuapp.com'
+// const endpoint = 'https://walkertrekker.herokuapp.com'

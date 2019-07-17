@@ -75,6 +75,7 @@ class BackgroundPedometer extends React.Component {
     const { campaignDateArray, pedometerIsAvailable } = this.props.steps;
     const { difficultyLevel, length, startDate, stepTargets } = this.props.campaign;
     if (
+      this.props.player.id &&
       startDate !== null &&
       campaignDateArray === null &&
       pedometerIsAvailable
