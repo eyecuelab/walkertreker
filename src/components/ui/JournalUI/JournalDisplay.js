@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import defaultStyle from '../../styles/defaultStyle';
+import defaultStyle from '../../../styles/defaultStyle';
 
-import { TextAlt } from './../text';
+import { TextAlt } from '../../text';
 import JournalEntry from './JournalEntry';
-import constants from '../../constants';
+import constants from '../../../constants';
 const { events } = constants;
 
 class JournalDisplay extends React.Component {

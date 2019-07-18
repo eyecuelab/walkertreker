@@ -2,26 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import defaultStyle from '../../styles/defaultStyle';
+import defaultStyle from '../../../styles/defaultStyle';
 import { withNavigation } from "react-navigation";
 
 
-import { SubHeader } from './../text';
+import { SubHeader } from '../../text';
 
 class JournalDaySlider extends React.Component {
   constructor(props) {
     super(props)
-  }
-
-  componentDidMount() {
-    const { navigation } = this.props;
-    this.focusListener = navigation.addListener("didFocus", async () => {
-      this.scrollToInitialPosition()
-    });
-  }
-
-  componentWillUnmount(){
-    this.focusListener.remove();
   }
 
   componentDidUpdate(prevProps){

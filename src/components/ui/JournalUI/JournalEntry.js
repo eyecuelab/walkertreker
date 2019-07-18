@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { MainText } from './../text';
+import { MainText } from '../../text';
 
 class JournalEntry extends React.Component {
   constructor(props) {

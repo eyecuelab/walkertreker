@@ -7,8 +7,8 @@ import ScreenContainer from '../containers/ScreenContainer';
 import { MainHeader, MainText, SubHeader } from './../text';
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
-import JournalDisplay from '../ui/JournalDisplay'
-import JournalDaySlider from '../ui/JournalDaySlider'
+import JournalDisplay from '../ui/JournalUI/JournalDisplay'
+import JournalDaySlider from '../ui/JournalUI/JournalDaySlider'
 
 class Journal extends React.Component {
 
