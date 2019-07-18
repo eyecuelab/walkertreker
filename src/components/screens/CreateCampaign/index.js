@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage, ScrollVi
 import { v4 } from 'uuid';
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import { ButtonWithLoading } from './../../ui/Buttons';
 import TwoButtonOverlay from '../../ui/TwoButtonOverlay';
 import ThreeButtonToggle from '../../ui/ThreeButtonToggle';
-import SingleButtonFullWidth from '../../ui/SingleButtonFullWidth';
+
 import defaultStyle from '../../../styles/defaultStyle';
 import constants from '../../../constants';
 const { c } = constants;
@@ -19,6 +19,7 @@ class CreateCampaign extends React.Component {
       length: '15',
       difficultyLevel: 'easy',
       randomEvents: 'low',
+      isLoading: false
     }
   }
 
@@ -28,11 +29,11 @@ class CreateCampaign extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate = nextProps.campaign.players && nextProps.campaign.players.length > 0 && this.props.campaign.players && this.props.campaign.players.length === 0 ;
-    console.log("CreateCampaign Should Update", shouldUpdate);
     return shouldUpdate;
   }
 
   _generateCampaign = async () => {
+    await this.setState({isLoading: true})
     const { dispatch } = this.props;
     const now = new Date();
     const timezone = -now.getTimezoneOffset()/60;
@@ -133,7 +134,8 @@ class CreateCampaign extends React.Component {
             </ScrollView>
           </View>
           <View style={createCampaignStyle.buttonContainer}>
-            <SingleButtonFullWidth title="Create Campaign" onButtonPress={this._generateCampaign}/>
+            <ButtonWithLoading isLoading={this.state.isLoading} title="Create Campaign" onButtonPress={this._generateCampaign}/>
+            
           </View>
         </View>
       </ImageBackground>
@@ -151,7 +153,9 @@ const createCampaignStyle = StyleSheet.create({
     width: '100%',
     height: heightUnit*8,
     position: 'absolute',
-    bottom: 0
+    bottom: 0,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   toggleContainer: {
     marginTop: heightUnit*2.5,

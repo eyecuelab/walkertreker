@@ -28,7 +28,6 @@ const customStyles = StyleSheet.create({
     height: heightUnit*8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: widthUnit * 2,
   },
 })
 
