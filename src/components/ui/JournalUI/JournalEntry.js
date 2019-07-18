@@ -15,6 +15,7 @@ class JournalEntry extends React.Component {
   }
 
   render() {
+    console.log("ENTRIES 0", this.entries[0])
     return (
       <View style={customStyles.entryBox} >
         <View>
