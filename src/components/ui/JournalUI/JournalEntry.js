@@ -15,8 +15,8 @@ class JournalEntry extends React.Component {
   }
 
   render() {
-    console.log("ENTRIES 0", this.entries[0])
     return (
+      this.props.entry ? 
       <View style={customStyles.entryBox} >
         <View>
           <MainText style={customStyles.entryLine}>{this.entries[0]}</MainText>
@@ -29,7 +29,7 @@ class JournalEntry extends React.Component {
               : null }
             {this.entries[1] ? <MainText>{this.entries[1]}</MainText> : null}
         </View>
-      </View>
+      </View> : null
     )
   }
 }
