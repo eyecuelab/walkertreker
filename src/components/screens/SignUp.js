@@ -9,7 +9,7 @@ import { phoneNumPrettyPrint } from '../../util/util';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import WithKeyboardShift from './../../util/WithKeyboardShift';
 import posed from 'react-native-pose';
-
+import WithLoading from './../ui/WithLoading';
 import constants from '../../constants';
 import ScreenContainer from '../containers/ScreenContainer';
 const { c } = constants
@@ -46,7 +46,6 @@ class SignUp extends React.Component {
 
 
   componentDidUpdate() {
-    console.log("AUTH STATE", this.props.auth);
     let auth = this.props.auth
     if (!auth.gettingPlayerId && !auth.gettingCampaignId) {
       auth.gotPlayerId ? this.props.navigation.navigate('MainApp') : this.state.newPlayerCreated ? this.recoveryText() : null;
@@ -132,7 +131,13 @@ class SignUp extends React.Component {
     }
   }
 
+  
+
   render() {
+    const ButtonWithLoading = WithLoading(SingleButtonFullWidth);
+    
+    
+    
     return (
       <ImageBackground
         source={use_item_bg}
@@ -172,11 +177,12 @@ class SignUp extends React.Component {
 
             <View style={customStyles.buttonPosition}>
               <View style={customStyles.button}>
-                <SingleButtonFullWidth
-                  title="Submit"
-                  onButtonPress={this._handleSubmit}
-                  backgroundColor="darkred"
-                />
+              <ButtonWithLoading 
+                isLoading={this.props.auth.gettingPlayerId}
+                title="Submit"
+                onButtonPress={this._handleSubmit}
+                backgroundColor="darkred"
+              />
               </View>
               <View style={customStyles.textButtonContainer}>
                 <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('AccountRecovery') }}>{this.state.recoveryText}  <TextAlt color='darkred' weight='bold'>{this.state.recoveryTextBold}</TextAlt></TextAlt>
