@@ -49,7 +49,7 @@ class SignUp extends React.Component {
     console.log("AUTH STATE", this.props.auth);
     let auth = this.props.auth
     if (!auth.gettingPlayerId && !auth.gettingCampaignId) {
-      auth.gotPlayerId ? this.props.navigation.navigate('AuthCheck') : this.state.newPlayerCreated ? this.recoveryText() : null;
+      auth.gotPlayerId ? this.props.navigation.navigate('MainApp') : this.state.newPlayerCreated ? this.recoveryText() : null;
     }
   }
 
