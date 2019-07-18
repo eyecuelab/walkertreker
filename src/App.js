@@ -141,6 +141,11 @@ class App extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    console.log("AUTH STATE", this.props.auth);
+  }
+
+
   componentWillUnmount() {
     Linking.removeEventListener('url', this.handleOpenURL);
   }
@@ -199,6 +204,7 @@ registerRootComponent(App)
 const mapStateToProps = (state) => {
   return {
     player: state.player,
+    auth: state.auth,
   }
 }
 

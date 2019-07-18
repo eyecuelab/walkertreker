@@ -28,7 +28,6 @@ const AnimatedLabel = posed.View({
   }
 });
 
-
 class SignUp extends React.Component {
   constructor(props) {
     super(props)
@@ -47,30 +46,30 @@ class SignUp extends React.Component {
 
 
   componentDidUpdate() {
-    this.props.player.id ? this.props.navigation.navigate('AuthCheck') :
-    this.state.newPlayerCreated ? this.recoveryText() : null; 
+    console.log("AUTH STATE", this.props.auth);
+    let auth = this.props.auth
+    if (!auth.gettingPlayerId && !auth.gettingCampaignId) {
+      auth.gotPlayerId ? this.props.navigation.navigate('MainApp') : this.state.newPlayerCreated ? this.recoveryText() : null;
+    }   
   }
 
-  componentWillUnmount() {
-    this.timeout ? clearTimeout(this.timeout) : null;
-  }
 
   recoveryText = () => {
-    this.timeout = setTimeout(() => {
-      if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
-        this.setState({ recoveryText: 'Signup failed. Try again, or '})
-      }
-      if (this.state.recoveryTextBold !== 'click here to recover an account.') {
-        this.setState({ recoveryTextBold: 'click here to recover an account.'})
-      }
-    }, 600)
+    if (this.state.recoveryText !== 'Signup failed. Try again, or ') {
+      this.setState({ recoveryText: 'Signup failed. Try again, or '})
+    }
+    if (this.state.recoveryTextBold !== 'click here to recover an account.') {
+      this.setState({ recoveryTextBold: 'click here to recover an account.'})
+    }
   }
 
   _handleSubmit = async () => {
     const { dispatch } = this.props;
     let prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
+    console.log(prettyPhoneNumber)
     if (prettyPhoneNumber.length === 12) {
       const pushToken = await this.registerForPushNotificationsAsync();
+      dispatch({ type: c.GETTING_PLAYERID, gettingPlayerId: true})
       dispatch({
         type: c.CREATE_PLAYER,
         name: this.state.displayName,
@@ -271,7 +270,8 @@ function mapStateToProps(state) {
   return {
     player: state.player,
     campaign: state.campaign,
-    redirect: state.redirect
+    redirect: state.redirect,
+    auth: state.auth,
   }
 }
 
