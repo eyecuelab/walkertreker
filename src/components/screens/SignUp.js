@@ -52,10 +52,9 @@ class SignUp extends React.Component {
       this.setState({isLoading: false});
     }
     if (!auth.gettingPlayerId && !auth.gettingCampaignId) {
-      auth.gotPlayerId ? this.props.navigation.navigate('MainApp') : this.state.newPlayerCreated ? this.recoveryText() : null;
-    }   
+      auth.gotPlayerId ? this.props.navigation.navigate('AuthCheck') : this.state.newPlayerCreated ? this.recoveryText() : null;
+    }
   }
-
 
   recoveryText = () => {
     if (this.state.recoveryText !== 'Signup failed. Try again, or ') {

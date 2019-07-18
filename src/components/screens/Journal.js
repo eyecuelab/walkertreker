@@ -1,26 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ScreenContainer from '../containers/ScreenContainer';  
-import { MainHeader } from './../text';
-
+import { MainHeader, MainText, SubHeader } from './../text';
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
-import JournalDisplay from '../ui/JournalDisplay'
+import JournalDisplay from '../ui/JournalUI/JournalDisplay'
+import JournalDaySlider from '../ui/JournalUI/JournalDaySlider'
 
 class Journal extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      focusedDay: this.props.campaign.currentDay,
+    }
   }
 
   componentWillMount(){
+    console.log("JOURNALS", this.props.campaign.journals)
     this.getEntriesByDay()
   }
+  
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("didFocus", async () => {
+      this.evaluateFocusedDay()
+    });
+  }
 
-  getEntriesByDay(){
+  componentWillUnmount(){
+    this.focusListener.remove();
+  }
+
+  evaluateFocusedDay = () => {
+    this.props.campaign.currentDay+1 in this.state.entryObj ? 
+      this.setState({focusedDay: this.props.campaign.currentDay + 1}) : 
+      this.setState({focusedDay: this.props.campaign.currentDay});
+  }
+
+  getEntriesByDay = async () => {
     let currentDay = 0
     let entryObj = {}
     let index = 0;
@@ -43,8 +64,13 @@ class Journal extends React.Component {
         index++;
       })
       console.log("ENTRY OBJECT:", entryObj)
-      this.setState({entryObj})
+      await this.setState({entryObj})
+      this.evaluateFocusedDay()
     }
+  }
+
+  _handleDaySliderClick = (day) => {
+    this.setState({ focusedDay: day})
   }
 
   render() {
@@ -58,15 +84,23 @@ class Journal extends React.Component {
             <View style={{ alignItems: "center"}}>
               <MainHeader>Journal</MainHeader>
             </View>
-            <View style={{height: "100%"}}>
-                <ScrollView style={{width: '100%', height: '100%'}}>
-                {Object.keys(this.state.entryObj).reverse().map((day, index)=> {
-                  return <JournalDisplay key={index} entries={this.state.entryObj[day]} entryDay={day}/>
-                })}
-                </ScrollView>
-            </View>
-              
-    
+
+            {this.props.campaign.journals.length ? 
+            <View>
+              <View style={customStyles.daySlider}>
+                <JournalDaySlider 
+                  entryObj={this.state.entryObj}
+                  focusedDay={this.state.focusedDay}
+                  onDaySliderClick={(day)=>this._handleDaySliderClick(day)} />
+              </View> 
+
+              <ScrollView style={{width: '100%', height: '100%' }}>
+                <JournalDisplay entries={this.state.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
+              </ScrollView> 
+            </View> : 
+            <SubHeader style={customStyles.noJournalWarning}>There are no journal entries to display</SubHeader>
+          }
+
           </ScreenContainer>
         </ImageBackground>
     );
@@ -77,15 +111,22 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
-  headerStyle: {
-    // flex: 1,
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start',
-    fontSize: widthUnit*9,
-    lineHeight: widthUnit*10,
-    color: 'white',
-    fontFamily: 'gore',
+  daySlider: {
+    marginTop: heightUnit*4,
+    height: heightUnit*12,
+    borderColor: 'white',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    justifyContent: "space-between",
   },
+  noJournalWarning: {
+    letterSpacing: widthUnit*0.5, 
+    lineHeight: widthUnit*8,
+    padding: '10%',
+    marginTop: widthUnit*10,
+    textAlign: 'center',
+    width: '100%',
+  }
 })
 
 function mapStateToProps(state) {

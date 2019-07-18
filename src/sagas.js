@@ -376,6 +376,7 @@ export function *updateJournal(action) {
     body: JSON.stringify({
       journalUpdate: {
         entry: action.entry,
+        votingList: action.votingList,
       }
     })
   }
@@ -390,7 +391,6 @@ export function *updateJournal(action) {
 
 export function *saveState() {
   const lastState = yield select();
-  console.log("SAVING LAST STATE AS - ", JSON.stringify(lastState), "\n SAVESTATE END \n ========================== \n");
   yield storeData('lastState', JSON.stringify(lastState));
 }
 

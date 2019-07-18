@@ -23,7 +23,7 @@ class EventResultDisplay extends React.Component {
 
   _toggleGroupVotes = () => {
     this.setState({ showGroupVotes: true })
-    console.log("Player vote: ", this.props.playerVotes)
+    console.log("Player votes: ", this.props.votesList)
   }
 
   conditionalShowVotes = () => {
@@ -32,14 +32,8 @@ class EventResultDisplay extends React.Component {
         <MainText>{this.props.resultText}</MainText>
       </View>
     } else {
-      let playerVotes = this.props.playerVotes
-      console.log("All Player votes: ", playerVotes)
-      const entriesList = []
-      Object.entries(playerVotes).map(([key, value], index) => {
-        entriesList.push(`${key} voted to ${value}`)
-      })
       return (<View style={[customStyles.textContainer, customStyles.marginTop]}>
-        {entriesList.map((entry, index) => {
+        {this.props.votesList.map((entry, index) => {
           return (<MainText style={customStyles.text} key={index} size='lg'>{entry}</MainText>)
         })}
       </View>)

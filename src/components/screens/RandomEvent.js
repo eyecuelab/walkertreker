@@ -120,6 +120,7 @@ class RandomEvent extends React.Component {
   }
 
   render() {
+    console.log(this.evt)
     return (
       <EventDisplay backgroundImage={this.props.screenProps.backgroundImage}
         onVote={(opt) => this._vote(opt)}

@@ -94,7 +94,8 @@ class App extends React.Component {
         'gore': require('../assets/fonts/goreRough.otf'),
         'verdana': require('../assets/fonts/verdana.ttf'),
         'verdanaBold': require('../assets/fonts/verdanaBold.ttf'),
-        'Gill Sans MT Condensed': require('../assets/fonts/GILC____.ttf'),
+        'Gill Sans MT Condensed': require('../assets/fonts/gillSansCondensed.ttf'),
+        'Gill Sans MT Condensed Bold': require('../assets/fonts/gillSansCondensedBold.ttf'),
       }),
       ...imageAssets,
     ]);

@@ -52,7 +52,6 @@ class BackgroundPedometer extends React.Component {
 
   componentDidUpdate() {
     this._constructDateLog();
-    console.log("THIS IS THE STATE OF AUTH FROM THE PEDOMETER", this.props.auth)
   }
 
   componentWillUnmount() {
@@ -76,6 +75,7 @@ class BackgroundPedometer extends React.Component {
     const { campaignDateArray, pedometerIsAvailable } = this.props.steps;
     const { difficultyLevel, length, startDate, stepTargets } = this.props.campaign;
     if (
+      this.props.player.id &&
       startDate !== null &&
       campaignDateArray === null &&
       pedometerIsAvailable
