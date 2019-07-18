@@ -86,7 +86,7 @@ class Journal extends React.Component {
             </View>
 
             {this.props.campaign.journals.length ? 
-            <View>
+            <View style={{width: '100%', height: '85%' }}>
               <View style={customStyles.daySlider}>
                 <JournalDaySlider 
                   entryObj={this.entryObj}

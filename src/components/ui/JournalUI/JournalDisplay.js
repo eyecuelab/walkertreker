@@ -17,9 +17,9 @@ class JournalDisplay extends React.Component {
   render() {
     const entriesObj = this.props.entries
     return (
-      <View style={customStyles.dayEntry}>
-        <TextAlt style={customStyles.dayCount}>Day {this.props.entryDay}</TextAlt>
-        {Object.keys(entriesObj).map((key) => {
+      // <View style={customStyles.dayEntry}>
+      //   <TextAlt style={customStyles.dayCount}>Day {this.props.entryDay}</TextAlt>
+        Object.keys(entriesObj).map((key) => {
           if (events[entriesObj[key].eventNumber]) {
             return (
                <JournalEntry key={entriesObj[key].id} style={customStyles.entryLine} 
@@ -32,8 +32,8 @@ class JournalDisplay extends React.Component {
                 entry={entriesObj[key].entry} />
             )}
           }
-        )}
-      </View>
+        )
+      // </View>
     );
   }
 }

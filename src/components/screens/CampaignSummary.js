@@ -85,7 +85,8 @@ class CampaignSummary extends React.Component {
 
   // TODO: when INVENTORY is fleshed out, make sure to put this function in there too
   _submitConditionalRender = () => {
-    if (this.props.player.steps) {
+
+    if (this.props.player.steps && this.props.campaign.currentDay && this.props.player.stepTargets) {
     const stepsToday = this.props.player.steps[this.props.campaign.currentDay];
     const stepTargetToday = this.props.player.stepTargets[this.props.campaign.currentDay];
     if (stepsToday > stepTargetToday) {
