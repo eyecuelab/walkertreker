@@ -16,6 +16,7 @@ class JournalEntry extends React.Component {
 
   render() {
     return (
+      this.props.entry ? 
       <View style={customStyles.entryBox} >
         <View>
           <MainText style={customStyles.entryLine}>{this.entries[0]}</MainText>
@@ -28,7 +29,7 @@ class JournalEntry extends React.Component {
               : null }
             {this.entries[1] ? <MainText>{this.entries[1]}</MainText> : null}
         </View>
-      </View>
+      </View> : null
     )
   }
 }
@@ -41,13 +42,14 @@ const customStyles = StyleSheet.create({
     paddingBottom: widthUnit*2,
   },
   entryBox: {
-    marginTop: heightUnit*1.5,
-    marginLeft: widthUnit*1.5,
-    paddingBottom: heightUnit*2,
+    backgroundColor: 'rgba(0,0,0,0.4)', 
+    marginBottom: heightUnit*4,
+    padding: heightUnit*3,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1.3, 
+    borderBottomWidth: 0.3, 
+    borderTopWidth: 0.3, 
     borderColor: '#aaa',
   },
   border: {

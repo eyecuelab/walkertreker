@@ -36,7 +36,7 @@ class Journal extends React.Component {
   }
 
   evaluateFocusedDay = () => {
-    this.props.campaign.currentDay+1 in this.state.entryObj ? 
+    this.props.campaign.currentDay+1 in this.entryObj ? 
       this.setState({focusedDay: this.props.campaign.currentDay + 1}) : 
       this.setState({focusedDay: this.props.campaign.currentDay});
   }
@@ -64,8 +64,8 @@ class Journal extends React.Component {
         index++;
       })
       console.log("ENTRY OBJECT:", entryObj)
-      await this.setState({entryObj})
-      this.evaluateFocusedDay()
+      this.entryObj = entryObj
+      await this.evaluateFocusedDay()
     }
   }
 
@@ -86,16 +86,16 @@ class Journal extends React.Component {
             </View>
 
             {this.props.campaign.journals.length ? 
-            <View>
+            <View style={{width: '100%', height: '85%' }}>
               <View style={customStyles.daySlider}>
                 <JournalDaySlider 
-                  entryObj={this.state.entryObj}
+                  entryObj={this.entryObj}
                   focusedDay={this.state.focusedDay}
                   onDaySliderClick={(day)=>this._handleDaySliderClick(day)} />
               </View> 
 
               <ScrollView style={{width: '100%', height: '100%' }}>
-                <JournalDisplay entries={this.state.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
+                <JournalDisplay entries={this.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
               </ScrollView> 
             </View> : 
             <SubHeader style={customStyles.noJournalWarning}>There are no journal entries to display</SubHeader>
