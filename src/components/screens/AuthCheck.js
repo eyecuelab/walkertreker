@@ -15,7 +15,7 @@ class AuthCheck extends React.Component {
     const { player, navigation, dispatch, redirect } = this.props;
     
     const redirectAction = this._checkForRedirectAction();
-    
+    console.log(player.id)
     if(!player.id && redirect.path !== 'recovery' ) {
         console.log("navigating back to auth")
         navigation.navigate('Auth');
