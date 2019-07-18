@@ -20,11 +20,11 @@ class Journal extends React.Component {
   }
 
   componentWillMount(){
+    console.log("JOURNALS", this.props.campaign.journals)
     this.getEntriesByDay()
   }
   
   componentDidMount() {
-    console.log("Focused day", this.state.focusedDay)
     const { navigation } = this.props;
     this.focusListener = navigation.addListener("didFocus", async () => {
       this.evaluateFocusedDay()
@@ -84,17 +84,23 @@ class Journal extends React.Component {
             <View style={{ alignItems: "center"}}>
               <MainHeader>Journal</MainHeader>
             </View>
-            <View style={customStyles.daySlider}>
-              <JournalDaySlider 
-                entryObj={this.state.entryObj}
-                focusedDay={this.state.focusedDay}
-                onDaySliderClick={(day)=>this._handleDaySliderClick(day)} />
-            </View>
-            <ScrollView style={{width: '100%', height: '100%' }}>
-              
-              <JournalDisplay entries={this.state.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
 
-            </ScrollView>
+            {this.props.campaign.journals.length ? 
+            <View>
+              <View style={customStyles.daySlider}>
+                <JournalDaySlider 
+                  entryObj={this.state.entryObj}
+                  focusedDay={this.state.focusedDay}
+                  onDaySliderClick={(day)=>this._handleDaySliderClick(day)} />
+              </View> 
+
+              <ScrollView style={{width: '100%', height: '100%' }}>
+                <JournalDisplay entries={this.state.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
+              </ScrollView> 
+            </View> : 
+            <SubHeader style={customStyles.noJournalWarning}>There are no journal entries to display</SubHeader>
+          }
+
           </ScreenContainer>
         </ImageBackground>
     );
@@ -113,6 +119,13 @@ const customStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "space-between",
   },
+  noJournalWarning: {
+    letterSpacing: widthUnit*0.5, 
+    lineHeight: widthUnit*8,
+    marginTop: widthUnit*8,
+    textAlign: 'center',
+    width: '90%',
+  }
 })
 
 function mapStateToProps(state) {

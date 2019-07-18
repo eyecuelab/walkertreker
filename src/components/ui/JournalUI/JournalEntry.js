@@ -11,9 +11,7 @@ class JournalEntry extends React.Component {
   }
 
   componentWillMount() {
-    console.log("ENTRIES IN JOURNAL ENTRY", this.props.entry)
     this.props.entry ? this.entries = this.props.entry.split('//') : null;
-    console.log("ENTRIES IN JOURNAL ENTRY", this.entries)
   }
 
   render() {

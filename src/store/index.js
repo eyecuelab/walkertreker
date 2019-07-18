@@ -36,12 +36,11 @@ export const persistor = persistStore(store, null, () => {
     store.dispatch({ type: 'GETTING_PLAYERID', gettingPlayerId: true })
     store.dispatch({ type: 'FETCH_PLAYER', playId: playerId });
     
-    if (campaignId) {
-      console.log("ATTEMPTING TO FETCH CAMPAIGN +++++++++++++++++ \n");
-      store.dispatch({ type: 'GETTING_CAMPAIGNID', gettingCampaignId: true })
-      store.dispatch({ type: 'FETCH_CAMPAIGN_INFO', id: campaignId });
-    }
   }
-
+  if (campaignId) {
+    console.log("ATTEMPTING TO FETCH CAMPAIGN +++++++++++++++++ \n");
+    store.dispatch({ type: 'GETTING_CAMPAIGNID', gettingCampaignId: true })
+    store.dispatch({ type: 'FETCH_CAMPAIGN_INFO', id: campaignId });
+  }
 });
 

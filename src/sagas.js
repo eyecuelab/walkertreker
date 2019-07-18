@@ -246,7 +246,6 @@ export function *fetchPlayer(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
-    console.log("IN SAGA, PLAYER FETCHED FOSHO", response)
     yield put({type: c.PLAYER_FETCHED, player: response});
     yield put({type: c.HAVE_PLAYERID, gotPlayerId: true});
   } catch (error) {

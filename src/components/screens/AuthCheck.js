@@ -8,18 +8,18 @@ const { c } = constants;
 
 
 class AuthCheck extends React.Component {
+
   async componentDidMount() {
-    console.log("AuthCheck Moutning")
+    console.log("AuthCheck Mounting")
 
     const { player, navigation, dispatch, redirect } = this.props;
     
-
     const redirectAction = this._checkForRedirectAction();
     
     if(!player.id && redirect.path !== 'recovery' ) {
-      
+        console.log("navigating back to auth")
         navigation.navigate('Auth');
-     
+    
     } else if(redirectAction){
       console.log("redirect", redirectAction)
       navigation.navigate(redirectAction); 
@@ -31,6 +31,7 @@ class AuthCheck extends React.Component {
   }
 
   _checkForRedirectAction() {
+    console.log("IN REDIRECT ACTION")
     const { redirect, navigation } = this.props;
     if (redirect.path) {
       return navigation.dangerouslyGetParent().router.getActionForPathAndParams(redirect.path, redirect.queryParams);

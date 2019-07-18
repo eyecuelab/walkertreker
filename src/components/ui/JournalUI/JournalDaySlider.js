@@ -73,14 +73,6 @@ const customStyles = StyleSheet.create({
     lineHeight: widthUnit*5,
     paddingTop: widthUnit*4,
   },
-  daySlider: {
-    marginTop: heightUnit*4,
-    height: heightUnit*12,
-    borderColor: 'white',
-    borderTopWidth: 1,
-    flexDirection: 'row',
-    justifyContent: "space-between",
-  },
   sliderLine: {
     width: '50%',
     borderColor: 'white',
