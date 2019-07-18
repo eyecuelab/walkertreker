@@ -9,7 +9,7 @@ import { phoneNumPrettyPrint } from '../../util/util';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import WithKeyboardShift from './../../util/WithKeyboardShift';
 import posed from 'react-native-pose';
-
+import ButtonWithLoading from './../ui/Buttons/ButtonWithLoading';
 import constants from '../../constants';
 import ScreenContainer from '../containers/ScreenContainer';
 const { c } = constants
@@ -40,14 +40,17 @@ class SignUp extends React.Component {
       didFocusPhone: 'inInput',
       didFocusName: 'inInput',
       newPlayerCreated: false,
+      isLoading: false,
     }
     this.animationInterval = null
   }
 
 
-  componentDidUpdate() {
-    console.log("AUTH STATE", this.props.auth);
+  componentDidUpdate(prevProps, prevState) {
     let auth = this.props.auth
+    if (prevProps.auth.gettingPlayerId && !auth.gettingPlayerId) {
+      this.setState({isLoading: false});
+    }
     if (!auth.gettingPlayerId && !auth.gettingCampaignId) {
       auth.gotPlayerId ? this.props.navigation.navigate('MainApp') : this.state.newPlayerCreated ? this.recoveryText() : null;
     }
@@ -63,6 +66,7 @@ class SignUp extends React.Component {
   }
 
   _handleSubmit = async () => {
+    this.setState({isLoading : true});
     const { dispatch } = this.props;
     let prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
     console.log(prettyPhoneNumber)
@@ -131,6 +135,8 @@ class SignUp extends React.Component {
     }
   }
 
+  
+
   render() {
     return (
       <ImageBackground
@@ -171,11 +177,12 @@ class SignUp extends React.Component {
 
             <View style={customStyles.buttonPosition}>
               <View style={customStyles.button}>
-                <SingleButtonFullWidth
-                  title="Submit"
-                  onButtonPress={this._handleSubmit}
-                  backgroundColor="darkred"
-                />
+              <ButtonWithLoading 
+                isLoading={this.state.isLoading}
+                title="Submit"
+                onButtonPress={this._handleSubmit}
+                backgroundColor="darkred"
+              />
               </View>
               <View style={customStyles.textButtonContainer}>
                 <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('AccountRecovery') }}>{this.state.recoveryText}  <TextAlt color='darkred' weight='bold'>{this.state.recoveryTextBold}</TextAlt></TextAlt>
@@ -205,7 +212,6 @@ const customStyles = StyleSheet.create({
     marginBottom: heightUnit*3,
   },
   button: {
-    backgroundColor: 'black',
     width: '100%',
     height: heightUnit*10,
     borderRadius: 5,
@@ -244,6 +250,7 @@ const customStyles = StyleSheet.create({
     bottom: heightUnit*5,
     left: widthUnit*1.8,
     width: '100%',
+    justifyContent: 'center'
   },
   avatarContainer: {
     alignItems: 'center',
