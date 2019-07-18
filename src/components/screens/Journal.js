@@ -122,9 +122,10 @@ const customStyles = StyleSheet.create({
   noJournalWarning: {
     letterSpacing: widthUnit*0.5, 
     lineHeight: widthUnit*8,
-    marginTop: widthUnit*8,
+    padding: '10%',
+    marginTop: widthUnit*10,
     textAlign: 'center',
-    width: '90%',
+    width: '100%',
   }
 })
 
