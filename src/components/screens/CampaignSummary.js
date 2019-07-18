@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ImageBackground, ToastAndroid, ScrollView } fro
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import constants from '../../constants';
-
+import CampaignHeader from './../ui/CampaignHeader';
 import defaultStyle from '../../styles/defaultStyle';
 import { MainHeader } from './../text';
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
@@ -125,10 +125,8 @@ class CampaignSummary extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}>
         <ScreenContainer>
-          <DayCounter campaign={this.props.campaign} />
-          <View style={{flex: 1, alignItems: "center"}}>
-            <MainHeader>SUMMARY</MainHeader>
-          </View>
+        
+        <CampaignHeader title="Summary"/>
           
           <ScrollView style={customStyles.scrollContainer}>
             {this.props.campaign.players.map(player => {

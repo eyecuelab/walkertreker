@@ -13,7 +13,7 @@ configureStore = () => {
         key: 'root',
         storage: storage,
         stateReconciler: autoMergeLevel2,
-        whitelist: ['player', 'campaign']
+        whitelist: ['player', 'campaign', 'steps']
     }
     const persistedReducer = persistReducer(persistConfig, rootReducer);
     let sagaMiddleware = createSagaMiddleware();

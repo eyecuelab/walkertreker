@@ -25,9 +25,9 @@ const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   container: {
     width: '100%',
-    height: '100%',
-    justifyContent: 'center',
+    height: heightUnit*8,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 

@@ -1,103 +1,79 @@
 import React, { Component } from 'react';
 import { Animated, Text, View, StyleSheet, Easing } from 'react-native';
+import { Label } from './../text';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+const widthUnit = wp('1%');
+const heightUnit = hp('1%');
 
 export default class TestScreen extends Component {
   constructor() {
     super();
     this.animatedValue = new Animated.Value(0);
+    this.state = {
+      stepCount : 0
+    }
   }
     componentDidMount () {
       this.animate()
     }
 
     animate () {
-      this.animatedValue.setValue(0)
-      //Animated .timing() Method
+      this.animatedValue.addListener( ({ value }) => {
+        this.setState({ stepCount : parseInt(value, 10)});
+      });
       Animated.timing(
-        //First Argument is a AnimatedValue
         this.animatedValue,
         {
-          toValue: 1,
-          duration: 2000,
-          easing: Easing.linear
+          toValue: 3500,
+          duration: 1800,
+          easing: Easing.ease
         }
-      ).start(() => this.animate())
+      ).start()
     } 
 
   render() {
-    const marginLeft = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 300]
-    })
-    const opacity = this.animatedValue.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: [0, 1, 0]
-    })
-    const movingMargin = this.animatedValue.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: [0, 300, 0]
-    })
-    const textSize = this.animatedValue.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: [18, 32, 18]
-    })
-    const rotateX = this.animatedValue.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: ['0deg', '180deg', '0deg']
-    })
-    
-    const color = this.animatedValue.interpolate({
-      inputRange: [0, 0.99, 1],
-      outputRange: ["red", "green", "blue"]
-    })
+    const width = this.animatedValue.interpolate({
+      inputRange: [0, 3500],
+      outputRange: ['0%', '100%']
+    });
 
     return (
-      <View style={styles.container}>
-      <Animated.View
-        style={{
-          marginLeft,
-          height: 30,
-          width: 40,
-          backgroundColor: color}} />
-      <Animated.View
-        style={{
-          opacity,
-          marginTop: 10,
-          height: 30,
-          width: 40,
-          backgroundColor: 'blue'}} />
-      <Animated.View
-        style={{
-          marginLeft: movingMargin,
-          marginTop: 10,
-          height: 30,
-          width: 40,
-          backgroundColor: 'orange'}} />
-      <Animated.Text
-        style={{
-          fontSize: textSize,
-          marginTop: 10,
-          color: 'green'}} >
-          Animated Text!
-      </Animated.Text>
-      <Animated.View
-        style={{
-          transform: [{rotateX}],
-          marginTop: 50,
-          height: 30,
-          width: 40,
-          backgroundColor: 'black'}}>
-        <Text style={{color: 'white'}}>Hello from TransformX</Text>
-      </Animated.View>
+    <View style={styles.screenContainer}>
+      <View style={[styles.outerContainer]}>
+        <Animated.View style={[styles.innerContainer, {width: width}]}>
+        </Animated.View>
+          <Label style={styles.text}>{this.state.stepCount}</Label>
+      </View>
     </View>
+      
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  outerContainer: {
+    height: heightUnit*6,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    borderColor: "#A92425",
+    borderWidth: 3,
+    justifyContent: 'center',
+  },
+  innerContainer: {
+    height: "100%",
+    width: "0%",
+    backgroundColor: "#A92425"
+  },
+  screenContainer: {
     flex: 1,
-    paddingTop: 150
+    height: "100%",
+    justifyContent: 'center',
+    alignContent: "center",
+    padding: widthUnit*3
+  },
+  text: {
+    position: "absolute",
+    zIndex: 1,
+    alignSelf: "center"
   }
 })
 
