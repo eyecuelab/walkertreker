@@ -8,7 +8,7 @@ const { c, item } = constants;
 const { foodArray, medicineArray, weaponArray } = item;
 
 import ScreenContainer from '../containers/ScreenContainer';
-import {MainHeader} from './../text';
+import CampaignHeader from './../ui/CampaignHeader';
 import defaultStyle from '../../styles/defaultStyle';
 import DayCounter from '../ui/DayCounter';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
@@ -110,11 +110,7 @@ class Inventory extends React.Component {
         </Modal>
 
         <ScreenContainer>
-          <DayCounter campaign={this.props.campaign} />
-         
-          <View style={{flex: 1, alignItems: "center"}}>
-            <MainHeader>INVENTORY</MainHeader>
-          </View>
+          <CampaignHeader title="Inventory"/>
             
             
 

@@ -9,21 +9,23 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
 
 configureStore = () => {
-  const persistConfig = {
-    key: 'root',
-    storage: storage,
-    stateReconciler: autoMergeLevel2,
-    whitelist: ['player', 'campaign']
-  }
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
-  let sagaMiddleware = createSagaMiddleware();
-  const store = createStore(
-    persistedReducer,
-    undefined,
-    applyMiddleware(sagaMiddleware)
-  );
-  sagaMiddleware.run(rootSaga);
-  return store;
+
+    const persistConfig = {
+        key: 'root',
+        storage: storage,
+        stateReconciler: autoMergeLevel2,
+        whitelist: ['player', 'campaign', 'steps']
+    }
+    const persistedReducer = persistReducer(persistConfig, rootReducer);
+    let sagaMiddleware = createSagaMiddleware();
+    const store = createStore(
+        persistedReducer,
+        undefined,
+        applyMiddleware(sagaMiddleware)
+    );
+    sagaMiddleware.run(rootSaga);
+    return store;
+
 }
 export const store = configureStore();
 
