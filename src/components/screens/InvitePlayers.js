@@ -4,7 +4,7 @@ import { Contacts, Permissions, Linking } from 'expo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import constants from '../../constants';
-const { c, storeData, retrieveData } = constants;
+const { c } = constants;
 import ContactsList from '../ui/ContactsList';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
 import defaultStyle from '../../styles/defaultStyle';

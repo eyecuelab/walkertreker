@@ -86,34 +86,34 @@ class CampaignSummary extends React.Component {
   // TODO: when INVENTORY is fleshed out, make sure to put this function in there too
   _submitConditionalRender = () => {
 
-    if (this.props.player.steps && this.props.campaign.currentDay && this.props.player.stepTargets) {
-    const stepsToday = this.props.player.steps[this.props.campaign.currentDay];
-    const stepTargetToday = this.props.player.stepTargets[this.props.campaign.currentDay];
-    if (stepsToday > stepTargetToday) {
-    // if (false) {
-      return (
-        <View style={{width: '100%'}}>
-          <View style={customStyles.buttonContainer}>
-            <SingleButtonFullWidth
-              title='Safehouse'
-              backgroundColor='black'
-              onButtonPress={this._onButtonPressSafehouse} />
+    if (this.props.player.steps && this.props.player.stepTargets) {
+      const stepsToday = this.props.player.steps[this.props.campaign.currentDay];
+      const stepTargetToday = this.props.player.stepTargets[this.props.campaign.currentDay];
+      if (stepsToday > stepTargetToday) {
+      // if (false) {
+        return (
+          <View style={{width: '100%'}}>
+            <View style={customStyles.buttonContainer}>
+              <SingleButtonFullWidth
+                title='Safehouse'
+                backgroundColor='black'
+                onButtonPress={this._onButtonPressSafehouse} />
+            </View>
           </View>
-        </View>
-      );
-    } else {
-      return (
-        <View style={{width: '100%'}}>
-          <View style={customStyles.buttonContainer}>
-            <SingleButtonFullWidth
-              title='Safehouse'
-              backgroundColor='darkgray'
-              onButtonPress={this._onButtonPressNothing} />
+        );
+      } else {
+        return (
+          <View style={{width: '100%'}}>
+            <View style={customStyles.buttonContainer}>
+              <SingleButtonFullWidth
+                title='Safehouse'
+                backgroundColor='darkgray'
+                onButtonPress={this._onButtonPressNothing} />
+            </View>
           </View>
-        </View>
-      );
+        );
+      }
     }
-  }
   }
 
   _showToast = (msg) => {

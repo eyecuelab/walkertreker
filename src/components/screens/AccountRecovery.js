@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpa
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import { phoneNumPrettyPrint } from '../../util/util';
-import { MainHeader, SubHeader, TextAlt, Label } from './../text';
+import { MainHeader, SubHeader, TextAlt, Label } from '../text';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import posed from 'react-native-pose';
 import defaultStyle from '../../styles/defaultStyle';
@@ -83,7 +83,7 @@ class RecoverAccountModal extends React.Component {
           <View style={[customStyles.container, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
             <View style={customStyles.headlineContainer}>
               <MainHeader>Account Recovery</MainHeader>
-              <TextAlt style={{marginTop: 12}}>You will receive a text to recover your account</TextAlt>
+              <TextAlt style={{marginTop: widthUnit*12}}>You will receive a text to recover your account</TextAlt>
             </View>
 
             <View style={customStyles.fieldContainer}>
@@ -101,7 +101,7 @@ class RecoverAccountModal extends React.Component {
             <View style={customStyles.formContainer}>
               {this.noNumberError()}
             </View>
-            <View>
+            <View style={customStyles.buttonPosition}>
               <View style={customStyles.button}>
                 <SingleButtonFullWidth
                   title="Recover"
@@ -109,19 +109,10 @@ class RecoverAccountModal extends React.Component {
                   backgroundColor="darkred"
                 />
               </View>
+              <View style={customStyles.textButtonContainer}>
+                <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('SignUp') }}>Go back to <TextAlt color='darkred' weight='bold'>New Player Sign Up</TextAlt></TextAlt>
+              </View>
             </View>
-            <View style={customStyles.textButtonContainer}>
-              <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('SignUp') }}>Go back to <TextAlt color='darkred' weight='bold'>New Player Sign Up</TextAlt></TextAlt>
-            </View>
-                    {/* <View style={customStyles.textButtonContainer}>
-            <TwoButtonOverlay
-              button1title="Recover Account"
-              button1onPress={this._handleRecovery}
-              button1color='darkred'
-              button2title="New Player"
-              button2onPress={() => {this.props.navigation.goBack()}}
-              button2color='darkred' />
-          </View> */}
           </View>
         </ScreenContainer>
       </ImageBackground>
@@ -143,6 +134,7 @@ const customStyles = StyleSheet.create({
   },
   fieldContainer: {
     margin: 6,
+    marginTop: heightUnit*2.5,
     marginBottom: heightUnit*3,
   },
   button: {
@@ -164,6 +156,14 @@ const customStyles = StyleSheet.create({
     color: 'white',
     fontFamily: 'gore',
     zIndex: 0
+  },
+  buttonPosition: {
+    margin: 6,
+    position: 'absolute',
+    bottom: heightUnit*5,
+    left: widthUnit*1.8,
+    width: '100%',
+    justifyContent: 'center'
   },
   labelPosition: {
     position: 'absolute',

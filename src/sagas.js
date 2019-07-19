@@ -72,7 +72,6 @@ export function *setInitialCampaignDetails(action) {
 
 export function *sendInvites(action) {
   const url = `${endpoint}/api/campaigns/invite/` + action.campId;
-  const theBody = {};
   const phoneNums = Object.keys(action.invites);
   for (pNumber of phoneNums) {
     const aBody =
@@ -389,6 +388,31 @@ export function *updateJournal(action) {
   }
 }
 
+export function *useInventory(action) {
+  const url = `${endpoint}/api/inventories/` + action.inventoryId;
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      inventoryUpdate: {
+        used: true,
+        usedBy: action.usedBy,
+        usedById: action.userUuid,
+      }
+    })
+  }
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    console.log("response of update inventory", response)
+  } catch (err) {
+    console.warn('error updating inventory entry: ', err);
+  }
+}
+
 export function *saveState() {
   const lastState = yield select();
   yield storeData('lastState', JSON.stringify(lastState));
@@ -641,6 +665,11 @@ export function *watchUpdateJournal() {
   yield takeLatest(c.UPDATE_JOURNAL, updateJournal)
 }
 
+// inventory sagas 
+export function *watchUseInventory() {
+  yield takeEvery(c.USE_INVENTORY, useInventory)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
@@ -669,6 +698,7 @@ export default function *rootSaga() {
     watchGetLastStepState(),
     watchStartScavenge(),
     watchHungerAndHealth(),
+    watchUseInventory(),
     watchCastVote(),
     watchUpdateJournal(),
   ])

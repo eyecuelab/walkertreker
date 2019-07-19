@@ -21,7 +21,7 @@ import CampaignIsWon from '../components/screens/CampaignIsWon';
 import RecoverAccount from '../components/screens/RecoverAccount';
 import AuthCheck from './../components/screens/AuthCheck';
 import SignUp from './../components/screens/SignUp';
-import AccountRecovery from './../components/ui/AccountRecovery';
+import AccountRecovery from './../components/screens/AccountRecovery';
 import MainAppRouter from './../components/screens/MainAppRouter';
 import Lobby from './../components/screens/Lobby';
 import TEST_SCREEN from './../components/screens/TEST_SCREEN'

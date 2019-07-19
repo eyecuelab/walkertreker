@@ -31,6 +31,7 @@ class Safehouse extends React.Component {
   }
 
   componentDidMount() {
+    console.log("STEPS IN SAFEHOUSE: ", this.props.steps)
     const { scavengingFor, justScavenged } = this.props.steps;
     if ((scavengingFor && justScavenged) && this.state.foundModalVisible === false) {
       this.setState({foundModalVisible: true});

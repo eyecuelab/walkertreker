@@ -18,7 +18,7 @@ class MedicineModal extends React.Component {
       handleModalStateChange();
     } else if (num === 1) {
       const { index, dispatch } = this.props;
-      const { medicineItems } = this.props.campaign.inventory;
+
       const { health, hunger } = this.props.player;
       let newHealth = health + 20;
       let newHunger = hunger;
@@ -28,7 +28,7 @@ class MedicineModal extends React.Component {
       if (newHunger > 100) {
         newHunger = 100;
       }
-      medicineItems.splice(index, 1)
+      dispatch({ type: c.USE_INVENTORY, inventoryId: index, usedBy: 'player', usedById: player.id })
       dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
       handleModalStateChange();
     }

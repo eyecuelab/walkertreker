@@ -14,6 +14,7 @@ class FoodModal extends React.Component {
 
   _eatTheFood = (num) => {
     const { dispatch, handleModalStateChange, player, campaign } = this.props;
+    console.log("Inventory before", this.props.campaign.inventory)
     if (num === 0) {
       handleModalStateChange();
     } else if (num === 1) {
@@ -28,9 +29,10 @@ class FoodModal extends React.Component {
       if (newHunger > 100) {
         newHunger = 100;
       }
-      foodItems.splice(index, 1);
+      dispatch({ type: c.USE_INVENTORY, inventoryId: index, usedBy: 'player', usedById: player.id })
       dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
       handleModalStateChange();
+      console.log("Inventory after", this.props.campaign.inventory)
     }
   }
 
