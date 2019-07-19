@@ -7,9 +7,7 @@ const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 /////////////////////////////////////
 
-
-function SubHeader(props) {
-  const StyledText = styled.Text`
+const StyledText = styled.Text`
   font-family: gore;
   font-size: ${widthUnit*8};
   
@@ -21,10 +19,14 @@ function SubHeader(props) {
     text-shadow-offset: 0px 2px;
     text-shadow-radius: 1px;`
   }
-  `;
-  return (
-    <StyledText {...props}>{props.children}</StyledText>
-  )
+`;
+
+class SubHeader extends React.Component {
+  render() {
+    return (
+      <StyledText {...this.props}>{this.props.children}</StyledText>
+    )
+  }
 }
 
 export default SubHeader;
