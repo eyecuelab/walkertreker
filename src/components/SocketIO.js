@@ -2,7 +2,7 @@ import React from 'react';
 import { Permissions, Notifications } from 'expo';
 import { connect } from 'react-redux';
 import constants from '../constants';
-const { c, retrieveData, storeData } = constants;
+const { c } = constants;
 import socket from '../socket';
 import NavigationService from '../nav/NavigationService';
 

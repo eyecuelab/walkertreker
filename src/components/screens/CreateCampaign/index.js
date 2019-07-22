@@ -52,7 +52,6 @@ class CreateCampaign extends React.Component {
   }
 
   _updateCampaignLength = num => {
-    const { dispatch } = this.props;
     let newLength;
     if (num === 0) {newLength = '15'}
     else if (num === 1) {newLength = '30'}
@@ -61,7 +60,6 @@ class CreateCampaign extends React.Component {
   }
 
   _updateCampaignDifficulty = num => {
-    const { dispatch } = this.props;
     let newDifficulty;
     if (num === 0) {newDifficulty = 'easy';}
     else if (num === 1) {newDifficulty = 'hard';}
@@ -70,7 +68,6 @@ class CreateCampaign extends React.Component {
   }
 
   _updateRandomEvents = num => {
-    const { dispatch } = this.props;
     let newEvents;
     if (num === 0) {newEvents = 'low';}
     else if (num === 1) {newEvents = 'mid';}

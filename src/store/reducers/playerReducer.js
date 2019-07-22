@@ -1,10 +1,9 @@
 import { v4 } from 'uuid';
 import constants from './../../constants';
-const { c, storeData, retrieveData, initialState: { player } } = constants;
+const { c, initialState: { player } } = constants;
 
 export default (state = player, action) => {
   switch (action.type) {
-
     case c.PLAYER_CREATED:
       newState = Object.assign({}, state, action.player);
       return newState;

@@ -25,8 +25,8 @@ configureStore = () => {
     );
     sagaMiddleware.run(rootSaga);
     return store;
-
 }
+
 export const store = configureStore();
 
 export const persistor = persistStore(store, null, () => {
@@ -37,7 +37,6 @@ export const persistor = persistStore(store, null, () => {
     console.log("ATTEMPTING TO FETCH PLAYER +++++++++++++++++ \n");
     store.dispatch({ type: 'GETTING_PLAYERID', gettingPlayerId: true })
     store.dispatch({ type: 'FETCH_PLAYER', playId: playerId });
-    
   }
   if (campaignId) {
     console.log("ATTEMPTING TO FETCH CAMPAIGN +++++++++++++++++ \n");

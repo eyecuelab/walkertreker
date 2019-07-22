@@ -72,7 +72,6 @@ export function *setInitialCampaignDetails(action) {
 
 export function *sendInvites(action) {
   const url = `${endpoint}/api/campaigns/invite/` + action.campId;
-  const theBody = {};
   const phoneNums = Object.keys(action.invites);
   for (pNumber of phoneNums) {
     const aBody =
@@ -358,7 +357,6 @@ export function *castPlayerVote(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
-    console.log("response of player cast vote", response)
     // yield put({type: c.PLAYER_VOTE_CAST, vote: response});
   } catch (error) {
     console.warn('error casting player vote details: ', error);
@@ -383,9 +381,58 @@ export function *updateJournal(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json())
-    console.log("response of updateJournal from Event", response)
   } catch (err) {
     console.warn('error updating journal entry: ', err);
+  }
+}
+
+export function *useInventory(action) {
+  const url = `${endpoint}/api/inventories/` + action.inventoryId;
+  const initObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      inventoryUpdate: {
+        used: true,
+        usedBy: action.usedBy,
+        usedById: action.usedById,
+      }
+    })
+  }
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    console.log("response of update inventory", response)
+  } catch (err) {
+    console.warn('error updating inventory entry: ', err);
+  }
+}
+
+export function *receiveInventory(action) {
+  const url = `${endpoint}/api/inventories/` + action.campaignId;
+  const initObj = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      used: false,
+      addedBy: action.addedBy,
+      addedById: action.addedById,
+      itemType: action.itemType,
+      itemNumber: action.itemNumber
+    })
+  }
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    console.log("response of adding inventory", response)
+  } catch (err) {
+    console.warn('error updating inventory entry: ', err);
   }
 }
 
@@ -396,29 +443,19 @@ export function *saveState() {
 
 export function *checkBonusSteps(action) {
   const { steps, stepTargets } = action.player;
-  const { currentDay, inventory, startDate } = yield select(getCampaign);
+  const { currentDay, startDate, id } = yield select(getCampaign);
   const { campaignDateArray, scavengingFor } = yield select(getSteps);
 
   if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
+    console.log("nothing to update in check steps")
     return; // there is no player or game or steps or step targets, so bye
   }
-
   const stepGoalToday = stepTargets[currentDay];
   const stepsToday = steps[currentDay];
   const newBonus = stepsToday - stepGoalToday;
   const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
   const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
-  // if (
-  //   // no additional bonus steps have been taken
-  //   stepsToday >= stepGoalToday &&
-  //   bonusStepsToday !== null &&
-  //   newBonus - (timesScavengedToday * 500) < 500 &&
-  //   newBonus <= bonusStepsToday
-  // ) {
-  //   return; // there is nothing to do
-  //
-  // } else
   if (
     // there are bonus steps for the first time today
     stepsToday >= stepGoalToday &&
@@ -444,7 +481,9 @@ export function *checkBonusSteps(action) {
     scavengingFor
   ) {
     yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday, inventory: inventory});
+    yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday });
+    yield put({type: c.FETCH_CAMPAIGN_INFO, id: id });
+
   } else {
     return;
   }
@@ -453,39 +492,47 @@ export function *checkBonusSteps(action) {
 export function *scavenge(action) {
   console.log('MADE IT TO SCAVENGE');
   const newTimesScavenged = action.timesScavengedToday + 1;
-  const itemsScavenged = Object.assign({}, action.inventory);
-  const { scavengingFor, justScavenged } = yield select(getSteps);
+  const player = yield select(getPlayer);
+  const campaign = yield select(getCampaign);
+  
+  const { scavengingFor, itemScavenged } = yield select(getSteps);
+
   const rando = (x) => Math.floor(Math.random() * x);
   let newItem;
+  let itemType;
 
-  if (scavengingFor === null || justScavenged) {
+  if (scavengingFor === null || itemScavenged) {
     return;
   }
 
   console.log('newTimesScavenged', newTimesScavenged);
-  console.log('itemsScavenged', itemsScavenged);
   console.log('scavengingFor', scavengingFor);
 
   if (scavengingFor === 'food') {
     newItem = rando(9);
-    itemsScavenged.foodItems.push(newItem);
-    console.log('newItem', newItem);
+    itemType = 'food'
   } else if (scavengingFor === 'medicine') {
     newItem = rando(6);
-    itemsScavenged.medicineItems.push(newItem);
-    console.log('newItem', newItem);
+    itemType = 'med'
   } else if (scavengingFor === 'weapons') {
     newItem = rando(9);
-    itemsScavenged.weaponItems.push(newItem);
-    console.log('newItem', newItem);
+    itemType = 'weapon'
   } else {
     console.warn('the scavenge function can\'t tell what to scavenge');
   } 
 
-  console.log('made it through the scavenge branching');
+  console.log('made it through the scavenge branching, NEW ITEM: ', newItem);
 
-  yield put({type: c.ADD_SCAVENGED_ITEMS, currentDay: action.currentDay, bonus: action.bonus, timesScavenged: newTimesScavenged, inventory: itemsScavenged});
-  yield put({type: c.DONE_SCAVENGING, justScavenged: newItem });
+  yield put({ type: c.RECEIVE_INVENTORY, 
+    addedBy: 'player', 
+    addedById: player.id, 
+    campaignId: campaign.id,
+    itemType: itemType,
+    itemNumber: newItem
+  })
+  yield put({type: c.UPDATE_CAMPAIGN_WITH_SCAVENGE, currentDay: action.currentDay, bonus: action.bonus, timesScavenged: newTimesScavenged });
+  yield put({type: c.DONE_SCAVENGING, itemScavenged: newItem });
+
 }
 
 export function *updateHungerAndHealth(action) {
@@ -564,7 +611,6 @@ export function *watchJoinCampaign() {
   yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest);
 }
 
-
 //Player Sagas
 export function *watchCreatePlayer() {
   yield takeEvery(c.CREATE_PLAYER, createPlayer);
@@ -604,7 +650,7 @@ export function *watchAppStateChange() {
 
 export function *watchPlayerActions() {
   while (true) {
-    yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED /*, c.PLAYER_UPDATED*/]);
+    yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED]);
     const player = yield select(getPlayer);
     yield put({type: c.FETCH_CAMPAIGN_INFO, id: player.campaignId})
   }
@@ -614,10 +660,8 @@ export function *watchPlayerUpdated() {
   yield takeLatest(c.PLAYER_UPDATED, checkBonusSteps);
 }
 
-export function *watchScavengedItems() {
-  const action = yield take(c.ADD_SCAVENGED_ITEMS);
-  const campaign = yield select(getCampaign);
-  yield put({type: c.UPDATE_CAMPAIGN, campId: campaign.id, inventory: action.inventory});
+export function *watchCheckBonusSteps() {
+  yield takeLatest(c.CHECK_BONUS_STEPS, checkBonusSteps)
 }
 
 export function *watchGetLastStepState() {
@@ -641,6 +685,15 @@ export function *watchUpdateJournal() {
   yield takeLatest(c.UPDATE_JOURNAL, updateJournal)
 }
 
+// inventory sagas 
+export function *watchReceiveInventory() {
+  yield takeEvery(c.RECEIVE_INVENTORY, receiveInventory)
+}
+
+export function *watchUseInventory() {
+  yield takeEvery(c.USE_INVENTORY, useInventory)
+}
+
 // root saga ==============================
 
 export default function *rootSaga() {
@@ -660,15 +713,17 @@ export default function *rootSaga() {
     watchInitialCampaignDetails(),
     watchSetDates(),
     watchStepUpdates(),
+    watchCheckBonusSteps(),
     watchPlayerStepsUpdated(),
     watchSteps(),
     watchPlayerActions(),
     watchPlayerUpdated(),
     watchRecoverAccount(),
-    watchScavengedItems(),
     watchGetLastStepState(),
     watchStartScavenge(),
     watchHungerAndHealth(),
+    watchUseInventory(),
+    watchReceiveInventory(),
     watchCastVote(),
     watchUpdateJournal(),
   ])

@@ -3,7 +3,7 @@ import { AsyncStorage, ImageBackground } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import constants from '../constants';
-const { c, retrieveData, storeData, navigation } = constants;
+const { c, navigation } = constants;
 
 class Start extends React.Component {
   constructor(props) {

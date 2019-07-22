@@ -1,5 +1,5 @@
 import constants from './../../constants';
-const { c, storeData, initialState: { campaign } } = constants;
+const { c, initialState: { campaign } } = constants;
 
 
 export default (state = campaign, action) => {
