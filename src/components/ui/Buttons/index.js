@@ -1,5 +1,7 @@
 import ButtonWithLoading from './ButtonWithLoading';
+import TouchableWithLoading from './TouchableWithLoading';
 
 export {
-  ButtonWithLoading
+  ButtonWithLoading,
+  TouchableWithLoading
 }

@@ -9,32 +9,10 @@ import constants from '../../constants';
 const { c, item } = constants;
 const { foodArray } = item;
 const use_item_bg = require('../../../assets/use_item_bg.png');
+import TouchableWithLoading from './../ui/Buttons/TouchableWithLoading';
+
 
 class FoodModal extends React.Component {
-
-  _eatTheFood = (num) => {
-    const { dispatch, handleModalStateChange, player, campaign } = this.props;
-    console.log("Inventory before", this.props.campaign.inventory)
-    if (num === 0) {
-      handleModalStateChange();
-    } else if (num === 1) {
-      const { index, dispatch } = this.props;
-      const { foodItems } = this.props.campaign.inventory;
-      const { health, hunger } = this.props.player;
-      let newHealth = health + 5;
-      let newHunger = hunger + 15;
-      if (newHealth > 100) {
-        newHealth = 100;
-      }
-      if (newHunger > 100) {
-        newHunger = 100;
-      }
-      dispatch({ type: c.USE_INVENTORY, inventoryId: index, usedBy: 'player', usedById: player.id })
-      dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
-      handleModalStateChange();
-      console.log("Inventory after", this.props.campaign.inventory)
-    }
-  }
 
   render() {
     return(
@@ -62,17 +40,18 @@ class FoodModal extends React.Component {
 
             <View>
               <View style={customStyles.buttonContainer}>
-                <TouchableOpacity
+                <TouchableWithLoading
+                  isLoading={this.props.isLoading}                
                   style={customStyles.button}
-                  onPress={()=>{this._eatTheFood(1)}}>
+                  onPress={()=>{this.props.onEatTheFood(1)}}>
                   <Text style={styles.label}>Yes</Text>
-                </TouchableOpacity>
+                </TouchableWithLoading>
               </View>
 
               <View style={customStyles.buttonContainer}>
                 <TouchableOpacity
                   style={customStyles.button}
-                  onPress={()=>{this._eatTheFood(0)}}>
+                  onPress={()=>{this.props.onEatTheFood(0)}}>
                   <Text style={styles.label}>No</Text>
                 </TouchableOpacity>
               </View>
@@ -101,9 +80,10 @@ const customStyles = StyleSheet.create({
 
   },
   buttonContainer: {
-    // margin: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    height: heightUnit * 8,
+    marginTop: widthUnit * 2,
   },
   button: {
     backgroundColor: 'darkred',
@@ -111,7 +91,6 @@ const customStyles = StyleSheet.create({
     height: heightUnit * 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: widthUnit * 2,
   },
   itemBg: {
     width: undefined,

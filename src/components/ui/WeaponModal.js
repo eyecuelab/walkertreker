@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
+import TouchableWithLoading from './../ui/Buttons/TouchableWithLoading';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
@@ -11,11 +12,6 @@ const { weaponArray } = item;
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
 class WeaponModal extends React.Component {
-
-  _dismissTheWeapon = () => {
-    const { handleModalStateChange } = this.props;
-    handleModalStateChange();
-  }
 
   render() {
     return(
@@ -41,12 +37,11 @@ class WeaponModal extends React.Component {
               resizeMode='contain' />
           </View>
 
-
           <View>
             <View style={customStyles.buttonContainer}>
               <TouchableOpacity
                 style={customStyles.button}
-                onPress={this._dismissTheWeapon}>
+                onPress={this.props.onDismissTheWeapon}>
                 <Text style={styles.label}>OK</Text>
               </TouchableOpacity>
             </View>

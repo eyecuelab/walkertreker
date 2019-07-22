@@ -29,6 +29,7 @@ class Inventory extends React.Component {
       weaponModalVisible: false,
       modalIndex: null,
       modalValue: null,
+      isLoading: false,
     }
   }
   
@@ -61,13 +62,13 @@ class Inventory extends React.Component {
   }
 
   _onItemPress = (type, value, index) => {
-    this.setState({
-      modalValue: value,
-      modalIndex: index
-    });
     type === 'food' ? this._toggleFoodModal() :
     type === 'medicine' ? this._toggleMedicineModal() :
     type === 'weapon' ? this._toggleWeaponModal() : null;
+    this.setState({
+      modalValue: value,
+      modalIndex: index,
+    });
   }
 
   formatInventory = () => {
@@ -83,6 +84,54 @@ class Inventory extends React.Component {
     })
   }
 
+  _eatTheFood = (num) => {
+    const { dispatch, player } = this.props;
+    if (num === 0) {
+      this._toggleFoodModal()
+    } else if (num === 1) {
+      this.setState({ isLoading: true })
+      const { health, hunger } = player;
+      let newHealth = health + 5;
+      let newHunger = hunger + 15;
+      if (newHealth > 100) {
+        newHealth = 100;
+      }
+      if (newHunger > 100) {
+        newHunger = 100;
+      }
+      dispatch({ type: c.USE_INVENTORY, inventoryId: this.state.modalIndex, usedBy: 'player', usedById: player.id })
+      dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
+      
+      setTimeout(() => {
+        this._toggleFoodModal()
+        this.setState({ isLoading: false })
+      }, 200)
+    }
+  }
+
+  _takeTheMedicine = (num) => {
+    if (num === 0) {
+      this._toggleMedicineModal();
+    } else if (num === 1) {
+      this.setState({ isLoading: true })
+      const { dispatch, player } = this.props;
+      let newHealth = player.health + 20;
+      let newHunger = player.hunger;
+      if (newHealth > 100) {
+        newHealth = 100;
+      }
+      if (newHunger > 100) {
+        newHunger = 100;
+      }
+      dispatch({ type: c.USE_INVENTORY, inventoryId: this.state.modalIndex, usedBy: 'player', usedById: player.id })
+      dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
+      setTimeout(() => {
+        this._toggleMedicineModal()
+        this.setState({ isLoading: false })
+      }, 200)
+    }
+  }
+
   render() {
     return (
       <ImageBackground
@@ -91,30 +140,27 @@ class Inventory extends React.Component {
 
         <Modal isVisible={this.state.foodModalVisible}>
           <FoodModal
-            handleModalStateChange={this._toggleFoodModal}
-            index={this.state.modalIndex}
+            onEatTheFood={(num) => this._eatTheFood(num)}
+            isLoading={this.state.isLoading}
             value={this.state.modalValue} />
         </Modal>
 
         <Modal isVisible={this.state.medicineModalVisible}>
           <MedicineModal
-            handleModalStateChange={this._toggleMedicineModal}
-            index={this.state.modalIndex}
+            onTakeTheMedicine={(num) => this._takeTheMedicine(num)}
+            isLoading={this.state.isLoading}
             value={this.state.modalValue} />
         </Modal>
 
         <Modal isVisible={this.state.weaponModalVisible}>
           <WeaponModal
-            handleModalStateChange={this._toggleWeaponModal}
-            index={this.state.modalIndex}
+            onDismissTheWeapon={this._toggleWeaponModal}
             value={this.state.modalValue} />
         </Modal>
 
         <ScreenContainer>
           <CampaignHeader title="Inventory"/>
             
-            
-
 
           <View style={{flex: 4.2}}>
             <ScrollView style={{flex: 1}}>

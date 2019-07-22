@@ -9,13 +9,12 @@ import constants from '../../constants';
 const { c, item } = constants;
 const { foodArray, medicineArray, weaponArray } = item;
 const use_item_bg = require('../../../assets/use_item_bg.png');
-const blankAvatar = require('../../../assets/blankavatar.png');
 
 class FoundModal extends React.Component {
 
   _itemToDisplay = () => {
-    const { scavengingFor, justScavenged } = this.props.steps;
-    if (scavengingFor && justScavenged) {
+    const { scavengingFor, itemScavenged } = this.props.steps;
+    if (scavengingFor && (itemScavenged || itemScavenged === 0)) {
       let array;
       if (scavengingFor === 'food') {
         array = foodArray;
@@ -26,7 +25,7 @@ class FoundModal extends React.Component {
       } else {
         console.warn('you have a weird value in scavengingFor; fix it!');
       }
-      const newItemScavenged = array[justScavenged]
+      const newItemScavenged = array[itemScavenged]
       return newItemScavenged;
     } else {
       return null;

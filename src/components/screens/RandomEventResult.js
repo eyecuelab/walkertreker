@@ -26,11 +26,10 @@ class RandomEventResult extends React.Component {
     const { dispatch } = this.props
     let data = this.props.screenProps.notification.data.data.data
     if (inven && inven > 0 ) {
-      console.log("ARRAY: ", item.weapon)
+      
       const itemNumber = type === 'food' ? Math.floor(Math.random()*item.foodArray.length) :
         type === 'med' ? Math.floor(Math.random()*item.medicineArray.length) :
         type === 'weapon' ? Math.floor(Math.random()*item.weaponArray.length) : null;
-        console.log("intenNumber ", itemNumber)
 
       dispatch({ type: c.RECEIVE_INVENTORY, 
         addedBy: 'event', 
@@ -63,7 +62,6 @@ class RandomEventResult extends React.Component {
         invenObj.itemType === 'weapon' ? this.weaponItems.push([invenObj.itemNumber, invenObj.id]) : null;
       }
     })
-    console.log(this.foodItems, this.medicineItems, this.weaponItems)
   }
 
   resolveEventConsequences = () => {

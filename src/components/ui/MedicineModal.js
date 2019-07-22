@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
+import TouchableWithLoading from './../ui/Buttons/TouchableWithLoading';
 
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
@@ -11,28 +12,6 @@ const { medicineArray } = item;
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
 class MedicineModal extends React.Component {
-
-  _takeTheMedicine = (num) => {
-    const { dispatch, handleModalStateChange, player, campaign } = this.props;
-    if (num === 0) {
-      handleModalStateChange();
-    } else if (num === 1) {
-      const { index, dispatch } = this.props;
-
-      const { health, hunger } = this.props.player;
-      let newHealth = health + 20;
-      let newHunger = hunger;
-      if (newHealth > 100) {
-        newHealth = 100;
-      }
-      if (newHunger > 100) {
-        newHunger = 100;
-      }
-      dispatch({ type: c.USE_INVENTORY, inventoryId: index, usedBy: 'player', usedById: player.id })
-      dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
-      handleModalStateChange();
-    }
-  }
 
   render() {
     return(
@@ -61,17 +40,18 @@ class MedicineModal extends React.Component {
 
           <View>
             <View style={customStyles.buttonContainer}>
-              <TouchableOpacity
+              <TouchableWithLoading
+                isLoading={this.props.isLoading} 
                 style={customStyles.button}
-                onPress={()=>{this._takeTheMedicine(1)}}>
+                onPress={()=>{this.props.onTakeTheMedicine(1)}}>
                 <Text style={styles.label}>Yes</Text>
-              </TouchableOpacity>
+              </TouchableWithLoading>
             </View>
 
             <View style={customStyles.buttonContainer}>
               <TouchableOpacity
                 style={customStyles.button}
-                onPress={()=>{this._takeTheMedicine(0)}}>
+                onPress={()=>{this.props.onTakeTheMedicine(0)}}>
                 <Text style={styles.label}>No</Text>
               </TouchableOpacity>
             </View>
@@ -100,9 +80,10 @@ const customStyles = StyleSheet.create({
 
   },
   buttonContainer: {
-    // margin: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    height: heightUnit * 8,
+    marginTop: widthUnit * 2,
   },
   button: {
     backgroundColor: 'darkred',
@@ -110,7 +91,6 @@ const customStyles = StyleSheet.create({
     height: heightUnit * 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: widthUnit * 2,
   },
   itemBg: {
     width: undefined,

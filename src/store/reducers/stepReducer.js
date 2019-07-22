@@ -50,17 +50,17 @@ export default (state = steps, action) => {
     case c.DONE_SCAVENGING:
       return {
         ...state,
-        justScavenged: action.justScavenged,
+        itemScavenged: action.itemScavenged,
       }
 
     case c.RESET_SCAVENGE:
       return {
         ...state,
-        justScavenged: null,
+        itemScavenged: null,
         scavengingFor: null,
       }
 
-    case c.ADD_SCAVENGED_ITEMS:
+    case c.UPDATE_CAMPAIGN_WITH_SCAVENGE:
       newState = Object.assign({}, state);
       newState.campaignDateArray[action.currentDay].timesScavenged = action.timesScavenged;
       newState.campaignDateArray[action.currentDay].bonus = action.bonus;
