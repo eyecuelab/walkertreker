@@ -26,11 +26,11 @@ class JournalDaySlider extends React.Component {
   render() {
     return(
       <ScrollView horizontal='true'
-                  decelerationRate={0}
+                  decelerationRate={0.85}
                   onLayout={this.scrollToInitialPosition}
                   snapToInterval={widthUnit*30}
-                  snapToAlignment={"center"}
-                  pagingEnabled={true}
+                  // snapToAlignment={"center"}
+                  // pagingEnabled={true}
                   ref={(node)=> this.scroll = node}
                   showsHorizontalScrollIndicator={false}>
         <View style={customStyles.dayOnSlider} >

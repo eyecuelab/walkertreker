@@ -357,7 +357,6 @@ export function *castPlayerVote(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json());
-    console.log("response of player cast vote", response)
     // yield put({type: c.PLAYER_VOTE_CAST, vote: response});
   } catch (error) {
     console.warn('error casting player vote details: ', error);
@@ -382,7 +381,6 @@ export function *updateJournal(action) {
   try {
     const response = yield fetch(url, initObj)
     .then(response => response.json())
-    console.log("response of updateJournal from Event", response)
   } catch (err) {
     console.warn('error updating journal entry: ', err);
   }
@@ -400,7 +398,7 @@ export function *useInventory(action) {
       inventoryUpdate: {
         used: true,
         usedBy: action.usedBy,
-        usedById: action.userUuid,
+        usedById: action.usedById,
       }
     })
   }
@@ -408,6 +406,31 @@ export function *useInventory(action) {
     const response = yield fetch(url, initObj)
     .then(response => response.json())
     console.log("response of update inventory", response)
+  } catch (err) {
+    console.warn('error updating inventory entry: ', err);
+  }
+}
+
+export function *receiveInventory(action) {
+  const url = `${endpoint}/api/inventories/` + action.campaignId;
+  const initObj = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    },
+    body: JSON.stringify({
+      used: false,
+      addedBy: action.addedBy,
+      addedById: action.addedById,
+      itemType: action.itemType,
+      itemNumber: action.itemNumber
+    })
+  }
+  try {
+    const response = yield fetch(url, initObj)
+    .then(response => response.json())
+    console.log("response of adding inventory", response)
   } catch (err) {
     console.warn('error updating inventory entry: ', err);
   }
@@ -666,6 +689,10 @@ export function *watchUpdateJournal() {
 }
 
 // inventory sagas 
+export function *watchReceiveInventory() {
+  yield takeEvery(c.RECEIVE_INVENTORY, receiveInventory)
+}
+
 export function *watchUseInventory() {
   yield takeEvery(c.USE_INVENTORY, useInventory)
 }
@@ -699,6 +726,7 @@ export default function *rootSaga() {
     watchStartScavenge(),
     watchHungerAndHealth(),
     watchUseInventory(),
+    watchReceiveInventory(),
     watchCastVote(),
     watchUpdateJournal(),
   ])

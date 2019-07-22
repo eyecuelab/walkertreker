@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import constants from '../../constants';
-const { c, events } = constants;
+const { c, events, item } = constants;
 
 import EventResultDisplay from '../ui/EventResultDisplay'
 
@@ -12,6 +12,7 @@ class RandomEventResult extends React.Component {
   constructor(props) {
     super(props)
     this.getEventResult()
+    this.formatInventory()
     this.state = {
     }
   }
@@ -21,24 +22,60 @@ class RandomEventResult extends React.Component {
     this.updateJournal()
   }
 
-  updateInventory = (item, invenItem) => {
-    const newInven = invenItem
-    item ? item > 0 ? newInven.push(item) : newInven.splice(Math.floor(Math.random()*invenItem.length), 1) : null; 
-    return newInven
+  updateInventory = async (inven, invenItem, type) => {
+    const { dispatch } = this.props
+    let data = this.props.screenProps.notification.data.data.data
+    if (inven && inven > 0 ) {
+      console.log("ARRAY: ", item.weapon)
+      const itemNumber = type === 'food' ? Math.floor(Math.random()*item.foodArray.length) :
+        type === 'med' ? Math.floor(Math.random()*item.medicineArray.length) :
+        type === 'weapon' ? Math.floor(Math.random()*item.weaponArray.length) : null;
+        console.log("intenNumber ", itemNumber)
+
+      dispatch({ type: c.RECEIVE_INVENTORY, 
+        addedBy: 'event', 
+        addedById: data.eventId, 
+        itemType: type, 
+        itemNumber: itemNumber,
+        campaignId: this.props.campaign.id
+      }) 
+
+    } else if (inven && inven < 0 ) {
+
+      index = await Math.floor(Math.random()*invenItem.length)
+
+      dispatch({ type: c.USE_INVENTORY, 
+        inventoryId: invenItem[index][1], 
+        usedBy: 'event', 
+        usedById: data.eventId
+      })
+    }
+  }
+
+  formatInventory = () => {
+    this.foodItems = []
+    this.medicineItems = []
+    this.weaponItems = []
+    this.props.campaign.inventories.forEach((invenObj) => {
+      if (invenObj.used === false) {
+        invenObj.itemType === 'food' ? this.foodItems.push([invenObj.itemNumber, invenObj.id]) :
+        invenObj.itemType === 'med' ? this.medicineItems.push([invenObj.itemNumber, invenObj.id]) :
+        invenObj.itemType === 'weapon' ? this.weaponItems.push([invenObj.itemNumber, invenObj.id]) : null;
+      }
+    })
+    console.log(this.foodItems, this.medicineItems, this.weaponItems)
   }
 
   resolveEventConsequences = () => {
     const result = this.result === 'A' ? this.evt.optionAResult : this.evt.optionBResult;
-    let inventory = {...this.props.campaign.inventory}
-    let newInventory = {};
+    
     let newPlayerObj = {...this.props.player}
     const currentDay = this.props.campaign.currentDay
-    console.log("DAY: ", currentDay);
+    console.log("RESULT?: ", result)
 
-    newInventory.foodItems = this.updateInventory(result.food, inventory.foodItems);
-    newInventory.medicineItems = this.updateInventory(result.meds, inventory.medicineItems);
-    newInventory.weaponItems = this.updateInventory(result.weapons, inventory.weaponItems);
-    console.log("the new inventory", newInventory)
+    this.updateInventory(result.food, this.foodItems, 'food');
+    this.updateInventory(result.meds, this.medicineItems, 'med');
+    this.updateInventory(result.weapons, this.weaponItems, 'weapon');
 
     result.stepTarget ? newPlayerObj.stepTargets[currentDay] += (newPlayerObj.stepTargets[currentDay]*result.stepTarget): newPlayerObj;
 
@@ -50,10 +87,10 @@ class RandomEventResult extends React.Component {
       stepTargets: newPlayerObj.stepTargets,
       player: newPlayerObj
     })
-    this.props.dispatch({ type: c.UPDATE_CAMPAIGN, 
-      campId: this.props.campaign.id, 
-      inventory: inventory === newInventory ? inventory : newInventory
-    })
+    // this.props.dispatch({ type: c.UPDATE_CAMPAIGN, 
+    //   campId: this.props.campaign.id, 
+    //   inventory: inventory === newInventory ? inventory : newInventory
+    // })
   }
   
   updateJournal = () => {
@@ -77,7 +114,6 @@ class RandomEventResult extends React.Component {
       Object.entries(playerVotes).map(([key, value], index) => {
         votesList.push(`${key} voted to ${value}`)
       })
-      console.log("ENTRY LIST", votesList)
       this.votesList = votesList
   }
 
@@ -86,7 +122,6 @@ class RandomEventResult extends React.Component {
   }
 
   checkResultToShow = () => {
-    console.log("Result in randomeventresult \n", this.result, this.evt)
     this.result === 'A' ? this.resultText = this.evt.optionAText : this.resultText = this.evt.optionBText;
     this.result === 'A' ? this.resultHeader = this.evt.optionAButton : this.resultHeader = this.evt.optionBButton;
   }

@@ -20,7 +20,6 @@ class Journal extends React.Component {
   }
 
   componentWillMount(){
-    console.log("JOURNALS", this.props.campaign.journals)
     this.getEntriesByDay()
   }
   
@@ -63,7 +62,6 @@ class Journal extends React.Component {
         }
         index++;
       })
-      console.log("ENTRY OBJECT:", entryObj)
       this.entryObj = entryObj
       await this.evaluateFocusedDay()
     }
