@@ -9,21 +9,22 @@ class StatDisplay_AllPlayers extends Component {
     this.state = {
       data : []
     };
+    this.setValueData = this.setValueData.bind(this);
   }
 
-  componentDidMount() {
+  setValueData() {
     const { campaign } = this.props;
-    let data = [...this.state.data]
+    let data = [];
     campaign.players.map( ( player ) => {
       const value = this.props.setValue(player)
-      data = [...data, {label: player.displayName, value: value}];
+      data.push({label: player.displayName, value: value});
     });
-    this.setState({data : data});
+    return data;
   }
 
   render() {
     return (
-      <StatDisplay title={this.props.title} data={this.state.data}/>
+      <StatDisplay title={this.props.title} data={this.setValueData()}/>
     );
   }
 }
