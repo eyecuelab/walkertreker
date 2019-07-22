@@ -68,7 +68,7 @@ class Journal extends React.Component {
   }
 
   _handleDaySliderClick = (day) => {
-    this.setState({ focusedDay: day})
+    this.setState({ focusedDay: day })
   }
 
   render() {
@@ -89,7 +89,7 @@ class Journal extends React.Component {
                 <JournalDaySlider 
                   entryObj={this.entryObj}
                   focusedDay={this.state.focusedDay}
-                  onDaySliderClick={(day)=>this._handleDaySliderClick(day)} />
+                  onDaySliderClick={(day) => this._handleDaySliderClick(day)} />
               </View> 
 
               <ScrollView style={{width: '100%', height: '100%' }}>
