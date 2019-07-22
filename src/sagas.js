@@ -480,7 +480,7 @@ export function *scavenge(action) {
     console.log('newItem', newItem);
   } else {
     console.warn('the scavenge function can\'t tell what to scavenge');
-  }
+  } 
 
   console.log('made it through the scavenge branching');
 
@@ -625,7 +625,7 @@ export function *watchGetLastStepState() {
 }
 
 export function *watchStartScavenge() {
-  yield takeEvery(c.START_SCAVENGE, scavenge);0
+  yield takeEvery(c.START_SCAVENGE, scavenge);
 }
 
 export function *watchHungerAndHealth() {
@@ -681,7 +681,10 @@ export default function *rootSaga() {
 
 
 // LOCAL eyecue endpoint
-const endpoint = 'http://10.1.10.51:5000'
+// const endpoint = 'http://10.1.10.51:5000'
+
+// LOCAL eyecue endpoint WARD
+const endpoint = 'http://10.1.10.108:5000'
 
 // REMOTE
 // const endpoint = 'https://walkertrekker.herokuapp.com'

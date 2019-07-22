@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator } from "react-navigation";
 import constants from './../constants';
-import {Image} from 'react-native';
+import { Image } from 'react-native';
 
 // screens
 import CreateCampaign from '../components/screens/CreateCampaign/';
@@ -24,7 +24,8 @@ import SignUp from './../components/screens/SignUp';
 import AccountRecovery from './../components/ui/AccountRecovery';
 import MainAppRouter from './../components/screens/MainAppRouter';
 import Lobby from './../components/screens/Lobby';
-import TEST_SCREEN from './../components/screens/TEST_SCREEN'
+import TEST_SCREEN from './../components/screens/TEST_SCREEN';
+import Stats from './../components/screens/Stats';
 
 
 const FadeTransition = (index, position) => {
@@ -86,8 +87,9 @@ const LobbyNavigator = createStackNavigator(
 
 const CampaignNavigator = createBottomTabNavigator({
   Home: {screen: CampaignSummary},
+  Stats: {screen: Stats},
   Inventory: { screen: Inventory },
-  Journal: { screen: Journal }, 
+  Journal: { screen: Journal },
 },{
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -95,6 +97,10 @@ const CampaignNavigator = createBottomTabNavigator({
       if(routeName === 'Home') {
         const source = focused ? require('./../../assets/Icons/Home_Active.png') : require('./../../assets/Icons/Home_Inactive.png')
         return <Image source={source} style={{width: 25, height: 25}} />
+      }
+      else if (routeName === 'Stats') {
+        const source = focused ? require('./../../assets/Icons/Stats_Active.png') : require('./../../assets/Icons/Stats_Inactive.png')
+        return <Image source={source} style={{width:25, height: 25}} />
       } 
       else if (routeName === 'Inventory') {
         const source = focused ? require('./../../assets/Icons/Inventory_Active.png') : require('./../../assets/Icons/Inventory_Inactive.png')
@@ -104,9 +110,6 @@ const CampaignNavigator = createBottomTabNavigator({
         const source = focused ? require('./../../assets/Icons/Journal_Active.png') : require('./../../assets/Icons/Journal_Inactive.png')
         return <Image source={source} style={{width: 20, height: 25}} />
       }
-
-        
-    
     },
   }),
   tabBarOptions: {
@@ -137,7 +140,7 @@ const MainApp = createSwitchNavigator(
     },
     RandomEvent: {screen : RandomEvent},
     RandomEventResult: {screen : RandomEventResult},
-    Safehouse: {screen: Safehouse} 
+    Safehouse: {screen: Safehouse},
   },
   {
     defaultNavigationOptions: {
@@ -155,7 +158,7 @@ const MainSwitchNavigator = createSwitchNavigator(
     AuthCheck: AuthCheck,
     Auth: {screen: AuthStack, path : ''},
     MainApp: { screen: MainApp, path: ''},
-    TEST_SCREEN: { screen: TEST_SCREEN}
+    TEST_SCREEN: { screen: TEST_SCREEN }
   },
   {
     defaultNavigationOptions: {

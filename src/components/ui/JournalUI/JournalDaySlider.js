@@ -4,13 +4,14 @@ import { StyleSheet, Text, View, ImageBackground, TouchableWithoutFeedback, Scro
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../../styles/defaultStyle';
 import { withNavigation } from "react-navigation";
-
+import AnimatedJournalText from './AnimatedJournalText';
 
 import { SubHeader } from '../../text';
 
 class JournalDaySlider extends React.Component {
   constructor(props) {
     super(props)
+  
   }
 
   componentDidUpdate(prevProps){
@@ -24,6 +25,7 @@ class JournalDaySlider extends React.Component {
   }
   
   render() {
+   
     return(
       <ScrollView horizontal='true'
                   decelerationRate={0}
@@ -35,7 +37,6 @@ class JournalDaySlider extends React.Component {
                   showsHorizontalScrollIndicator={false}>
         <View style={customStyles.dayOnSlider} >
           <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>
-          <SubHeader style={{textAlign: 'center'}}></SubHeader>
         </View>
         
         {Object.keys(this.props.entryObj).map((day, index)=> {
@@ -45,7 +46,7 @@ class JournalDaySlider extends React.Component {
                       <View style={customStyles.sliderLine}></View>
 
                       { day === this.props.focusedDay ? 
-                      <SubHeader style={{textAlign: 'center'}}>Day {day}</SubHeader> :
+                      <AnimatedJournalText style={{textAlign: 'center'}} isFocused={true}>Day {day}</AnimatedJournalText> :
                       <SubHeader style={customStyles.unfocusedDay}>Day {day}</SubHeader>  }
 
                     </View>
@@ -53,7 +54,6 @@ class JournalDaySlider extends React.Component {
         })}
         <View style={customStyles.dayOnSlider} >
           <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>
-          <SubHeader style={{textAlign: 'center'}}></SubHeader>
         </View>
 
       </ScrollView>
@@ -70,7 +70,7 @@ const customStyles = StyleSheet.create({
     textAlign: 'center', 
     opacity: 0.5,
     fontSize: widthUnit*6,
-    lineHeight: widthUnit*5,
+    lineHeight: widthUnit*3,
     paddingTop: widthUnit*4,
   },
   sliderLine: {
