@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator } from "react-navigation";
 import constants from './../constants';
-import {Image} from 'react-native';
+import { Image } from 'react-native';
 
 // screens
 import CreateCampaign from '../components/screens/CreateCampaign/';
@@ -87,9 +87,9 @@ const LobbyNavigator = createStackNavigator(
 
 const CampaignNavigator = createBottomTabNavigator({
   Home: {screen: CampaignSummary},
+  Stats: {screen: Stats},
   Inventory: { screen: Inventory },
   Journal: { screen: Journal },
-  Stats: {screen: Stats} 
 },{
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -110,10 +110,6 @@ const CampaignNavigator = createBottomTabNavigator({
         const source = focused ? require('./../../assets/Icons/Journal_Active.png') : require('./../../assets/Icons/Journal_Inactive.png')
         return <Image source={source} style={{width: 20, height: 25}} />
       }
-      
-
-        
-    
     },
   }),
   tabBarOptions: {
@@ -145,13 +141,12 @@ const MainApp = createSwitchNavigator(
     RandomEvent: {screen : RandomEvent},
     RandomEventResult: {screen : RandomEventResult},
     Safehouse: {screen: Safehouse},
-    TEST_SCREEN: { screen : TEST_SCREEN } 
   },
   {
     defaultNavigationOptions: {
       header: null,
     },
-    initialRouteName: "TEST_SCREEN" 
+    initialRouteName: "MainAppRouter" 
   }
 )
 
@@ -163,7 +158,7 @@ const MainSwitchNavigator = createSwitchNavigator(
     AuthCheck: AuthCheck,
     Auth: {screen: AuthStack, path : ''},
     MainApp: { screen: MainApp, path: ''},
-    TEST_SCREEN: { screen: TEST_SCREEN}
+    TEST_SCREEN: { screen: TEST_SCREEN }
   },
   {
     defaultNavigationOptions: {

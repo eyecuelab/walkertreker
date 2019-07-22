@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Label } from './../text';
 
@@ -10,10 +11,14 @@ class ToggleBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0,
+      selectedIndex: undefined,
       value: this.props.options[0].value !== undefined ? this.props.options[0].value : this.props.options[0].label
     };
     this.handleOnPress = this.handleOnPress.bind(this);
+  }
+  
+  componentDidMount() {
+    this.setState({selectedIndex: 0})
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -24,7 +29,6 @@ class ToggleBar extends Component {
 
   handleOnPress = (index) => {
     const { options } = this.props;
-    console.log(options[index].value)
     this.setState({
       selectedIndex: index,
       value: options[index].value !== undefined ? options[index].value : options[index].label
@@ -61,8 +65,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 10,
-    paddingVertical: 10
+    paddingVertical: 10,
   }
 })
+
+ToggleBar.propTypes = {
+  options : PropTypes.array.isRequired,
+  onValueChange : PropTypes.func
+}
+
+/*
+options : [{ label: required, value: optional }]
+*/
 
 export default ToggleBar;
