@@ -13,9 +13,9 @@ class StatDisplay_AllPlayers extends Component {
   }
 
   setValueData() {
-    const { campaign } = this.props;
+    const { players } = this.props;
     let data = [];
-    campaign.players.map( ( player ) => {
+    players.map( ( player ) => {
       const value = this.props.setValue(player)
       data.push({label: player.displayName, value: value});
     });
@@ -30,7 +30,7 @@ class StatDisplay_AllPlayers extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return({ player: state.player, campaign: state.campaign })
+  return({ players: state.campaign.players })
 }
 
 StatDisplay_AllPlayers.propTypes = {

@@ -527,8 +527,9 @@ export function *watchSetDates() {
   }
 }
 
-
+/////////////
 //Step Saga's
+/////////////
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
 }
@@ -545,9 +546,35 @@ export function *watchPlayerStepsUpdated() {
   }
 }
 
-///////////////////
-//Campaign Sagas///
-///////////////////
+////////////////////////////
+//Event Sagas//////////////
+//////////////////////////
+
+export function *fetchEventInfo(action) {
+  const url = `${endpoint}/api/events/campaign/${action.campaignId}`;
+  const initObj = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "appkey": CLIENT_APP_KEY
+    }
+  };
+  try {
+    const response = yield fetch(url, initObj).then(response => response.json());
+    yield put({ type: c.EVENT_INFO_FETCHED, events: response })
+  } catch ( error ) {
+    console.warn('error fetching event info:', error);
+  }
+}
+
+export function *watchFetchEventInfo() {
+  yield takeLatest(c.FETCH_EVENT_INFO, fetchEventInfo);
+}
+
+
+////////////////////////////
+//Campaign Watcher Sagas///
+//////////////////////////
 export function *watchInitialCampaignDetails() {
   yield takeEvery(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails);
 }
@@ -671,6 +698,7 @@ export default function *rootSaga() {
     watchHungerAndHealth(),
     watchCastVote(),
     watchUpdateJournal(),
+    watchFetchEventInfo(),
   ])
 }
 

@@ -5,7 +5,6 @@ function SafehouseSteps() {
   
   const successRate = ( player ) => {
     const successfulDays = player.steps.reduce((acc, stepQty, index) => {
-      console.log("Accumulator is ", acc);
       
       if(stepQty > 0 && stepQty > player.stepTargets[index]) {
         acc++
