@@ -12,7 +12,7 @@ const ScreenContainer = styled.View`
   height: 100%;
   justify-content: flex-start;
   margin: ${widthUnit*5}px;
-  margin-top: ${heightUnit*7}px;
+  margin-top: ${heightUnit*6}px;
 `;
 
 export default ScreenContainer
