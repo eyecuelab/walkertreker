@@ -768,7 +768,7 @@ export default function *rootSaga() {
 //LOCAL Ward home endpoint
 // const endpoint = 'http://10.0.0.5:5000'
 
-// LOCAL eyecue endpoint
+// LOCAL eyecue endpoint KIM
 const endpoint = 'http://10.1.10.51:5000'
 
 // LOCAL eyecue endpoint WARD

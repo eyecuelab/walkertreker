@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-const vote_bg = require('../../../../assets/paintstroke/Paint_Stroke.png');
+import constants from '../../../constants';
+const { paint } = constants;
+const { paintArray } = paint;
 
-import { MainText } from '../../text';
+import { MainText, TextWithBackground } from '../../text';
 
 class JournalEntry extends React.Component {
   constructor(props) {
@@ -13,6 +15,11 @@ class JournalEntry extends React.Component {
 
   componentWillMount() {
     this.props.entry ? this.entries = this.props.entry.split('//') : null;
+  }
+
+  getBGimage = () => {
+    const num = Math.floor(Math.random()*paintArray.length)
+    return paintArray[num]
   }
 
   render() {
@@ -24,12 +31,7 @@ class JournalEntry extends React.Component {
           {this.props.eventNumber && this.props.votingList.length ? 
               <View style={customStyles.playerVotes}>
                 {this.props.votingList.map((vote, index) => {
-                  return <ImageBackground source={vote_bg} key={index}
-                  resizeMode={'stretch'}
-                  style={customStyles.VoteBg}
-                  overflow='visible'>
-                  <MainText style={customStyles.voteText}>{vote}</MainText>
-                </ImageBackground>
+                  return <TextWithBackground key={index} text={vote} image={this.getBGimage()}/>
                 })}
               </View>
             : null }
@@ -43,20 +45,8 @@ class JournalEntry extends React.Component {
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
-  VoteBg: {
-    width: '100%',
-    height: undefined,
-    flex: 1,
-    justifyContent: 'center',
-    paddingVertical: widthUnit*3,
-  },
   playerVotes: {
     paddingHorizontal: widthUnit*2,
-  },
-  voteText: {
-    fontFamily: 'Gill Sans MT Condensed Bold',
-    color: 'white',
-    textAlign: 'center',
   },
   entryBox: {
     backgroundColor: 'rgba(110,14,15,0.5)', 
