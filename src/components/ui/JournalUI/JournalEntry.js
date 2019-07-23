@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-const vote_bg = require('../../../../assets/Paint_Stroke.png');
+const vote_bg = require('../../../../assets/paintstroke/Paint_Stroke.png');
 
 import { MainText } from '../../text';
 
