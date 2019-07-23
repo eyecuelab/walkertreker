@@ -4,5 +4,5 @@ export default {
   error: null,
   pedometerIsAvailable: false,
   scavengingFor: null,
-  justScavenged: null,
+  itemScavenged: null,
 }

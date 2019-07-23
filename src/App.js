@@ -8,7 +8,7 @@ import { store, persistor } from './store';
 
 import { Provider, connect, dispatch } from 'react-redux';
 import constants from './constants';
-const { c, storeData, retrieveData } = constants;
+const { c, retrieveData } = constants;
 
 import SocketIO from './components/SocketIO';
 import BackgroundPedometer from './components/BackgroundPedometer';

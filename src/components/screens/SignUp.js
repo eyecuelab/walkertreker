@@ -6,8 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { connect } from 'react-redux';
 import {MainHeader, SubHeader, Label, TextAlt} from './../text';
 import { phoneNumPrettyPrint } from '../../util/util';
-import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import WithKeyboardShift from './../../util/WithKeyboardShift';
+
 import posed from 'react-native-pose';
 import ButtonWithLoading from './../ui/Buttons/ButtonWithLoading';
 import constants from '../../constants';

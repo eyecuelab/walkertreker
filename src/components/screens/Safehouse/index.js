@@ -16,8 +16,7 @@ import ProgressBar from './../../ui/ProgressBar';
 import ScreenContainer from './../../containers/ScreenContainer';
 import defaultStyle from './../../../styles/defaultStyle';
 import SingleButtonFullWidth from './../../ui/SingleButtonFullWidth';
-import DayCounter from './../../ui/DayCounter';
-import TwoButtonOverlay from './../../ui/TwoButtonOverlay';
+
 import FoundModal from './../../ui/FoundModal';
 
 
@@ -31,15 +30,16 @@ class Safehouse extends React.Component {
   }
 
   componentDidMount() {
-    const { scavengingFor, justScavenged } = this.props.steps;
-    if ((scavengingFor && justScavenged) && this.state.foundModalVisible === false) {
+    console.log("STEPS IN SAFEHOUSE: ", this.props.steps)
+    const { scavengingFor, itemScavenged } = this.props.steps;
+    if ((scavengingFor && itemScavenged) && this.state.foundModalVisible === false) {
       this.setState({foundModalVisible: true});
     }
   }
 
   componentDidUpdate() {
-    const { scavengingFor, justScavenged } = this.props.steps;
-    if ((scavengingFor && justScavenged) && this.state.foundModalVisible === false) {
+    const { scavengingFor, itemScavenged } = this.props.steps;
+    if ((scavengingFor && (itemScavenged || itemScavenged === 0)) && this.state.foundModalVisible === false) {
       this.setState({foundModalVisible: true});
     }
   }
@@ -47,16 +47,25 @@ class Safehouse extends React.Component {
   _selectFood = () => {
     const { dispatch } = this.props;
     dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'food'});
+    setTimeout(() => {
+      this.props.dispatch({ type: c.CHECK_BONUS_STEPS, player: this.props.player})
+    }, 4000)
   }
 
   _selectMedicine = () => {
     const { dispatch } = this.props;
     dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'medicine'});
+    setTimeout(() => {
+      this.props.dispatch({ type: c.CHECK_BONUS_STEPS, player: this.props.player})
+    }, 4000)
   }
 
   _selectWeapon = () => {
     const { dispatch } = this.props;
     dispatch({type: c.SELECT_SCAVENGE, scavengingFor: 'weapons'});
+    setTimeout(() => {
+      this.props.dispatch({ type: c.CHECK_BONUS_STEPS, player: this.props.player})
+    }, 4000)
   }
 
   _onButtonPressInventory = () => {
@@ -83,10 +92,10 @@ class Safehouse extends React.Component {
   }
 
   _submitConditionalRender = () => {
-    const { scavengingFor, justScavenged } = this.props.steps;
-    console.log(justScavenged)
+    const { scavengingFor, itemScavenged } = this.props.steps;
+    console.log("JUST SCAVENGED", itemScavenged)
     // if you are scavenging for something but have not retrieved it yet
-    if (scavengingFor != null && justScavenged === null) {
+    if (scavengingFor != null && itemScavenged === null) {
       const stepsTowardBonus = this.props.steps.campaignDateArray[this.props.campaign.currentDay].bonus - (this.props.steps.campaignDateArray[this.props.campaign.currentDay].timesScavenged * 500)
       return (
         
@@ -96,18 +105,13 @@ class Safehouse extends React.Component {
                 You are searching for {scavengingFor}...
               </SubHeader>
             </View>
-            
-            
+
             <ProgressBar value={stepsTowardBonus} targetValue={500}/>
           </View>
-        
-        
+
       );
     // if you are done scavenging for something, but are not scavenging for a new thing yet
-    } else if (scavengingFor && justScavenged) {
-      // return a component that tells the user they scavenged something, shows them what it is, and gives them a button to close it, which will take the user to the else below
-      return null; }
-    else {
+    } else {
       return (
         <View style={[customStyles.container]}>
 
@@ -254,7 +258,7 @@ function mapStateToProps(state) {
     // appState: state.appState,
     steps: state.steps,
     campaign: state.campaign,
-    // player: state.player,
+    player: state.player,
   }
 }
 
