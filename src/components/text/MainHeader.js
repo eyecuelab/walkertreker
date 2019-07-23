@@ -14,10 +14,13 @@ const StyledText = styled.Text`
   color: ${props => props.color || "white"};
 `;
 
-function MainHeader(props) {
-  return (
-    <StyledText {...props}>{props.children}</StyledText>
-  )
+class MainHeader extends React.Component {
+  render(){
+    return (
+      <StyledText {...this.props}>{this.props.children}</StyledText>
+    )
+  }
 }
+
 
 export default MainHeader;
