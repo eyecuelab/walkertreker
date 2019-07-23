@@ -10,8 +10,13 @@ class EventStats extends Component {
     };
   }
 
+  componentDidMount() {
+    const { dispatch, campaign } = this.props;
+    
+    dispatch({type: "FETCH_EVENT_INFO", campaignId: campaign.id});
+  }
+
   render() {
-    console.log(this.props.campaign)
     return (
       <View>
         <EventParticipation events={this.props.events}/>
@@ -21,7 +26,7 @@ class EventStats extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return({campaign : state.campaign.players});
+  return({ campaign : state.campaign, events: state.event.events });
 }
 
 export default connect(mapStateToProps)(EventStats);

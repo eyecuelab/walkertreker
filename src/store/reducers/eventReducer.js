@@ -1,5 +1,5 @@
 import constants from './../../constants';
-const { c } = constants;
+const { c, storeData } = constants;
 
 
 export default (state = {}, action) => {

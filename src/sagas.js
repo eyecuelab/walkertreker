@@ -606,8 +606,11 @@ export function *fetchEventInfo(action) {
       "appkey": CLIENT_APP_KEY
     }
   };
+  console.log("attempting to fetch event info with URL: ", url, " and initObj: ", initObj)
   try {
+    console.log("attempting to fetch event info with URL: ", url, " and initObj: ", initObj)
     const response = yield fetch(url, initObj).then(response => response.json());
+    console.log("event info in saga(line 611) : ", response)
     yield put({ type: c.EVENT_INFO_FETCHED, events: response })
   } catch ( error ) {
     console.warn('error fetching event info:', error);
@@ -615,6 +618,7 @@ export function *fetchEventInfo(action) {
 }
 
 export function *watchFetchEventInfo() {
+  console.log("reaching watcher saga with fetch_EVENT_INFO");
   yield takeLatest(c.FETCH_EVENT_INFO, fetchEventInfo);
 }
 
