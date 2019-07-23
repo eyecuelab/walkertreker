@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
+import { connect } from 'react-redux';
+import ItemsAdded from './TotalItemsAdded';
+import ItemsUsed from './TotalItemsUsed';
+import EventItems from './EventItems';
+import WeaponsUsed from './WeaponsUsed';
 
 class ItemStats extends Component {
   constructor(props) {
@@ -10,11 +15,20 @@ class ItemStats extends Component {
 
   render() {
     return (
-      <View>
-        <Text> ItemStats </Text>
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ItemsAdded campaign={this.props.campaign}/> 
+        <ItemsUsed campaign={this.props.campaign}/> 
+        <EventItems campaign={this.props.campaign}/> 
+        <WeaponsUsed campaign={this.props.campaign}/> 
+      </ScrollView>
     );
   }
 }
 
-export default ItemStats;
+function mapStateToProps(state) {
+  return {
+    campaign: state.campaign,
+  }
+}
+
+export default connect(mapStateToProps)(ItemStats);
