@@ -16,18 +16,16 @@ class AnimatedJournalText extends Component {
   }
 
   componentDidMount() {
-      console.log("starting animation?")
-          Animated.timing(
-            this.state.animatedValue,
-            {
-              toValue: 1,
-              easing: Easing.elastic(3),
-              duration: 600,
-            }
-          ).start()
-    }
-  
-  
+    console.log("starting animation?")
+      Animated.timing(
+        this.state.animatedValue,
+        {
+          toValue: 1,
+          easing: Easing.elastic(3),
+          duration: 600,
+        }
+      ).start()
+  }
 
   render() {
     const fontSize = this.state.animatedValue.interpolate({

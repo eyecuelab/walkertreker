@@ -27,36 +27,36 @@ class JournalDaySlider extends React.Component {
   render() {
    
     return(
-      <ScrollView horizontal='true'
-                  decelerationRate={0.85}
-                  onLayout={this.scrollToInitialPosition}
-                  snapToInterval={widthUnit*30}
-                  // snapToAlignment={"center"}
-                  // pagingEnabled={true}
-                  ref={(node)=> this.scroll = node}
-                  showsHorizontalScrollIndicator={false}>
-        <View style={customStyles.dayOnSlider} >
-          <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>
-        </View>
-        
-        {Object.keys(this.props.entryObj).map((day, index)=> {
-            day = parseInt(day)
-            return <TouchableWithoutFeedback key={index} onPress={()=>{this.props.onDaySliderClick(day)}}>
-                      <View style={customStyles.dayOnSlider}>
-                      <View style={customStyles.sliderLine}></View>
+      <View style={customStyles.daySlider}>
+        <ScrollView horizontal='true'
+                    decelerationRate={0.85}
+                    onLayout={this.scrollToInitialPosition}
+                    snapToInterval={widthUnit*30}
+                    ref={(node)=> this.scroll = node}
+                    showsHorizontalScrollIndicator={false}>
+          <View style={customStyles.dayOnSlider} >
+            <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>
+          </View>
+          
+          {Object.keys(this.props.entryObj).map((day, index)=> {
+              day = parseInt(day)
+              return <TouchableWithoutFeedback key={index} onPress={()=>{this.props.onDaySliderClick(day)}}>
+                        <View style={customStyles.dayOnSlider}>
 
-                      { day === this.props.focusedDay ? 
-                      <AnimatedJournalText style={{textAlign: 'center'}} isFocused={true}>Day {day}</AnimatedJournalText> :
-                      <SubHeader style={customStyles.unfocusedDay}>Day {day}</SubHeader>  }
+                          { day === this.props.focusedDay ? 
+                          <AnimatedJournalText style={{textAlign: 'center'}} isFocused={true}>Day {day}</AnimatedJournalText> :
+                          <SubHeader style={customStyles.unfocusedDay}>Day {day}</SubHeader>  }
 
-                    </View>
-                  </TouchableWithoutFeedback>
-        })}
-        <View style={customStyles.dayOnSlider} >
-          <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>
-        </View>
+                        <View style={customStyles.sliderLine}></View>
+                      </View>
+                    </TouchableWithoutFeedback>
+          })}
+          <View style={customStyles.dayOnSlider} >
+            <View style={[customStyles.sliderLine, {borderRightWidth: 0}]}></View>
+          </View>
 
-      </ScrollView>
+        </ScrollView>
+      </View>
     )
   }
 }
@@ -66,6 +66,14 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
+  daySlider: {
+    marginTop: heightUnit*4,
+    height: heightUnit*7,
+    borderColor: 'white',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: "space-between",
+  },
   unfocusedDay: {
     textAlign: 'center', 
     opacity: 0.5,
@@ -77,7 +85,7 @@ const customStyles = StyleSheet.create({
     width: '50%',
     borderColor: 'white',
     borderRightWidth: 1,
-    height: heightUnit*4,
+    height: heightUnit*3,
   },
   dayOnSlider: {
     width: widthUnit*30,

@@ -17,8 +17,7 @@ class StepStats extends Component {
         <TotalSteps/>
         <RecordSteps/>
         <StatDisplay title="Steps Walked" data={[{ value: "20000", label: "Kimchii" },{ value : "15000", label: "Digi" },{ value : "15000", label: "Digi" },{ value : "15000", label: "Digi" },{ value: "20000", label: "digi"}]}/>
-        <StatDisplay title="Steps Spent Scavenging" data={[{ value: "20000", label: "Kimchii" },{ value : "15000", label: "Digi" },{ value : "15000", label: "Digi" },{ value : "15000", label: "Digi" },{ value: "20000", label: "digi"}]}/>
-        <StatDisplay title="Safehouse Success Rate" data={[{ value: "20000", label: "Kimchii" },{ value : "15000", label: "Digi" },{ value : "15000", label: "Digi" },{ value : "15000", label: "Digi" },{ value: "20000", label: "digi"}]}/>
+        
       </View>
     );
   }

@@ -51,6 +51,7 @@ class App extends React.Component {
       require('../assets/Icons/Journal_Inactive.png'),
       require('../assets/Icons/Stats_Active.png'),
       require('../assets/Icons/Stats_Inactive.png'),
+      require('../assets/Paint_Stroke.png'),
       require('../assets/logo.png'),
       require('../assets/bg.png'),
       require('../assets/blankavatar.png'),

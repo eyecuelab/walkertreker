@@ -36,8 +36,8 @@ class Journal extends React.Component {
 
   evaluateFocusedDay = () => {
     this.props.campaign.currentDay+1 in this.entryObj ? 
-      this.setState({focusedDay: this.props.campaign.currentDay + 1}) : 
-      this.setState({focusedDay: this.props.campaign.currentDay});
+      this.setState({ focusedDay: this.props.campaign.currentDay + 1 }) : 
+      this.setState({ focusedDay: this.props.campaign.currentDay });
   }
 
   getEntriesByDay = async () => {
@@ -85,14 +85,12 @@ class Journal extends React.Component {
 
             {this.props.campaign.journals.length ? 
             <View style={{width: '100%', height: '85%' }}>
-              <View style={customStyles.daySlider}>
-                <JournalDaySlider 
-                  entryObj={this.entryObj}
-                  focusedDay={this.state.focusedDay}
-                  onDaySliderClick={(day) => this._handleDaySliderClick(day)} />
-              </View> 
+              <JournalDaySlider 
+                entryObj={this.entryObj}
+                focusedDay={this.state.focusedDay}
+                onDaySliderClick={(day) => this._handleDaySliderClick(day)} />
 
-              <ScrollView style={{width: '100%', height: '100%' }}>
+              <ScrollView style={{width: '100%', height: '100%' }} showsVerticalScrollIndicator={false}>
                 <JournalDisplay entries={this.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
               </ScrollView> 
             </View> : 
@@ -109,14 +107,6 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
-  daySlider: {
-    marginTop: heightUnit*4,
-    height: heightUnit*12,
-    borderColor: 'white',
-    borderTopWidth: 1,
-    flexDirection: 'row',
-    justifyContent: "space-between",
-  },
   noJournalWarning: {
     letterSpacing: widthUnit*0.5, 
     lineHeight: widthUnit*8,
