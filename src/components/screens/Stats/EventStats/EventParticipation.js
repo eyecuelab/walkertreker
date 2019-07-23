@@ -4,8 +4,27 @@ import StatDisplay_AllPlayers from './../../../ui/StatDisplay_AllPlayers';
 function EventParticipation(props) {
   
   const eventParticipation = ( player ) => {
-    console.log(props.events,"EVENTPROPS\n\n\n")
-    return 1;
+    const { events } = props;
+    if(events) {
+      const eventsVoted = events.reduce((acc, event) => {
+        playerVoted = event.votes.reduce((acc, vote) => {
+          if(vote.playerId === player.id) {
+            acc = true
+            return acc;
+          } else {
+            return acc;
+          }
+        }, false)
+        if (playerVoted) {
+          acc = acc + 1;
+          return acc;
+        } else {
+          return acc;
+        }
+      }, 0);
+      
+      return (eventsVoted / events.length * 100) + "%";
+    }
   }
 
   return(

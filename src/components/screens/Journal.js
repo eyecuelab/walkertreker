@@ -1,14 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, ImageBackground, ScrollView, Animated } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ScreenContainer from '../containers/ScreenContainer';  
-import { MainHeader, MainText, SubHeader } from './../text';
+import { SubHeader } from './../text';
 import defaultStyle from '../../styles/defaultStyle';
-import DayCounter from '../ui/DayCounter';
 import JournalDisplay from '../ui/JournalUI/JournalDisplay'
 import JournalDaySlider from '../ui/JournalUI/JournalDaySlider'
+import AnimatedCampaignHeader from '../ui/AnimatedCampaignHeader';
 
 class Journal extends React.Component {
 
@@ -17,10 +16,12 @@ class Journal extends React.Component {
     this.state = {
       focusedDay: this.props.campaign.currentDay,
     }
+    
   }
 
   componentWillMount(){
     this.getEntriesByDay()
+    this.scrollY = new Animated.Value(0);
   }
   
   componentDidMount() {
@@ -77,27 +78,38 @@ class Journal extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}>
           <ScreenContainer>
-            <DayCounter campaign={this.props.campaign} />
+
+            <AnimatedCampaignHeader scrollY={this.scrollY}/>
+
+            {
+              this.props.campaign.journals.length 
             
-            <View style={{ alignItems: "center"}}>
-              <MainHeader>Journal</MainHeader>
-            </View>
+              ? 
+              
+              <View style={{width: '100%', flex: 1 }}>
+                
+                <View style={customStyles.daySlider}>
+                  <JournalDaySlider 
+                    entryObj={this.entryObj}
+                    focusedDay={this.state.focusedDay}
+                    onDaySliderClick={(day) => this._handleDaySliderClick(day)} />
+                </View> 
 
-            {this.props.campaign.journals.length ? 
-            <View style={{width: '100%', height: '85%' }}>
-              <View style={customStyles.daySlider}>
-                <JournalDaySlider 
-                  entryObj={this.entryObj}
-                  focusedDay={this.state.focusedDay}
-                  onDaySliderClick={(day) => this._handleDaySliderClick(day)} />
+                <ScrollView style={{flex: 1, width: '100%', height: '100%' }} 
+                  onScroll={Animated.event(
+                      [
+                          { nativeEvent: { contentOffset: { y: this.scrollY } } }
+                      ]
+                  )}>
+                  <JournalDisplay entries={this.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
+                </ScrollView>
+
               </View> 
-
-              <ScrollView style={{width: '100%', height: '100%' }}>
-                <JournalDisplay entries={this.entryObj[this.state.focusedDay]} entryDay={this.state.focusedDay}/>
-              </ScrollView> 
-            </View> : 
-            <SubHeader style={customStyles.noJournalWarning}>There are no journal entries to display</SubHeader>
-          }
+              
+              : 
+              
+              <SubHeader style={customStyles.noJournalWarning}>There are no journal entries to display</SubHeader>
+            }
 
           </ScreenContainer>
         </ImageBackground>
@@ -110,7 +122,7 @@ const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
   daySlider: {
-    marginTop: heightUnit*4,
+    marginTop: heightUnit*2,
     height: heightUnit*12,
     borderColor: 'white',
     borderTopWidth: 1,
