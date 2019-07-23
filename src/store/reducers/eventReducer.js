@@ -8,6 +8,8 @@ export default (state = {}, action) => {
     return action.event;
   case c.END_EVENT:
     return {};
+  case c.EVENT_INFO_FETCHED:
+    return { ...state, events: action.events }
   default:
     return state;
   }
