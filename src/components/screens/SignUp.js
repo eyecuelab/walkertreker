@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import {MainHeader, SubHeader, Label, TextAlt} from './../text';
 import { phoneNumPrettyPrint } from '../../util/util';
 
+import { Transition } from 'react-navigation-fluid-transitions';
+
 import posed from 'react-native-pose';
 import ButtonWithLoading from './../ui/Buttons/ButtonWithLoading';
 import constants from '../../constants';
@@ -138,6 +140,9 @@ class SignUp extends React.Component {
 
   render() {
     return (
+      <Transition appear="scale" disappear="flip">
+
+      
       <ImageBackground
         source={use_item_bg}
         resizeMode='cover'
@@ -190,6 +195,7 @@ class SignUp extends React.Component {
           </View>
         </ScreenContainer>
       </ImageBackground>
+      </Transition>
     )
   }
 }

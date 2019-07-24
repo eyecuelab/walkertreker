@@ -79,7 +79,7 @@ class Journal extends React.Component {
         style={{width: '100%', height: '100%'}}>
           <ScreenContainer>
 
-            <AnimatedCampaignHeader scrollY={this.scrollY}/>
+            <AnimatedCampaignHeader title="Journal" scrollY={this.scrollY}/>
 
             {
               this.props.campaign.journals.length 
@@ -96,6 +96,7 @@ class Journal extends React.Component {
                 </View> 
 
                 <ScrollView style={{flex: 1, width: '100%', height: '100%' }} 
+                  scrollEventThrottle={16}
                   onScroll={Animated.event(
                       [
                           { nativeEvent: { contentOffset: { y: this.scrollY } } }

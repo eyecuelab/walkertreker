@@ -15,20 +15,20 @@ const AnimatedMainHeader = Animated.createAnimatedComponent(MainHeader);
 class AnimatedCampaignHeader extends Component {
   render() {
     const animatedFontSize = this.props.scrollY.interpolate({
-      inputRange: [0, heightUnit*15],
+      inputRange: [0, widthUnit*20],
       outputRange: [widthUnit*10.5, widthUnit*5],
       extrapolate: 'clamp'
     });
     
     const paddingTop = this.props.scrollY.interpolate({
-      inputRange: [0, heightUnit*15],
-      outputRange: [widthUnit*3, 0]
+      inputRange: [0, widthUnit*20],
+      outputRange: [widthUnit*1, 0]
     });
 
     return (
       <View>
         <DayCounter campaign={this.props.campaign} />
-        <AnimatedMainHeader style={{fontSize: animatedFontSize, paddingTop: paddingTop}}>Journal </AnimatedMainHeader>
+        <AnimatedMainHeader style={{fontSize: animatedFontSize, paddingTop: paddingTop}}>{this.props.title}</AnimatedMainHeader>
       </View>
     );
   }

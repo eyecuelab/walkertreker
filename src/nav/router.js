@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator } from "react-navigation";
+import { createFluidNavigator } from "react-navigation-fluid-transitions";
 import constants from './../constants';
 import { Image } from 'react-native';
 
@@ -41,20 +42,35 @@ const FadeTransition = (index, position) => {
   }
 }
 
+const SlideTransistion = (index, position, layout) => {
+  const inputRange = [index - 1, index, index + 1];
+  const outputRange = [layout.initWidth, 0, -layout.initWidth];
+  
+  const transition = position.interpolate({
+    inputRange: inputRange,
+  });
+
+  return {
+    transform: [{ translateX: transition }],
+    opacity: opacityRange
+  }
+}
+
 NavigationConfig = () => {
  return {
    screenInterpolator: (sceneProps) => {
-     const { position, scene } = sceneProps;
+     const { position, scene, layout } = sceneProps;
      const { index } = scene;
+     
 
-     return FadeTransition(index, position);
+     return SlideTransistion(index, position, layout);
    }
  }
 }
 
 
 
-const AuthStack = createStackNavigator(
+const AuthStack = createFluidNavigator(
   {
     SignUp: SignUp,
     AccountRecovery: AccountRecovery,
@@ -62,12 +78,6 @@ const AuthStack = createStackNavigator(
       screen: RecoverAccount,
       path: 'recovery'
     },
-  },
-  {
-    defaultNavigationOptions: {
-      header: null,
-    },
-    transitionConfig: NavigationConfig
   }
 )
 
