@@ -37,8 +37,8 @@ class Journal extends React.Component {
 
   evaluateFocusedDay = () => {
     this.props.campaign.currentDay+1 in this.entryObj ? 
-      this.setState({focusedDay: this.props.campaign.currentDay + 1}) : 
-      this.setState({focusedDay: this.props.campaign.currentDay});
+      this.setState({ focusedDay: this.props.campaign.currentDay + 1 }) : 
+      this.setState({ focusedDay: this.props.campaign.currentDay });
   }
 
   getEntriesByDay = async () => {
@@ -122,14 +122,6 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
-  daySlider: {
-    marginTop: heightUnit*2,
-    height: heightUnit*12,
-    borderColor: 'white',
-    borderTopWidth: 1,
-    flexDirection: 'row',
-    justifyContent: "space-between",
-  },
   noJournalWarning: {
     letterSpacing: widthUnit*0.5, 
     lineHeight: widthUnit*8,

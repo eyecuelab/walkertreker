@@ -17,8 +17,6 @@ class JournalDisplay extends React.Component {
   render() {
     const entriesObj = this.props.entries
     return (
-      // <View style={customStyles.dayEntry}>
-      //   <TextAlt style={customStyles.dayCount}>Day {this.props.entryDay}</TextAlt>
         Object.keys(entriesObj).map((key) => {
           if (events[entriesObj[key].eventNumber]) {
             return (
@@ -33,7 +31,6 @@ class JournalDisplay extends React.Component {
             )}
           }
         )
-      // </View>
     );
   }
 }
@@ -43,30 +40,7 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
-  dayEntry: {
-    backgroundColor: 'rgba(0,0,0,0.4)', 
-    padding: widthUnit*5,
-    marginTop: widthUnit*5,
-    flex: 1,
-  },
-  dayCount: {
-    fontFamily: 'gore',
-    justifyContent: 'flex-start',
-  },
-  entryBox: {
-    marginTop: heightUnit*1.5,
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  border: {
-    borderLeftWidth: 1.3, 
-    borderColor: '#aaa',
-    height: '80%',
-    width: widthUnit*1,
-  },
   entryLine: {
-    // lineHeight: widthUnit*7,
     marginLeft: widthUnit*2,
     color: 'white',
     fontFamily: 'Gill Sans MT Condensed',

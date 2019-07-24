@@ -163,7 +163,7 @@ class Inventory extends React.Component {
             
 
           <View style={{flex: 4.2}}>
-            <ScrollView style={{flex: 1}}>
+            <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
 
               <Text style={styles.subHeadingBlack}>{this.foodItems.length} Food</Text>
               <View

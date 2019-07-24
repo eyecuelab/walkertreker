@@ -5,6 +5,7 @@ import SubHeader from './SubHeader';
 import Label from './Label';
 import TextAlt from './TextAlt';
 import MainText from './MainText';
+import TextWithBackground from './TextWithBackground';
 
 export {
   MainHeader,
@@ -12,4 +13,5 @@ export {
   Label,
   TextAlt,
   MainText,
+  TextWithBackground,
 }

@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
 import * as items from './itemImages';
+import * as paints from './paintStrokeImages';
 import initialStateSteps from './initialStates/initialStateSteps';
 import initialStateCampaign from './initialStates/initialStateCampaign';
 import initialStatePlayer from './initialStates/initialStatePlayer';
@@ -19,6 +20,7 @@ export default {
   storeData,
   retrieveData,
   item: items,
+  paint: paints,
   navigation,
   events,
 };
