@@ -6,7 +6,7 @@ function ItemsAdded(props) {
   const itemsAdded = ( player ) => {
     const items = props.campaign.inventories
     const itemsCount = items.reduce((acc, item) => {
-      return item.addedById === player.id ? acc + 1 : acc ; 
+      return item.sourceId === player.id ? acc + 1 : acc ; 
     }, 0);
     return itemsCount
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, Button, ImageBackground, AsyncStorage, ScrollView } from 'react-native';
 import { v4 } from 'uuid';
 import { connect } from 'react-redux';
@@ -161,6 +162,10 @@ const createCampaignStyle = StyleSheet.create({
     height: heightUnit*65,
   }
 })
+
+CreateCampaign.propTypes = {
+  screenProps: PropTypes.any,
+}
 
 const mapStateToProps = (state) => {
   return {

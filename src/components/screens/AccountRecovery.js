@@ -10,6 +10,7 @@ import posed from 'react-native-pose';
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
 import ScreenContainer from '../containers/ScreenContainer';
+import { Linking } from 'expo';
 
 const { c } = constants;
 const use_item_bg = require('../../../assets/use_item_bg.png');
@@ -53,12 +54,13 @@ class RecoverAccountModal extends React.Component {
   }
 
   _handleRecovery = async () => {
+    const prefix = Linking.makeUrl('/');
     const { dispatch } = this.props;
     prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
     console.log('recovery number', prettyPhoneNumber)
     if (prettyPhoneNumber.length === 12) {
       dispatch({
-        type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber
+        type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber, uri: prefix
       }) 
       this.setState({ validNumber: true, submitted: true})
     } else {
@@ -73,6 +75,7 @@ class RecoverAccountModal extends React.Component {
   }
 
   render(){
+    
     return (
       <ImageBackground
         source={use_item_bg}

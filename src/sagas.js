@@ -282,14 +282,15 @@ export function *updatePlayer(action) {
 
 
 export function *sendRecoverAccount(action) {
+  console.log(action)
   const url = `${endpoint}/api/players/recover/` + action.phoneNumber
-  console.log(url)
+  console.log(action)
   const initObj = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "appkey": CLIENT_APP_KEY
-    }
+    },
   }
   try {
     const response = yield fetch(url, initObj)
@@ -397,8 +398,8 @@ export function *useInventory(action) {
     body: JSON.stringify({
       inventoryUpdate: {
         used: true,
-        usedBy: action.usedBy,
-        usedById: action.usedById,
+        user: action.user,
+        userId: action.userId,
       }
     })
   }
@@ -421,8 +422,8 @@ export function *receiveInventory(action) {
     },
     body: JSON.stringify({
       used: false,
-      addedBy: action.addedBy,
-      addedById: action.addedById,
+      source: action.source,
+      sourceId: action.sourceId,
       itemType: action.itemType,
       itemNumber: action.itemNumber
     })
@@ -524,8 +525,8 @@ export function *scavenge(action) {
   console.log('made it through the scavenge branching, NEW ITEM: ', newItem);
 
   yield put({ type: c.RECEIVE_INVENTORY, 
-    addedBy: 'player', 
-    addedById: player.id, 
+    source: 'player', 
+    sourceId: player.id, 
     campaignId: campaign.id,
     itemType: itemType,
     itemNumber: newItem
@@ -577,6 +578,7 @@ export function *watchSetDates() {
 /////////////
 //Step Saga's
 /////////////
+
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
 }
@@ -769,10 +771,10 @@ export default function *rootSaga() {
 // const endpoint = 'http://10.0.0.5:5000'
 
 // LOCAL eyecue endpoint KIM
-const endpoint = 'http://10.1.10.51:5000'
+// const endpoint = 'http://10.1.10.51:5000'
 
 // LOCAL eyecue endpoint WARD
 // const endpoint = 'http://10.1.10.108:5000'
 
 // REMOTE
-// const endpoint = 'https://walkertrekker.herokuapp.com'
+const endpoint = 'https://walkertrekker.herokuapp.com'
