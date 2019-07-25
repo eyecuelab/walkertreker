@@ -43,6 +43,7 @@ const customStyles = StyleSheet.create({
     fontFamily: 'Gill Sans MT Condensed Bold',
     color: 'white',
     textAlign: 'center',
+    alignSelf: 'center',
   },
 })
 

@@ -141,6 +141,14 @@ const MainApp = createSwitchNavigator(
     RandomEvent: {screen : RandomEvent},
     RandomEventResult: {screen : RandomEventResult},
     Safehouse: {screen: Safehouse},
+    CampaignIsWon: {
+      screen: CampaignIsWon,
+      path: 'campaignIsWon'
+    },
+    CampaignIsLost: {
+      screen: CampaignIsLost,
+      path: 'campaignIsLost'
+    },
   },
   {
     defaultNavigationOptions: {

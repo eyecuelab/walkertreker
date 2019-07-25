@@ -333,11 +333,12 @@ export function *destroyCampaign(action) {
     },
   };
   try {
+    console.log("try destro campaign")
     const response = yield fetch(url, initObj)
-    .then(response => response.json());
+    .then(response => response.json()).then((response) => console.log(response));
     yield put({type: c.CAMPAIGN_DESTROYED});
   } catch (error) {
-    console.warn('error starting campaign: ', error)
+    console.warn('error destroying campaign: ', error)
   }
 }
 
@@ -447,46 +448,52 @@ export function *checkBonusSteps(action) {
   const { currentDay, startDate, id } = yield select(getCampaign);
   const { campaignDateArray, scavengingFor } = yield select(getSteps);
 
-  if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
-    console.log("nothing to update in check steps")
-    return; // there is no player or game or steps or step targets, so bye
-  }
-  const stepGoalToday = stepTargets[currentDay];
-  const stepsToday = steps[currentDay];
-  const newBonus = stepsToday - stepGoalToday;
-  const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
-  const bonusStepsToday = campaignDateArray[currentDay].bonus;
+  if (id) {
+    if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
+      console.log("nothing to update in check steps")
+      return; // there is no player or game or steps or step targets, so bye
+    } else {
 
-  if (
-    // there are bonus steps for the first time today
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday === null
-  ) {
-    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    yield put({type: c.GO_TO_SAFEHOUSE, currentDay: currentDay});
+      const stepGoalToday = stepTargets[currentDay];
+      const stepsToday = steps[currentDay];
+      const newBonus = stepsToday - stepGoalToday;
 
-  } else if (
-    // there are new bonus steps but not enough to scavenge
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) < 500 &&
-    newBonus > bonusStepsToday
-  ) {
-    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+      //TEMPORARILY COMMENTED OUT TO FIX END OF CAMPAIGN
+      // const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
+      // const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
-  } else if (
-    // there are 500 or more unused bonus steps to use for scavenging
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) >= 500 &&
-    scavengingFor
-  ) {
-    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday });
-    yield put({type: c.FETCH_CAMPAIGN_INFO, id: id });
-
-  } else {
-    return;
+      if (
+        // there are bonus steps for the first time today
+        stepsToday >= stepGoalToday &&
+        bonusStepsToday === null
+      ) {
+        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+        yield put({type: c.GO_TO_SAFEHOUSE, currentDay: currentDay});
+    
+      } else if (
+        // there are new bonus steps but not enough to scavenge
+        stepsToday >= stepGoalToday &&
+        bonusStepsToday !== null &&
+        newBonus - (timesScavengedToday * 500) < 500 &&
+        newBonus > bonusStepsToday
+      ) {
+        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+    
+      } else if (
+        // there are 500 or more unused bonus steps to use for scavenging
+        stepsToday >= stepGoalToday &&
+        bonusStepsToday !== null &&
+        newBonus - (timesScavengedToday * 500) >= 500 &&
+        scavengingFor
+      ) {
+        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+        yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday });
+        yield put({type: c.FETCH_CAMPAIGN_INFO, id: id });
+    
+      } else {
+        return;
+      }
+    }
   }
 }
 
@@ -771,10 +778,10 @@ export default function *rootSaga() {
 // const endpoint = 'http://10.0.0.5:5000'
 
 // LOCAL eyecue endpoint KIM
-// const endpoint = 'http://10.1.10.51:5000'
+const endpoint = 'http://10.1.10.51:5000'
 
 // LOCAL eyecue endpoint WARD
 // const endpoint = 'http://10.1.10.108:5000'
 
 // REMOTE
-const endpoint = 'https://walkertrekker.herokuapp.com'
+// const endpoint = 'https://walkertrekker.herokuapp.com'
