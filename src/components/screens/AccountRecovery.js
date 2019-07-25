@@ -9,22 +9,21 @@ import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import posed from 'react-native-pose';
 import defaultStyle from '../../styles/defaultStyle';
 import constants from '../../constants';
-import ScreenContainer from '../containers/ScreenContainer';
-import { Linking } from 'expo';
-
+import { OpacityContainer, ScreenContainer, Footer } from './../containers';
+import { Transition } from 'react-navigation-fluid-transitions';
 const { c } = constants;
-const use_item_bg = require('../../../assets/use_item_bg.png');
+const paint = require('../../../assets/paintstroke/Paint_Stroke_alt.png');
 
 const AnimatedLabel = posed.View({
   inInput: {
-    scale: 0.9,
+    scale: 1,
     x: 0,
     y: 0,
   },
   aboveInput: { 
-    scale: 0.8, 
-    x: -10,
-    y: -22,
+    scale: 0.6, 
+    x: -30,
+    y: -25,
   }
 });
 
@@ -77,115 +76,98 @@ class RecoverAccountModal extends React.Component {
   render(){
     
     return (
-      <ImageBackground
-        source={use_item_bg}
-        resizeMode='cover'
-        style={customStyles.itemBg}
-      >
-        <ScreenContainer>
-          <View style={[customStyles.container, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
-            <View style={customStyles.headlineContainer}>
-              <MainHeader>Account Recovery</MainHeader>
-              <TextAlt style={{marginTop: widthUnit*12}}>You will receive a text to recover your account</TextAlt>
+      <ScreenContainer>
+        
+        
+        <View style={customStyles.headerContainer}>
+          <MainHeader style={{textAlign: "center"}}>Account Recovery</MainHeader>
+          <TextAlt style={{textAlign: "center"}}>You will receive a text to recover your account</TextAlt>
+        </View>
+      
+
+        <View style={customStyles.body}>     
+          
+          <ImageBackground source={paint} resizeMode={'stretch'} overflow={'visible'} style={customStyles.fieldContainer}>
+          
+            <AnimatedLabel pose={this.state.didFocusInput}
+              style={[customStyles.labelPosition, this.state.didFocusInput === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
+              <Label>Phone Number</Label>
+            </AnimatedLabel>
+
+            <TextInput style={customStyles.textInput} keyboardType="phone-pad"
+              onChangeText={(text) => this.setState({ phoneNumber: text })} 
+              onFocus={() => this.handleFocus()} 
+              onBlur={() => this.handleBlur()}
+              value={this.state.phoneNumber} />
+
+          </ImageBackground>
+          
+        
+          <View style={customStyles.formContainer}>
+            {this.noNumberError()}
+          </View>
+        </View>
+        
+        
+        <Footer style={{ alignContent : 'center' }}>
+
+          <SingleButtonFullWidth
+            title="Recover"
+            onButtonPress={this._handleRecovery}
+            backgroundColor="darkred"
+          />
+            <View style={customStyles.textButtonContainer}>
+              <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('SignUp') }}>Go back to <TextAlt color='darkred' weight='bold'>New Player Sign Up</TextAlt></TextAlt>
             </View>
 
-            <View style={customStyles.fieldContainer}>
-              <AnimatedLabel pose={this.state.didFocusInput}
-                style={[customStyles.labelPosition, this.state.didFocusInput === 'inInput' ? {zIndex: 0} : {zIndex: 1}]}>
-                <Label>Phone Number</Label>
-              </AnimatedLabel>
-              <TextInput style={customStyles.textInput} keyboardType="phone-pad"
-                onChangeText={(text) => this.setState({ phoneNumber: text })} 
-                onFocus={() => this.handleFocus()} 
-                onBlur={() => this.handleBlur()}
-                value={this.state.phoneNumber} />
-            </View>
-            
-            <View style={customStyles.formContainer}>
-              {this.noNumberError()}
-            </View>
-            <View style={customStyles.buttonPosition}>
-              <View style={customStyles.button}>
-                <SingleButtonFullWidth
-                  title="Recover"
-                  onButtonPress={this._handleRecovery}
-                  backgroundColor="darkred"
-                />
-              </View>
-              <View style={customStyles.textButtonContainer}>
-                <TextAlt size='sm' onPress={() => { this.props.navigation.navigate('SignUp') }}>Go back to <TextAlt color='darkred' weight='bold'>New Player Sign Up</TextAlt></TextAlt>
-              </View>
-            </View>
-          </View>
-        </ScreenContainer>
-      </ImageBackground>
+        </Footer>
+        
+  
+      </ScreenContainer>
     )
   }
 }
       
-const styles = StyleSheet.create(defaultStyle);
+
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
-  container: {
-    padding: widthUnit * 4,
-    height: '100%'
-  },
-  headlineContainer: {
-    margin: 6,
-    marginBottom: heightUnit*3,
-  },
   fieldContainer: {
-    margin: 6,
-    marginTop: heightUnit*2.5,
+    padding: 6,
     marginBottom: heightUnit*3,
   },
-  button: {
-    backgroundColor: 'black',
-    width: '100%',
-    height: heightUnit*10,
-    borderRadius: 5,
-    marginTop: heightUnit*24,
-    marginBottom: heightUnit*2,
+  headerContainer: {
+    marginTop: heightUnit*4,
+  },
+  textButtonContainer: {
+    marginTop: heightUnit*1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  body: {
+    justifyContent: "center",
+    alignContent: "center",
+    flex: 2,
   },
   textInput: {
     width: '100%',
-    borderColor: '#888',
-    borderWidth: 2,
     marginTop: 5,
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 10,
+    paddingTop: heightUnit*1,
+    paddingBottom: heightUnit*2,
+    paddingLeft: widthUnit*1,
     color: 'white',
     fontFamily: 'gore',
-    zIndex: 0
-  },
-  buttonPosition: {
-    margin: 6,
-    position: 'absolute',
-    bottom: heightUnit*5,
-    left: widthUnit*1.8,
-    width: '100%',
-    justifyContent: 'center'
+    fontSize: widthUnit*6,
+    zIndex: 0,
+    marginLeft: 20
   },
   labelPosition: {
     position: 'absolute',
     bottom: heightUnit*2,
     left: widthUnit*1.8,
-    backgroundColor: 'rgba(0,0,0,0.7)',
     padding: 2,
     zIndex: 1
-  },
-  textButtonContainer: {
-    height: heightUnit*6,
-    padding: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  itemBg: {
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
+  }
 })
 
 

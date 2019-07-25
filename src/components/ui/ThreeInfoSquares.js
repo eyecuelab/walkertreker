@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import ButtonToggle from './ButtonToggle';
 import Avatar from './Avatar';
 import defaultStyle from '../../styles/defaultStyle';
+import {Label, SubHeader} from './../text';
 
 const bg1 = require('../../../assets/buttontexture1.png');
 const bg2 = require('../../../assets/buttontexture2.png');
@@ -50,12 +51,9 @@ export default class ThreeInfoSquares extends React.Component {
   render() {
     return (
       <View style={customStyles.container} >
-        <View style={customStyles.headerRow}>
-
-          <Text style={[styles.label, customStyles.title]}>{this.props.title}</Text>
-        </View>
-
-        <Text style={[styles.detail, {margin: 5}]}>{this.props.subtitle}</Text>
+        
+          <Label color="#000">{this.props.title}</Label>
+        
 
         <View style={customStyles.squareContainer}>
 
@@ -64,7 +62,7 @@ export default class ThreeInfoSquares extends React.Component {
               background={bg1}
               value={this.props.button1value}
               label={this.props.button1label}
-              bigValue={false}
+              bigValue={this.props.bigValue}
               color={'white'} />
           </View>
 
@@ -120,14 +118,7 @@ const customStyles = StyleSheet.create({
   container: {
     width: '100%',
   },
-  headerRow: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    height: widthUnit*3,
-    marginBottom: 0,
-  },
+
   avatarStyle: {
     width: widthUnit*10,
     aspectRatio: 1,

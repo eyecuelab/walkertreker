@@ -1,15 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, ToastAndroid, ScrollView } from 'react-native';
+import { StyleSheet, Animated, View, ImageBackground, ToastAndroid, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import constants from '../../constants';
-import CampaignHeader from './../ui/CampaignHeader';
+import AnimatedCampaignHeader from './../ui/AnimatedCampaignHeader';
 import defaultStyle from '../../styles/defaultStyle';
-import { MainHeader } from './../text';
+
 import ThreeInfoSquares from '../ui/ThreeInfoSquares';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import ScreenContainer from '../containers/ScreenContainer';
-import DayCounter from '../ui/DayCounter';
+
 
 class CampaignSummary extends React.Component {
 
@@ -19,32 +18,19 @@ class CampaignSummary extends React.Component {
     if (toast) {
       this._showToast(toast.msg)
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    // if (prevProps.campaign.players !== null) {
-    //   for (let newPlayer of this.props.campaign.players) {
-    //     const id = newPlayer.id
-    //     let filtered = prevProps.campaign.players.filter(player => player.id === id)
-    //     const oldPlayer = filtered[0]
-    //     const today = this.props.campaign.currentDay
-    //     if (newPlayer.steps[today] !== oldPlayer.steps[today]) {
-    //       this._showToast(`${newPlayer.displayName}'s steps have updated.`)
-    //     }
-    //   }
-    // }
+    this.scrollY = new Animated.Value(0);
   }
 
   _displayStepPercentage = (player) => {
     const today = this.props.campaign.currentDay;
 
     // Code for Percentage based Display
-    // const percent = Math.floor((((player.steps[today]) / (player.stepTargets[today])) * 100));
-    // return percent;
+    const percent = Math.floor((((player.steps[today]) / (player.stepTargets[today])) * 100));
+    return percent + "%";
 
     // Code for xxxx / yyyy display
 
-    return `${player.steps[today]} / ${player.stepTargets[today]}`
+    // return `${player.steps[today]} / ${player.stepTargets[today]}`
   }
 
   _displayHealthLevel = (player) => {
@@ -127,16 +113,22 @@ class CampaignSummary extends React.Component {
         style={{width: '100%', height: '100%'}}>
         <ScreenContainer>
         
-        <CampaignHeader title="Summary"/>
+        <AnimatedCampaignHeader title="Summary" scrollY={this.scrollY} style={{ borderColor: "#FFF", borderBottomWidth: 1,}}/>
           
-          <ScrollView style={customStyles.scrollContainer}>
+          <ScrollView style={{ flex: 1, marginTop: 20, }} 
+                  scrollEventThrottle={16}
+                  onScroll={Animated.event(
+                      [
+                          { nativeEvent: { contentOffset: { y: this.scrollY } } }
+                      ]
+                  )}>
             {this.props.campaign.players.map(player => {
               return (
                 <View key={player.id} style={customStyles.playerInfoContainer}>
                   <ThreeInfoSquares
                     title={player.displayName}
                     player={player}
-                    bigValue={false}
+                    bigValue={true}
                     button1label='Progress'
                     button1value={this._displayStepPercentage(player)}
                     button2label='Health'
@@ -175,7 +167,6 @@ const customStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   bottom: {
-    flex: 1,
     width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',

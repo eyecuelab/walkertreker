@@ -12,7 +12,7 @@ const StyledText = styled.Text`
   font-size: ${props =>
     (props.size === 'sm' && widthUnit*3.5) ||
     (props.size === 'md' && widthUnit*4.2) ||
-    (props.size === 'lg' && widthUnit*5.5) ||
+    (props.size === 'lg' && widthUnit*6) ||
     (widthUnit*5)
   };
   color: ${props => props.color || "white"};

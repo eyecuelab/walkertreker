@@ -43,6 +43,8 @@ class App extends React.Component {
     const { dispatch } = this.props
 
     const imageAssets = this.cacheImages([
+      
+      require('../assets/use_item_bg.png'),
       require('../assets/Icons/Home_Active.png'),
       require('../assets/Icons/Home_Inactive.png'),
       require('../assets/Icons/Inventory_Active.png'),
@@ -52,8 +54,10 @@ class App extends React.Component {
       require('../assets/Icons/Stats_Active.png'),
       require('../assets/Icons/Stats_Inactive.png'),
       require('../assets/paintstroke/Paint_Stroke.png'),
+      require('../assets/paintstroke/Paint_Stroke_alt.png'),
       require('../assets/paintstroke/Paint_Stroke2.png'),
       require('../assets/paintstroke/Paint_Stroke3.png'),
+      require('../assets/paintstroke/Paint_Stroke3_alt.png'),
       require('../assets/logo.png'),
       require('../assets/bg.png'),
       require('../assets/blankavatar.png'),
@@ -66,7 +70,7 @@ class App extends React.Component {
       require('../assets/safehouse_bg.png'),
       require('../assets/event_bg.png'),
       require('../assets/victory_bg.png'),
-      require('../assets/use_item_bg.png'),
+      
       require('../assets/attack_bg.png'),
       require('../assets/food/Apple.png'),
       require('../assets/food/Baked_Beans.png'),

@@ -25,12 +25,12 @@ export default class ButtonToggle extends React.Component {
     return (
       <ImageBackground style={{width: '100%', height: '100%'}} source={this.props.background} tintColor={activeTint}>
         <View style={[styles.container, toggle]} >
-          <View style={styles.valueContainer}>
+          
             <Text style={[toggle, valueFontStyle, color(this.props.color)]}>{this.props.value}</Text>
-          </View>
-          <View style={styles.labelContainer}>
+          
+          
             <Text style={[styles.label, toggle, color(this.props.color)]}>{this.props.label}</Text>
-          </View>
+          
         </View>
       </ImageBackground>
     );
@@ -60,7 +60,9 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
+    padding: 6,
+    borderWidth: 1,
+    borderColor: "#000"
   },
   active: {
     color: 'darkred',
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
   },
   bigValue: {
     fontFamily: 'gore',
-    fontSize: widthUnit*10,
+    fontSize: widthUnit*7,
   },
   label: {
     fontFamily: 'gore',
