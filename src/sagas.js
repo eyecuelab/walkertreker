@@ -457,10 +457,8 @@ export function *checkBonusSteps(action) {
       const stepGoalToday = stepTargets[currentDay];
       const stepsToday = steps[currentDay];
       const newBonus = stepsToday - stepGoalToday;
-
-      //TEMPORARILY COMMENTED OUT TO FIX END OF CAMPAIGN
-      // const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
-      // const bonusStepsToday = campaignDateArray[currentDay].bonus;
+      const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
+      const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
       if (
         // there are bonus steps for the first time today
@@ -615,11 +613,8 @@ export function *fetchEventInfo(action) {
       "appkey": CLIENT_APP_KEY
     }
   };
-  console.log("attempting to fetch event info with URL: ", url, " and initObj: ", initObj)
   try {
-    console.log("attempting to fetch event info with URL: ", url, " and initObj: ", initObj)
     const response = yield fetch(url, initObj).then(response => response.json());
-    console.log("event info in saga(line 611) : ", response)
     yield put({ type: c.EVENT_INFO_FETCHED, events: response })
   } catch ( error ) {
     console.warn('error fetching event info:', error);
@@ -627,7 +622,6 @@ export function *fetchEventInfo(action) {
 }
 
 export function *watchFetchEventInfo() {
-  console.log("reaching watcher saga with fetch_EVENT_INFO");
   yield takeLatest(c.FETCH_EVENT_INFO, fetchEventInfo);
 }
 
