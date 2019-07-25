@@ -99,7 +99,7 @@ class Inventory extends React.Component {
       if (newHunger > 100) {
         newHunger = 100;
       }
-      dispatch({ type: c.USE_INVENTORY, inventoryId: this.state.modalIndex, usedBy: 'player', usedById: player.id })
+      dispatch({ type: c.USE_INVENTORY, inventoryId: this.state.modalIndex, user: 'player', userId: player.id })
       dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
       
       setTimeout(() => {
@@ -123,7 +123,7 @@ class Inventory extends React.Component {
       if (newHunger > 100) {
         newHunger = 100;
       }
-      dispatch({ type: c.USE_INVENTORY, inventoryId: this.state.modalIndex, usedBy: 'player', usedById: player.id })
+      dispatch({ type: c.USE_INVENTORY, inventoryId: this.state.modalIndex, user: 'player', userId: player.id })
       dispatch({type: c.UPDATE_HUNGER_HEALTH, hunger: newHunger, health: newHealth});
       setTimeout(() => {
         this._toggleMedicineModal()

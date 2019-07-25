@@ -6,10 +6,10 @@ function EventItems(props) {
   const eventItems = ( ) => {
     const items = props.campaign.inventories
     const eventAdded = items.reduce((acc, item) => {
-      return item.addedBy === 'event' ? acc + 1 : acc ; 
+      return item.source === 'event' ? acc + 1 : acc ; 
     }, 0);
     const eventUsed = items.reduce((acc, item) => {
-      return item.usedBy === 'event' ? acc + 1 : acc ; 
+      return item.user === 'event' ? acc + 1 : acc ; 
     }, 0);
     return [{value: eventAdded, label: 'Rewards'} , {value: eventUsed, label: 'Lost'}]
   }

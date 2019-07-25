@@ -23,6 +23,7 @@ class RandomEventResult extends React.Component {
   }
 
   updateInventory = async (inven, invenItem, type) => {
+    console.log("THIS IS THE INVEN ITEM", invenItem, "This is the inven", inven)
     const { dispatch } = this.props
     let data = this.props.screenProps.notification.data.data.data
     if (inven && inven > 0 ) {
@@ -32,21 +33,21 @@ class RandomEventResult extends React.Component {
         type === 'weapon' ? Math.floor(Math.random()*item.weaponArray.length) : null;
 
       dispatch({ type: c.RECEIVE_INVENTORY, 
-        addedBy: 'event', 
-        addedById: data.eventId, 
+        source: 'event', 
+        sourceId: data.eventId, 
         itemType: type, 
         itemNumber: itemNumber,
         campaignId: this.props.campaign.id
       }) 
 
-    } else if (inven && inven < 0 ) {
+    } else if (inven && inven < 0 && invenItem.length) {
 
       index = await Math.floor(Math.random()*invenItem.length)
 
       dispatch({ type: c.USE_INVENTORY, 
         inventoryId: invenItem[index][1], 
-        usedBy: 'event', 
-        usedById: data.eventId
+        user: 'event', 
+        userId: data.eventId
       })
     }
   }
@@ -77,7 +78,7 @@ class RandomEventResult extends React.Component {
 
     result.stepTarget ? newPlayerObj.stepTargets[currentDay] += (newPlayerObj.stepTargets[currentDay]*result.stepTarget): newPlayerObj;
 
-    result.health ? newPlayerObj.health = newPlayerObj.health - result.health : null; 
+    result.health ? newPlayerObj.health = newPlayerObj.health + result.health : null; 
 
     this.props.dispatch({ type: c.UPDATE_PLAYER, 
       playId: newPlayerObj.id, 
@@ -85,10 +86,6 @@ class RandomEventResult extends React.Component {
       stepTargets: newPlayerObj.stepTargets,
       player: newPlayerObj
     })
-    // this.props.dispatch({ type: c.UPDATE_CAMPAIGN, 
-    //   campId: this.props.campaign.id, 
-    //   inventory: inventory === newInventory ? inventory : newInventory
-    // })
   }
   
   updateJournal = () => {

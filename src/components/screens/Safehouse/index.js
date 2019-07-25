@@ -6,11 +6,10 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { connect } from 'react-redux';
 
 import constants from '../../../constants';
-const { c, item } = constants;
-const { foodArray, medicineArray, weaponArray } = item;
+const { c } = constants;
 const safehouse_bg = require('../../../../assets/safehouse_bg.png');
 
-import { MainText, SubHeader, MainHeader } from './../../text';
+import { MainText, SubHeader } from './../../text';
 import CampaignHeader from './../../ui/CampaignHeader';
 import ProgressBar from './../../ui/ProgressBar';
 import ScreenContainer from '../../containers/ScreenContainer';
@@ -209,37 +208,25 @@ const customStyles = StyleSheet.create({
     marginTop: widthUnit * 2,
   },
   container: {
-    // margin: widthUnit*2,
     flex: 1,
     justifyContent: 'flex-start',
     width: '100%',
-    // padding: widthUnit,
-    // paddingTop: widthUnit*2,
-    // backgroundColor: 'pink',
   },
   safehouseBg: {
     width: undefined,
     height: undefined,
     flex: 1,
-    // padding: widthUnit*3,
-    // borderWidth: widthUnit*2,
-    // borderColor: 'black',
-    // marginLeft: widthUnit*3,
     justifyContent: 'flex-start',
-    // opacity: 0.2,
   },
   bottom: {
-    // flex: 1,
     width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    // marginBottom: widthUnit,
   },
   top: {
     width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    // marginBottom: widthUnit,
   },
   imageContainer: {
     flex: 1,
@@ -253,9 +240,15 @@ const customStyles = StyleSheet.create({
   }
 })
 
+Safehouse.propTypes = {
+  screenProps: PropTypes.any,
+  steps: PropTypes.object,
+  player: PropTypes.object,
+  campaign: PropTypes.object
+}
+
 function mapStateToProps(state) {
   return {
-    // appState: state.appState,
     steps: state.steps,
     campaign: state.campaign,
     player: state.player,

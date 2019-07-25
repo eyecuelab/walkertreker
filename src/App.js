@@ -169,7 +169,6 @@ class App extends React.Component {
   }
 
   render() {
-
     const prefix = Linking.makeUrl('/');
     if(this.state.isReady) {
       return (

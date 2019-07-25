@@ -18,7 +18,7 @@ const endpoint = 'http://10.1.10.108:5000'
 // const endpoint = 'http://10.0.0.5:5000';
 
 // remote:
-// const endpoint = 'walkertrekker.herokuapp.com'
+const endpoint = 'walkertrekker.herokuapp.com'
 
 const socket = io(endpoint, {
   transports: ['websocket']

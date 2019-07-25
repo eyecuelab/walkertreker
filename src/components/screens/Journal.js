@@ -6,7 +6,7 @@ import ScreenContainer from '../containers/ScreenContainer';
 import { SubHeader } from './../text';
 import defaultStyle from '../../styles/defaultStyle';
 import JournalDisplay from '../ui/JournalUI/JournalDisplay'
-import JournalDaySlider from '../ui/JournalUI/JournalDaySlider'
+import ScrollSlider from '../ui/ScrollSlider'
 import AnimatedCampaignHeader from '../ui/AnimatedCampaignHeader';
 
 class Journal extends React.Component {
@@ -68,7 +68,7 @@ class Journal extends React.Component {
     }
   }
 
-  _handleDaySliderClick = (day) => {
+  _handleSliderClick = (day) => {
     this.setState({ focusedDay: day })
   }
 
@@ -82,17 +82,16 @@ class Journal extends React.Component {
             <AnimatedCampaignHeader title="Journal" scrollY={this.scrollY}/>
 
             {
-              this.props.campaign.journals.length 
-            
-              ? 
+              this.props.campaign.journals.length ? 
               
               <View style={{width: '100%', flex: 1 }}>
                 
                 <View style={customStyles.daySlider}>
-                  <JournalDaySlider 
-                    entryObj={this.entryObj}
-                    focusedDay={this.state.focusedDay}
-                    onDaySliderClick={(day) => this._handleDaySliderClick(day)} />
+                  <ScrollSlider 
+                    dataObj={this.entryObj}
+                    focused={this.state.focusedDay}
+                    label='Day'
+                    onSliderClick={(day) => this._handleSliderClick(day)} />
                 </View> 
 
                 <ScrollView style={{flex: 1, width: '100%', height: '100%' }} 

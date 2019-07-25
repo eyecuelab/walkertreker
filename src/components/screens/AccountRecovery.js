@@ -53,12 +53,13 @@ class RecoverAccountModal extends React.Component {
   }
 
   _handleRecovery = async () => {
+    const prefix = Linking.makeUrl('/');
     const { dispatch } = this.props;
     prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
     console.log('recovery number', prettyPhoneNumber)
     if (prettyPhoneNumber.length === 12) {
       dispatch({
-        type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber
+        type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber, uri: prefix
       }) 
       this.setState({ validNumber: true, submitted: true})
     } else {
@@ -73,14 +74,15 @@ class RecoverAccountModal extends React.Component {
   }
 
   render(){
+    
     return (
       <ScreenContainer>
         
         
-              <View style={customStyles.headerContainer}>
-                <MainHeader style={{textAlign: "center"}}>Account Recovery</MainHeader>
-                <TextAlt style={{textAlign: "center"}}>You will receive a text to recover your account</TextAlt>
-              </View>
+        <View style={customStyles.headerContainer}>
+          <MainHeader style={{textAlign: "center"}}>Account Recovery</MainHeader>
+          <TextAlt style={{textAlign: "center"}}>You will receive a text to recover your account</TextAlt>
+        </View>
       
 
         <View style={customStyles.body}>     

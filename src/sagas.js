@@ -282,14 +282,15 @@ export function *updatePlayer(action) {
 
 
 export function *sendRecoverAccount(action) {
+  console.log(action)
   const url = `${endpoint}/api/players/recover/` + action.phoneNumber
-  console.log(url)
+  console.log(action)
   const initObj = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "appkey": CLIENT_APP_KEY
-    }
+    },
   }
   try {
     const response = yield fetch(url, initObj)
@@ -332,11 +333,12 @@ export function *destroyCampaign(action) {
     },
   };
   try {
+    console.log("try destro campaign")
     const response = yield fetch(url, initObj)
-    .then(response => response.json());
+    .then(response => response.json()).then((response) => console.log(response));
     yield put({type: c.CAMPAIGN_DESTROYED});
   } catch (error) {
-    console.warn('error starting campaign: ', error)
+    console.warn('error destroying campaign: ', error)
   }
 }
 
@@ -397,8 +399,8 @@ export function *useInventory(action) {
     body: JSON.stringify({
       inventoryUpdate: {
         used: true,
-        usedBy: action.usedBy,
-        usedById: action.usedById,
+        user: action.user,
+        userId: action.userId,
       }
     })
   }
@@ -421,8 +423,8 @@ export function *receiveInventory(action) {
     },
     body: JSON.stringify({
       used: false,
-      addedBy: action.addedBy,
-      addedById: action.addedById,
+      source: action.source,
+      sourceId: action.sourceId,
       itemType: action.itemType,
       itemNumber: action.itemNumber
     })
@@ -446,46 +448,50 @@ export function *checkBonusSteps(action) {
   const { currentDay, startDate, id } = yield select(getCampaign);
   const { campaignDateArray, scavengingFor } = yield select(getSteps);
 
-  if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
-    console.log("nothing to update in check steps")
-    return; // there is no player or game or steps or step targets, so bye
-  }
-  const stepGoalToday = stepTargets[currentDay];
-  const stepsToday = steps[currentDay];
-  const newBonus = stepsToday - stepGoalToday;
-  const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
-  const bonusStepsToday = campaignDateArray[currentDay].bonus;
+  if (id) {
+    if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
+      console.log("nothing to update in check steps")
+      return; // there is no player or game or steps or step targets, so bye
+    } else {
 
-  if (
-    // there are bonus steps for the first time today
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday === null
-  ) {
-    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    yield put({type: c.GO_TO_SAFEHOUSE, currentDay: currentDay});
+      const stepGoalToday = stepTargets[currentDay];
+      const stepsToday = steps[currentDay];
+      const newBonus = stepsToday - stepGoalToday;
+      const timesScavengedToday = campaignDateArray[currentDay].timesScavenged;
+      const bonusStepsToday = campaignDateArray[currentDay].bonus;
 
-  } else if (
-    // there are new bonus steps but not enough to scavenge
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) < 500 &&
-    newBonus > bonusStepsToday
-  ) {
-    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-
-  } else if (
-    // there are 500 or more unused bonus steps to use for scavenging
-    stepsToday >= stepGoalToday &&
-    bonusStepsToday !== null &&
-    newBonus - (timesScavengedToday * 500) >= 500 &&
-    scavengingFor
-  ) {
-    yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday });
-    yield put({type: c.FETCH_CAMPAIGN_INFO, id: id });
-
-  } else {
-    return;
+      if (
+        // there are bonus steps for the first time today
+        stepsToday >= stepGoalToday &&
+        bonusStepsToday === null
+      ) {
+        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+        yield put({type: c.GO_TO_SAFEHOUSE, currentDay: currentDay});
+    
+      } else if (
+        // there are new bonus steps but not enough to scavenge
+        stepsToday >= stepGoalToday &&
+        bonusStepsToday !== null &&
+        newBonus - (timesScavengedToday * 500) < 500 &&
+        newBonus > bonusStepsToday
+      ) {
+        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+    
+      } else if (
+        // there are 500 or more unused bonus steps to use for scavenging
+        stepsToday >= stepGoalToday &&
+        bonusStepsToday !== null &&
+        newBonus - (timesScavengedToday * 500) >= 500 &&
+        scavengingFor
+      ) {
+        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
+        yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday });
+        yield put({type: c.FETCH_CAMPAIGN_INFO, id: id });
+    
+      } else {
+        return;
+      }
+    }
   }
 }
 
@@ -524,8 +530,8 @@ export function *scavenge(action) {
   console.log('made it through the scavenge branching, NEW ITEM: ', newItem);
 
   yield put({ type: c.RECEIVE_INVENTORY, 
-    addedBy: 'player', 
-    addedById: player.id, 
+    source: 'player', 
+    sourceId: player.id, 
     campaignId: campaign.id,
     itemType: itemType,
     itemNumber: newItem
@@ -577,6 +583,7 @@ export function *watchSetDates() {
 /////////////
 //Step Saga's
 /////////////
+
 export function *watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
 }
@@ -606,11 +613,8 @@ export function *fetchEventInfo(action) {
       "appkey": CLIENT_APP_KEY
     }
   };
-  console.log("attempting to fetch event info with URL: ", url, " and initObj: ", initObj)
   try {
-    console.log("attempting to fetch event info with URL: ", url, " and initObj: ", initObj)
     const response = yield fetch(url, initObj).then(response => response.json());
-    console.log("event info in saga(line 611) : ", response)
     yield put({ type: c.EVENT_INFO_FETCHED, events: response })
   } catch ( error ) {
     console.warn('error fetching event info:', error);
@@ -618,7 +622,6 @@ export function *fetchEventInfo(action) {
 }
 
 export function *watchFetchEventInfo() {
-  console.log("reaching watcher saga with fetch_EVENT_INFO");
   yield takeLatest(c.FETCH_EVENT_INFO, fetchEventInfo);
 }
 
@@ -775,4 +778,4 @@ export default function *rootSaga() {
 const endpoint = 'http://10.1.10.108:5000'
 
 // REMOTE
-// const endpoint = 'https://walkertrekker.herokuapp.com'
+const endpoint = 'https://walkertrekker.herokuapp.com'
