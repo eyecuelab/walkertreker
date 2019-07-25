@@ -1,7 +1,8 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createBottomTabNavigator } from "react-navigation";
+import { createFluidNavigator } from "react-navigation-fluid-transitions";
 import constants from './../constants';
-import { Image } from 'react-native';
+import { Image, ImageBackground } from 'react-native';
 
 // screens
 import CreateCampaign from '../components/screens/CreateCampaign/';
@@ -26,7 +27,7 @@ import MainAppRouter from './../components/screens/MainAppRouter';
 import Lobby from './../components/screens/Lobby';
 import TEST_SCREEN from './../components/screens/TEST_SCREEN';
 import Stats from './../components/screens/Stats';
-
+const use_item_bg = require('./../../assets/use_item_bg.png');
 
 const FadeTransition = (index, position) => {
   const sceneRange = [index - 1, index];
@@ -41,16 +42,32 @@ const FadeTransition = (index, position) => {
   }
 }
 
+const SlideTransistion = (index, position, layout) => {
+  const inputRange = [index - 1, index, index + 1];
+  const outputRange = [layout.initWidth, 0, -layout.initWidth];
+  
+  const transition = position.interpolate({
+    inputRange: inputRange,
+    outputRange: outputRange
+  });
+
+  return {
+    transform: [{ translateX: transition }],
+  }
+}
+
 NavigationConfig = () => {
  return {
    screenInterpolator: (sceneProps) => {
-     const { position, scene } = sceneProps;
+     const { position, scene, layout } = sceneProps;
      const { index } = scene;
+     
 
-     return FadeTransition(index, position);
+     return SlideTransistion(index, position, layout);
    }
  }
 }
+
 
 
 
@@ -58,18 +75,34 @@ const AuthStack = createStackNavigator(
   {
     SignUp: SignUp,
     AccountRecovery: AccountRecovery,
-    RecoverAccount: {
-      screen: RecoverAccount,
-      path: 'recovery'
-    },
   },
   {
     defaultNavigationOptions: {
       header: null,
     },
+    transparentCard: true,
     transitionConfig: NavigationConfig
   }
 )
+
+
+class AuthStackWithBackground extends React.Component {
+  static router = AuthStack.router;
+  render() {
+    const { navigation } = this.props;
+
+    return (
+        <ImageBackground
+        source={use_item_bg}
+          resizeMode='cover'
+          style={{flex: 1,  jusifyContent: 'flexStart'}}
+        >
+        <AuthStack navigation={navigation} />
+      </ImageBackground>
+      );
+    
+  }
+}
 
 const LobbyNavigator = createStackNavigator(
   {
@@ -81,7 +114,8 @@ const LobbyNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       header: null,
-    }
+    },
+    transitionConfig: NavigationConfig
   }
 )
 
@@ -149,12 +183,17 @@ const MainApp = createSwitchNavigator(
       screen: CampaignIsLost,
       path: 'campaignIsLost'
     },
+    RecoverAccount: {
+      screen: RecoverAccount,
+      path: 'recovery'
+    }
   },
   {
     defaultNavigationOptions: {
       header: null,
     },
-    initialRouteName: "MainAppRouter" 
+    initialRouteName: "MainAppRouter",
+    transparentCard: true,   
   }
 )
 
@@ -164,7 +203,7 @@ const MainApp = createSwitchNavigator(
 const MainSwitchNavigator = createSwitchNavigator(
   {
     AuthCheck: AuthCheck,
-    Auth: {screen: AuthStack, path : ''},
+    Auth: {screen: AuthStackWithBackground, path : ''},
     MainApp: { screen: MainApp, path: ''},
     TEST_SCREEN: { screen: TEST_SCREEN }
   },

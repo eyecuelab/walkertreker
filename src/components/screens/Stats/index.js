@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet } from 'react-native';
-import ScreenContainer from './../../containers/ScreenContainer';
+import ScreenContainer from '../../containers/ScreenContainer';
 import CampaignHeader from './../../ui/CampaignHeader';
 import ToggleBar from './../../ui/ToggleBar';
 

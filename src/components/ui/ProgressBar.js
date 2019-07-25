@@ -38,7 +38,8 @@ class ProgressBar extends Component {
   render() {
     const width = this.animatedValue.interpolate({
       inputRange: [0, this.props.targetValue],
-      outputRange: ['0%', '100%']
+      outputRange: ['0%', '100%'],
+      extrapolate: "clamp"
     });
     return (
       <View style={[styles.outerContainer]}>
