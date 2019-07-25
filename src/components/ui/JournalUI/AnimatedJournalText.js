@@ -16,7 +16,6 @@ class AnimatedJournalText extends Component {
   }
 
   componentDidMount() {
-    console.log("starting animation?")
       Animated.timing(
         this.state.animatedValue,
         {

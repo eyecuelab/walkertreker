@@ -7,20 +7,40 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import DayCounter from '../ui/DayCounter';
-
+import { MainText } from '../text';
+import ScreenContainer from '../containers/ScreenContainer';
+import CampaignHeader from '../ui/CampaignHeader';
 const victory_bg = require('../../../assets/victory_bg.png');
 
-// import data from '../../constants/endofcampaigndummydata'
 
 class CampaignIsWon extends React.Component {
-
+ 
   constructor(props) {
     super(props)
-    const data = this.props.navigation.getParam('data')
-    const finalCampaignState = {DayCounter: 10}
-    this.state = { finalCampaignState,  }
+    const { finalCampaignState } = this.props.navigation.getParam('data')
+    this.getFinalStats(finalCampaignState)
+    this.state = { finalCampaignState }
   }
+  
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch({ type: c.DESTROY_CAMPAIGN, campId: this.state.finalCampaignState.id })
+  }
+
+  getFinalStats = (finalCampaignState) => {
+    let total = 0;
+    for (let player of finalCampaignState.players ) {
+      const steps = player.steps.reduce((acc, stepQty) => {
+        return(
+          acc + stepQty
+        )
+      })
+      total += steps
+    }
+    this.totalSteps = total
+    console.log("TOTAL STEPS", this.totalSteps)
+  }
+
 
   render() {
     return (
@@ -28,60 +48,45 @@ class CampaignIsWon extends React.Component {
         source={this.props.screenProps.backgroundImage}
         style={{width: '100%', height: '100%'}}
       >
-        <View style={styles.container}>
-          <View style={{width: '100%', height: '100%'}}>
+        <ScreenContainer>
             <ImageBackground
               source={victory_bg}
               resizeMode={'cover'}
               style={customStyles.bgImage}
             >
-              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', padding: widthUnit*5}}>
-                <View style={customStyles.headerContainer}>
-                  <DayCounter campaign={this.state.finalCampaignState} />
-                  <Text style={styles.headline}>Military{"\n"}Check{"\n"}Point</Text>
-                </View>
+              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
+                <CampaignHeader campaign={this.state.finalCampaignState} title={'Military\nCheck\nPoint'}/>
+
                 <View style={customStyles.contentContainer}>
-                  <Text style={styles.plainText}>You've finally made it to the military zone! For now, you can take a short breath of relief from your long journey. {"\n \n"}While the military check point is protected, it is not completely safe. As you go over the routes with the captain, you cast your eyes towards the mountains in the distance. "Not much further now," you think to yourself, "we'll finally reunite at the safe haven."</Text>
+                  <MainText style={customStyles.mainText}>After {this.totalSteps} total steps, you've finally made it to the military zone! {"\n \n"}While the military check point is protected, it is not completely safe. As you go over the routes with the captain, you cast your eyes towards the mountains in the distance. "Not much further now," you think to yourself, "we'll finally reunite at the safe haven."</MainText>
                 </View>
                 <View style={customStyles.buttonContainer}>
                   <SingleButtonFullWidth
                     title="Start Another Journey"
                     backgroundColor="darkred"
-                    onButtonPress={() => this.props.navigation.navigate('About')}
+                    onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
                   />
                 </View>
               </View>
             </ImageBackground>
-          </View>
-        </View>
+        </ScreenContainer>
       </ImageBackground>
     );
   }
-
 }
 
 const styles = StyleSheet.create(defaultStyle)
 const widthUnit = wp('1%')
 const heightUnit = hp('1%')
 const customStyles = StyleSheet.create({
-  headerContainer: {
-    flex: 1,
-    marginBottom: heightUnit*2,
-    width: '100%',
-  },
+
   contentContainer: {
-    // paddingTop: heightUnit,
-    // paddingBottom: heightUnit,
     flex: 3,
     width: '100%',
     marginTop: heightUnit*2.5,
     marginBottom: heightUnit*2.5
-    // borderColor: 'black',
-    // borderWidth: 1,
   },
   buttonContainer: {
-    // marginTop: heightUnit*5,
-    // marginBottom: heightUnit*5,
     width: '100%',
     height: heightUnit*10,
     alignItems: 'center',
@@ -93,6 +98,9 @@ const customStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
   },
+  mainText: {
+    lineHeight: widthUnit*6.5,
+  }
 });
 
 function mapStateToProps(state) {
@@ -103,3 +111,18 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(CampaignIsWon)
+
+
+// getFinalStats = () => {
+//   let total = 0;
+//   for (let player of this.state.finalCampaignState ) {
+//     const steps = player.steps.reduce((acc, stepQty) => {
+//       return(
+//         acc + stepQty
+//       )
+//     })
+//     total += steps
+//   }
+//   this.totalSteps = total
+//   console.log("TOTAL STEPS", this.totalSteps)
+// }

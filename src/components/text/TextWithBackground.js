@@ -22,7 +22,7 @@ class TextWithBackground extends React.Component {
                   resizeMode={'stretch'}
                   style={customStyles.bg}
                   overflow='visible'>
-        <MainText style={customStyles.voteText}>{this.props.text}</MainText>
+        <MainText style={customStyles.text}>{this.props.text}</MainText>
       </ImageBackground>
     )
   }
@@ -39,10 +39,11 @@ const customStyles = StyleSheet.create({
     paddingVertical: widthUnit*4,
     marginVertical: widthUnit*-1,
   },
-  voteText: {
+  text: {
     fontFamily: 'Gill Sans MT Condensed Bold',
     color: 'white',
     textAlign: 'center',
+    alignSelf: 'center',
   },
 })
 

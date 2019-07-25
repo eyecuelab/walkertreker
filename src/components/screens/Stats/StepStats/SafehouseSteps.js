@@ -10,7 +10,6 @@ function SafehouseSteps() {
         acc++
         return acc;
       } else {
-        console.log("Skip: ", index);
         return acc;
       }
     }, 0);
