@@ -12,7 +12,6 @@ export default class TestScreen extends Component {
   render() {
     return(
      <SignInSuccess {...this.props}/>
-
     )
   }
 }
