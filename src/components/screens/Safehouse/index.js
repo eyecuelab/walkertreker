@@ -13,7 +13,7 @@ const safehouse_bg = require('../../../../assets/safehouse_bg.png');
 import { MainText, SubHeader, MainHeader } from './../../text';
 import CampaignHeader from './../../ui/CampaignHeader';
 import ProgressBar from './../../ui/ProgressBar';
-import ScreenContainer from './../../containers/ScreenContainer';
+import ScreenContainer from '../../containers/ScreenContainer';
 import defaultStyle from './../../../styles/defaultStyle';
 import SingleButtonFullWidth from './../../ui/SingleButtonFullWidth';
 

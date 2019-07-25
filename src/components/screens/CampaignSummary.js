@@ -113,9 +113,9 @@ class CampaignSummary extends React.Component {
         style={{width: '100%', height: '100%'}}>
         <ScreenContainer>
         
-        <AnimatedCampaignHeader title="Summary" scrollY={this.scrollY}/>
+        <AnimatedCampaignHeader title="Summary" scrollY={this.scrollY} style={{ borderColor: "#FFF", borderBottomWidth: 1,}}/>
           
-          <ScrollView style={{ flex: 1 }} 
+          <ScrollView style={{ flex: 1, marginTop: 20, }} 
                   scrollEventThrottle={16}
                   onScroll={Animated.event(
                       [
