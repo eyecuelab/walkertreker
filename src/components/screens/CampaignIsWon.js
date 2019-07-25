@@ -64,7 +64,7 @@ class CampaignIsWon extends React.Component {
                   <SingleButtonFullWidth
                     title="Start Another Journey"
                     backgroundColor="darkred"
-                    onButtonPress={() => this.props.navigation.navigate('About')}
+                    onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
                   />
                 </View>
               </View>

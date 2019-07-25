@@ -78,7 +78,7 @@ class CampaignIsLost extends React.Component {
                   <SingleButtonFullWidth
                     title="Start Again"
                     backgroundColor="darkred"
-                    onButtonPress={() => this.props.navigation.navigate('About')}
+                    onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
                   />
                 </View>
               </View>

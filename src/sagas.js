@@ -772,10 +772,10 @@ export default function *rootSaga() {
 // const endpoint = 'http://10.0.0.5:5000'
 
 // LOCAL eyecue endpoint KIM
-const endpoint = 'http://10.1.10.51:5000'
+// const endpoint = 'http://10.1.10.51:5000'
 
 // LOCAL eyecue endpoint WARD
 // const endpoint = 'http://10.1.10.108:5000'
 
 // REMOTE
-// const endpoint = 'https://walkertrekker.herokuapp.com'
+const endpoint = 'https://walkertrekker.herokuapp.com'
