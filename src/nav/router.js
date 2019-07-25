@@ -75,10 +75,6 @@ const AuthStack = createStackNavigator(
   {
     SignUp: SignUp,
     AccountRecovery: AccountRecovery,
-    RecoverAccount: {
-      screen: RecoverAccount,
-      path: 'recovery'
-    },
   },
   {
     defaultNavigationOptions: {
@@ -187,6 +183,10 @@ const MainApp = createSwitchNavigator(
       screen: CampaignIsLost,
       path: 'campaignIsLost'
     },
+    RecoverAccount: {
+      screen: RecoverAccount,
+      path: 'recovery'
+    }
   },
   {
     defaultNavigationOptions: {
