@@ -61,8 +61,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 6,
-    borderWidth: 1,
-    borderColor: "#000"
   },
   active: {
     color: 'darkred',

@@ -10,7 +10,7 @@ class CampaignHeader extends Component {
     return (
       <View>
         <DayCounter campaign={this.props.campaign} />
-        <MainHeader>{this.props.title}</MainHeader>
+        <MainHeader {...this.props}>{this.props.title}</MainHeader>
       </View>
     );
   }

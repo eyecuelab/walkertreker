@@ -11,7 +11,9 @@ const StyledText = styled.Text`
   font-family: gore;
   font-size: ${widthUnit*10.5};
   ${props =>
-    (props.lineHeight === 'squish' && `line-height: ${widthUnit*9}`)
+    (props.lineHeight === 'squish' && 
+      `line-height: ${widthUnit*9};
+      padding-top: ${widthUnit*0.8}`)
   };
   color: ${props => props.color || "white"};
 `;

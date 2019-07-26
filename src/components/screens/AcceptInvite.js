@@ -60,6 +60,8 @@ class AcceptInvite extends React.Component {
   render() {
     if (this.state.isReady) {
       return (
+        <View style={{backgroundColor : "#871C1D"}}>
+
         <ImageBackground
           source={this.props.screenProps.backgroundImage}
           style={{width: '100%', height: '100%'}}
@@ -91,9 +93,12 @@ class AcceptInvite extends React.Component {
             </View>
           </ScreenContainer>
         </ImageBackground>
+        </View>
       )
     } else {
       return (
+        <View style={{backgroundColor : "#871C1D"}}>
+
         <ImageBackground
           source={this.props.screenProps.backgroundImage}
           style={{width: '100%', height: '100%'}}
@@ -102,6 +107,7 @@ class AcceptInvite extends React.Component {
             <SubHeader>AcceptInviteScreen</SubHeader>
           </ScreenContainer>
         </ImageBackground>
+        </View>
       )
     }
   }
