@@ -108,44 +108,47 @@ class CampaignSummary extends React.Component {
 
   render() {
     return (
-      <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}>
-        <ScreenContainer>
-        
-        <AnimatedCampaignHeader title="Summary" scrollY={this.scrollY} style={{ borderColor: "#FFF", borderBottomWidth: 1,}}/>
-          
-          <ScrollView style={{ flex: 1, marginTop: 20, }} 
-                  scrollEventThrottle={16}
-                  onScroll={Animated.event(
-                      [
-                          { nativeEvent: { contentOffset: { y: this.scrollY } } }
-                      ]
-                  )}>
-            {this.props.campaign.players.map(player => {
-              return (
-                <View key={player.id} style={customStyles.playerInfoContainer}>
-                  <ThreeInfoSquares
-                    title={player.displayName}
-                    player={player}
-                    bigValue={true}
-                    button1label='Progress'
-                    button1value={this._displayStepPercentage(player)}
-                    button2label='Health'
-                    button2value={this._displayHealthLevel(player)}
-                    button3label='Hunger'
-                    button3value={this._displayHungerLevel(player)}
-                  />
-                </View>
-              )
-            })}
-          </ScrollView>
+      <View style={{backgroundColor : "#871C1D"}}>
 
-          <View style={customStyles.bottom}>
-            {this._submitConditionalRender()}
-          </View>
-        </ScreenContainer>
-      </ImageBackground>
+        <ImageBackground
+          source={this.props.screenProps.backgroundImage}
+          style={{width: '100%', height: '100%'}}>
+          <ScreenContainer>
+          
+          <AnimatedCampaignHeader title="Summary" scrollY={this.scrollY} style={{ borderColor: "#FFF", borderBottomWidth: 1,}}/>
+            
+            <ScrollView style={{ flex: 1, marginTop: 20, }} 
+                    scrollEventThrottle={16}
+                    onScroll={Animated.event(
+                        [
+                            { nativeEvent: { contentOffset: { y: this.scrollY } } }
+                        ]
+                    )}>
+              {this.props.campaign.players.map(player => {
+                return (
+                  <View key={player.id} style={customStyles.playerInfoContainer}>
+                    <ThreeInfoSquares
+                      title={player.displayName}
+                      player={player}
+                      bigValue={true}
+                      button1label='Progress'
+                      button1value={this._displayStepPercentage(player)}
+                      button2label='Health'
+                      button2value={this._displayHealthLevel(player)}
+                      button3label='Hunger'
+                      button3value={this._displayHungerLevel(player)}
+                    />
+                  </View>
+                )
+              })}
+            </ScrollView>
+
+            <View style={customStyles.bottom}>
+              {this._submitConditionalRender()}
+            </View>
+          </ScreenContainer>
+        </ImageBackground>
+        </View>
     );
   }
 }

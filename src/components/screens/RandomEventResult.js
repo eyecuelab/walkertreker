@@ -23,7 +23,6 @@ class RandomEventResult extends React.Component {
   }
 
   updateInventory = async (inven, invenItem, type) => {
-    console.log("THIS IS THE INVEN ITEM", invenItem, "This is the inven", inven)
     const { dispatch } = this.props
     let data = this.props.screenProps.notification.data.data.data
     if (inven && inven > 0 ) {
@@ -70,7 +69,6 @@ class RandomEventResult extends React.Component {
     
     let newPlayerObj = {...this.props.player}
     const currentDay = this.props.campaign.currentDay
-    console.log("RESULT?: ", result)
 
     this.updateInventory(result.food, this.foodItems, 'food');
     this.updateInventory(result.meds, this.medicineItems, 'med');
@@ -101,7 +99,9 @@ class RandomEventResult extends React.Component {
   getEventResult = () => {
     const data = this.props.screenProps.notification.data.data.data
     this.result = data.result
+
     this.evt = events[data.eventId-1]
+
     let playerVotes = 
       Object.assign({}, ...Object.keys(data.playerVotes).map(key => ( 
         {[key]: data.playerVotes[key] === 'A' ? this.evt.optionAButton : this.evt.optionBButton } )));

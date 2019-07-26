@@ -58,6 +58,8 @@ class WaitForStart extends React.Component {
 
   render() {
     return (
+      <View style={{backgroundColor : "#871C1D"}}>
+
       <ImageBackground
       source={this.props.screenProps.backgroundImage}
       style={{width: '100%', height: '100%'}}
@@ -107,6 +109,7 @@ class WaitForStart extends React.Component {
           </View>
         </ScreenContainer>
       </ImageBackground>
+      </View>
     );
   }
 }

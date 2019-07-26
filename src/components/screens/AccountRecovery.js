@@ -53,13 +53,12 @@ class RecoverAccountModal extends React.Component {
   }
 
   _handleRecovery = async () => {
-    const prefix = Linking.makeUrl('/');
     const { dispatch } = this.props;
     prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber)
     console.log('recovery number', prettyPhoneNumber)
     if (prettyPhoneNumber.length === 12) {
       dispatch({
-        type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber, uri: prefix
+        type: c.RECOVER_ACCOUNT, phoneNumber: prettyPhoneNumber
       }) 
       this.setState({ validNumber: true, submitted: true})
     } else {

@@ -1,16 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
 import constants from '../../constants';
 const { c, events } = constants;
-const event_bg = require('../../../assets/event_bg.png');
 
-import defaultStyle from '../../styles/defaultStyle';
 import EventDisplay from '../ui/EventDisplay'
-import DayCounter from '../ui/DayCounter';
 
 class RandomEvent extends React.Component {
 
@@ -33,7 +28,6 @@ class RandomEvent extends React.Component {
   }
 
   componentDidMount = async () => {
-    // this.getTimeNow()
     this.timer = setInterval(() => this._updateTime(), 1000)
   }
 
@@ -45,12 +39,8 @@ class RandomEvent extends React.Component {
     const createdAt = this.props.screenProps.notification.data.data.data.createdAt.toString();
 
     let start = new Date(createdAt);
-
-    console.log("Start time of event", start)
     start = new Date(start.getTime());
-
     const then = new Date(start.getTime() + 15*60000)
-    console.log("then time of event", then)
 
     const localTime = Date.now()
     const msRemaining = then.getTime() - localTime
@@ -62,10 +52,6 @@ class RandomEvent extends React.Component {
     let newMs = this.state.msRemaining
     newMs -= 1000;
     this.setState({ msRemaining: newMs })
-    // let timeLeft = this.state.timeLeft
-    // const createdAt = this.props.screenProps.notification.data.data.data.createdAt;
-    // const now = new Date(createdAt)
-    // const msRemaining = this.state.end.getTime() - now.getTime()
     if (this.state.msRemaining <= 0) { 
       timeLeft = '00:00'
       this.setState({ open: false })
@@ -100,7 +86,6 @@ class RandomEvent extends React.Component {
       A: `You voted for ${this.evt.optionAButton}`,
       B: `You voted for ${this.evt.optionBButton}`
     }
-    console.log("opt in voting", opt)
     this.props.dispatch({ 
       type: c.CAST_VOTE, 
       playerId: this.props.player.id, 
@@ -115,12 +100,10 @@ class RandomEvent extends React.Component {
   updateCompletedEvents = () => {
     let newCompletedArray = [...this.props.campaign.completedEvents]
     newCompletedArray.push(this.evt.id)
-    console.log('newCompletedArray', newCompletedArray)
     this.props.dispatch({ type: c.RECEIVED_EVENT, campId: this.props.campaign.id, completedEvents: newCompletedArray })
   }
 
   render() {
-    console.log(this.evt)
     return (
       <EventDisplay backgroundImage={this.props.screenProps.backgroundImage}
         onVote={(opt) => this._vote(opt)}
@@ -136,7 +119,6 @@ class RandomEvent extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    // appState: state.appState,
     steps: state.steps,
     campaign: state.campaign,
     player: state.player,

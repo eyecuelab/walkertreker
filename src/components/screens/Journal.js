@@ -16,7 +16,6 @@ class Journal extends React.Component {
     this.state = {
       focusedDay: this.props.campaign.currentDay,
     }
-    
   }
 
   componentWillMount(){

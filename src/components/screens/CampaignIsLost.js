@@ -60,30 +60,26 @@ class CampaignIsLost extends React.Component {
   render() {
     return (
       <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}} >
-        <ScreenContainer>
-            <ImageBackground
-              source={attack_bg}
-              resizeMode={'cover'}
-              style={customStyles.bgImage}
-            >
-              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
-                <CampaignHeader campaign={this.state.finalCampaignState} title={'Campaign\nLost'}/>
-                
-                <View style={customStyles.contentContainer}>
-                  {this.endGameText()}
-                </View>
-                <View style={customStyles.buttonContainer}>
-                  <SingleButtonFullWidth
-                    title="Start Again"
-                    backgroundColor="darkred"
-                    onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
-                  />
-                </View>
-              </View>
-            </ImageBackground>
+        source={attack_bg}
+        resizeMode={'cover'}
+        style={customStyles.bgImage}>
+        <View style={[{backgroundColor: 'rgba(0,0,0,0.3)'}, {width:'100%'}, {height:'100%'}]} >
+
+        <ScreenContainer style={{padding: widthUnit*3}}>
+          <CampaignHeader lineHeight='squish' campaign={this.state.finalCampaignState} title={'Campaign\nLost'}/>
+          
+          <View style={customStyles.contentContainer}>
+            {this.endGameText()}
+          </View>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title="Start Again"
+              backgroundColor="black"
+              onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
+            />
+          </View>
           </ScreenContainer>
+          </View>
       </ImageBackground>
     );
   }
@@ -96,7 +92,7 @@ const customStyles = StyleSheet.create({
   contentContainer: {
     flex: 5,
     width: '100%',
-    marginTop: heightUnit*2.5
+    marginTop: heightUnit*5
   },
   buttonContainer: {
     width: '100%',

@@ -16,12 +16,12 @@ class SignInSuccess extends Component {
   }
 
   componentDidMount = () => {
+    console.log("rendered sign in ")
     InteractionManager.runAfterInteractions(() => {
-      this.props.navigation.navigate("MainApp");
+      this.props.navigation.navigate("MainAppRouter");
     });
     this.animate();
   };
-  
   
   animate() {
     Animated.sequence([

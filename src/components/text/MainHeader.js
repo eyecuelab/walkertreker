@@ -10,6 +10,11 @@ const heightUnit = hp('1%');
 const StyledText = styled.Text`
   font-family: gore;
   font-size: ${widthUnit*10.5};
+  ${props =>
+    (props.lineHeight === 'squish' && 
+      `line-height: ${widthUnit*9};
+      padding-top: ${widthUnit*0.8}`)
+  };
   color: ${props => props.color || "white"};
 `;
 
@@ -23,3 +28,8 @@ class MainHeader extends React.Component {
 
 
 export default MainHeader;
+
+// line-height: ${props =>
+//   (props.lineHeight === 'squish' && widthUnit*10) ||
+//   widthUnit*13
+// };

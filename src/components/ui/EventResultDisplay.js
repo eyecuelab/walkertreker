@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
+import { StyleSheet, View, ImageBackground, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
-import { MainText, SubHeader, TextAlt, Label } from './../text';
+import { MainText, MainHeader } from './../text';
 import ScreenContainer from '../containers/ScreenContainer';  
 
-import constants from '../../constants';
-const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
-
 
 
 class EventResultDisplay extends React.Component {
@@ -22,62 +19,55 @@ class EventResultDisplay extends React.Component {
   }
 
   _toggleGroupVotes = () => {
-    this.setState({ showGroupVotes: true })
-    console.log("Player votes: ", this.props.votesList)
+   this.setState({ showGroupVotes: !this.state.showGroupVotes })
   }
 
   conditionalShowVotes = () => {
     if (!this.state.showGroupVotes) {
-      return <View style={[customStyles.textContainer, customStyles.marginTop]}>
-        <MainText>{this.props.resultText}</MainText>
-      </View>
+      return (<View style={[customStyles.opacityContainer, customStyles.marginTop]}>
+                <MainText>{this.props.resultText}</MainText>
+              </View>)
+    } else if (this.props.votesList.length) {
+      return (<View style={[customStyles.opacityContainer, customStyles.marginTop]}>
+              {this.props.votesList.map((entry, index) => {
+                  return (<MainText style={customStyles.text} key={index} size='lg'>{entry}</MainText>)
+                })}
+              </View>)
     } else {
-      return (<View style={[customStyles.textContainer, customStyles.marginTop]}>
-        {this.props.votesList.map((entry, index) => {
-          return (<MainText style={customStyles.text} key={index} size='lg'>{entry}</MainText>)
-        })}
-      </View>)
+      return (<View style={[customStyles.opacityContainer, customStyles.marginTop]}>
+                <MainText>No one in your group voted in time! Indecision itself is a decision when the dead walk. </MainText>
+              </View>)
     }
   }
   
-
   render() {
     return (
-        <ImageBackground
-          source={this.props.backgroundImage}
-          style={{width: '100%', height: '100%'}} >
-          <ScreenContainer>
-    
-              <View style={{width: '100%', height: '100%'}}>
-                <ImageBackground
-                  source={event_bg}
-                  resizeMode={'cover'}
-                  style={customStyles.randomEventBg}>
-    
-                  <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
-                    <View style={[customStyles.container, {flex: 3}]}>
-    
-                      <View style={customStyles.headlineContainer}>
-                        <Text style={styles.headline}>Your group decided to {this.props.resultHeader}</Text>
-                      </View>
-    
-                      {this.conditionalShowVotes()}
-                    </View>
+      <View style={[{backgroundColor: '#6f655b'}, {flex: 1}]}>
+      <ImageBackground
+        source={event_bg}
+        resizeMode={'cover'}
+        style={customStyles.randomEventBg}>
+        <ScreenContainer>
 
-                  </View>
-    
-    
-                </ImageBackground>
+            <View style={{ flex: 3 }}>
+
+              <View style={customStyles.headlineContainer}>
+                <MainHeader lineHeight='squish' style={customStyles.header}>Your group decided to {this.props.resultHeader}</MainHeader>
               </View>
 
-              {<TwoButtonOverlay
-                button1title="See Group Votes"
-                button1onPress={this._toggleGroupVotes}
-                button2title="Campaign"
-                button2onPress={() => this.props.navigateBack()}
-              />}
-          </ScreenContainer>
-        </ImageBackground>
+              {this.conditionalShowVotes()}
+            </View>
+
+          {<TwoButtonOverlay
+            button1title="See Group Votes"
+            button1onPress={this._toggleGroupVotes}
+            button2title="Campaign"
+            button2onPress={() => this.props.navigateBack()}
+          />}
+
+        </ScreenContainer>
+      </ImageBackground>
+      </View>
     );
   }
 }
@@ -87,26 +77,22 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
+  opacityContainer: {
+    backgroundColor: 'rgba(0,0,0,0.4)', 
+    padding: widthUnit*3.5,
+  },
   headlineContainer: {
     width: '100%',
     justifyContent: 'flex-start',
+    fontSize: widthUnit*9.5,
+    marginTop: widthUnit*3,
   },
-  headline: {
-    fontFamily: 'gore',
-    fontSize: widthUnit * 12,
-    lineHeight: widthUnit * 9,
-    paddingTop: widthUnit * 3,
-    color: 'white',
-  },
-  textContainer: {
-    // marginTop: 20,
-    width: '100%',
-    justifyContent: 'center',
-    padding: widthUnit,
+  header: {
+    marginTop: widthUnit*4,
+    paddingTop: widthUnit*2,
   },
   text: {
     fontFamily: 'Gill Sans MT Condensed',
-    marginTop: heightUnit * 3.75,
     lineHeight: heightUnit * 3.75,
     fontSize: widthUnit*5.5,
   },
@@ -114,18 +100,10 @@ const customStyles = StyleSheet.create({
     width: undefined,
     height: undefined,
     flex: 1,
-
     justifyContent: 'flex-start',
   },
-  bottom: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: widthUnit * 2,
-  },
   marginTop: {
-    marginTop: heightUnit * 2.5
+    marginTop: heightUnit * 3.5
   }
 })
 

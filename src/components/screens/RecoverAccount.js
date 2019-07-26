@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import ScreenContainer from '../containers/ScreenContainer';
 import { MainHeader } from './../text';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+import SignInSuccess from './SignInSuccess';
+
 
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
@@ -22,33 +24,46 @@ class RecoverAccount extends React.Component {
     super(props)
     this.state = {
       playerId: null,
+      signInSuccess: false
     }
   }
 
   componentWillMount = async () => {
     const { dispatch } = this.props
     const playerId = this.props.navigation.getParam('playerId', false)
-    console.log(playerId)
     await this.setState({ playerId })
-    console.log("from recoverAccount play id", playerId)
     dispatch({ type: c.GETTING_CAMPAIGNID, gettingCampaignId: true })
     dispatch({ type: c.GETTING_PLAYERID, gettingPlayerId: true })
     dispatch({ type: c.FETCH_PLAYER, playId: playerId })
   }
 
+  componentDidUpdate() {
+    let auth = this.props.auth
+    if (!auth.gettingPlayerId && !auth.gettingCampaignId && !this.state.signInSuccess) {
+      auth.gotPlayerId ? this.setState({signInSuccess: true}) : null;
+    }
+  }
+
   render() {
     return(
+      <View style={{backgroundColor : "darkgrey"}}>
       <ImageBackground
        source={use_item_bg}
         style={{width: '100%', height: '100%'}}>
-        <ScreenContainer>
+        <View style={{flex: 1}}>
 
-          <View style={customStyles.headlineContainer}>
-            <MainHeader>Recovering Account ... </MainHeader>
-          </View>
+        { this.state.signInSuccess 
 
-        </ScreenContainer>
+          ? <SignInSuccess navigation={this.props.navigation} player={this.props.player.displayName}/>
+
+          : <View style={[customStyles.headlineContainer, {zIndex: -1}]}>
+              <MainHeader style={{zIndex: -1}}>Recovering Account ... </MainHeader>
+            </View>
+        }
+
+      </View>
       </ImageBackground>
+      </View>
     )
   }
 }
@@ -70,6 +85,7 @@ function mapStateToProps(state) {
   return {
     campaign: state.campaign,
     player: state.player,
+    auth: state.auth,
   }
 }
 

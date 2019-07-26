@@ -41,35 +41,29 @@ class CampaignIsWon extends React.Component {
     console.log("TOTAL STEPS", this.totalSteps)
   }
 
-
   render() {
     return (
       <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}
-      >
-        <ScreenContainer>
-            <ImageBackground
-              source={victory_bg}
-              resizeMode={'cover'}
-              style={customStyles.bgImage}
-            >
-              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
-                <CampaignHeader campaign={this.state.finalCampaignState} title={'Military\nCheck\nPoint'}/>
+        source={victory_bg}
+        style={customStyles.bgImage}
+        resizeMode={'cover'}
+        >
+        <View style={[{backgroundColor: 'rgba(0,0,0,0.5)'}, {width:'100%'}, {height:'100%'}]} >
+          <ScreenContainer style={{padding: widthUnit*3}}>
+            <CampaignHeader lineHeight='squish' campaign={this.state.finalCampaignState} title={'Military\nCheck\nPoint'}/>
 
-                <View style={customStyles.contentContainer}>
-                  <MainText style={customStyles.mainText}>After {this.totalSteps} total steps, you've finally made it to the military zone! {"\n \n"}While the military check point is protected, it is not completely safe. As you go over the routes with the captain, you cast your eyes towards the mountains in the distance. "Not much further now," you think to yourself, "we'll finally reunite at the safe haven."</MainText>
-                </View>
-                <View style={customStyles.buttonContainer}>
-                  <SingleButtonFullWidth
-                    title="Start Another Journey"
-                    backgroundColor="darkred"
-                    onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
-                  />
-                </View>
-              </View>
-            </ImageBackground>
-        </ScreenContainer>
+            <View style={customStyles.contentContainer}>
+              <MainText style={customStyles.mainText}>After {this.totalSteps} total steps, you've finally made it to the military zone! {"\n \n"}While the military check point is protected, it is not completely safe. As you go over the routes with the captain, you cast your eyes towards the mountains in the distance. "Not much further now," you think to yourself, "we'll finally reunite at the safe haven."</MainText>
+            </View>
+            <View style={customStyles.buttonContainer}>
+              <SingleButtonFullWidth
+                title="Start Another Journey"
+                backgroundColor="darkred"
+                onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
+              />
+            </View>
+          </ScreenContainer>
+        </View>
       </ImageBackground>
     );
   }
@@ -79,7 +73,6 @@ const styles = StyleSheet.create(defaultStyle)
 const widthUnit = wp('1%')
 const heightUnit = hp('1%')
 const customStyles = StyleSheet.create({
-
   contentContainer: {
     flex: 3,
     width: '100%',
@@ -93,8 +86,8 @@ const customStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   bgImage: {
-    width: undefined,
-    height: undefined,
+    width: '100%',
+    height: '100%',
     flex: 1,
     justifyContent: 'flex-start',
   },
@@ -111,18 +104,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(CampaignIsWon)
-
-
-// getFinalStats = () => {
-//   let total = 0;
-//   for (let player of this.state.finalCampaignState ) {
-//     const steps = player.steps.reduce((acc, stepQty) => {
-//       return(
-//         acc + stepQty
-//       )
-//     })
-//     total += steps
-//   }
-//   this.totalSteps = total
-//   console.log("TOTAL STEPS", this.totalSteps)
-// }
