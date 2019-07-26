@@ -123,14 +123,17 @@ class Safehouse extends React.Component {
 
           <View style={customStyles.bottom}>
             <SingleButtonFullWidth
+                margin={widthUnit*0.5}
                 backgroundColor='darkred'
                 title='Look for food'
                 onButtonPress={this._selectFood} />
             <SingleButtonFullWidth
+                margin={widthUnit*0.5}
                 backgroundColor='darkred'
                 title='Search for medicine'
                 onButtonPress={this._selectMedicine} />
             <SingleButtonFullWidth
+                margin={widthUnit*0.5}
                 backgroundColor='darkred'
                 title='Find weapons'
                 onButtonPress={this._selectWeapon} />
@@ -145,6 +148,7 @@ class Safehouse extends React.Component {
 
   render() {
     return (
+      <View style={[{backgroundColor: 'darkgrey'}, {flex: 1}]}>
       <ImageBackground
               source={safehouse_bg}
               resizeMode={'cover'}
@@ -168,6 +172,7 @@ class Safehouse extends React.Component {
         </ScreenContainer>
         
       </ImageBackground>
+      </View>
     );
   }
 }
@@ -176,36 +181,9 @@ const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
 const heightUnit = hp('1%');
 const customStyles = StyleSheet.create({
-  headlineContainer: {
-    width: '100%',
-    justifyContent: 'flex-start',
-  },
-  headline: {
-    fontFamily: 'gore',
-    fontSize: widthUnit*12,
-    lineHeight: widthUnit*9,
-    paddingTop: widthUnit*3,
-    color: 'white',
-  },
   opacityContainer: {
     backgroundColor: 'rgba(0,0,0,0.5)', 
     padding: widthUnit*3.5,
-  },
-  textContainer: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    padding: widthUnit,
-  },
-  text: {
-    lineHeight: heightUnit*3.75,
-  },
-  buttonContainer: {
-    width: '100%',
-    height: heightUnit*8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: widthUnit * 2,
   },
   container: {
     flex: 1,
@@ -213,31 +191,15 @@ const customStyles = StyleSheet.create({
     width: '100%',
   },
   safehouseBg: {
-    width: undefined,
-    height: undefined,
+    width: '100%',
+    height: '100%',
     flex: 1,
     justifyContent: 'flex-start',
   },
   bottom: {
     width: '100%',
-    justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  top: {
-    width: '100%',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  imageContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    width: '100%'
-  },
-  scavengingText: {
-    fontSize: heightUnit*8,
-    lineHeight: heightUnit*6,
-  }
 })
 
 Safehouse.propTypes = {

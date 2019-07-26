@@ -41,7 +41,6 @@ class CampaignIsWon extends React.Component {
     console.log("TOTAL STEPS", this.totalSteps)
   }
 
-
   render() {
     return (
       <ImageBackground
@@ -49,8 +48,8 @@ class CampaignIsWon extends React.Component {
         style={customStyles.bgImage}
         resizeMode={'cover'}
         >
-        <View style={[{backgroundColor: 'rgba(0,0,0,0.9)'}, {width:'100%'}, {height:'100%'}]} />
-        <ScreenContainer>
+        <View style={[{backgroundColor: 'rgba(0,0,0,0.5)'}, {width:'100%'}, {height:'100%'}]} >
+          <ScreenContainer style={{padding: widthUnit*3}}>
             <CampaignHeader lineHeight='squish' campaign={this.state.finalCampaignState} title={'Military\nCheck\nPoint'}/>
 
             <View style={customStyles.contentContainer}>
@@ -63,7 +62,8 @@ class CampaignIsWon extends React.Component {
                 onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
               />
             </View>
-        </ScreenContainer>
+          </ScreenContainer>
+        </View>
       </ImageBackground>
     );
   }
@@ -73,7 +73,6 @@ const styles = StyleSheet.create(defaultStyle)
 const widthUnit = wp('1%')
 const heightUnit = hp('1%')
 const customStyles = StyleSheet.create({
-
   contentContainer: {
     flex: 3,
     width: '100%',

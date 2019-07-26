@@ -10,7 +10,7 @@ export default class SingleButtonFullWidth extends React.Component {
   render() {
     return(
       <TouchableHighlight
-        style={[customStyles.container, {backgroundColor: this.props.backgroundColor}]}
+        style={[customStyles.container, {backgroundColor: this.props.backgroundColor}, {margin: this.props.margin || 0}]}
         onPress={this.props.onButtonPress}
       >
         <Text style={styles.label}>{this.props.title}</Text>

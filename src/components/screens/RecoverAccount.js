@@ -46,8 +46,7 @@ class RecoverAccount extends React.Component {
 
   render() {
     return(
-      
-      
+      <View style={{backgroundColor : "darkgrey"}}>
       <ImageBackground
        source={use_item_bg}
         style={{width: '100%', height: '100%'}}>
@@ -64,6 +63,7 @@ class RecoverAccount extends React.Component {
 
       </View>
       </ImageBackground>
+      </View>
     )
   }
 }

@@ -100,51 +100,53 @@ class CampaignStaging extends React.Component {
 
   render() {
     return(
-      
-      <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}
-      >
+      <View style={{backgroundColor : "#871C1D"}}>
 
-        <Modal isVisible={this.state.whenToStartModalVisible}>
-          <WhenToStartForm handleModalStateChange={this._toggleWhenToStartModal} />
-        </Modal>
+        <ImageBackground
+          source={this.props.screenProps.backgroundImage}
+          style={{width: '100%', height: '100%'}}
+        >
 
-        <ScreenContainer>
+          <Modal isVisible={this.state.whenToStartModalVisible}>
+            <WhenToStartForm handleModalStateChange={this._toggleWhenToStartModal} />
+          </Modal>
 
-          <View style={customStyles.contentContainer}>
+          <ScreenContainer>
 
-            <CampaignLobbyHeader campaign={this.props.campaign} title="New Campaign"/>
+            <View style={customStyles.contentContainer}>
 
-            <View style={customStyles.panelContainer}>
-              <ScrollView contentContainerStyle={customStyles.scrollContainer} showsVerticalScrollIndicator={true}>
+              <CampaignLobbyHeader campaign={this.props.campaign} title="New Campaign"/>
+
+              <View style={customStyles.panelContainer}>
+                <ScrollView contentContainerStyle={customStyles.scrollContainer} showsVerticalScrollIndicator={true}>
 
 
-                  <SubHeader>Players</SubHeader>
-                  <View style={[customStyles.contactListContainer, customStyles.contactListFirst]}>
-                    <PlayersList
-                      onSelectPlayer={this._toggleSelectedPlayer}/>
+                    <SubHeader>Players</SubHeader>
+                    <View style={[customStyles.contactListContainer, customStyles.contactListFirst]}>
+                      <PlayersList
+                        onSelectPlayer={this._toggleSelectedPlayer}/>
+                    </View>
+
+
+                  <View style={[customStyles.contactListContainer, customStyles.contactListSecond]}>
+                    <SubHeader>Invited</SubHeader>
+                    <ContactsList
+                    contacts={this.props.campaign.invites}
+                    contactsFetched={true}
+                    allSelected={true}
+                    />
                   </View>
 
+                </ScrollView>
+              </View>
 
-                <View style={[customStyles.contactListContainer, customStyles.contactListSecond]}>
-                  <SubHeader>Invited</SubHeader>
-                  <ContactsList
-                  contacts={this.props.campaign.invites}
-                  contactsFetched={true}
-                  allSelected={true}
-                  />
-                </View>
-
-              </ScrollView>
             </View>
+            {this.submitConditionalRender()}
 
-          </View>
-          {this.submitConditionalRender()}
-
-        </ScreenContainer>
-      
-      </ImageBackground>
+          </ScreenContainer>
+        
+        </ImageBackground>
+      </View>
     );
   }
 }

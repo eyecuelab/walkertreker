@@ -23,7 +23,7 @@ function EventParticipation(props) {
         }
       }, 0);
       
-      return (eventsVoted / events.length * 100) + "%";
+      return events.length ? (eventsVoted / events.length * 100) + "%" : "0%";
     }
   }
 
