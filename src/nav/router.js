@@ -183,6 +183,10 @@ const MainApp = createSwitchNavigator(
       screen: CampaignIsLost,
       path: 'campaignIsLost'
     },
+    EndOfDaySummary: {
+      screen: EndOfDaySummary,
+      path: 'endOfDaySummary'
+    },
     RecoverAccount: {
       screen: RecoverAccount,
       path: 'recovery'

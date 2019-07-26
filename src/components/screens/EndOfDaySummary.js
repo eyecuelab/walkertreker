@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import constants from '../../constants';
 const { c } = constants;
@@ -9,6 +9,9 @@ import defaultStyle from '../../styles/defaultStyle';
 import PlayersList from '../ui/PlayersList';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import PlayerEndOfDay from '../ui/PlayerEndOfDay';
+import AnimatedCampaignHeader from '../ui/AnimatedCampaignHeader';
+import { ScreenContainer } from '../containers';
+
 
 const safehouse_bg = require('../../../assets/safehouse_bg.png');
 const attack_bg = require('../../../assets/attack_bg.png');
@@ -29,6 +32,10 @@ class EndOfDaySummary extends React.Component {
     this.state = { update, campaign, currentDay, didWeMakeIt }
   }
 
+  componentWillMount(){
+    this.scrollY = new Animated.Value(0);
+  }
+
   _headerTextRender() {
     if (this.state.didWeMakeIt) {
       return (
@@ -42,14 +49,15 @@ class EndOfDaySummary extends React.Component {
   }
 
   _footerTextRender() {
+    console.log("InventoryUsed", this.state.update.inventoryUsed)
     let text = ''
-    const weapons = this.state.update.inventoryDiff.weaponItems
-    const items = weapons == 1 ? 'item' : 'items'
+    const weapons = this.state.update.inventoryUsed
+    const items = weapons.length === 1 ? 'item' : 'items'
     if (this.state.didWeMakeIt) {
       text = `Rest well tonight, because the journey only gets tougher from here.`
     } else {
-      if (weapons > 0) {
-        text = `Players that went back for their friends consumed ${weapons} weapon ${items} to reduce their damage taken.`
+      if (weapons.length > 0) {
+        text = `Players that went back for their friends consumed ${weapons.length} weapon ${items} to reduce their damage taken.`
       } else {
         text = `Your party couldn't minimize damage taken because you have no weapons. Tomorrow, get to the safehouse before dark and scavenge for weapons!`
       }
@@ -63,53 +71,48 @@ class EndOfDaySummary extends React.Component {
     const bg = this.state.didWeMakeIt ? safehouse_bg : attack_bg
     return (
       <ImageBackground
-        source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}
+        source={bg}
+        resizeMode={'cover'}
+        style={customStyles.bgImage}
       >
-        <View style={styles.container}>
-          <View style={{width: '100%', height: '100%'}}>
-            <ImageBackground
-              source={bg}
-              resizeMode={'cover'}
-              style={customStyles.bgImage}
-            >
-              <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', padding: widthUnit*5}}>
-                <View style={customStyles.headerContainer}>
-                  <Text style={styles.label}>Day {this.state.currentDay}</Text>
-                  <Text style={styles.headline}>Night{"\n"}Fall</Text>
-                </View>
-                <View style={customStyles.playersContainer}>
-                  <ScrollView
-                    style={customStyles.playersScroll}
-                    showsVerticalScrollIndicator={true}
-                  >
-                  {this._headerTextRender()}
-                    {this.state.campaign.players.map(player => {
-                      const playerUpdate = this.state.update.players.filter(obj => obj.id === player.id)[0]
-                      return (
-                        <PlayerEndOfDay key={player.id}
-                          player={player}
-                          playerUpdate={playerUpdate}
-                          today={this.state.currentDay}
-                          didWeMakeIt={this.state.didWeMakeIt}
-                        />
-                      )
-                    })}
-                    {this._footerTextRender()}
-                  </ScrollView>
-                </View>
-                <View style={customStyles.buttonContainer}>
-                  <SingleButtonFullWidth
-                    title="Back"
-                    backgroundColor="black"
-                    onButtonPress={() => this.props.navigation.navigate('CampaignSummary')}
+        <View style={[{ backgroundColor: 'rgba(0,0,0,0.3)' }, { width: '100%' }, { height: '100%' }]} >
+        <ScreenContainer style={{padding: widthUnit*3}}>
+          <AnimatedCampaignHeader lineHeight='squish' title={`Night\nFall`} scrollY={this.scrollY} />
+          {this._headerTextRender()}
+          <View style={customStyles.playersContainer}>
+            <ScrollView style={{ flex: 1, width: '100%', height: '100%' }}
+              showsVerticalScrollIndicator={true}
+              scrollEventThrottle={16}
+              onScroll={Animated.event(
+                [
+                  { nativeEvent: { contentOffset: { y: this.scrollY } } }
+                ]
+              )}>
+
+              {this.state.campaign.players.map(player => {
+                const playerUpdate = this.state.update.players.filter(obj => obj.id === player.id)[0]
+                return (
+                  <PlayerEndOfDay key={player.id}
+                    player={player}
+                    playerUpdate={playerUpdate}
+                    today={this.state.currentDay}
+                    didWeMakeIt={this.state.didWeMakeIt}
                   />
-                </View>
-              </View>
-            </ImageBackground>
+                )
+              })}
+              {this._footerTextRender()}
+            </ScrollView>
           </View>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title="Back"
+              backgroundColor="black"
+              onButtonPress={() => this.props.navigation.navigate('MainAppRouter')}
+            />
+          </View>
+        </ScreenContainer>
         </View>
-      </ImageBackground>
+      </ImageBackground >
     );
   }
 
@@ -119,34 +122,20 @@ const styles = StyleSheet.create(defaultStyle)
 const widthUnit = wp('1%')
 const heightUnit = hp('1%')
 const customStyles = StyleSheet.create({
-  headerContainer: {
-    flex: 1,
-    marginBottom: heightUnit*2,
-    width: '100%',
-  },
   playersContainer: {
-    // paddingTop: heightUnit,
-    // paddingBottom: heightUnit,
     flex: 4,
     width: '100%',
     marginTop: heightUnit*2.5
-    // borderColor: 'black',
-    // borderWidth: 1,
   },
   buttonContainer: {
-    // marginTop: heightUnit*5,
-    // marginBottom: heightUnit*5,
     width: '100%',
     height: heightUnit*10,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  playerScroll: {
-    width: '100%',
-  },
   bgImage: {
-    width: undefined,
-    height: undefined,
+    width: '100%',
+    height: '100%',
     flex: 1,
     justifyContent: 'flex-start',
   },
