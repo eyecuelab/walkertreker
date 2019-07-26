@@ -23,7 +23,6 @@ class RandomEventResult extends React.Component {
   }
 
   updateInventory = async (inven, invenItem, type) => {
-    console.log("THIS IS THE INVEN ITEM", invenItem, "This is the inven", inven)
     const { dispatch } = this.props
     let data = this.props.screenProps.notification.data.data.data
     if (inven && inven > 0 ) {
@@ -101,7 +100,11 @@ class RandomEventResult extends React.Component {
   getEventResult = () => {
     const data = this.props.screenProps.notification.data.data.data
     this.result = data.result
+    console.log("Result IN RESULT", this.result)
+    console.log("playerVotes in data IN RESULT", data.playerVotes)
+
     this.evt = events[data.eventId-1]
+
     let playerVotes = 
       Object.assign({}, ...Object.keys(data.playerVotes).map(key => ( 
         {[key]: data.playerVotes[key] === 'A' ? this.evt.optionAButton : this.evt.optionBButton } )));
@@ -109,6 +112,7 @@ class RandomEventResult extends React.Component {
       Object.entries(playerVotes).map(([key, value], index) => {
         votesList.push(`${key} voted to ${value}`)
       })
+      console.log("VOTE LIST IN RESULT", votesList)
       this.votesList = votesList
   }
 

@@ -6,7 +6,7 @@ import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
 import DayCounter from '../ui/DayCounter';
 import ScreenContainer from '../containers/ScreenContainer';  
-import { MainText } from './../text';
+import { MainText, MainHeader } from './../text';
 
 
 import constants from '../../constants';
@@ -27,54 +27,46 @@ class EventDisplay extends React.Component {
 
   render() {
     return (
-        <ImageBackground
-          source={this.props.backgroundImage}
-          style={{width: '100%', height: '100%'}} >
-          <ScreenContainer>
-    
-              <View style={{width: '100%', height: '100%'}}>
-                <ImageBackground
-                  source={event_bg}
-                  resizeMode={'cover'}
-                  style={customStyles.randomEventBg}>
-                  <View style={{flex: 4, backgroundColor: 'rgba(0,0,0,0.1)', padding: widthUnit*5}}>
-                    <View style={[customStyles.container, {flex: 3}]}>
-                      <Text style={styles.label}>{this.props.timeLeft}</Text>
-    
-                      <View style={customStyles.headlineContainer}>
-                        <Text style={styles.headline}>Group{'\n'}Decision</Text>
-                      </View>
-                      <ScrollView>
-                        <View style={[customStyles.textContainer, customStyles.marginTop]}>
-                          <MainText>{this.props.antecedent}</MainText>
-                        </View>
-                      </ScrollView>
-                    </View>
 
-                    <View style={[customStyles.container, {flex: 1, alignContent: 'flex-end', padding: widthUnit}]}>
-                      <View style={customStyles.buttonContainer}>
-                        <SingleButtonFullWidth
-                          title={this.props.optionAButton}
-                          backgroundColor="darkred"
-                          onButtonPress={() => this.handleButtonPress('A')}
-                        />
-                      </View>
-                      <View style={customStyles.buttonContainer}>
-                        <SingleButtonFullWidth
-                          title={this.props.optionBButton}
-                          backgroundColor="darkred"
-                          onButtonPress={() => this.handleButtonPress('B')}
-                        />
-                      </View>
-                    </View>
-                  </View>
-    
-    
-                </ImageBackground>
+      <ImageBackground
+        source={event_bg}
+        resizeMode={'cover'}
+        style={customStyles.randomEventBg}>
+        <ScreenContainer>
+          <View style={[customStyles.container, { flex: 3 }]}>
+            <Text style={styles.label}>{this.props.timeLeft}</Text>
+
+            <View style={customStyles.headlineContainer}>
+              <MainHeader>Group{'\n'}Decision</MainHeader>
+            </View>
+            <ScrollView>
+              <View style={[customStyles.opacityContainer, customStyles.marginTop]}>
+                <MainText style={{ textAlign: "center" }}>{this.props.antecedent}</MainText>
               </View>
-    
-          </ScreenContainer>
-        </ImageBackground>
+            </ScrollView>
+          </View>
+
+          <View style={[customStyles.container, { flex: 1, alignContent: 'flex-end', padding: widthUnit }]}>
+            <View style={customStyles.buttonContainer}>
+              <SingleButtonFullWidth
+                title={this.props.optionAButton}
+                backgroundColor="darkred"
+                onButtonPress={() => this.handleButtonPress('A')}
+              />
+            </View>
+            <View style={customStyles.buttonContainer}>
+              <SingleButtonFullWidth
+                title={this.props.optionBButton}
+                backgroundColor="darkred"
+                onButtonPress={() => this.handleButtonPress('B')}
+              />
+            </View>
+          </View>
+
+
+        </ScreenContainer>
+      </ImageBackground>
+
     );
   }
 }
@@ -123,6 +115,10 @@ const customStyles = StyleSheet.create({
     // marginLeft: widthUnit*3,
     justifyContent: 'flex-start',
     // opacity: 0.2,
+  },
+  opacityContainer: {
+    backgroundColor: 'rgba(0,0,0,0.5)', 
+    padding: widthUnit*3.5,
   },
   bottom: {
     flex: 1,
