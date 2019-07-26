@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import ScreenContainer from '../containers/ScreenContainer';
 import { MainHeader } from './../text';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
+import SignInSuccess from './SignInSuccess';
+
 
 const use_item_bg = require('../../../assets/use_item_bg.png');
 
@@ -22,6 +24,7 @@ class RecoverAccount extends React.Component {
     super(props)
     this.state = {
       playerId: null,
+      signInSuccess: false
     }
   }
 
@@ -36,8 +39,18 @@ class RecoverAccount extends React.Component {
     dispatch({ type: c.FETCH_PLAYER, playId: playerId })
   }
 
+  componentDidUpdate() {
+    let auth = this.props.auth
+    if (!auth.gettingPlayerId && !auth.gettingCampaignId && !this.state.signInSuccess) {
+      auth.gotPlayerId ? this.setState({signInSuccess: true}) : null;
+    }
+  }
+
   render() {
     return(
+      <View style={{flex: 1}}>
+
+      {this.state.signInSuccess ? <SignInSuccess navigation={this.props.navigation} player={this.props.player.displayName}/> : null}
       <ImageBackground
        source={use_item_bg}
         style={{width: '100%', height: '100%'}}>
@@ -49,6 +62,7 @@ class RecoverAccount extends React.Component {
 
         </ScreenContainer>
       </ImageBackground>
+      </View>
     )
   }
 }
@@ -70,6 +84,7 @@ function mapStateToProps(state) {
   return {
     campaign: state.campaign,
     player: state.player,
+    auth: state.auth
   }
 }
 

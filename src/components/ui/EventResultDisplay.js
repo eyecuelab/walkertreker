@@ -12,7 +12,6 @@ const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
 
 
-
 class EventResultDisplay extends React.Component {
   constructor(props) {
     super(props)
@@ -23,7 +22,6 @@ class EventResultDisplay extends React.Component {
 
   _toggleGroupVotes = () => {
    this.setState({ showGroupVotes: !this.state.showGroupVotes })
-    console.log("Player votes: ", this.props.votesList)
   }
 
   conditionalShowVotes = () => {
@@ -36,7 +34,6 @@ class EventResultDisplay extends React.Component {
     } else if (this.props.votesList.length) {
       return (<View style={[customStyles.opacityContainer, customStyles.marginTop]}>
               {this.props.votesList.map((entry, index) => {
-                console.log("MADE A LINE")
                   return (<MainText style={customStyles.text} key={index} size='lg'>{entry}</MainText>)
                 })}
               </View>)
@@ -93,12 +90,6 @@ const customStyles = StyleSheet.create({
     fontSize: widthUnit*9.5,
     marginTop: widthUnit*3,
   },
-  textContainer: {
-    // marginTop: 20,
-    width: '100%',
-    justifyContent: 'center',
-    padding: widthUnit,
-  },
   text: {
     fontFamily: 'Gill Sans MT Condensed',
     lineHeight: heightUnit * 3.75,
@@ -108,15 +99,7 @@ const customStyles = StyleSheet.create({
     width: undefined,
     height: undefined,
     flex: 1,
-
     justifyContent: 'flex-start',
-  },
-  bottom: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: widthUnit * 2,
   },
   marginTop: {
     marginTop: heightUnit * 3.5

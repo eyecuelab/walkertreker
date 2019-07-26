@@ -29,7 +29,7 @@ class AnimatedJournalText extends Component {
   render() {
     const fontSize = this.state.animatedValue.interpolate({
       inputRange: [0, 0.5],
-      outputRange: [widthUnit*5, widthUnit*6]
+      outputRange: [widthUnit*4, widthUnit*5]
     });
     
     return (

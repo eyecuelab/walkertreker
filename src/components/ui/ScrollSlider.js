@@ -77,7 +77,7 @@ const customStyles = StyleSheet.create({
   unfocused: {
     textAlign: 'center', 
     opacity: 0.5,
-    fontSize: widthUnit*6,
+    fontSize: widthUnit*5,
     lineHeight: widthUnit*3,
     paddingTop: widthUnit*4,
   },

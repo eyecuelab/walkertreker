@@ -10,6 +10,7 @@ const heightUnit = hp('1%');
 const StyledText = styled.Text`
   font-family: gore;
   font-size: ${widthUnit*10.5};
+  line-height: ${widthUnit*10};
   color: ${props => props.color || "white"};
 `;
 
