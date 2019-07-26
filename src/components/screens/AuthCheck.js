@@ -10,7 +10,7 @@ const { c } = constants;
 class AuthCheck extends React.Component {
 
   componentDidMount() {
-    const { player, navigation } = this.props;
+    const { player, navigation, redirect } = this.props;
     
     if(!player.id && redirect.path !== 'recovery' ) {
       navigation.navigate('Auth');
@@ -34,6 +34,7 @@ class AuthCheck extends React.Component {
 const mapStateToProps = (state) => { 
   return {
     player: state.player,
+    redirect: state.redirect
   }
 }
 
