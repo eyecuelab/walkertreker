@@ -48,10 +48,10 @@ class EventResultDisplay extends React.Component {
         style={customStyles.randomEventBg}>
         <ScreenContainer>
 
-            <View style={[customStyles.container, { flex: 3 }]}>
+            <View style={{ flex: 3 }}>
 
               <View style={customStyles.headlineContainer}>
-                <MainHeader style={customStyles.header}>Your group decided to {this.props.resultHeader}</MainHeader>
+                <MainHeader lineHeight='squish' style={customStyles.header}>Your group decided to {this.props.resultHeader}</MainHeader>
               </View>
 
               {this.conditionalShowVotes()}
@@ -87,6 +87,7 @@ const customStyles = StyleSheet.create({
   },
   header: {
     marginTop: widthUnit*4,
+    paddingTop: widthUnit*2,
   },
   text: {
     fontFamily: 'Gill Sans MT Condensed',

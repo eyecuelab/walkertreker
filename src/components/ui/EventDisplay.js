@@ -33,7 +33,7 @@ class EventDisplay extends React.Component {
             <Text style={customStyles.label}>{this.props.timeLeft}</Text>
 
             <View style={customStyles.headlineContainer}>
-              <MainHeader>Group{'\n'}Decision</MainHeader>
+              <MainHeader style={customStyles.header} lineHeight='squish'>Group{'\n'}Decision</MainHeader>
             </View>
             <ScrollView>
               <View style={[customStyles.opacityContainer, customStyles.marginTop]}>
@@ -62,11 +62,9 @@ class EventDisplay extends React.Component {
 
         </ScreenContainer>
       </ImageBackground>
-
     );
   }
 }
-
 
 const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp('1%');
@@ -75,6 +73,9 @@ const customStyles = StyleSheet.create({
   headlineContainer: {
     width: '100%',
     justifyContent: 'flex-start',
+  },
+  header: {
+    paddingTop: widthUnit*0.8,
   },
   buttonContainer: {
     marginTop: heightUnit,
