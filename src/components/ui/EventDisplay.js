@@ -23,7 +23,7 @@ class EventDisplay extends React.Component {
 
   render() {
     return (
-
+      <View style={[{backgroundColor: '#6f655b'}, {flex: 1}]}>
       <ImageBackground
         source={event_bg}
         resizeMode={'cover'}
@@ -62,6 +62,7 @@ class EventDisplay extends React.Component {
 
         </ScreenContainer>
       </ImageBackground>
+      </View>
     );
   }
 }

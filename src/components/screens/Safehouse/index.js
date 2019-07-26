@@ -123,17 +123,17 @@ class Safehouse extends React.Component {
 
           <View style={customStyles.bottom}>
             <SingleButtonFullWidth
-                margin={widthUnit*0.5}
+                marginTop={widthUnit*0.5}
                 backgroundColor='darkred'
                 title='Look for food'
                 onButtonPress={this._selectFood} />
             <SingleButtonFullWidth
-                margin={widthUnit*0.5}
+                marginTop={widthUnit*0.5}
                 backgroundColor='darkred'
                 title='Search for medicine'
                 onButtonPress={this._selectMedicine} />
             <SingleButtonFullWidth
-                margin={widthUnit*0.5}
+                marginTop={widthUnit*0.5}
                 backgroundColor='darkred'
                 title='Find weapons'
                 onButtonPress={this._selectWeapon} />
@@ -148,7 +148,7 @@ class Safehouse extends React.Component {
 
   render() {
     return (
-      <View style={[{backgroundColor: 'darkgrey'}, {flex: 1}]}>
+      <View style={[{backgroundColor: '#1a1f14'}, {flex: 1}]}>
       <ImageBackground
               source={safehouse_bg}
               resizeMode={'cover'}
@@ -166,6 +166,7 @@ class Safehouse extends React.Component {
               {this._submitConditionalRender()}
           </View>
           <SingleButtonFullWidth
+              marginTop={widthUnit*0.5}
               title='Go Back'
               backgroundColor='black'
               onButtonPress={()=>this.props.navigation.navigate("Campaign")} />
