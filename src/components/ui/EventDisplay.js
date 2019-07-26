@@ -17,7 +17,6 @@ class EventDisplay extends React.Component {
   }
 
   handleButtonPress(opt) {
-    console.log('option from display', opt)
     this.props.onVote(opt)
   }
 
