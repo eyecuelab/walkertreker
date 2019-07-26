@@ -1,10 +1,6 @@
 import React from 'react';
-import constants from './../../constants';
 import { connect } from 'react-redux';
 import {ImageBackground, Text} from 'react-native';
-
-
-const { c } = constants;
 
 
 class AuthCheck extends React.Component {

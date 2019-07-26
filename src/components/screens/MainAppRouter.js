@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import constants from '../../constants';
-const { retrieveData } = constants;
+const { c, retrieveData } = constants;
 
 import { NavigationEvents } from 'react-navigation';
 
