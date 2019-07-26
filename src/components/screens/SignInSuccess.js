@@ -4,6 +4,7 @@ import { MainHeader } from './../text';
 const bg = require('../../../assets/bg.png');
 
 const AnimatedMainHeader = Animated.createAnimatedComponent(MainHeader);
+const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground);
 
 class SignInSuccess extends Component {
   constructor(props) {
@@ -15,8 +16,6 @@ class SignInSuccess extends Component {
   }
 
   componentDidMount = () => {
-    
-    console.log(this.props.navigate)
     InteractionManager.runAfterInteractions(() => {
       this.props.navigation.navigate("MainApp");
     });
@@ -31,7 +30,7 @@ class SignInSuccess extends Component {
         {
           toValue: 100,
           duration: 500,
-          easing: Easing.ease
+          easing: Easing.ease,
         }
       ),
       Animated.timing(
@@ -39,7 +38,8 @@ class SignInSuccess extends Component {
         {
           toValue: 1,
           duration: 5000,
-          easing: Easing.ease
+          easing: Easing.ease,
+          useNativeDriver: true
         }
       )
     ]).start();
@@ -70,11 +70,13 @@ class SignInSuccess extends Component {
 
     return (
       <View style={styles.screenContainer}>
-        <Animated.View style={{ left: left, backgroundColor:"red", width: position, height: position, zIndex: 10 }}>
-          <ImageBackground source={bg} resizeMode={'contain'} style={{height: "100%", width: "100%", alignContent: 'center', justifyContent: 'center',}}>
-            <AnimatedMainHeader style={{opacity: opacity, textAlign: "center", transform: [{scale: scale}]}}>Welcome {this.props.player}</AnimatedMainHeader>
-          </ImageBackground>
-        </Animated.View>
+
+              <ImageBackground source={bg} style={{width: undefined, height: undefined, zIndex: 2}}>
+                <Animated.View style={{left: left, width: position, height: position, zIndex: 10, alignContent: 'center', justifyContent: 'center'}}>
+                  <AnimatedMainHeader style={{opacity: opacity, textAlign: "center", transform: [{scale: scale}]}}>Welcome{"\n"} {this.props.player}</AnimatedMainHeader>
+                </Animated.View>
+              </ImageBackground>
+        
       </View>
     );
   }
