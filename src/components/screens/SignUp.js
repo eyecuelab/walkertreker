@@ -59,7 +59,7 @@ class SignUp extends React.Component {
       this.setState({isLoading: false});
     }
     if (!auth.gettingPlayerId && !auth.gettingCampaignId && !this.state.signInSuccess) {
-      auth.gotPlayerId ? this.setState({signInSuccess: true}) : this.state.newPlayerCreated ? this.recoveryText() : null;
+      this.props.player.id ? this.setState({signInSuccess: true}) : this.state.newPlayerCreated ? this.recoveryText() : null;
     }
   }
 
@@ -230,7 +230,7 @@ const customStyles = StyleSheet.create({
     marginTop: heightUnit*4,
   },
   textButtonContainer: {
-    marginTop: heightUnit*1,
+    marginTop: heightUnit*3,
     justifyContent: 'center',
     alignItems: 'center',
   },
