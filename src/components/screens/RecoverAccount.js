@@ -31,9 +31,7 @@ class RecoverAccount extends React.Component {
   componentWillMount = async () => {
     const { dispatch } = this.props
     const playerId = this.props.navigation.getParam('playerId', false)
-    console.log(playerId)
     await this.setState({ playerId })
-    console.log("from recoverAccount play id", playerId)
     dispatch({ type: c.GETTING_CAMPAIGNID, gettingCampaignId: true })
     dispatch({ type: c.GETTING_PLAYERID, gettingPlayerId: true })
     dispatch({ type: c.FETCH_PLAYER, playId: playerId })
@@ -48,21 +46,24 @@ class RecoverAccount extends React.Component {
 
   render() {
     return(
-      <View style={{flex: 1}}>
-
-      {this.state.signInSuccess ? <SignInSuccess navigation={this.props.navigation} player={this.props.player.displayName}/> : null}
+      
+      
       <ImageBackground
        source={use_item_bg}
         style={{width: '100%', height: '100%'}}>
-        <ScreenContainer>
+        <View style={{flex: 1}}>
 
-          <View style={customStyles.headlineContainer}>
-            <MainHeader>Recovering Account ... </MainHeader>
-          </View>
+        { this.state.signInSuccess 
 
-        </ScreenContainer>
-      </ImageBackground>
+          ? <SignInSuccess navigation={this.props.navigation} player={this.props.player.displayName}/>
+
+          : <View style={[customStyles.headlineContainer, {zIndex: -1}]}>
+              <MainHeader style={{zIndex: -1}}>Recovering Account ... </MainHeader>
+            </View>
+        }
+
       </View>
+      </ImageBackground>
     )
   }
 }
@@ -84,7 +85,7 @@ function mapStateToProps(state) {
   return {
     campaign: state.campaign,
     player: state.player,
-    auth: state.auth
+    auth: state.auth,
   }
 }
 

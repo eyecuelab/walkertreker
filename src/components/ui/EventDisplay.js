@@ -4,13 +4,9 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView }
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
 import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import DayCounter from '../ui/DayCounter';
 import ScreenContainer from '../containers/ScreenContainer';  
 import { MainText, MainHeader } from './../text';
 
-
-import constants from '../../constants';
-const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
 
 
@@ -34,7 +30,7 @@ class EventDisplay extends React.Component {
         style={customStyles.randomEventBg}>
         <ScreenContainer>
           <View style={[customStyles.container, { flex: 3 }]}>
-            <Text style={styles.label}>{this.props.timeLeft}</Text>
+            <Text style={customStyles.label}>{this.props.timeLeft}</Text>
 
             <View style={customStyles.headlineContainer}>
               <MainHeader>Group{'\n'}Decision</MainHeader>
@@ -80,24 +76,6 @@ const customStyles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-start',
   },
-  headline: {
-    fontFamily: 'gore',
-    fontSize: widthUnit * 12,
-    lineHeight: widthUnit * 9,
-    paddingTop: widthUnit * 3,
-    color: 'white',
-  },
-  textContainer: {
-    // marginTop: 20,
-    width: '100%',
-    justifyContent: 'center',
-    padding: widthUnit,
-  },
-  text: {
-    lineHeight: heightUnit * 3.75,
-    fontFamily: 'Gill Sans MT Condensed',
-    fontSize: widthUnit*5.5,
-  },
   buttonContainer: {
     marginTop: heightUnit,
     width: '100%',
@@ -109,27 +87,21 @@ const customStyles = StyleSheet.create({
     width: undefined,
     height: undefined,
     flex: 1,
-    // padding: widthUnit*3,
-    // borderWidth: widthUnit*2,
-    // borderColor: 'black',
-    // marginLeft: widthUnit*3,
     justifyContent: 'flex-start',
-    // opacity: 0.2,
   },
   opacityContainer: {
     backgroundColor: 'rgba(0,0,0,0.5)', 
     padding: widthUnit*3.5,
   },
-  bottom: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: widthUnit * 2,
-  },
   marginTop: {
     marginTop: heightUnit * 2.5
-  }
+  },
+  label: {
+    fontFamily: 'gore',
+    fontSize: widthUnit*5,
+    color: 'white',
+    paddingVertical: widthUnit*2,
+  },
 })
 
 export default EventDisplay;

@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, } from 'react-native';
+import { StyleSheet, View, ImageBackground, } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import defaultStyle from '../../styles/defaultStyle';
 import TwoButtonOverlay from '../ui/TwoButtonOverlay';
-import { MainText, SubHeader, TextAlt, Label, MainHeader } from './../text';
+import { MainText, MainHeader } from './../text';
 import ScreenContainer from '../containers/ScreenContainer';  
 
-import constants from '../../constants';
-const { c, events } = constants;
 const event_bg = require('../../../assets/event_bg.png');
 
 
@@ -25,12 +23,10 @@ class EventResultDisplay extends React.Component {
   }
 
   conditionalShowVotes = () => {
-    console.log
     if (!this.state.showGroupVotes) {
       return (<View style={[customStyles.opacityContainer, customStyles.marginTop]}>
                 <MainText>{this.props.resultText}</MainText>
               </View>)
-    // } else {
     } else if (this.props.votesList.length) {
       return (<View style={[customStyles.opacityContainer, customStyles.marginTop]}>
               {this.props.votesList.map((entry, index) => {
@@ -51,7 +47,6 @@ class EventResultDisplay extends React.Component {
         resizeMode={'cover'}
         style={customStyles.randomEventBg}>
         <ScreenContainer>
-
 
             <View style={[customStyles.container, { flex: 3 }]}>
 
@@ -89,6 +84,9 @@ const customStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     fontSize: widthUnit*9.5,
     marginTop: widthUnit*3,
+  },
+  header: {
+    marginTop: widthUnit*4,
   },
   text: {
     fontFamily: 'Gill Sans MT Condensed',

@@ -70,7 +70,7 @@ class App extends React.Component {
       require('../assets/safehouse_bg.png'),
       require('../assets/event_bg.png'),
       require('../assets/victory_bg.png'),
-      
+      require('../assets/burnt-paper.png'),
       require('../assets/attack_bg.png'),
       require('../assets/food/Apple.png'),
       require('../assets/food/Baked_Beans.png'),

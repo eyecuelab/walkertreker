@@ -69,7 +69,6 @@ class RandomEventResult extends React.Component {
     
     let newPlayerObj = {...this.props.player}
     const currentDay = this.props.campaign.currentDay
-    console.log("RESULT?: ", result)
 
     this.updateInventory(result.food, this.foodItems, 'food');
     this.updateInventory(result.meds, this.medicineItems, 'med');
@@ -100,8 +99,6 @@ class RandomEventResult extends React.Component {
   getEventResult = () => {
     const data = this.props.screenProps.notification.data.data.data
     this.result = data.result
-    console.log("Result IN RESULT", this.result)
-    console.log("playerVotes in data IN RESULT", data.playerVotes)
 
     this.evt = events[data.eventId-1]
 
@@ -112,7 +109,6 @@ class RandomEventResult extends React.Component {
       Object.entries(playerVotes).map(([key, value], index) => {
         votesList.push(`${key} voted to ${value}`)
       })
-      console.log("VOTE LIST IN RESULT", votesList)
       this.votesList = votesList
   }
 

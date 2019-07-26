@@ -5,6 +5,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import constants from '../../../constants';
 const { paint } = constants;
 const { paintArray } = paint;
+const paper = require('../../../../assets/burnt-paper.png');
+
 
 import { MainText, TextWithBackground } from '../../text';
 
@@ -25,19 +27,33 @@ class JournalEntry extends React.Component {
   render() {
     return (
       this.props.entry ? 
-      <View style={customStyles.entryBox} >
-        <View>
-          <MainText style={customStyles.entryLine}>{this.entries[0]}</MainText>
-          {this.props.eventNumber && this.props.votingList.length ? 
-              <View style={customStyles.playerVotes}>
-                {this.props.votingList.map((vote, index) => {
-                  return <TextWithBackground key={index} text={vote} image={this.getBGimage()}/>
-                })}
-              </View>
-            : null }
-          {this.entries[1] ? <MainText>{this.entries[1]}</MainText> : null}
+
+      <ImageBackground 
+        source={paper}
+        resizeMode={'stretch'}
+        style={customStyles.paperBg} >
+
+      { this.entries[1] ? 
+        <View style={customStyles.entryBox} >
+          <View>
+            <MainText style={customStyles.entryLine}>{this.entries[0]}</MainText>
+            {this.props.eventNumber && this.props.votingList.length ? 
+                <View style={customStyles.playerVotes}>
+                  {this.props.votingList.map((vote, index) => {
+                    return <TextWithBackground key={index} text={vote} image={this.getBGimage()}/>
+                  })}
+                </View>
+              : null }
+            <MainText style={customStyles.entryLine}>{this.entries[1]}</MainText>
+          </View>
         </View>
-      </View> : null
+
+        : <View style={customStyles.dailyEntryBox} >
+            <MainText style={customStyles.entryLine}>{this.entries[0]}</MainText>
+          </View>
+      }
+
+      </ImageBackground> : null
     )
   }
 }
@@ -49,17 +65,27 @@ const customStyles = StyleSheet.create({
     paddingHorizontal: widthUnit*2,
   },
   entryBox: {
-    backgroundColor: 'rgba(110,14,15,0.5)', 
-    marginBottom: heightUnit*2,
-    padding: heightUnit*3,
+    paddingHorizontal: heightUnit*4,
+    paddingVertical: heightUnit*6,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#6e0e0f',
+  },
+  dailyEntryBox: {
+    paddingHorizontal: heightUnit*4,
+    paddingVertical: heightUnit*3,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   entryLine: {
-    fontSize: widthUnit*5.5,
+    fontSize: widthUnit*6,
+    color: 'black',
+  },
+  paperBg: {
+    width: undefined,
+    height: undefined,
+    marginBottom: heightUnit*2,
   }
 
 })
