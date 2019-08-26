@@ -13,7 +13,7 @@ class SocketIO extends React.Component {
 
   componentDidMount = async () => {
     const { dispatch } = this.props
-    
+  
     if (this.props.player.id) {
       socket.emit('connectToPlayer', this.props.player.id);
     }
