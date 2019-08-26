@@ -32,7 +32,7 @@ export const store = configureStore();
 export const persistor = persistStore(store, null, () => {
   const playerId = store.getState().player.id || null;
   const campaignId = store.getState().campaign.id || null;
-  console.log("BEFORE ATTEMING TO FETCH", playerId, campaignId)
+  console.log("BEFORE ATTEMPTING TO FETCH", playerId, campaignId)
   if (playerId) {
     console.log("ATTEMPTING TO FETCH PLAYER +++++++++++++++++ \n");
     store.dispatch({ type: 'GETTING_PLAYERID', gettingPlayerId: true })
