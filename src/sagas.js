@@ -1,8 +1,17 @@
-import { put, take, takeEvery, takeLatest, all, call, select } from 'redux-saga/effects';
+import {
+  put,
+  take,
+  takeEvery,
+  takeLatest,
+  all,
+  call,
+  select
+} from "redux-saga/effects";
 import { Pedometer } from "expo";
-import { CLIENT_APP_KEY } from 'react-native-dotenv';
+import { CLIENT_APP_KEY } from "react-native-dotenv";
 
-import constants from './constants';
+import constants from "./constants";
+
 const { c, storeData, retrieveData, item } = constants;
 
 export const getSteps = state => state.steps;
@@ -11,415 +20,394 @@ export const getCampaign = state => state.campaign;
 
 // worker sagas ==============================
 
-export function *fetchSteps() {
-
+export function* fetchSteps() {
   const steps = yield select(getSteps);
   const dates = steps.campaignDateArray;
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
   // Here we could only loop through the dates that are relevent (speed it up)
-  // 
+  // eslint-disable-next-line no-restricted-syntax, no-undef
   for (obj of datesCopy) {
     // console.log('fetch steps loop, day ', obj.start); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
     try {
-      const start = new Date(Date.parse(obj.start))
-      const end = new Date(Date.parse(obj.end))
+      const start = new Date(Date.parse(obj.start)); // eslint-disable-line no-undef
+      const end = new Date(Date.parse(obj.end)); // eslint-disable-line no-undef
       const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
-      const dateWithSteps = Object.assign({}, datesCopy[obj.day], {steps: stepsToAdd});
-      datesCopy.splice(obj.day, 1, dateWithSteps);
+      const dateWithSteps = { ...datesCopy[obj.day], steps: stepsToAdd }; // eslint-disable-line no-undef
+      datesCopy.splice(obj.day, 1, dateWithSteps); // eslint-disable-line no-undef
     } catch (error) {
-      yield put({type: c.STEPS_FAILED, error})
+      yield put({ type: c.STEPS_FAILED, error });
     }
   }
-  yield storeData('stepInfo', JSON.stringify(steps))
-  yield put({type: c.STEPS_RECEIVED, campaignDateArray: datesCopy});
+  yield storeData("stepInfo", JSON.stringify(steps));
+  yield put({ type: c.STEPS_RECEIVED, campaignDateArray: datesCopy });
 }
 
-export function *updatePlayerSteps(action) {
-
+export function* updatePlayerSteps(action) {
   const simpleArray = [];
-  for (obj of action.campaignDateArray) {
+  action.campaignDateArray.forEach(obj => {
     simpleArray.push(obj.steps);
-  }
-  yield put({type: c.UPDATE_PLAYER_STEPS, steps: simpleArray})
+  });
+  yield put({ type: c.UPDATE_PLAYER_STEPS, steps: simpleArray });
 }
 
-export function *setInitialCampaignDetails(action) {
-  console.log("setting campaign")
+export function* setInitialCampaignDetails(action) {
+  console.log("setting campaign");
   const url = `${endpoint}/api/campaigns`;
   const initObj = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: JSON.stringify(action.payload)
-  }
+  };
 
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
-    console.log("storing", response)
-    yield storeData('campaignId', JSON.stringify(response.id));
-    yield put({type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response});
-    yield put({type: c.HAVE_CAMPAIGNID, gotCampaignId: true});
+    const response = yield fetch(url, initObj).then(res => res.json());
+    console.log("storing", response);
+    yield storeData("campaignId", JSON.stringify(response.id));
+    yield put({ type: c.INITIAL_CAMPAIGN_DATA_RECEIVED, campaign: response });
+    yield put({ type: c.HAVE_CAMPAIGNID, gotCampaignId: true });
   } catch (error) {
-    yield put({type: c.GETTING_CAMPAIGNID, gettingCampaignId: false});
-    console.warn('error setting campaign details: ', error);
+    yield put({ type: c.GETTING_CAMPAIGNID, gettingCampaignId: false });
+    console.warn("error setting campaign details: ", error);
   }
 }
 
-export function *sendInvites(action) {
-  const url = `${endpoint}/api/campaigns/invite/` + action.campId;
+export function* sendInvites(action) {
+  const url = `${endpoint}/api/campaigns/invite/${action.campId}`;
   const phoneNums = Object.keys(action.invites);
+  // eslint-disable-next-line no-restricted-syntax, no-undef
   for (pNumber of phoneNums) {
-    const aBody =
-      {
-        "playerId": action.playId,
-        "phoneNumber": pNumber,
-      }
+    const aBody = {
+      playerId: action.playId,
+      phoneNumber: pNumber // eslint-disable-line no-undef
+    };
     const initObj = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "appkey": CLIENT_APP_KEY
+        appkey: CLIENT_APP_KEY
       },
       body: JSON.stringify(aBody)
-    }
+    };
 
     try {
-      const response = yield fetch(url, initObj)
-      .then(response => response.json());
-      yield put({type: c.INVITES_SENT, invites: action.invites });
+      yield fetch(url, initObj).then(res => res.json());
+      yield put({ type: c.INVITES_SENT, invites: action.invites });
     } catch (error) {
-      console.warn('error sending invites: ', error);
+      console.warn("error sending invites: ", error);
     }
-  };
+  }
 }
 
-export function *fetchCampaignInfo(action) {
-
-  const id = action.id;
-  const url = `${endpoint}/api/campaigns/` + id;
+export function* fetchCampaignInfo(action) {
+  const { id } = action;
+  const url = `${endpoint}/api/campaigns/${id}`;
   const initObj = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     }
   };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
-    yield put({type: c.CAMPAIGN_INFO_RECEIVED, campaign: response});
-    yield put({type: c.HAVE_CAMPAIGNID, gotCampaignId: true});
+    const response = yield fetch(url, initObj).then(res => res.json());
+    yield put({ type: c.CAMPAIGN_INFO_RECEIVED, campaign: response });
+    yield put({ type: c.HAVE_CAMPAIGNID, gotCampaignId: true });
   } catch (error) {
-    yield put({type: c.GETTING_CAMPAIGNID, gettingCampaignId: false});
-    console.warn('error fetching campaign: ', error);
+    yield put({ type: c.GETTING_CAMPAIGNID, gettingCampaignId: false });
+    console.warn("error fetching campaign: ", error);
   }
 }
 
-export function *joinCampaignRequest(action) {
-
-  const url = `${endpoint}/api/campaigns/join/` + action.campId;
+export function* joinCampaignRequest(action) {
+  const url = `${endpoint}/api/campaigns/join/${action.campId}`;
   const initObj = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
-    body: JSON.stringify({playerId: action.playId})
+    body: JSON.stringify({ playerId: action.playId })
   };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
-    yield put({type: c.PLAYER_JOINED_CAMPAIGN, campaign: response});
-    yield put({type: c.HAVE_CAMPAIGNID, gotCampaignId: true});
+    const response = yield fetch(url, initObj).then(res => res.json());
+    yield put({ type: c.PLAYER_JOINED_CAMPAIGN, campaign: response });
+    yield put({ type: c.HAVE_CAMPAIGNID, gotCampaignId: true });
   } catch (error) {
-    yield put({type: c.GETTING_CAMPAIGNID, gettingCampaignId: false});
-    console.warn('error joining campaign: ', error);
+    yield put({ type: c.GETTING_CAMPAIGNID, gettingCampaignId: false });
+    console.warn("error joining campaign: ", error);
   }
 }
 
-export function *createPlayer(action) {
-
+export function* createPlayer(action) {
   const url = `${endpoint}/api/players`;
 
-  const data = new FormData()
+  const data = new FormData();
 
-  data.append('displayName', action.name)
-  data.append('phoneNumber', action.number)
-  data.append('pushToken', action.pushToken)
+  data.append("displayName", action.name);
+  data.append("phoneNumber", action.number);
+  data.append("pushToken", action.pushToken);
 
   if (action.avatar.uri) {
-    let localUri = action.avatar.uri
-    let filename = localUri.split('/').pop();
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? `image/${match[1]}` : `image`;
-    data.append('avatar', { uri: localUri, name: filename, type });
+    const localUri = action.avatar.uri;
+    const filename = localUri.split("/").pop();
+    const match = /\.(\w+)$/.exec(filename);
+    const type = match ? `image/${match[1]}` : `image`;
+    data.append("avatar", { uri: localUri, name: filename, type });
   }
 
   const initObj = {
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: data
   };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
+    const response = yield fetch(url, initObj).then(res => res.json());
     if (response.error) {
-      console.log('player with that number already exists')
-      yield put({type: c.GETTING_PLAYERID, gettingPlayerId: false});
+      console.log("player with that number already exists");
+      yield put({ type: c.GETTING_PLAYERID, gettingPlayerId: false });
     } else {
-      yield put({type: c.PLAYER_CREATED, player: response})
-      yield put({type: c.HAVE_PLAYERID, gotPlayerId: true});
+      yield put({ type: c.PLAYER_CREATED, player: response });
+      yield put({ type: c.HAVE_PLAYERID, gotPlayerId: true });
     }
   } catch (error) {
-    yield put({type: c.GETTING_PLAYERID, gettingPlayerId: false});
-    console.warn('error creating player: ', error);
+    yield put({ type: c.GETTING_PLAYERID, gettingPlayerId: false });
+    console.warn("error creating player: ", error);
   }
 }
 
-export function *updateCampaign(action) {
-  const url = `${endpoint}/api/campaigns/` + action.campId;
+export function* updateCampaign(action) {
+  const url = `${endpoint}/api/campaigns/${action.campId}`;
   const initObj = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: JSON.stringify({
-      "campaignUpdate": {
-        "currentDay": action.currentDay,
-        "inventory": action.inventory,
-        "completedEvents": action.completedEvents,
+      campaignUpdate: {
+        currentDay: action.currentDay,
+        inventory: action.inventory,
+        completedEvents: action.completedEvents
       }
     })
   };
 
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
-    yield put({type: c.CAMPAIGN_UPDATED, campaign: response});
+    const response = yield fetch(url, initObj).then(res => res.json());
+    yield put({ type: c.CAMPAIGN_UPDATED, campaign: response });
   } catch (error) {
-    console.warn('error updating campaign: ', error);
+    console.warn("error updating campaign: ", error);
   }
 }
 
-export function *leaveCampaign(action) {
-
-  const url = `${endpoint}/api/campaigns/leave/` + action.campId;
+export function* leaveCampaign(action) {
+  const url = `${endpoint}/api/campaigns/leave/${action.campId}`;
 
   const initObj = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
-    body: JSON.stringify({"playerId": action.playId})
+    body: JSON.stringify({ playerId: action.playId })
   };
 
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
-    yield put({type: c.CAMPAIGN_LEFT});
+    const response = yield fetch(url, initObj).then(res => res.json());
+    yield put({ type: c.CAMPAIGN_LEFT });
   } catch (error) {
-    console.warn('error leaving campaign: ', error);
+    console.warn("error leaving campaign: ", error);
   }
 }
 
-export function *fetchPlayer(action) {
-  const url = `${endpoint}/api/players/` + action.playId;
+export function* fetchPlayer(action) {
+  const url = `${endpoint}/api/players/${action.playId}`;
   const initObj = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     }
   };
 
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
-    yield put({type: c.PLAYER_FETCHED, player: response});
-    yield put({type: c.HAVE_PLAYERID, gotPlayerId: true});
+    const response = yield fetch(url, initObj).then(res => res.json());
+    yield put({ type: c.PLAYER_FETCHED, player: response });
+    yield put({ type: c.HAVE_PLAYERID, gotPlayerId: true });
   } catch (error) {
-    yield put({type: c.GETTING_PLAYERID, gettingPlayerId: false});
-    console.warn('error fetching players: ', error);
+    yield put({ type: c.GETTING_PLAYERID, gettingPlayerId: false });
+    console.warn("error fetching players: ", error);
   }
 }
 
-export function *updatePlayer(action) {
+export function* updatePlayer(action) {
   const url = `${endpoint}/api/players`;
   const initObj = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: JSON.stringify({
-      "playerId": action.playId,
-      "playerUpdate": {
-        "hunger": action.hunger,
-        "health": action.health,
-        "steps": action.steps
+      playerId: action.playId,
+      playerUpdate: {
+        hunger: action.hunger,
+        health: action.health,
+        steps: action.steps
       }
     })
   };
 
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
-    yield put({type: c.PLAYER_UPDATED, player: response});
+    const response = yield fetch(url, initObj).then(res => res.json());
+    yield put({ type: c.PLAYER_UPDATED, player: response });
   } catch (error) {
-    console.warn('error updating player: ', error)
+    console.warn("error updating player: ", error);
   }
 }
 
-
-export function *sendRecoverAccount(action) {
-  console.log(action)
-  const url = `${endpoint}/api/players/recover/` + action.phoneNumber
-  console.log(action)
+export function* sendRecoverAccount(action) {
+  console.log(action);
+  const url = `${endpoint}/api/players/recover/${action.phoneNumber}`;
+  console.log(action);
   const initObj = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
-    },
-  }
+      appkey: CLIENT_APP_KEY
+    }
+  };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
+    const response = yield fetch(url, initObj).then(res => res.json());
     // yield put({type: c.ACCOUNT_RECOVERED, player: response});
   } catch (error) {
-    console.warn('error recovering players: ', error);
+    console.warn("error recovering players: ", error);
   }
 }
 
-
-export function *startCampaign(action) {
-  const url = `${endpoint}/api/campaigns/start/` + action.campId;
+export function* startCampaign(action) {
+  const url = `${endpoint}/api/campaigns/start/${action.campId}`;
   const initObj = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: JSON.stringify({
-      "startNow": action.startNow,
+      startNow: action.startNow
     })
   };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
-    yield put({type: c.CAMPAIGN_STARTED, campaign: response})
+    const response = yield fetch(url, initObj).then(res => res.json());
+    yield put({ type: c.CAMPAIGN_STARTED, campaign: response });
   } catch (error) {
-    console.warn('error starting campaign: ', error)
+    console.warn("error starting campaign: ", error);
   }
 }
 
-export function *destroyCampaign(action) {
-  const url = `${endpoint}/api/campaigns/` + action.campId;
+export function* destroyCampaign(action) {
+  const url = `${endpoint}/api/campaigns/${action.campId}`;
   const initObj = {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
-    },
+      appkey: CLIENT_APP_KEY
+    }
   };
   try {
-    console.log("try destro campaign")
+    console.log("try destro campaign");
     const response = yield fetch(url, initObj)
-    .then(response => response.json()).then((response) => console.log(response));
-    yield put({type: c.CAMPAIGN_DESTROYED});
+      .then(res => res.json())
+      .then(res => console.log(res));
+    yield put({ type: c.CAMPAIGN_DESTROYED });
   } catch (error) {
-    console.warn('error destroying campaign: ', error)
+    console.warn("error destroying campaign: ", error);
   }
 }
 
-export function *castPlayerVote(action) {
-  console.log("player casting vote", action)
-  const url = `${endpoint}/api/votes/` + action.eventId;
+export function* castPlayerVote(action) {
+  console.log("player casting vote", action);
+  const url = `${endpoint}/api/votes/${action.eventId}`;
   const initObj = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: JSON.stringify({
       playerId: action.playerId,
-      vote: action.vote,
+      vote: action.vote
     })
-  }
+  };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json());
+    const response = yield fetch(url, initObj).then(res => res.json());
     // yield put({type: c.PLAYER_VOTE_CAST, vote: response});
   } catch (error) {
-    console.warn('error casting player vote details: ', error);
+    console.warn("error casting player vote details: ", error);
   }
 }
 
-export function *updateJournal(action) {
-  const url = `${endpoint}/api/journals/` + action.journalId;
+export function* updateJournal(action) {
+  const url = `${endpoint}/api/journals/${action.journalId}`;
   const initObj = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: JSON.stringify({
       journalUpdate: {
         entry: action.entry,
-        votingList: action.votingList,
+        votingList: action.votingList
       }
     })
-  }
+  };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json())
+    const response = yield fetch(url, initObj).then(res => res.json());
   } catch (err) {
-    console.warn('error updating journal entry: ', err);
+    console.warn("error updating journal entry: ", err);
   }
 }
 
-export function *useInventory(action) {
-  const url = `${endpoint}/api/inventories/` + action.inventoryId;
+export function* useInventory(action) {
+  const url = `${endpoint}/api/inventories/${action.inventoryId}`;
   const initObj = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: JSON.stringify({
       inventoryUpdate: {
         used: true,
         user: action.user,
-        userId: action.userId,
+        userId: action.userId
       }
     })
-  }
+  };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    console.log("response of update inventory", response)
+    const response = yield fetch(url, initObj).then(res => res.json());
+    console.log("response of update inventory", response);
   } catch (err) {
-    console.warn('error updating inventory entry: ', err);
+    console.warn("error updating inventory entry: ", err);
   }
 }
 
-export function *receiveInventory(action) {
-  const url = `${endpoint}/api/inventories/` + action.campaignId;
+export function* receiveInventory(action) {
+  const url = `${endpoint}/api/inventories/${action.campaignId}`;
   const initObj = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     },
     body: JSON.stringify({
       used: false,
@@ -428,32 +416,35 @@ export function *receiveInventory(action) {
       itemType: action.itemType,
       itemNumber: action.itemNumber
     })
-  }
+  };
   try {
-    const response = yield fetch(url, initObj)
-    .then(response => response.json())
-    console.log("response of adding inventory", response)
+    const response = yield fetch(url, initObj).then(res => res.json());
+    console.log("response of adding inventory", response);
   } catch (err) {
-    console.warn('error updating inventory entry: ', err);
+    console.warn("error updating inventory entry: ", err);
   }
 }
 
-export function *saveState() {
+export function* saveState() {
   const lastState = yield select();
-  yield storeData('lastState', JSON.stringify(lastState));
+  yield storeData("lastState", JSON.stringify(lastState));
 }
 
-export function *checkBonusSteps(action) {
+export function* checkBonusSteps(action) {
   const { steps, stepTargets } = action.player;
   const { currentDay, startDate, id } = yield select(getCampaign);
   const { campaignDateArray, scavengingFor } = yield select(getSteps);
 
   if (id) {
-    if (steps[currentDay] === 0 || campaignDateArray === null || stepTargets === null || startDate === null) {
-      console.log("nothing to update in check steps")
-      return; // there is no player or game or steps or step targets, so bye
+    if (
+      steps[currentDay] === 0 ||
+      campaignDateArray === null ||
+      stepTargets === null ||
+      startDate === null
+    ) {
+      console.log("nothing to update in check steps");
+      // there is no player or game or steps or step targets, so bye
     } else {
-
       const stepGoalToday = stepTargets[currentDay];
       const stepsToday = steps[currentDay];
       const newBonus = stepsToday - stepGoalToday;
@@ -465,45 +456,57 @@ export function *checkBonusSteps(action) {
         stepsToday >= stepGoalToday &&
         bonusStepsToday === null
       ) {
-        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-        yield put({type: c.GO_TO_SAFEHOUSE, currentDay: currentDay});
-    
+        yield put({
+          type: c.ADD_BONUS_STEPS,
+          currentDay,
+          bonus: newBonus
+        });
+        yield put({ type: c.GO_TO_SAFEHOUSE, currentDay });
       } else if (
         // there are new bonus steps but not enough to scavenge
         stepsToday >= stepGoalToday &&
         bonusStepsToday !== null &&
-        newBonus - (timesScavengedToday * 500) < 500 &&
+        newBonus - timesScavengedToday * 500 < 500 &&
         newBonus > bonusStepsToday
       ) {
-        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-    
+        yield put({
+          type: c.ADD_BONUS_STEPS,
+          currentDay,
+          bonus: newBonus
+        });
       } else if (
         // there are 500 or more unused bonus steps to use for scavenging
         stepsToday >= stepGoalToday &&
         bonusStepsToday !== null &&
-        newBonus - (timesScavengedToday * 500) >= 500 &&
+        newBonus - timesScavengedToday * 500 >= 500 &&
         scavengingFor
       ) {
-        yield put({type: c.ADD_BONUS_STEPS, currentDay: currentDay, bonus: newBonus});
-        yield put({type: c.START_SCAVENGE, currentDay: currentDay, bonus: newBonus, timesScavengedToday: timesScavengedToday });
-        yield put({type: c.FETCH_CAMPAIGN_INFO, id: id });
-    
-      } else {
-        return;
+        yield put({
+          type: c.ADD_BONUS_STEPS,
+          currentDay,
+          bonus: newBonus
+        });
+        yield put({
+          type: c.START_SCAVENGE,
+          currentDay,
+          bonus: newBonus,
+          timesScavengedToday
+        });
+        yield put({ type: c.FETCH_CAMPAIGN_INFO, id });
       }
     }
   }
 }
 
-export function *scavenge(action) {
-  console.log('MADE IT TO SCAVENGE');
+export function* scavenge(action) {
+  console.log("MADE IT TO SCAVENGE");
   const newTimesScavenged = action.timesScavengedToday + 1;
   const player = yield select(getPlayer);
   const campaign = yield select(getCampaign);
-  
+
   const { scavengingFor, itemScavenged } = yield select(getSteps);
 
-  const rando = (x) => Math.floor(Math.random() * x);
+  const rando = x => Math.floor(Math.random() * x);
   let newItem;
   let itemType;
 
@@ -511,226 +514,241 @@ export function *scavenge(action) {
     return;
   }
 
-  console.log('newTimesScavenged', newTimesScavenged);
-  console.log('scavengingFor', scavengingFor);
+  console.log("newTimesScavenged", newTimesScavenged);
+  console.log("scavengingFor", scavengingFor);
 
-  if (scavengingFor === 'food') {
+  if (scavengingFor === "food") {
     newItem = rando(9);
-    itemType = 'food'
-  } else if (scavengingFor === 'medicine') {
+    itemType = "food";
+  } else if (scavengingFor === "medicine") {
     newItem = rando(6);
-    itemType = 'med'
-  } else if (scavengingFor === 'weapons') {
+    itemType = "med";
+  } else if (scavengingFor === "weapons") {
     newItem = rando(9);
-    itemType = 'weapon'
+    itemType = "weapon";
   } else {
-    console.warn('the scavenge function can\'t tell what to scavenge');
-  } 
+    console.warn("the scavenge function can't tell what to scavenge");
+  }
 
-  console.log('made it through the scavenge branching, NEW ITEM: ', newItem);
+  console.log("made it through the scavenge branching, NEW ITEM: ", newItem);
 
-  yield put({ type: c.RECEIVE_INVENTORY, 
-    source: 'player', 
-    sourceId: player.id, 
+  yield put({
+    type: c.RECEIVE_INVENTORY,
+    source: "player",
+    sourceId: player.id,
     campaignId: campaign.id,
-    itemType: itemType,
+    itemType,
     itemNumber: newItem
-  })
-  yield put({type: c.UPDATE_CAMPAIGN_WITH_SCAVENGE, currentDay: action.currentDay, bonus: action.bonus, timesScavenged: newTimesScavenged });
-  yield put({type: c.DONE_SCAVENGING, itemScavenged: newItem });
-
+  });
+  yield put({
+    type: c.UPDATE_CAMPAIGN_WITH_SCAVENGE,
+    currentDay: action.currentDay,
+    bonus: action.bonus,
+    timesScavenged: newTimesScavenged
+  });
+  yield put({ type: c.DONE_SCAVENGING, itemScavenged: newItem });
 }
 
-export function *updateHungerAndHealth(action) {
-  yield put({type: c.UPDATE_HUNGER, hunger: action.hunger});
-  yield put({type: c.UPDATE_HEALTH, health: action.health});
+export function* updateHungerAndHealth(action) {
+  yield put({ type: c.UPDATE_HUNGER, hunger: action.hunger });
+  yield put({ type: c.UPDATE_HEALTH, health: action.health });
   const player = yield select(getPlayer);
-  yield put({type: c.UPDATE_PLAYER, playId: player.id, hunger: player.hunger, health: player.health});
+  yield put({
+    type: c.UPDATE_PLAYER,
+    playId: player.id,
+    hunger: player.hunger,
+    health: player.health
+  });
   // TODO: test this logic and see if it breaks anything
   const campaign = yield select(getCampaign);
-  yield put({type: c.UPDATE_CAMPAIGN, campId: campaign.id, inventory: campaign.inventory});
-};
+  yield put({
+    type: c.UPDATE_CAMPAIGN,
+    campId: campaign.id,
+    inventory: campaign.inventory
+  });
+}
 
-export function *getLastStepState() {
+export function* getLastStepState() {
   // TODO: retrieveData 'lastState' as object
-  const lastStateString = yield retrieveData('lastState');
+  const lastStateString = yield retrieveData("lastState");
   let lastState;
-  if (lastStateString != undefined) {
-    lastState = JSON.parse(lastStateString)
+  if (lastStateString !== undefined) {
+    lastState = JSON.parse(lastStateString);
     const lastStepState = lastState.steps;
     // console.log('lastStepState: ', lastStepState);
-    yield put({type: c.SET_STEP_STATE, lastState: lastStepState})
+    yield put({ type: c.SET_STEP_STATE, lastState: lastStepState });
   }
   if (
     yield select(getSteps).pedometerIsAvailable &&
-    lastStepState.campaignDateArray !== null
+      lastState.steps.campaignDateArray !== null
   ) {
-    yield put({type: c.GET_STEPS});
+    yield put({ type: c.GET_STEPS });
   }
 }
-
-
 
 // watcher sagas ==============================
 
-export function *watchSetDates() {
+export function* watchSetDates() {
   while (true) {
     yield take(c.SET_CAMPAIGN_DATES);
-    yield put({type: c.GET_STEPS});
+    yield put({ type: c.GET_STEPS });
   }
 }
 
-/////////////
-//Step Saga's
-/////////////
+// ///////////
+// Step Saga's
+// ///////////
 
-export function *watchSteps() {
+export function* watchSteps() {
   yield takeLatest(c.GET_STEPS, fetchSteps);
 }
 
-export function *watchStepUpdates() {
+export function* watchStepUpdates() {
   yield takeEvery(c.STEPS_RECEIVED, updatePlayerSteps);
 }
 
-export function *watchPlayerStepsUpdated() {
+export function* watchPlayerStepsUpdated() {
   while (true) {
     yield take(c.UPDATE_PLAYER_STEPS);
     const player = yield select(getPlayer);
-    yield put({type: c.UPDATE_PLAYER, playId: player.id, steps: player.steps});
+    yield put({
+      type: c.UPDATE_PLAYER,
+      playId: player.id,
+      steps: player.steps
+    });
   }
 }
 
-////////////////////////////
-//Event Sagas//////////////
-//////////////////////////
+// //////////////////////////
+// Event Sagas//////////////
+// ////////////////////////
 
-export function *fetchEventInfo(action) {
+export function* fetchEventInfo(action) {
   const url = `${endpoint}/api/events/campaign/${action.campaignId}`;
   const initObj = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "appkey": CLIENT_APP_KEY
+      appkey: CLIENT_APP_KEY
     }
   };
   try {
-    const response = yield fetch(url, initObj).then(response => response.json());
-    yield put({ type: c.EVENT_INFO_FETCHED, events: response })
-  } catch ( error ) {
-    console.warn('error fetching event info:', error);
+    const response = yield fetch(url, initObj).then(res => res.json());
+    yield put({ type: c.EVENT_INFO_FETCHED, events: response });
+  } catch (error) {
+    console.warn("error fetching event info:", error);
   }
 }
 
-export function *watchFetchEventInfo() {
+export function* watchFetchEventInfo() {
   yield takeLatest(c.FETCH_EVENT_INFO, fetchEventInfo);
 }
 
-
-////////////////////////////
-//Campaign Watcher Sagas///
-//////////////////////////
-export function *watchInitialCampaignDetails() {
+// //////////////////////////
+// Campaign Watcher Sagas///
+// ////////////////////////
+export function* watchInitialCampaignDetails() {
   yield takeEvery(c.SET_INITIAL_CAMPAIGN_DETAILS, setInitialCampaignDetails);
 }
 
-export function *watchInvites() {
+export function* watchInvites() {
   yield takeEvery(c.SEND_INVITES, sendInvites);
 }
 
-export function *watchFetchCampaign() {
+export function* watchFetchCampaign() {
   yield takeEvery(c.FETCH_CAMPAIGN_INFO, fetchCampaignInfo);
 }
 
-export function *watchJoinCampaign() {
+export function* watchJoinCampaign() {
   yield takeEvery(c.SEND_JOIN_CAMPAIGN_REQUEST, joinCampaignRequest);
 }
 
-//Player Sagas
-export function *watchCreatePlayer() {
+// Player Sagas
+export function* watchCreatePlayer() {
   yield takeEvery(c.CREATE_PLAYER, createPlayer);
 }
 
-export function *watchUpdateCampaign() {
+export function* watchUpdateCampaign() {
   yield takeEvery([c.UPDATE_CAMPAIGN, c.RECEIVED_EVENT], updateCampaign);
 }
 
-export function *watchLeaveCampaign() {
+export function* watchLeaveCampaign() {
   yield takeEvery(c.LEAVE_CAMPAIGN, leaveCampaign);
 }
 
-export function *watchFetchPlayer() {
+export function* watchFetchPlayer() {
   yield takeEvery(c.FETCH_PLAYER, fetchPlayer);
 }
 
-export function *watchUpdatePlayer() {
+export function* watchUpdatePlayer() {
   yield takeEvery(c.UPDATE_PLAYER, updatePlayer);
 }
 
-export function *watchRecoverAccount() {
+export function* watchRecoverAccount() {
   yield takeEvery(c.RECOVER_ACCOUNT, sendRecoverAccount);
 }
 
-export function *watchStartCampaign() {
+export function* watchStartCampaign() {
   yield takeEvery(c.START_CAMPAIGN, startCampaign);
 }
 
-export function *watchDestroyCampaign() {
+export function* watchDestroyCampaign() {
   yield takeEvery(c.DESTROY_CAMPAIGN, destroyCampaign);
 }
 
-export function *watchAppStateChange() {
+export function* watchAppStateChange() {
   yield takeEvery(c.NEW_APP_STATE, saveState);
 }
 
-export function *watchPlayerActions() {
+export function* watchPlayerActions() {
   while (true) {
     yield take([c.PLAYER_CREATED, c.PLAYER_FETCHED]);
     const player = yield select(getPlayer);
-    yield put({type: c.FETCH_CAMPAIGN_INFO, id: player.campaignId})
+    yield put({ type: c.FETCH_CAMPAIGN_INFO, id: player.campaignId });
   }
 }
 
-export function *watchPlayerUpdated() {
+export function* watchPlayerUpdated() {
   yield takeLatest(c.PLAYER_UPDATED, checkBonusSteps);
 }
 
-export function *watchCheckBonusSteps() {
-  yield takeLatest(c.CHECK_BONUS_STEPS, checkBonusSteps)
+export function* watchCheckBonusSteps() {
+  yield takeLatest(c.CHECK_BONUS_STEPS, checkBonusSteps);
 }
 
-export function *watchGetLastStepState() {
+export function* watchGetLastStepState() {
   yield takeLatest(c.GET_LAST_STEP_STATE, getLastStepState);
 }
 
-export function *watchStartScavenge() {
+export function* watchStartScavenge() {
   yield takeEvery(c.START_SCAVENGE, scavenge);
 }
 
-export function *watchHungerAndHealth() {
-  yield takeEvery(c.UPDATE_HUNGER_HEALTH, updateHungerAndHealth)
+export function* watchHungerAndHealth() {
+  yield takeEvery(c.UPDATE_HUNGER_HEALTH, updateHungerAndHealth);
 }
 
 // event sagas
-export function *watchCastVote() {
-  yield takeLatest(c.CAST_VOTE, castPlayerVote)
+export function* watchCastVote() {
+  yield takeLatest(c.CAST_VOTE, castPlayerVote);
 }
 
-export function *watchUpdateJournal() {
-  yield takeLatest(c.UPDATE_JOURNAL, updateJournal)
+export function* watchUpdateJournal() {
+  yield takeLatest(c.UPDATE_JOURNAL, updateJournal);
 }
 
-// inventory sagas 
-export function *watchReceiveInventory() {
-  yield takeEvery(c.RECEIVE_INVENTORY, receiveInventory)
+// inventory sagas
+export function* watchReceiveInventory() {
+  yield takeEvery(c.RECEIVE_INVENTORY, receiveInventory);
 }
 
-export function *watchUseInventory() {
-  yield takeEvery(c.USE_INVENTORY, useInventory)
+export function* watchUseInventory() {
+  yield takeEvery(c.USE_INVENTORY, useInventory);
 }
 
 // root saga ==============================
 
-export default function *rootSaga() {
+export default function* rootSaga() {
   yield all([
     // watcher sagas go here
     watchDestroyCampaign(),
@@ -760,22 +778,21 @@ export default function *rootSaga() {
     watchReceiveInventory(),
     watchCastVote(),
     watchUpdateJournal(),
-    watchFetchEventInfo(),
-  ])
+    watchFetchEventInfo()
+  ]);
 }
-
 
 // LOCAL Kim home endpoint
 // const endpoint = `http://192.168.1.5:5000`
 
-//LOCAL Ward home endpoint
+// LOCAL Ward home endpoint
 // const endpoint = 'http://10.0.0.5:5000'
 
 // LOCAL eyecue endpoint KIM
-// const endpoint = 'http://localhost:5000/';
+// const endpoint = 'http://192.168.0.104:5000/';
 
 // LOCAL eyecue endpoint WARD
 // const endpoint = 'http://10.1.10.108:5000'
 
 // REMOTE
-const endpoint = 'https://walkertrekker.herokuapp.com'
+const endpoint = "https://walkertrekker.herokuapp.com";

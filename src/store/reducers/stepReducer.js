@@ -1,5 +1,10 @@
-import constants from './../../constants';
-const { c, initialState: { steps } } = constants;
+/* eslint-disable prefer-object-spread */
+import constants from "../../constants";
+
+const {
+  c,
+  initialState: { steps }
+} = constants;
 
 export default (state = steps, action) => {
   let newState;
@@ -7,34 +12,34 @@ export default (state = steps, action) => {
     case c.SET_CAMPAIGN_DATES:
       return {
         ...state,
-        campaignDateArray: action.campaignDateArray,
-      }
+        campaignDateArray: action.campaignDateArray
+      };
 
     case c.GET_STEPS:
       return {
         ...state,
-        isGettingSteps: true,
-      }
+        isGettingSteps: true
+      };
 
     case c.STEPS_RECEIVED:
       return {
         ...state,
         campaignDateArray: action.campaignDateArray,
-        isGettingSteps: false,
-      }
+        isGettingSteps: false
+      };
 
     case c.STEPS_FAILED:
       return {
         ...state,
         isGettingSteps: false,
-        error: action.error,
-      }
+        error: action.error
+      };
 
     case c.IS_PEDOMETER_AVAILABLE:
       return {
         ...state,
-        pedometerIsAvailable: action.pedometerIsAvailable,
-      }
+        pedometerIsAvailable: action.pedometerIsAvailable
+      };
 
     case c.ADD_BONUS_STEPS:
       newState = Object.assign({}, state);
@@ -44,25 +49,26 @@ export default (state = steps, action) => {
     case c.SELECT_SCAVENGE:
       return {
         ...state,
-        scavengingFor: action.scavengingFor,
-      }
+        scavengingFor: action.scavengingFor
+      };
 
     case c.DONE_SCAVENGING:
       return {
         ...state,
-        itemScavenged: action.itemScavenged,
-      }
+        itemScavenged: action.itemScavenged
+      };
 
     case c.RESET_SCAVENGE:
       return {
         ...state,
         itemScavenged: null,
-        scavengingFor: null,
-      }
+        scavengingFor: null
+      };
 
     case c.UPDATE_CAMPAIGN_WITH_SCAVENGE:
       newState = Object.assign({}, state);
-      newState.campaignDateArray[action.currentDay].timesScavenged = action.timesScavenged;
+      newState.campaignDateArray[action.currentDay].timesScavenged =
+        action.timesScavenged;
       newState.campaignDateArray[action.currentDay].bonus = action.bonus;
       return newState;
 
@@ -77,5 +83,5 @@ export default (state = steps, action) => {
 
     default:
       return state;
-    }
-}
+  }
+};

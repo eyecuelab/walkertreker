@@ -1,145 +1,168 @@
-import React from 'react';
-import { StyleSheet, Animated, View, ImageBackground, ToastAndroid, ScrollView } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { connect } from 'react-redux';
-import AnimatedCampaignHeader from './../ui/AnimatedCampaignHeader';
-import defaultStyle from '../../styles/defaultStyle';
+import React from "react";
+import {
+  StyleSheet,
+  Animated,
+  View,
+  ImageBackground,
+  ToastAndroid,
+  ScrollView
+} from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import { connect } from "react-redux";
+import AnimatedCampaignHeader from "../ui/AnimatedCampaignHeader";
+import defaultStyle from "../../styles/defaultStyle";
 
-import ThreeInfoSquares from '../ui/ThreeInfoSquares';
-import SingleButtonFullWidth from '../ui/SingleButtonFullWidth';
-import ScreenContainer from '../containers/ScreenContainer';
-
+import ThreeInfoSquares from "../ui/ThreeInfoSquares";
+import SingleButtonFullWidth from "../ui/SingleButtonFullWidth";
+import ScreenContainer from "../containers/ScreenContainer";
 
 class CampaignSummary extends React.Component {
-
   constructor(props) {
-    super(props)
-    const toast = this.props.navigation.getParam('toast')
+    super(props);
+    const toast = this.props.navigation.getParam("toast");
     if (toast) {
-      this._showToast(toast.msg)
+      this._showToast(toast.msg);
     }
     this.scrollY = new Animated.Value(0);
   }
 
-  _displayStepPercentage = (player) => {
+  _displayStepPercentage = player => {
     const today = this.props.campaign.currentDay;
 
     // Code for Percentage based Display
-    const percent = Math.floor((((player.steps[today]) / (player.stepTargets[today])) * 100));
-    return percent + "%";
+    const percent = Math.floor(
+      (player.steps[today] / player.stepTargets[today]) * 100
+    );
+    return `${percent} %`;
 
     // Code for xxxx / yyyy display
 
     // return `${player.steps[today]} / ${player.stepTargets[today]}`
-  }
+  };
 
-  _displayHealthLevel = (player) => {
+  _displayHealthLevel = player => {
     if (player.health > 0 && player.health < 34) {
-      return 'Poor';
-    } else if (player.health >= 34 && player.health < 67) {
-      return 'Fair';
-    } else if (player.health >= 67) {
-      return 'Good';
-    } else {
-      return 'Dead';
+      return "Poor";
     }
-  }
+    if (player.health >= 34 && player.health < 67) {
+      return "Fair";
+    }
+    if (player.health >= 67) {
+      return "Good";
+    }
+    return "Dead";
+  };
 
-  _displayHungerLevel = (player) => {
+  _displayHungerLevel = player => {
     if (player.hunger > 0 && player.hunger < 34) {
-      return 'High';
-    } else if (player.hunger >= 34 && player.hunger < 67) {
-      return 'OK';
-    } else if (player.hunger >= 67) {
-      return 'Low';
-    } else {
-      return 'Dead';
+      return "High";
     }
-  }
+    if (player.hunger >= 34 && player.hunger < 67) {
+      return "OK";
+    }
+    if (player.hunger >= 67) {
+      return "Low";
+    }
+    return "Dead";
+  };
 
   _onButtonPressInventory = () => {
-    this.props.navigation.navigate('Inventory');
-  }
+    this.props.navigation.navigate("Inventory");
+  };
 
   _onButtonPressSafehouse = () => {
-    this.props.navigation.navigate('Safehouse');
-  }
+    this.props.navigation.navigate("Safehouse");
+  };
 
   _onButtonPressNothing = () => {
-    return;
-  }
+    return null;
+  };
 
   // TODO: when INVENTORY is fleshed out, make sure to put this function in there too
   _submitConditionalRender = () => {
-
     if (this.props.player.steps && this.props.player.stepTargets) {
-      const stepsToday = this.props.player.steps[this.props.campaign.currentDay];
-      const stepTargetToday = this.props.player.stepTargets[this.props.campaign.currentDay];
+      const stepsToday = this.props.player.steps[
+        this.props.campaign.currentDay
+      ];
+      const stepTargetToday = this.props.player.stepTargets[
+        this.props.campaign.currentDay
+      ];
       if (stepsToday > stepTargetToday) {
-      // if (false) {
+        // if (false) {
         return (
-          <View style={{width: '100%'}}>
+          <View style={{ width: "100%" }}>
             <View style={customStyles.buttonContainer}>
               <SingleButtonFullWidth
-                title='Safehouse'
-                backgroundColor='black'
-                onButtonPress={this._onButtonPressSafehouse} />
-            </View>
-          </View>
-        );
-      } else {
-        return (
-          <View style={{width: '100%'}}>
-            <View style={customStyles.buttonContainer}>
-              <SingleButtonFullWidth
-                title='Safehouse'
-                backgroundColor='darkgray'
-                onButtonPress={this._onButtonPressNothing} />
+                title="Safehouse"
+                backgroundColor="black"
+                onButtonPress={this._onButtonPressSafehouse}
+              />
             </View>
           </View>
         );
       }
+      return (
+        <View style={{ width: "100%" }}>
+          <View style={customStyles.buttonContainer}>
+            <SingleButtonFullWidth
+              title="Safehouse"
+              backgroundColor="darkgray"
+              onButtonPress={this._onButtonPressNothing}
+            />
+          </View>
+        </View>
+      );
     }
-  }
+    return null;
+  };
 
-  _showToast = (msg) => {
-    ToastAndroid.show(msg, ToastAndroid.SHORT)
-  }
+  _showToast = msg => {
+    ToastAndroid.show(msg, ToastAndroid.SHORT);
+  };
 
   render() {
     return (
-      <View style={{backgroundColor : "#871C1D"}}>
-
+      <View style={{ backgroundColor: "#871C1D" }}>
         <ImageBackground
           source={this.props.screenProps.backgroundImage}
-          style={{width: '100%', height: '100%'}}>
+          style={{ width: "100%", height: "100%" }}
+        >
           <ScreenContainer>
-          
-          <AnimatedCampaignHeader title="Summary" scrollY={this.scrollY} style={{ borderColor: "#FFF", borderBottomWidth: 1,}}/>
-            
-            <ScrollView style={{ flex: 1, marginTop: 20, }} 
-                    scrollEventThrottle={16}
-                    onScroll={Animated.event(
-                        [
-                            { nativeEvent: { contentOffset: { y: this.scrollY } } }
-                        ]
-                    )}>
+            <AnimatedCampaignHeader
+              title="Summary"
+              scrollY={this.scrollY}
+              style={{ borderColor: "#FFF", borderBottomWidth: 1 }}
+            />
+
+            <ScrollView
+              style={{ flex: 1, marginTop: 20 }}
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                { nativeEvent: { contentOffset: { y: this.scrollY } } }
+              ])}
+            >
               {this.props.campaign.players.map(player => {
                 return (
-                  <View key={player.id} style={customStyles.playerInfoContainer}>
+                  <View
+                    key={player.id}
+                    style={customStyles.playerInfoContainer}
+                  >
                     <ThreeInfoSquares
                       title={player.displayName}
                       player={player}
-                      bigValue={true}
-                      button1label='Progress'
+                      bigValue
+                      button1label="Progress"
                       button1value={this._displayStepPercentage(player)}
-                      button2label='Health'
+                      button2label="Health"
                       button2value={this._displayHealthLevel(player)}
-                      button3label='Hunger'
+                      button3label="Hunger"
                       button3value={this._displayHungerLevel(player)}
                     />
                   </View>
-                )
+                );
               })}
             </ScrollView>
 
@@ -148,39 +171,39 @@ class CampaignSummary extends React.Component {
             </View>
           </ScreenContainer>
         </ImageBackground>
-        </View>
+      </View>
     );
   }
 }
 
-const styles = StyleSheet.create(defaultStyle)
-const widthUnit = wp('1%');
-const heightUnit = hp('1%');
+const styles = StyleSheet.create(defaultStyle);
+const widthUnit = wp("1%");
+const heightUnit = hp("1%");
 const customStyles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center"
   },
   buttonContainer: {
     marginTop: widthUnit * 2,
-    width: '100%',
-    height: heightUnit*8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    height: heightUnit * 8,
+    alignItems: "center",
+    justifyContent: "center"
   },
   bottom: {
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: widthUnit*2,
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: widthUnit * 2
   },
   playerInfoContainer: {
-    marginTop: heightUnit*2,
-    marginBottom: heightUnit*2
+    marginTop: heightUnit * 2,
+    marginBottom: heightUnit * 2
   },
   scrollContainer: {
-    marginTop: heightUnit*2.5
+    marginTop: heightUnit * 2.5
   }
 });
 
@@ -188,8 +211,8 @@ function mapStateToProps(state) {
   return {
     campaign: state.campaign,
     player: state.player,
-    steps: state.steps,
-  }
+    steps: state.steps
+  };
 }
 
-export default connect(mapStateToProps)(CampaignSummary)
+export default connect(mapStateToProps)(CampaignSummary);

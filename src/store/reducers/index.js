@@ -1,13 +1,12 @@
-import { combineReducers } from 'redux';
-import campaignReducer from './campaignReducer';
-import stepReducer from './stepReducer';
-import playerReducer from './playerReducer';
-import redirectReducer from './redirectReducer';
-import eventReducer from './eventReducer';
-import appState from './appStateReducer';
-import invitationReducer from './invitationReducer';
-import authReducer from './authReducer';
-
+import { combineReducers } from "redux";
+import campaignReducer from "./campaignReducer";
+import stepReducer from "./stepReducer";
+import playerReducer from "./playerReducer";
+import redirectReducer from "./redirectReducer";
+import eventReducer from "./eventReducer";
+import appState from "./appStateReducer";
+import invitationReducer from "./invitationReducer";
+import authReducer from "./authReducer";
 
 // we'll need a new root reducer and rewritten reducers for saga
 const rootReducer = combineReducers({
@@ -16,9 +15,9 @@ const rootReducer = combineReducers({
   player: playerReducer,
   redirect: redirectReducer,
   event: eventReducer,
-  appState: appState,
+  appState,
   invitations: invitationReducer,
-  auth: authReducer,
+  auth: authReducer
 });
 
 export default rootReducer;

@@ -1,16 +1,13 @@
-import React from 'react';
-import { Notifications } from 'expo';
-import { connect } from 'react-redux';
-import constants from '../constants';
+import React from "react";
+import { Notifications } from "expo";
+import { connect } from "react-redux";
+import constants from "../constants";
+import socket from "../socket";
+import NavigationService from "../nav/NavigationService";
+
 const { c, navigation } = constants;
-import socket from '../socket';
-import NavigationService from '../nav/NavigationService';
 
 class NotificationListeners extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   // NOTIFICATION TYPES
   // endOfDayUpdate: navigate to end of day summary screen
   // campaignStarted: the campaign has started, want to update state, send push notification and navigate to campaign summary screen
@@ -23,16 +20,18 @@ class NotificationListeners extends React.Component {
   // hungerAlert: no navigation, alert player that they are under 20 hunger and need to eat
 
   componentDidMount() {
-    this._notificationSubscription = Notifications.addListener(this._handleNotification)
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
   }
 
   _handleNotification(notification) {
-    console.log("notification listener", notification)
-    const type = notification.data.type
-    const route = navigation[type]
-    if (route !== 'none') {
-      const data = notification.data.data ? notification.data.data : {}
-      NavigationService.navigate(route, { data })
+    console.log("notification listener", notification);
+    const { type } = notification.data;
+    const route = navigation[type];
+    if (route !== "none") {
+      const data = notification.data.data ? notification.data.data : {};
+      NavigationService.navigate(route, { data });
     }
   }
 
@@ -44,8 +43,8 @@ class NotificationListeners extends React.Component {
 function mapStateToProps(state) {
   return {
     player: state.player,
-    campaign: state.campaign,
-  }
+    campaign: state.campaign
+  };
 }
 
-export default connect(mapStateToProps)(NotificationListeners)
+export default connect(mapStateToProps)(NotificationListeners);

@@ -1,57 +1,60 @@
-import React, { Component } from 'react';
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
-import ScreenContainer from '../../containers/ScreenContainer';
-import CampaignHeader from './../../ui/CampaignHeader';
-import ToggleBar from './../../ui/ToggleBar';
+import React, { Component } from "react";
+import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import ScreenContainer from "../../containers/ScreenContainer";
+import CampaignHeader from "../../ui/CampaignHeader";
+import ToggleBar from "../../ui/ToggleBar";
 
-import StepStats from './StepStats';
-import ItemStats from './ItemStats';
-import EventStats from './EventStats';
+import StepStats from "./StepStats";
+import ItemStats from "./ItemStats";
+import EventStats from "./EventStats";
 
-const options = [ { label: "Steps", value: "Steps"}, {label: "Events", value: "Events"}, {label: "Items", value: "Items"} ];
+const options = [
+  { label: "Steps", value: "Steps" },
+  { label: "Events", value: "Events" },
+  { label: "Items", value: "Items" }
+];
 
 class Stats extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggleValue : undefined
+      toggleValue: undefined
     };
     this.handleValueChange = this.handleValueChange.bind(this);
   }
 
-  handleValueChange = (value) => {
-    this.setState({toggleValue : value});
-  }
+  handleValueChange = value => {
+    this.setState({ toggleValue: value });
+  };
 
-  conditionalStatComponent () {
+  conditionalStatComponent() {
     const { toggleValue } = this.state;
-    if(toggleValue === "Steps") {
-      return <StepStats/>
+    if (toggleValue === "Steps") {
+      return <StepStats />;
     }
-    if(toggleValue === "Events") {
-      return <EventStats/>
+    if (toggleValue === "Events") {
+      return <EventStats />;
     }
-    if(toggleValue === "Items") {
-      return <ItemStats/>
+    if (toggleValue === "Items") {
+      return <ItemStats />;
     }
+    return null;
   }
 
   render() {
     return (
       <ImageBackground
         source={this.props.screenProps.backgroundImage}
-        style={{width: '100%', height: '100%'}}>
+        style={{ width: "100%", height: "100%" }}
+      >
         <ScreenContainer>
-        
-        <CampaignHeader title="Total Stats"/>
-        
-        <ToggleBar options={options} onValueChange={this.handleValueChange}/>
+          <CampaignHeader title="Total Stats" />
 
-        <View style={styles.statsContainer}>
-          { this.conditionalStatComponent() }
-        </View>
-        
+          <ToggleBar options={options} onValueChange={this.handleValueChange} />
 
+          <View style={styles.statsContainer}>
+            {this.conditionalStatComponent()}
+          </View>
         </ScreenContainer>
       </ImageBackground>
     );
@@ -59,7 +62,7 @@ class Stats extends Component {
 }
 
 const styles = StyleSheet.create({
-  statsContainer : {
+  statsContainer: {
     flex: 1,
     marginTop: 30
   }

@@ -1,27 +1,32 @@
 import React from "react";
-import Expo from "expo";
-import { Pedometer } from "expo";
-import { StyleSheet, Text, View, AsyncStorage, AppState, ScrollView, Button, Alert } from "react-native";
-import { connect } from 'react-redux';
+import Expo, { Pedometer } from "expo";
+import {
+  StyleSheet,
+  Text,
+  View,
+  AsyncStorage,
+  AppState,
+  ScrollView,
+  Button,
+  Alert
+} from "react-native";
+import { connect } from "react-redux";
 
-import * as actions from '../actions';
-import constants from './../constants';
-
-
+import * as actions from "../actions";
+import constants from "../constants";
 
 const { setAppState, setCampaignDates } = actions;
 const { c, retrieveData } = constants;
 
 class BackgroundPedometer extends React.Component {
-
   componentDidMount() {
     const { dispatch } = this.props;
 
     if (this.props.player.id && this.props.campaign.id) {
-      dispatch({type: c.GET_LAST_STEP_STATE});
+      dispatch({ type: c.GET_LAST_STEP_STATE });
     }
 
-    AppState.addEventListener('change', this._handleAppStateChange);
+    AppState.addEventListener("change", this._handleAppStateChange);
 
     this._checkPedometerAvailability();
 
@@ -30,18 +35,17 @@ class BackgroundPedometer extends React.Component {
         this.props.steps.campaignDateArray !== null &&
         this.props.player.id !== null
       ) {
-        dispatch({type: c.GET_STEPS});
+        dispatch({ type: c.GET_STEPS });
       }
     }, 1000);
 
     setInterval(() => {
-      
       if (
-        this.props.appState === 'active' &&
+        this.props.appState === "active" &&
         this.props.steps.campaignDateArray !== null &&
         this.props.player.id !== null
       ) {
-        dispatch({type: c.GET_STEPS});
+        dispatch({ type: c.GET_STEPS });
       }
     }, 60000);
 
@@ -55,57 +59,79 @@ class BackgroundPedometer extends React.Component {
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange);
+    AppState.removeEventListener("change", this._handleAppStateChange);
   }
 
   _checkPedometerAvailability = () => {
     const { dispatch } = this.props;
     Pedometer.isAvailableAsync().then(
-      (response) => {
-        dispatch({type: c.IS_PEDOMETER_AVAILABLE, pedometerIsAvailable: response});
-      }, (error) => {
+      response => {
+        dispatch({
+          type: c.IS_PEDOMETER_AVAILABLE,
+          pedometerIsAvailable: response
+        });
+      },
+      error => {
         // maybe dispatch an action to the store to update state instead?
-        Alert.alert('Walker Treker can\'t connect to your phone\'s pedometer. Try closing the app and opening it again.')
+        Alert.alert(
+          "Walker Treker can't connect to your phone's pedometer. Try closing the app and opening it again."
+        );
       }
     );
-  }
+  };
 
   _constructDateLog = () => {
     const { dispatch } = this.props;
     const { campaignDateArray, pedometerIsAvailable } = this.props.steps;
-    const { difficultyLevel, length, startDate, stepTargets } = this.props.campaign;
+    const {
+      difficultyLevel,
+      length,
+      startDate,
+      stepTargets
+    } = this.props.campaign;
     if (
       this.props.player.id &&
       startDate !== null &&
       campaignDateArray === null &&
       pedometerIsAvailable
     ) {
-      console.log("Attempting to construct Date log")
+      console.log("Attempting to construct Date log");
       const stepGoalDayOne = stepTargets[0];
-      console.log("start date is +++++++++++++++++++++++++++++++++++++++++++ ", startDate)
+      console.log(
+        "start date is +++++++++++++++++++++++++++++++++++++++++++ ",
+        startDate
+      );
       let day0 = new Date(startDate);
       day0 = new Date(day0.setTime(day0.getTime()));
       const day0Start = new Date(day0);
       const day0End = new Date(day0);
-      day0Start.setHours(6,0,0,0);
-      day0End.setHours(20,0,0,0);
-      console.log("BACKGROUND PEDOMETER DAY0", day0Start)
+      day0Start.setHours(6, 0, 0, 0);
+      day0End.setHours(20, 0, 0, 0);
+      console.log("BACKGROUND PEDOMETER DAY0", day0Start);
 
-      dispatch(setCampaignDates(day0Start, day0End, length, difficultyLevel, stepGoalDayOne));
+      dispatch(
+        setCampaignDates(
+          day0Start,
+          day0End,
+          length,
+          difficultyLevel,
+          stepGoalDayOne
+        )
+      );
     }
-  }
+  };
 
-  _handleAppStateChange = (nextAppState) => {
+  _handleAppStateChange = nextAppState => {
     const { dispatch } = this.props;
     const { campaignDateArray } = this.props.steps;
     const { id } = this.props.player;
     if (
       this.props.appState.match(/inactive|background/) &&
-      nextAppState === 'active' &&
+      nextAppState === "active" &&
       campaignDateArray !== null &&
       id !== null
     ) {
-      dispatch({type: c.GET_STEPS})
+      dispatch({ type: c.GET_STEPS });
     }
     dispatch(setAppState(nextAppState));
   };
@@ -113,7 +139,6 @@ class BackgroundPedometer extends React.Component {
   render() {
     return null;
   }
-
 } // end of class
 
 function mapStateToProps(state) {
@@ -122,8 +147,8 @@ function mapStateToProps(state) {
     steps: state.steps,
     campaign: state.campaign,
     player: state.player,
-    auth: state.auth,
-  }
+    auth: state.auth
+  };
 }
 
 export default connect(mapStateToProps)(BackgroundPedometer);
