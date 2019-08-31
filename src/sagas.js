@@ -794,5 +794,8 @@ export default function* rootSaga() {
 // LOCAL eyecue endpoint WARD
 // const endpoint = 'http://10.1.10.108:5000'
 
+// LOCAL eyecue endpoint MacBook Air
+const endpoint = "http://10.1.10.17:5000";
+
 // REMOTE
-const endpoint = "https://walkertrekker.herokuapp.com";
+// const endpoint = "https://walkertrekker.herokuapp.com";
