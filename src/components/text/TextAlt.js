@@ -20,7 +20,7 @@ function TextAlt(props) {
       (p.size === "lg" && widthUnit * 5.5) ||
       widthUnit * 4};
     color: ${p => p.color || "white"};
-    fontweight: ${p => p.weight || "normal"};
+    font-weight: ${p => p.weight || "normal"};
   `;
   return <StyledText {...props}>{props.children}</StyledText>;
 }
