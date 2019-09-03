@@ -1,4 +1,5 @@
 import io from "socket.io-client";
+import { ENDPOINT } from 'react-native-dotenv';
 
 // configuring socket.io
 // local
@@ -17,7 +18,9 @@ import io from "socket.io-client";
 // const endpoint = 'http://10.0.0.5:5000';
 
 // remote:
-const endpoint = "walkertrekker.herokuapp.com";
+// const endpoint = "walkertrekker.herokuapp.com";
+
+const endpoint = ENDPOINT
 
 const socket = io(endpoint, {
   transports: ["websocket"]

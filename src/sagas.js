@@ -8,7 +8,7 @@ import {
   select
 } from "redux-saga/effects";
 import { Pedometer } from "expo";
-import { CLIENT_APP_KEY } from "react-native-dotenv";
+import { CLIENT_APP_KEY, ENDPOINT } from "react-native-dotenv";
 
 import constants from "./constants";
 
@@ -782,17 +782,4 @@ export default function* rootSaga() {
   ]);
 }
 
-// LOCAL Kim home endpoint
-// const endpoint = `http://192.168.1.5:5000`
-
-// LOCAL Ward home endpoint
-// const endpoint = 'http://10.0.0.5:5000'
-
-// LOCAL eyecue endpoint KIM
-// const endpoint = 'http://192.168.0.104:5000/';
-
-// LOCAL eyecue endpoint WARD
-// const endpoint = 'http://10.1.10.108:5000'
-
-// REMOTE
-const endpoint = "https://walkertrekker.herokuapp.com";
+const endpoint = ENDPOINT
