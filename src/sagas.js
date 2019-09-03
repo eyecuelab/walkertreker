@@ -210,7 +210,9 @@ export function* updateCampaign(action) {
 
 export function* leaveCampaign(action) {
   const url = `${endpoint}/api/campaigns/leave/${action.campId}`;
-
+  console.log("leave campaign generator function arrived");
+  console.log(`action: ${  action.campId}`);
+  console.log(`action: ${  action.playId}`);
   const initObj = {
     method: "PATCH",
     headers: {
@@ -219,9 +221,10 @@ export function* leaveCampaign(action) {
     },
     body: JSON.stringify({ playerId: action.playId })
   };
-
+  console.log(`body: ${  initObj.body}`);
   try {
     const response = yield fetch(url, initObj).then(res => res.json());
+    console.log(response);
     yield put({ type: c.CAMPAIGN_LEFT });
   } catch (error) {
     console.warn("error leaving campaign: ", error);
