@@ -60,6 +60,9 @@ class WaitForStart extends React.Component {
   };
 
   _leaveCampaign = () => {
+    console.log(this.props.campaign.id);
+    console.log(this.props.player.id);
+    console.log("leave campaign button clicked");
     this.props.dispatch({
       type: c.LEAVE_CAMPAIGN,
       campId: this.props.campaign.id,
