@@ -25,6 +25,8 @@ module.exports = socket;
 // Ward' home ip:
 // const endpoint = 'http://10.0.0.5:5000';
 
+// LOCAL eyecue endpoint MacBook Air
+// const endpoint = "http://10.1.10.17:5000";
+
 // remote:
 // const endpoint = "walkertrekker.herokuapp.com";
-
