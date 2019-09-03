@@ -13,6 +13,7 @@ import { CLIENT_APP_KEY, ENDPOINT } from "react-native-dotenv";
 import constants from "./constants";
 
 const { c, storeData, retrieveData, item } = constants;
+const endpoint = ENDPOINT
 
 export const getSteps = state => state.steps;
 export const getPlayer = state => state.player;
@@ -781,5 +782,3 @@ export default function* rootSaga() {
     watchFetchEventInfo()
   ]);
 }
-
-const endpoint = ENDPOINT
