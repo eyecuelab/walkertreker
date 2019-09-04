@@ -235,6 +235,7 @@ class SignUp extends React.Component {
                 <TextInput
                   style={customStyles.textInput}
                   keyboardType="phone-pad"
+                  returnKeyType="done"
                   onChangeText={text => this.setState({ phoneNumber: text })}
                   onFocus={() => this.handleFocus("phone")}
                   onBlur={() => this.handleBlur("phone")}
