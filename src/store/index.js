@@ -34,6 +34,9 @@ const configureStore = () => {
 export const store = configureStore();
 
 export const persistor = persistStore(store, null, () => {
+  // CHANGE PLAYERID AND CAMPAIGNID BELOW TO START GAME WITH A SPECIFIC GAME AND PLAYER LOADED:
+  // const playerId = '1124hhqw-235nn-23rwnf-238r9hfwsd'
+  // const campaignId = 'n89h23f-23fwesd-32fw-23fwsf32-f23fd'
   const playerId = store.getState().player.id || null;
   const campaignId = store.getState().campaign.id || null;
   console.log("BEFORE ATTEMPTING TO FETCH", playerId, campaignId);
