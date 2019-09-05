@@ -32,4 +32,4 @@ module.exports = socket;
 // const endpoint = "http://192.168.0.11:5000";
 
 // remote:
-// const endpoint = "walkertrekker.herokuapp.com";
+// const endpoint = "https://walkertrekker.herokuapp.com";
