@@ -7,7 +7,7 @@ import {
   /* ScrollView, */ TouchableOpacity
 } from "react-native";
 
-import ContactsListItemDisplay from "../ContactsListItemDisplay";
+import ContactsListItemDisplay from "./ContactsListItemDisplay";
 import defaultStyle from "../../styles/defaultStyle";
 
 const defaultStyleSheet = StyleSheet.create(defaultStyle);
