@@ -1,5 +1,5 @@
 import React from "react";
-import Expo, { Pedometer } from "expo";
+import Expo, { Pedometer, TaskManager } from "expo";
 import {
   StyleSheet,
   Text,
