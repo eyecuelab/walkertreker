@@ -59,7 +59,8 @@ class InvitePlayers extends React.Component {
           Contacts.Fields.Name,
           Contacts.Fields.PhoneNumbers,
           Contacts.Fields.Image
-        ]
+        ],
+        sort: Contacts.SortTypes.FirstName
       });
       if (data.length > 0) {
         const contacts = {};
@@ -71,7 +72,7 @@ class InvitePlayers extends React.Component {
           let imageUri;
           if (contact.phoneNumbers) {
             contact.phoneNumbers.forEach(num => {
-              if (num.label === "mobile") {
+              if (num.label === "mobile" || num.label === "") {
                 const phoneToAdd = num.number;
                 key = parsePhoneNumber(phoneToAdd);
                 numbers.push(phoneToAdd);
@@ -120,22 +121,30 @@ class InvitePlayers extends React.Component {
     newContacts[key].selected = !newContacts[key].selected;
     if (newContacts[key].selected === true) {
       newSelects = { ...prevSelects, [key]: contact };
-      newNumSelected = +newNumSelected;
+      newNumSelected += 1;
     } else {
       delete newSelects[key];
-      newNumSelected = -newNumSelected;
+      newNumSelected -= 1;
     }
     await this.setState({
       contacts: newContacts,
       selected: newSelects,
       numSelected: newNumSelected
     });
+    console.log(
+      "handleSelectContact, state after await: ",
+      this.state.selected,
+      this.state.numSelected
+    );
   };
 
   sendInvites = async () => {
+    console.log("inside of sendInvites");
     const { dispatch } = this.props;
     // TODO: Here, before updating local UI state, send contact objects collected in this.state.selected to server to send SMS invitations.
     const selectedDupe = { ...this.state.selected };
+    console.log("type of selected from state: ", typeof selectedDupe);
+    console.log("selected from state: ", selectedDupe);
     let { numSelected } = this.state;
     const { invites: invitesDupe } = this.state;
     let { numInvites } = this.state;
