@@ -62,36 +62,33 @@ class InvitePlayers extends React.Component {
         ],
         sort: Contacts.SortTypes.FirstName
       });
-      // console.log("data", data) //data is ordered by first name
-      console.log("data", data.length);
       const contactsList = {};
 
       if (data.length > 0) {
-        data.forEach(contact => {
+        await data.forEach(contact => {
           const { name } = contact;
           const numbers = [];
-          // const key = name;
           let key;
+          let numId;
           const { imageAvailable } = contact;
           let imageUri;
           if (contact.phoneNumbers) {
             contact.phoneNumbers.forEach(num => {
               if (num.label === "mobile" || num.label === "") {
                 const phoneToAdd = num.number;
-                key = parsePhoneNumber(phoneToAdd);
+                numId = parsePhoneNumber(phoneToAdd);
+                key = name + numId;
                 numbers.push(phoneToAdd);
               }
             });
           }
-          console.log("numbers:", numbers);
-          console.log("contactsList pre conditional:", contactsList);
-          // contacts list is ordered by phoneNumber
+
           contact.imageAvailable
             ? (imageUri = contact.image.uri)
             : (imageUri = "none");
           if (numbers.length > 0) {
             contactsList[key] = {
-              id: key,
+              id: numId,
               name,
               numbers,
               imageAvailable,
@@ -101,9 +98,6 @@ class InvitePlayers extends React.Component {
             };
           }
         });
-
-        // console.log("contacts LIst,", contactsList)
-        console.log("contacts LIst length,", contactsList.length);
         await this.setState({ contacts: contactsList });
         await this.setState({ contactsFetched: true });
       } else {
@@ -119,14 +113,15 @@ class InvitePlayers extends React.Component {
       console.log("Contact has already been invited.");
       return;
     }
-    const key = contact.id;
+    const { id } = contact;
+    const key = contact.name + id;
     const {
       selected: prevSelects,
       contacts: prevContacts,
       numSelected
     } = this.state;
-    let newSelects = { ...prevSelects };
     const newContacts = { ...prevContacts };
+    let newSelects = { ...prevSelects };
     let newNumSelected = numSelected;
     newContacts[key].selected = !newContacts[key].selected;
     if (newContacts[key].selected === true) {
@@ -149,12 +144,9 @@ class InvitePlayers extends React.Component {
   };
 
   sendInvites = async () => {
-    console.log("inside of sendInvites");
     const { dispatch } = this.props;
     // TODO: Here, before updating local UI state, send contact objects collected in this.state.selected to server to send SMS invitations.
     const selectedDupe = { ...this.state.selected };
-    console.log("type of selected from state: ", typeof selectedDupe);
-    console.log("selected from state: ", selectedDupe);
     let { numSelected } = this.state;
     const { invites: invitesDupe } = this.state;
     let { numInvites } = this.state;
@@ -174,7 +166,6 @@ class InvitePlayers extends React.Component {
       numSelected,
       selected: {}
     });
-    console.log("props right before sending: ", this.props);
     dispatch({
       type: c.SEND_INVITES,
       invites: this.state.invites,
