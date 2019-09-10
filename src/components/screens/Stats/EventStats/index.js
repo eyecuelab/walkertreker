@@ -34,7 +34,8 @@ const mapStateToProps = state => {
 
 EventStats.propTypes = {
   events: PropTypes.arrayOf(EventStats),
-  campaign: PropTypes.shape()
+  campaign: PropTypes.shape(),
+  dispatch: PropTypes.func.isRequired
 };
 
 EventStats.defaultProps = {
