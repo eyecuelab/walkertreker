@@ -10,7 +10,9 @@ import {
   Animated,
   Easing
 } from "react-native";
-import { ImagePicker, Permissions, Notifications } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp

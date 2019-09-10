@@ -3,14 +3,14 @@ import React from "react";
 import { Image } from "react-native";
 import {
   AppLoading,
-  Asset,
-  Font,
   registerRootComponent,
-  KeepAwake,
   Notifications,
   Linking,
   ActivityIndicator
 } from "expo";
+import KeepAwake, { activateKeepAwake } from "expo-keep-awake";
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
 import { AppContainer } from "./nav/router";
 import NavigationService from "./nav/NavigationService";
 import { PersistGate } from "redux-persist/integration/react";
@@ -27,7 +27,7 @@ import NotificationListeners from "./components/NotificationListeners";
 const { c, retrieveData } = constants;
 
 if (__DEV__) {
-  KeepAwake.activate();
+  activateKeepAwake();
 }
 class App extends React.Component {
   constructor(props) {

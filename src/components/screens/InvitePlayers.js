@@ -6,7 +6,9 @@ import {
   ImageBackground,
   ScrollView
 } from "react-native";
-import { Contacts, Permissions, Linking } from "expo";
+import { Linking } from "expo";
+import * as Permissions from "expo-permissions";
+import * as Contacts from "expo-contacts";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
