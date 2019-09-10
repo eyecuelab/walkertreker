@@ -19,9 +19,27 @@ import defaultStyle from "../../styles/defaultStyle";
 import { parsePhoneNumber } from "../../util/util";
 import CampaignLobbyHeader from "../ui/CampaignLobbyHeader";
 import { TextAlt } from "../text";
-import styled from "styled-components/native";
+import PropTypes from "prop-types";
+// import styled from "styled-components/native";
 
 const { c } = constants;
+
+const styles = StyleSheet.create(defaultStyle);
+// const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const customStyles = StyleSheet.create({
+  contentContainer: {
+    paddingBottom: heightUnit * 10
+  },
+  contactsContainer: {
+    flex: 1.5,
+    borderTopColor: "white",
+    borderBottomColor: "white",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    marginTop: heightUnit * 1
+  }
+});
 
 class InvitePlayers extends React.Component {
   constructor(props) {
@@ -41,6 +59,7 @@ class InvitePlayers extends React.Component {
     const link = Linking.makeUrl("invite", {
       campaignId: this.props.campaign.id
     });
+    console.log("this.props", this.props);
   };
 
   componentDidUpdate() {
@@ -186,7 +205,7 @@ class InvitePlayers extends React.Component {
     const newNumSelected = 0;
     await this.setState({
       contacts: contactsDupe,
-      numSelected: 0
+      numSelected: newNumSelected
     });
   };
 
@@ -272,22 +291,7 @@ class InvitePlayers extends React.Component {
     );
   }
 }
-const styles = StyleSheet.create(defaultStyle);
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const customStyles = StyleSheet.create({
-  contentContainer: {
-    paddingBottom: heightUnit * 10
-  },
-  contactsContainer: {
-    flex: 1.5,
-    borderTopColor: "white",
-    borderBottomColor: "white",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    marginTop: heightUnit * 1
-  }
-});
+
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
@@ -295,3 +299,18 @@ function mapStateToProps(state) {
   };
 }
 export default connect(mapStateToProps)(InvitePlayers);
+
+InvitePlayers.propTypes = {
+  campaign: PropTypes.shape().isRequired,
+  player: PropTypes.shape().isRequired,
+  navigation: PropTypes.shape().isRequired,
+  screenProps: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+InvitePlayers.defaultTypes = {
+  campaign: {},
+  player: {},
+  navigation: {},
+  screenProps: {}
+};
