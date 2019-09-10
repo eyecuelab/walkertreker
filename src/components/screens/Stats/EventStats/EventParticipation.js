@@ -33,7 +33,7 @@ function EventParticipation(props) {
 }
 
 EventParticipation.propTypes = {
-  events: PropTypes.array.isRequired
+  events: PropTypes.arrayOf().isRequired
 };
 
 export default EventParticipation;
