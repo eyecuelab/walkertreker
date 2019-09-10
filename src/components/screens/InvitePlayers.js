@@ -62,11 +62,15 @@ class InvitePlayers extends React.Component {
         ],
         sort: Contacts.SortTypes.FirstName
       });
+      // console.log("data", data) //data is ordered by first name
+      console.log("data", data.length);
+      const contactsList = {};
+
       if (data.length > 0) {
-        const contacts = {};
         data.forEach(contact => {
           const { name } = contact;
           const numbers = [];
+          // const key = name;
           let key;
           const { imageAvailable } = contact;
           let imageUri;
@@ -79,11 +83,14 @@ class InvitePlayers extends React.Component {
               }
             });
           }
+          console.log("numbers:", numbers);
+          console.log("contactsList pre conditional:", contactsList);
+          // contacts list is ordered by phoneNumber
           contact.imageAvailable
             ? (imageUri = contact.image.uri)
             : (imageUri = "none");
           if (numbers.length > 0) {
-            contacts[key] = {
+            contactsList[key] = {
               id: key,
               name,
               numbers,
@@ -94,7 +101,10 @@ class InvitePlayers extends React.Component {
             };
           }
         });
-        await this.setState({ contacts });
+
+        // console.log("contacts LIst,", contactsList)
+        console.log("contacts LIst length,", contactsList.length);
+        await this.setState({ contacts: contactsList });
         await this.setState({ contactsFetched: true });
       } else {
         throw new Error("No contacts found");
