@@ -11,15 +11,13 @@ class EventStats extends Component {
   }
 
   componentDidMount() {
-    this.props.events = [];
+    // this.props.events = [];
     const { dispatch, campaign } = this.props;
 
     dispatch({ type: "FETCH_EVENT_INFO", campaignId: campaign.id });
   }
 
   render() {
-    console.log("state:", this.state);
-    console.log("matp state to props event: ", this.props.events);
     return (
       <View>
         <EventParticipation events={this.props.events} />
@@ -33,8 +31,9 @@ const mapStateToProps = state => {
 };
 
 EventStats.propTypes = {
-  events: PropTypes.arrayOf(EventStats),
-  campaign: PropTypes.shape()
+  events: PropTypes.arrayOf(PropTypes.shape()),
+  campaign: PropTypes.shape(),
+  dispatch: PropTypes.func.isRequired
 };
 
 EventStats.defaultProps = {

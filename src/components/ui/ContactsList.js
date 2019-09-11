@@ -1,21 +1,45 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, } from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import {
+  StyleSheet,
+  Text,
+  View,
+  /* ScrollView, */ TouchableOpacity
+} from "react-native";
 
-import ContactsListItemDisplay from '../ui/ContactsListItemDisplay';
-import defaultStyle from '../../styles/defaultStyle';
+import ContactsListItemDisplay from "./ContactsListItemDisplay";
+import defaultStyle from "../../styles/defaultStyle";
 
+const defaultStyleSheet = StyleSheet.create(defaultStyle);
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%"
+  },
+  list: {
+    width: "100%"
+  },
+  listItem: {
+    // borderBottomColor: 'black',
+    // borderBottomWidth: 2,
+  }
+});
 
 export default class ContactsList extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   setStatusFlags(contact) {
-    if (this.props.allChecked) { return [true, false];}
-    else if (this.props.allSelected) { return [false, true];}
-    else return [contact.invited, contact.selected];
+    if (this.props.allChecked) {
+      return [true, false];
+    }
+    if (this.props.allSelected) {
+      return [false, true];
+    }
+    return [contact.invited, contact.selected];
   }
 
   listConditionalRender = () => {
@@ -41,57 +65,37 @@ export default class ContactsList extends React.Component {
           })}
         </View>
       );
-    } else {
-      // Can replace this with a spinning wheel or some loading animation
-      return (
-        <View style={[styles.container, {marginTop: 5}]}>
-          <Text style={defaultStyleSheet.label}>Fetching contacts...</Text>
-        </View>
-      )
     }
-  }
-
-  render() {
+    // Can replace this with a spinning wheel or some loading animation
     return (
-      <View style={styles.container}>
-        {this.listConditionalRender()}
+      <View style={[styles.container, { marginTop: 5 }]}>
+        <Text style={defaultStyleSheet.label}>Fetching contacts...</Text>
       </View>
     );
+  };
+
+  render() {
+    return <View style={styles.container}>{this.listConditionalRender()}</View>;
   }
-
 }
-
-const defaultStyleSheet = StyleSheet.create(defaultStyle);
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: "100%",
-    height: "100%",
-  },
-  list: {
-    width: "100%",
-  },
-  listItem: {
-    // borderBottomColor: 'black',
-    // borderBottomWidth: 2,
-  },
-});
 
 ContactsList.propTypes = {
-  contacts: PropTypes.object,
+  contacts: PropTypes.shape(),
   contactsFetched: PropTypes.bool,
   onSelectContact: PropTypes.func,
-  selectedFlag: PropTypes.bool,
-  checkedFlag: PropTypes.bool,
-}
+  allSelected: PropTypes.bool,
+  allChecked: PropTypes.bool
+  // selectedFlag: PropTypes.bool,
+  // checkedFlag: PropTypes.bool,
+};
 
-const doNothing = () => {return;}
+const doNothing = () => {};
+// const doNothing = () => {return;}
 
 ContactsList.defaultProps = {
   contacts: {},
   contactsFetched: false,
   onSelectContact: doNothing,
   allSelected: false,
-  allChecked: false,
-}
+  allChecked: false
+};
