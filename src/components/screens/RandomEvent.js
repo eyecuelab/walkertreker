@@ -2,7 +2,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
 import constants from "../../constants";
 
 import EventDisplay from "../ui/EventDisplay";
@@ -30,6 +29,8 @@ class RandomEvent extends React.Component {
 
   componentDidMount = async () => {
     this.timer = setInterval(() => this._updateTime(), 1000);
+    console.log("this.props.screenProps", this.props.screenProps);
+    console.log("this.props.screenProps.data", this.props.screenProps.data);
   };
 
   componentWillUnmount = () => {
@@ -67,7 +68,7 @@ class RandomEvent extends React.Component {
     this.setState({ timeLeft });
   };
 
-  getEventToDisplay = async props => {
+  getEventToDisplay = async () => {
     const evtNumber = this.props.screenProps.notification.data.data.data
       .eventNumber;
     this.eventId = this.props.screenProps.notification.data.data.data.eventId;
@@ -114,9 +115,9 @@ class RandomEvent extends React.Component {
         backgroundImage={this.props.screenProps.backgroundImage}
         onVote={opt => this._vote(opt)}
         timeLeft={this.state.timeLeft}
-        antecedent={this.evt.antecedent}
-        optionAButton={this.evt.optionAButton}
-        optionBButton={this.evt.optionBButton}
+        // antecedent={this.evt.antecedent}
+        // optionAButton={this.evt.optionAButton}
+        // optionBButton={this.evt.optionBButton}
       />
     );
   }
@@ -132,3 +133,11 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(RandomEvent);
+
+RandomEvent.propTypes = {
+  screenProps: PropTypes.shape()
+};
+
+RandomEvent.defaultTypes = {
+  screenProps: {}
+};
