@@ -1,11 +1,11 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer , purgeStoredState } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 import rootReducer from "./reducers";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
-// import { purgeStoredState } from 'redux-persist';
+
 
 const configureStore = () => {
   const persistConfig = {
@@ -17,8 +17,8 @@ const configureStore = () => {
 
   /* THE BELOW METHODS ARE FOR WHEN YOU NEED TO CLEAR PERSISTED STATE STORAGE; You only need one. */
 
-  // persistConfig.storage.clear()
-  // purgeStoredState(persistConfig);
+  persistConfig.storage.clear();
+  purgeStoredState(persistConfig);
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);
   const sagaMiddleware = createSagaMiddleware();
