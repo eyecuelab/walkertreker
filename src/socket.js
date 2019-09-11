@@ -31,5 +31,8 @@ module.exports = socket;
 // Brooke's home ip:
 // const endpoint = "http://192.168.0.11:5000";
 
+// Stuart's home ip:
+// const endpoint = "http://192.168.0.46:5000";
+
 // remote:
 // const endpoint = "https://walkertrekker.herokuapp.com";
