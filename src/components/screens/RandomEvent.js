@@ -135,7 +135,18 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(RandomEvent);
 
 RandomEvent.propTypes = {
-  screenProps: PropTypes.shape()
+  screenProps: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    id: PropTypes.string
+  }).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func
+  }).isRequired,
+  campaign: PropTypes.shape({
+    id: PropTypes.string,
+    completedEvents: PropTypes.arrayOf()
+  }).isRequired
 };
 
 RandomEvent.defaultTypes = {
