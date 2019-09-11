@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   Animated,
   Easing,
@@ -9,6 +8,7 @@ import {
   ImageBackground
 } from "react-native";
 import { MainHeader } from "../text";
+import PropTypes from "prop-types";
 
 const bg = require("../../../assets/bg.png");
 
@@ -16,6 +16,14 @@ const AnimatedMainHeader = Animated.createAnimatedComponent(MainHeader);
 const AnimatedImageBackground = Animated.createAnimatedComponent(
   ImageBackground
 );
+
+const styles = StyleSheet.create({
+  screenContainer: {
+    ...StyleSheet.absoluteFill,
+    alignContent: "center",
+    justifyContent: "center"
+  }
+});
 
 class SignInSuccess extends Component {
   constructor(props) {
@@ -26,7 +34,6 @@ class SignInSuccess extends Component {
   }
 
   componentDidMount = () => {
-    console.log("rendered sign in ");
     InteractionManager.runAfterInteractions(() => {
       this.props.navigation.navigate("MainAppRouter");
     });
@@ -103,12 +110,9 @@ class SignInSuccess extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  screenContainer: {
-    ...StyleSheet.absoluteFill,
-    alignContent: "center",
-    justifyContent: "center"
-  }
-});
-
 export default SignInSuccess;
+
+SignInSuccess.propTypes = {
+  player: PropTypes.string.isRequired,
+  navigation: PropTypes.shape().isRequired
+};

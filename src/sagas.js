@@ -8,12 +8,12 @@ import {
   select
 } from "redux-saga/effects";
 import { Pedometer } from "expo";
-import { CLIENT_APP_KEY, ENDPOINT } from "react-native-dotenv";
+import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 
 import constants from "./constants";
 
 const { c, storeData, retrieveData, item } = constants;
-const endpoint = ENDPOINT
+const endpoint = FRONT_END_ENDPOINT;
 
 export const getSteps = state => state.steps;
 export const getPlayer = state => state.player;
@@ -212,8 +212,8 @@ export function* updateCampaign(action) {
 export function* leaveCampaign(action) {
   const url = `${endpoint}/api/campaigns/leave/${action.campId}`;
   console.log("leave campaign generator function arrived");
-  console.log(`action: ${  action.campId}`);
-  console.log(`action: ${  action.playId}`);
+  console.log(`action: ${action.campId}`);
+  console.log(`action: ${action.playId}`);
   const initObj = {
     method: "PATCH",
     headers: {
@@ -222,7 +222,7 @@ export function* leaveCampaign(action) {
     },
     body: JSON.stringify({ playerId: action.playId })
   };
-  console.log(`body: ${  initObj.body}`);
+  console.log(`body: ${initObj.body}`);
   try {
     const response = yield fetch(url, initObj).then(res => res.json());
     console.log(response);

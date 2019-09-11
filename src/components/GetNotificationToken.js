@@ -1,5 +1,7 @@
 import React from "react";
-import { Notifications, Permissions } from "expo";
+import { Notifications } from "expo";
+
+import * as Permissions from "expo-permissions";
 
 class GetNotificationToken extends React.Component {
   constructor(props) {

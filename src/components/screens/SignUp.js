@@ -10,7 +10,9 @@ import {
   Animated,
   Easing
 } from "react-native";
-import { ImagePicker, Permissions, Notifications } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -100,7 +102,7 @@ class SignUp extends React.Component {
     this.setState({ isLoading: true });
     const { dispatch } = this.props;
     const prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber);
-    console.log(prettyPhoneNumber);
+    console.log("handle submit for", prettyPhoneNumber);
     if (prettyPhoneNumber.length === 12) {
       const pushToken = await this.registerForPushNotificationsAsync();
       dispatch({ type: c.GETTING_PLAYERID, gettingPlayerId: true });
@@ -180,97 +182,100 @@ class SignUp extends React.Component {
             navigation={this.props.navigation}
             player={this.props.player.displayName}
           />
-        ) : null}
-        <ScreenContainer>
-          <View style={customStyles.headerContainer}>
-            <MainHeader style={{ textAlign: "center" }}>New Player</MainHeader>
-          </View>
+        ) : (
+          <ScreenContainer>
+            <View style={customStyles.headerContainer}>
+              <MainHeader style={{ textAlign: "center" }}>
+                New Player
+              </MainHeader>
+            </View>
 
-          <View style={customStyles.body}>
-            <ImageBackground
-              source={paint}
-              resizeMode="stretch"
-              overflow="visible"
-              style={customStyles.fieldContainer}
-            >
-              <AnimatedLabel
-                pose={this.state.didFocusName}
-                style={[
-                  customStyles.labelPosition,
-                  this.state.didFocusName === "inInput"
-                    ? { zIndex: 0 }
-                    : { zIndex: 1 }
-                ]}
-              >
-                <Label>Display Name</Label>
-              </AnimatedLabel>
-              <TextInput
-                style={customStyles.textInput}
-                onChangeText={text => this.setState({ displayName: text })}
-                onFocus={() => this.handleFocus("name")}
-                onBlur={() => this.handleBlur("name")}
-                value={this.state.displayName}
-              />
-            </ImageBackground>
-
-            <Transition shared="phoneInput">
+            <View style={customStyles.body}>
               <ImageBackground
-                source={paint2}
+                source={paint}
                 resizeMode="stretch"
                 overflow="visible"
                 style={customStyles.fieldContainer}
               >
                 <AnimatedLabel
-                  pose={this.state.didFocusPhone}
+                  pose={this.state.didFocusName}
                   style={[
                     customStyles.labelPosition,
-                    this.state.didFocusPhone === "inInput"
+                    this.state.didFocusName === "inInput"
                       ? { zIndex: 0 }
                       : { zIndex: 1 }
                   ]}
                 >
-                  <Label>Phone Number</Label>
+                  <Label>Display Name</Label>
                 </AnimatedLabel>
-
                 <TextInput
                   style={customStyles.textInput}
-                  keyboardType="phone-pad"
-                  returnKeyType="done"
-                  onChangeText={text => this.setState({ phoneNumber: text })}
-                  onFocus={() => this.handleFocus("phone")}
-                  onBlur={() => this.handleBlur("phone")}
-                  value={this.state.phoneNumber}
+                  onChangeText={text => this.setState({ displayName: text })}
+                  onFocus={() => this.handleFocus("name")}
+                  onBlur={() => this.handleBlur("name")}
+                  value={this.state.displayName}
                 />
               </ImageBackground>
-            </Transition>
-          </View>
 
-          <Footer style={{ alignContent: "center" }}>
-            <View style={{ height: heightUnit * 8 }}>
-              <ButtonWithLoading
-                isLoading={this.state.isLoading}
-                title="Submit"
-                onButtonPress={this._handleSubmit}
-                backgroundColor="darkred"
-              />
+              <Transition shared="phoneInput">
+                <ImageBackground
+                  source={paint2}
+                  resizeMode="stretch"
+                  overflow="visible"
+                  style={customStyles.fieldContainer}
+                >
+                  <AnimatedLabel
+                    pose={this.state.didFocusPhone}
+                    style={[
+                      customStyles.labelPosition,
+                      this.state.didFocusPhone === "inInput"
+                        ? { zIndex: 0 }
+                        : { zIndex: 1 }
+                    ]}
+                  >
+                    <Label>Phone Number</Label>
+                  </AnimatedLabel>
+
+                  <TextInput
+                    style={customStyles.textInput}
+                    keyboardType="phone-pad"
+                    returnKeyType="done"
+                    onChangeText={text => this.setState({ phoneNumber: text })}
+                    onFocus={() => this.handleFocus("phone")}
+                    onBlur={() => this.handleBlur("phone")}
+                    value={this.state.phoneNumber}
+                  />
+                </ImageBackground>
+              </Transition>
             </View>
 
-            <View style={customStyles.textButtonContainer}>
-              <TextAlt
-                size="sm"
-                onPress={() => {
-                  this.props.navigation.navigate("AccountRecovery");
-                }}
-              >
-                {this.state.recoveryText}
-                <TextAlt color="darkred" weight="bold">
-                  {" "}
-                  {this.state.recoveryTextBold}
+            <Footer style={{ alignContent: "center" }}>
+              <View style={{ height: heightUnit * 8 }}>
+                <ButtonWithLoading
+                  isLoading={this.state.isLoading}
+                  title="Submit"
+                  onButtonPress={this._handleSubmit}
+                  backgroundColor="darkred"
+                />
+              </View>
+
+              <View style={customStyles.textButtonContainer}>
+                <TextAlt
+                  size="sm"
+                  onPress={() => {
+                    this.props.navigation.navigate("AccountRecovery");
+                  }}
+                >
+                  {this.state.recoveryText}
+                  <TextAlt color="darkred" weight="bold">
+                    {" "}
+                    {this.state.recoveryTextBold}
+                  </TextAlt>
                 </TextAlt>
-              </TextAlt>
-            </View>
-          </Footer>
-        </ScreenContainer>
+              </View>
+            </Footer>
+          </ScreenContainer>
+        )}
       </View>
     );
   }

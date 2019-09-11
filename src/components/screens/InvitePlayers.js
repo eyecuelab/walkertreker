@@ -6,7 +6,9 @@ import {
   ImageBackground,
   ScrollView
 } from "react-native";
-import { Contacts, Permissions, Linking } from "expo";
+import { Linking } from "expo";
+import * as Permissions from "expo-permissions";
+import * as Contacts from "expo-contacts";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -19,9 +21,27 @@ import defaultStyle from "../../styles/defaultStyle";
 import { parsePhoneNumber } from "../../util/util";
 import CampaignLobbyHeader from "../ui/CampaignLobbyHeader";
 import { TextAlt } from "../text";
-import styled from "styled-components/native";
+import PropTypes from "prop-types";
+// import styled from "styled-components/native";
 
 const { c } = constants;
+
+const styles = StyleSheet.create(defaultStyle);
+// const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const customStyles = StyleSheet.create({
+  contentContainer: {
+    paddingBottom: heightUnit * 10
+  },
+  contactsContainer: {
+    flex: 1.5,
+    borderTopColor: "white",
+    borderBottomColor: "white",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    marginTop: heightUnit * 1
+  }
+});
 
 class InvitePlayers extends React.Component {
   constructor(props) {
@@ -41,6 +61,7 @@ class InvitePlayers extends React.Component {
     const link = Linking.makeUrl("invite", {
       campaignId: this.props.campaign.id
     });
+    console.log("this.props", this.props);
   };
 
   componentDidUpdate() {
@@ -59,31 +80,36 @@ class InvitePlayers extends React.Component {
           Contacts.Fields.Name,
           Contacts.Fields.PhoneNumbers,
           Contacts.Fields.Image
-        ]
+        ],
+        sort: Contacts.SortTypes.FirstName
       });
+      const contactsList = {};
+
       if (data.length > 0) {
-        const contacts = {};
-        data.forEach(contact => {
+        await data.forEach(contact => {
           const { name } = contact;
           const numbers = [];
           let key;
+          let numId;
           const { imageAvailable } = contact;
           let imageUri;
           if (contact.phoneNumbers) {
             contact.phoneNumbers.forEach(num => {
-              if (num.label === "mobile") {
+              if (num.label === "mobile" || num.label === "") {
                 const phoneToAdd = num.number;
-                key = parsePhoneNumber(phoneToAdd);
+                numId = parsePhoneNumber(phoneToAdd);
+                key = name + numId;
                 numbers.push(phoneToAdd);
               }
             });
           }
+
           contact.imageAvailable
             ? (imageUri = contact.image.uri)
             : (imageUri = "none");
           if (numbers.length > 0) {
-            contacts[key] = {
-              id: key,
+            contactsList[key] = {
+              id: numId,
               name,
               numbers,
               imageAvailable,
@@ -93,7 +119,7 @@ class InvitePlayers extends React.Component {
             };
           }
         });
-        await this.setState({ contacts });
+        await this.setState({ contacts: contactsList });
         await this.setState({ contactsFetched: true });
       } else {
         throw new Error("No contacts found");
@@ -108,28 +134,34 @@ class InvitePlayers extends React.Component {
       console.log("Contact has already been invited.");
       return;
     }
-    const key = contact.id;
+    const { id } = contact;
+    const key = contact.name + id;
     const {
       selected: prevSelects,
       contacts: prevContacts,
       numSelected
     } = this.state;
-    let newSelects = { ...prevSelects };
     const newContacts = { ...prevContacts };
+    let newSelects = { ...prevSelects };
     let newNumSelected = numSelected;
     newContacts[key].selected = !newContacts[key].selected;
     if (newContacts[key].selected === true) {
       newSelects = { ...prevSelects, [key]: contact };
-      newNumSelected = +newNumSelected;
+      newNumSelected += 1;
     } else {
       delete newSelects[key];
-      newNumSelected = -newNumSelected;
+      newNumSelected -= 1;
     }
     await this.setState({
       contacts: newContacts,
       selected: newSelects,
       numSelected: newNumSelected
     });
+    console.log(
+      "handleSelectContact, state after await: ",
+      this.state.selected,
+      this.state.numSelected
+    );
   };
 
   sendInvites = async () => {
@@ -155,7 +187,6 @@ class InvitePlayers extends React.Component {
       numSelected,
       selected: {}
     });
-    console.log("props right before sending: ", this.props);
     dispatch({
       type: c.SEND_INVITES,
       invites: this.state.invites,
@@ -176,7 +207,7 @@ class InvitePlayers extends React.Component {
     const newNumSelected = 0;
     await this.setState({
       contacts: contactsDupe,
-      numSelected: 0
+      numSelected: newNumSelected
     });
   };
 
@@ -262,22 +293,7 @@ class InvitePlayers extends React.Component {
     );
   }
 }
-const styles = StyleSheet.create(defaultStyle);
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const customStyles = StyleSheet.create({
-  contentContainer: {
-    paddingBottom: heightUnit * 10
-  },
-  contactsContainer: {
-    flex: 1.5,
-    borderTopColor: "white",
-    borderBottomColor: "white",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    marginTop: heightUnit * 1
-  }
-});
+
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
@@ -285,3 +301,18 @@ function mapStateToProps(state) {
   };
 }
 export default connect(mapStateToProps)(InvitePlayers);
+
+InvitePlayers.propTypes = {
+  campaign: PropTypes.shape().isRequired,
+  player: PropTypes.shape().isRequired,
+  navigation: PropTypes.shape().isRequired,
+  screenProps: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+InvitePlayers.defaultTypes = {
+  campaign: {},
+  player: {},
+  navigation: {},
+  screenProps: {}
+};
