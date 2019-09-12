@@ -13,128 +13,22 @@ import {
 } from "react-native-responsive-screen";
 import Modal from "react-native-modal";
 import { connect } from "react-redux";
-import { StackActions, NavigationActions } from "react-navigation";
+// import { StackActions, NavigationActions } from "react-navigation";
 
 import SingleButtonFullWidth from "../ui/SingleButtonFullWidth";
-import CampaignDetails from "../ui/CampaignDetails";
+import TwoButtonOverlay from "../ui/TwoButtonOverlay";
+
+// import CampaignDetails from "../ui/CampaignDetails";
 import PlayersList from "../ui/PlayersList";
 import defaultStyle from "../../styles/defaultStyle";
 import constants from "../../constants";
 
-import { MainHeader } from "../text";
+// import { MainHeader } from "../text";
 import CampaignLobbyHeader from "../ui/CampaignLobbyHeader";
 import ScreenContainer from "../containers/ScreenContainer";
+import PropTypes from "prop-types";
 
 const { c } = constants;
-
-class WaitForStart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      confirmationModalVisible: false
-    };
-  }
-
-  componentDidUpdate() {
-    if (this.props.campaign.startDate) {
-      this.props.navigation.navigate("Campaign");
-    }
-  }
-
-  _toggleConfirmationModal = () => {
-    const { confirmationModalVisible } = this.state;
-    this.setState({
-      confirmationModalVisible: !confirmationModalVisible
-    });
-  };
-
-  _getHostPlayerDisplayName = () => {
-    const hostId = this.props.campaign.host;
-    const host = this.props.campaign.players.filter(
-      player => player.id === hostId
-    )[0];
-    if (host) {
-      return host.displayName;
-    }
-    return "";
-  };
-
-  _leaveCampaign = () => {
-    console.log(this.props.campaign.id);
-    console.log(this.props.player.id);
-    console.log("leave campaign button clicked");
-    this.props.dispatch({
-      type: c.LEAVE_CAMPAIGN,
-      campId: this.props.campaign.id,
-      playId: this.props.player.id
-    });
-    this._toggleConfirmationModal();
-    this.props.navigation.navigate("About");
-  };
-
-  render() {
-    return (
-      <View style={{ backgroundColor: "#871C1D" }}>
-        <ImageBackground
-          source={this.props.screenProps.backgroundImage}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <Modal isVisible={this.state.confirmationModalVisible}>
-            <View style={customStyles.modalContainer}>
-              <View style={customStyles.modalHeadline}>
-                <Text style={styles.label}>
-                  Are you sure you want to leave this campaign?{" "}
-                </Text>
-              </View>
-              <View style={customStyles.modalButtonContainer}>
-                <View style={customStyles.buttonContainer}>
-                  <SingleButtonFullWidth
-                    title="Confirm"
-                    onButtonPress={this._leaveCampaign}
-                    backgroundColor="black"
-                  />
-                </View>
-              </View>
-            </View>
-          </Modal>
-
-          <ScreenContainer>
-            <View style={customStyles.contentContainer}>
-              <CampaignLobbyHeader
-                campaign={this.props.campaign}
-                title="New Campaign"
-              />
-
-              <View style={[customStyles.playerContainer]}>
-                <View style={customStyles.playerHeadlineContainer}>
-                  <Text style={styles.subHeading}>Players</Text>
-                </View>
-                <View style={customStyles.playerListContainer}>
-                  <PlayersList />
-                </View>
-              </View>
-
-              <View style={customStyles.waitMessageContainer}>
-                <Text style={styles.label}>
-                  Waiting for {this._getHostPlayerDisplayName()} to start the
-                  campaign.
-                </Text>
-              </View>
-
-              <View style={customStyles.buttonContainer}>
-                <SingleButtonFullWidth
-                  title="Leave Campaign"
-                  onButtonPress={this._toggleConfirmationModal}
-                  backgroundColor="black"
-                />
-              </View>
-            </View>
-          </ScreenContainer>
-        </ImageBackground>
-      </View>
-    );
-  }
-}
 
 const styles = StyleSheet.create(defaultStyle);
 const widthUnit = wp("1%");
@@ -197,6 +91,121 @@ const customStyles = StyleSheet.create({
   }
 });
 
+class WaitForStart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      confirmationModalVisible: false
+      // leaveCampaign: false
+    };
+  }
+
+  componentDidUpdate() {
+    if (this.props.campaign.startDate) {
+      this.props.navigation.navigate("Campaign");
+    }
+  }
+
+  _toggleConfirmationModal = () => {
+    const { confirmationModalVisible } = this.state;
+    console.log(
+      "toggleConfirmationModal clicked, state for visibility is:",
+      confirmationModalVisible
+    );
+    this.setState({
+      confirmationModalVisible: !confirmationModalVisible
+    });
+  };
+
+  _getHostPlayerDisplayName = () => {
+    const hostId = this.props.campaign.host;
+    const host = this.props.campaign.players.filter(
+      player => player.id === hostId
+    )[0];
+    if (host) {
+      return host.displayName;
+    }
+    return "";
+  };
+
+  _leaveCampaign = () => {
+    console.log(this.props.campaign.id);
+    console.log(this.props.player.id);
+    console.log("leave campaign button clicked");
+    this.props.dispatch({
+      type: c.LEAVE_CAMPAIGN,
+      campId: this.props.campaign.id,
+      playId: this.props.player.id
+    });
+    this._toggleConfirmationModal();
+    this.props.navigation.navigate("SignUp");
+  };
+
+  render() {
+    return (
+      <View style={{ backgroundColor: "#871C1D" }}>
+        <ImageBackground
+          source={this.props.screenProps.backgroundImage}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <Modal isVisible={this.state.confirmationModalVisible}>
+            <View style={customStyles.modalContainer}>
+              <View style={customStyles.modalHeadline}>
+                <Text style={styles.label}>
+                  Are you sure you want to leave this campaign?{" "}
+                </Text>
+              </View>
+              <View style={customStyles.modalButtonContainer}>
+                <View style={customStyles.buttonContainer}>
+                  <TwoButtonOverlay
+                    button1title="Stay!"
+                    button1onPress={this._toggleConfirmationModal}
+                    button2title="Confirm"
+                    button2onPress={this._leaveCampaign}
+                  />
+                </View>
+              </View>
+            </View>
+          </Modal>
+
+          <ScreenContainer>
+            <View style={customStyles.contentContainer}>
+              <CampaignLobbyHeader
+                campaign={this.props.campaign}
+                title="New Campaign"
+              />
+
+              <View style={[customStyles.playerContainer]}>
+                <View style={customStyles.playerHeadlineContainer}>
+                  <Text style={styles.subHeading}>Players</Text>
+                </View>
+                <View style={customStyles.playerListContainer}>
+                  <PlayersList />
+                </View>
+              </View>
+
+              <View style={customStyles.waitMessageContainer}>
+                <Text style={styles.label}>
+                  Waiting for {this._getHostPlayerDisplayName()} to start the
+                  campaign.
+                </Text>
+              </View>
+
+              <View style={customStyles.buttonContainer}>
+                <SingleButtonFullWidth
+                  title="Leave Campaign"
+                  onButtonPress={this._toggleConfirmationModal}
+                  backgroundColor="black"
+                />
+              </View>
+            </View>
+          </ScreenContainer>
+        </ImageBackground>
+      </View>
+    );
+  }
+}
+
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
@@ -205,3 +214,11 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(WaitForStart);
+
+WaitForStart.propTypes = {
+  campaign: PropTypes.shapeOf().isRequired,
+  screenProps: PropTypes.shapeOf().isRequired,
+  player: PropTypes.shapeOf().isRequired,
+  navigation: PropTypes.shapeOf().isRequired,
+  dispatch: PropTypes.func.isRequired
+};
