@@ -44,6 +44,13 @@ const customStyles = StyleSheet.create({
     padding: 6,
     marginBottom: heightUnit * 3
   },
+  fieldContainer2: {
+    padding: 6,
+    marginBottom: heightUnit * 3,
+    height: heightUnit * 11,
+    width: "auto",
+    marginLeft: -15
+  },
   headerContainer: {
     marginTop: heightUnit * 4
   },
@@ -69,10 +76,29 @@ const customStyles = StyleSheet.create({
     zIndex: 0,
     marginLeft: 20
   },
+  textInput2: {
+    width: "100%",
+    marginTop: 15,
+    paddingTop: heightUnit * 1,
+    paddingBottom: heightUnit * 2,
+    paddingLeft: widthUnit * 1,
+    color: "white",
+    fontFamily: "gore",
+    fontSize: widthUnit * 6,
+    zIndex: 0,
+    marginLeft: 35
+  },
   labelPosition: {
     position: "absolute",
-    bottom: heightUnit * 2,
-    left: widthUnit * 1.8,
+    bottom: heightUnit * 2.5,
+    left: widthUnit * 5,
+    padding: 2,
+    zIndex: 1
+  },
+  labelPosition2: {
+    position: "absolute",
+    bottom: heightUnit * 3,
+    left: widthUnit * 7,
     padding: 2,
     zIndex: 1
   }
@@ -265,12 +291,12 @@ class SignUp extends React.Component {
                   source={paint2}
                   resizeMode="stretch"
                   overflow="visible"
-                  style={customStyles.fieldContainer}
+                  style={customStyles.fieldContainer2}
                 >
                   <AnimatedLabel
                     pose={this.state.didFocusPhone}
                     style={[
-                      customStyles.labelPosition,
+                      customStyles.labelPosition2,
                       this.state.didFocusPhone === "inInput"
                         ? { zIndex: 0 }
                         : { zIndex: 1 }
@@ -280,7 +306,7 @@ class SignUp extends React.Component {
                   </AnimatedLabel>
 
                   <TextInput
-                    style={customStyles.textInput}
+                    style={customStyles.textInput2}
                     keyboardType="phone-pad"
                     returnKeyType="done"
                     onChangeText={text => this.setState({ phoneNumber: text })}
