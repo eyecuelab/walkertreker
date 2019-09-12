@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   StyleSheet,
-  Text,
+  // Text,
   View,
-  Image,
+  // Image,
   ImageBackground,
-  TextInput,
-  Animated,
-  Easing
+  TextInput
+  // Animated,
+  // Easing
 } from "react-native";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
@@ -18,12 +18,12 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { connect } from "react-redux";
-import { MainHeader, SubHeader, Label, TextAlt } from "../text";
+import { MainHeader, /* SubHeader, */ Label, TextAlt } from "../text";
 import { phoneNumPrettyPrint } from "../../util/util";
-import WithKeyboardShift from "../../util/WithKeyboardShift";
+// import WithKeyboardShift from "../../util/WithKeyboardShift";
 
 import { Transition } from "react-navigation-fluid-transitions";
-import { OpacityContainer, ScreenContainer, Footer } from "../containers";
+import { /* OpacityContainer, */ ScreenContainer, Footer } from "../containers";
 
 import posed from "react-native-pose";
 import ButtonWithLoading from "../ui/Buttons/ButtonWithLoading";
@@ -34,7 +34,49 @@ const paint = require("../../../assets/paintstroke/Paint_Stroke3_alt.png");
 const paint2 = require("../../../assets/paintstroke/Paint_Stroke_alt.png");
 
 const { c } = constants;
-const use_item_bg = require("../../../assets/use_item_bg.png");
+// const use_item_bg = require("../../../assets/use_item_bg.png");
+
+// const styles = StyleSheet.create(defaultStyle);
+const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const customStyles = StyleSheet.create({
+  fieldContainer: {
+    padding: 6,
+    marginBottom: heightUnit * 3
+  },
+  headerContainer: {
+    marginTop: heightUnit * 4
+  },
+  textButtonContainer: {
+    marginTop: heightUnit * 3,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  body: {
+    justifyContent: "center",
+    alignContent: "center",
+    flex: 2
+  },
+  textInput: {
+    width: "100%",
+    marginTop: 5,
+    paddingTop: heightUnit * 1,
+    paddingBottom: heightUnit * 2,
+    paddingLeft: widthUnit * 1,
+    color: "white",
+    fontFamily: "gore",
+    fontSize: widthUnit * 6,
+    zIndex: 0,
+    marginLeft: 20
+  },
+  labelPosition: {
+    position: "absolute",
+    bottom: heightUnit * 2,
+    left: widthUnit * 1.8,
+    padding: 2,
+    zIndex: 1
+  }
+});
 
 const AnimatedLabel = posed.View({
   inInput: {
@@ -66,8 +108,8 @@ class SignUp extends React.Component {
     };
     this.animationInterval = null;
   }
-
-  componentDidUpdate(prevProps, prevState) {
+  /* eslint-disable */
+  componentDidUpdate(prevProps /* , prevState */) {
     const { auth } = this.props;
     if (prevProps.auth.gettingPlayerId && !auth.gettingPlayerId) {
       this.setState({ isLoading: false }); // eslint-disable-line react/no-did-update-set-state
@@ -84,6 +126,7 @@ class SignUp extends React.Component {
         : null;
     }
   }
+  /* eslint-disable */
 
   navigateToMain() {
     this.props.navigation.navigate("MainApp");
@@ -176,7 +219,7 @@ class SignUp extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "black" }}>
         {this.state.signInSuccess ? (
           <SignInSuccess
             navigation={this.props.navigation}
@@ -281,48 +324,6 @@ class SignUp extends React.Component {
   }
 }
 
-// const styles = StyleSheet.create(defaultStyle);
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const customStyles = StyleSheet.create({
-  fieldContainer: {
-    padding: 6,
-    marginBottom: heightUnit * 3
-  },
-  headerContainer: {
-    marginTop: heightUnit * 4
-  },
-  textButtonContainer: {
-    marginTop: heightUnit * 3,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  body: {
-    justifyContent: "center",
-    alignContent: "center",
-    flex: 2
-  },
-  textInput: {
-    width: "100%",
-    marginTop: 5,
-    paddingTop: heightUnit * 1,
-    paddingBottom: heightUnit * 2,
-    paddingLeft: widthUnit * 1,
-    color: "white",
-    fontFamily: "gore",
-    fontSize: widthUnit * 6,
-    zIndex: 0,
-    marginLeft: 20
-  },
-  labelPosition: {
-    position: "absolute",
-    bottom: heightUnit * 2,
-    left: widthUnit * 1.8,
-    padding: 2,
-    zIndex: 1
-  }
-});
-
 function mapStateToProps(state) {
   return {
     player: state.player,
@@ -333,3 +334,10 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(SignUp);
+
+SignUp.propTypes = {
+  player: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.shape().isRequired,
+  auth: PropTypes.shape().isRequired
+};
