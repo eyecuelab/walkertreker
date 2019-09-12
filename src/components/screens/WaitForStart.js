@@ -27,6 +27,7 @@ import constants from "../../constants";
 import CampaignLobbyHeader from "../ui/CampaignLobbyHeader";
 import ScreenContainer from "../containers/ScreenContainer";
 import PropTypes from "prop-types";
+import LeaveCampaignSuccess from "./LeaveCampaignSuccess";
 
 const { c } = constants;
 
@@ -95,8 +96,8 @@ class WaitForStart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      confirmationModalVisible: false
-      // leaveCampaign: false
+      confirmationModalVisible: false,
+      leaveCampaign: false
     };
   }
 
@@ -137,70 +138,80 @@ class WaitForStart extends React.Component {
       campId: this.props.campaign.id,
       playId: this.props.player.id
     });
-    this._toggleConfirmationModal();
-    this.props.navigation.navigate("SignUp");
+    this.setState({
+      leaveCampaign: true
+    });
+    // this._toggleConfirmationModal();
+    // this.props.navigation.navigate("SignUp");
   };
 
   render() {
     return (
       <View style={{ backgroundColor: "#871C1D" }}>
-        <ImageBackground
-          source={this.props.screenProps.backgroundImage}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <Modal isVisible={this.state.confirmationModalVisible}>
-            <View style={customStyles.modalContainer}>
-              <View style={customStyles.modalHeadline}>
-                <Text style={styles.label}>
-                  Are you sure you want to leave this campaign?{" "}
-                </Text>
+        {this.state.leaveCampaign ? (
+          <LeaveCampaignSuccess
+            navigation={this.props.navigation}
+            player={this.props.player.displayName}
+          />
+        ) : (
+          <ImageBackground
+            source={this.props.screenProps.backgroundImage}
+            style={{ width: "100%", height: "100%" }}
+          >
+            <Modal isVisible={this.state.confirmationModalVisible}>
+              <View style={customStyles.modalContainer}>
+                <View style={customStyles.modalHeadline}>
+                  <Text style={styles.label}>
+                    Are you sure you want to leave this campaign?{" "}
+                  </Text>
+                </View>
+                <View style={customStyles.modalButtonContainer}>
+                  <View style={customStyles.buttonContainer}>
+                    <TwoButtonOverlay
+                      button1title="Stay!"
+                      button1onPress={this._toggleConfirmationModal}
+                      button2title="Confirm"
+                      button2onPress={this._leaveCampaign}
+                    />
+                  </View>
+                </View>
               </View>
-              <View style={customStyles.modalButtonContainer}>
+            </Modal>
+
+            <ScreenContainer>
+              <View style={customStyles.contentContainer}>
+                <CampaignLobbyHeader
+                  campaign={this.props.campaign}
+                  title="New Campaign"
+                />
+
+                <View style={[customStyles.playerContainer]}>
+                  <View style={customStyles.playerHeadlineContainer}>
+                    <Text style={styles.subHeading}>Players</Text>
+                  </View>
+                  <View style={customStyles.playerListContainer}>
+                    <PlayersList />
+                  </View>
+                </View>
+
+                <View style={customStyles.waitMessageContainer}>
+                  <Text style={styles.label}>
+                    Waiting for {this._getHostPlayerDisplayName()} to start the
+                    campaign.
+                  </Text>
+                </View>
+
                 <View style={customStyles.buttonContainer}>
-                  <TwoButtonOverlay
-                    button1title="Stay!"
-                    button1onPress={this._toggleConfirmationModal}
-                    button2title="Confirm"
-                    button2onPress={this._leaveCampaign}
+                  <SingleButtonFullWidth
+                    title="Leave Campaign"
+                    onButtonPress={this._toggleConfirmationModal}
+                    backgroundColor="black"
                   />
                 </View>
               </View>
-            </View>
-          </Modal>
-
-          <ScreenContainer>
-            <View style={customStyles.contentContainer}>
-              <CampaignLobbyHeader
-                campaign={this.props.campaign}
-                title="New Campaign"
-              />
-
-              <View style={[customStyles.playerContainer]}>
-                <View style={customStyles.playerHeadlineContainer}>
-                  <Text style={styles.subHeading}>Players</Text>
-                </View>
-                <View style={customStyles.playerListContainer}>
-                  <PlayersList />
-                </View>
-              </View>
-
-              <View style={customStyles.waitMessageContainer}>
-                <Text style={styles.label}>
-                  Waiting for {this._getHostPlayerDisplayName()} to start the
-                  campaign.
-                </Text>
-              </View>
-
-              <View style={customStyles.buttonContainer}>
-                <SingleButtonFullWidth
-                  title="Leave Campaign"
-                  onButtonPress={this._toggleConfirmationModal}
-                  backgroundColor="black"
-                />
-              </View>
-            </View>
-          </ScreenContainer>
-        </ImageBackground>
+            </ScreenContainer>
+          </ImageBackground>
+        )}
       </View>
     );
   }
