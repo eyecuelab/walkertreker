@@ -3,9 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  ImageBackground,
+  ImageBackground /* ,
   ScrollView,
-  FlatList
+  FlatList */
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -216,9 +216,9 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(WaitForStart);
 
 WaitForStart.propTypes = {
-  campaign: PropTypes.shapeOf().isRequired,
-  screenProps: PropTypes.shapeOf().isRequired,
-  player: PropTypes.shapeOf().isRequired,
-  navigation: PropTypes.shapeOf().isRequired,
+  campaign: PropTypes.shape().isRequired,
+  screenProps: PropTypes.shape().isRequired,
+  player: PropTypes.shape().isRequired,
+  navigation: PropTypes.shape().isRequired,
   dispatch: PropTypes.func.isRequired
 };
