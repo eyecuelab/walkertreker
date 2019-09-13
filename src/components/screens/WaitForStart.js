@@ -103,19 +103,13 @@ class WaitForStart extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("playerName componentdidupdate", this.state.playerName);
     if (this.props.campaign.startDate) {
-      console.log("INSIDE this.props.campaign.startDate");
       this.props.navigation.navigate("Campaign");
     }
   }
 
   _toggleConfirmationModal = () => {
     const { confirmationModalVisible } = this.state;
-    console.log(
-      "toggleConfirmationModal clicked, state for visibility is:",
-      confirmationModalVisible
-    );
     this.setState({
       confirmationModalVisible: !confirmationModalVisible
     });
@@ -133,9 +127,6 @@ class WaitForStart extends React.Component {
   };
 
   _leaveCampaign = () => {
-    console.log(this.props.campaign.id);
-    console.log(this.props.player.id);
-    console.log("leave campaign button clicked");
     this.props.dispatch({
       type: c.LEAVE_CAMPAIGN,
       campId: this.props.campaign.id,
@@ -144,8 +135,6 @@ class WaitForStart extends React.Component {
     this.setState({
       leaveCampaign: true
     });
-    // this._toggleConfirmationModal();
-    // this.props.navigation.navigate("SignUp");
   };
 
   render() {
