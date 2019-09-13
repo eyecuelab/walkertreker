@@ -10,7 +10,7 @@ import {
 import { MainHeader } from "../text";
 import PropTypes from "prop-types";
 
-const bg = require("../../../assets/bg.png");
+const bg = require("../../../assets/use_item_bg.png");
 
 const AnimatedMainHeader = Animated.createAnimatedComponent(MainHeader);
 const AnimatedImageBackground = Animated.createAnimatedComponent(
@@ -62,37 +62,28 @@ class LeaveCampaignSuccess extends Component {
     ]).start();
   }
 
+  getOpacity = () => {};
+
   render() {
-    const position = this.AnimationValue.interpolate({
-      inputRange: [0, 100],
-      outputRange: ["0%", "100%"]
-    });
-
-    const left = this.AnimationValue.interpolate({
-      inputRange: [0, 100],
-      outputRange: ["50%", "0%"]
-    });
-
-    const scale = this.TextAnimationValue.interpolate({
-      inputRange: [0, 0.25, 0.5, 0.75, 0.99],
-      outputRange: [0, 1, 1, 1.2, 0]
-    });
-
-    const opacity = this.TextAnimationValue.interpolate({
+    const opacity1 = this.TextAnimationValue.interpolate({
       inputRange: [0, 0.5, 0.75, 0.99],
+      outputRange: [0, 0.5, 0.75, 1],
+      extrapolate: "clamp"
+    });
+
+    const opacity2 = this.TextAnimationValue.interpolate({
+      inputRange: [0, 0.35, 0.7, 0.84],
+      outputRange: [0, 1, 1, 0],
+      extrapolate: "clamp"
+    });
+
+    const opacity3 = this.TextAnimationValue.interpolate({
+      inputRange: [0.2, 0.5, 0.85, 0.99],
       outputRange: [0, 1, 1, 0],
       extrapolate: "clamp"
     });
 
     console.log("------------rendering leavecampaignsucess-----------");
-
-    // return (
-    //   <View style={styles.screenContainer}>
-    //     <MainHeader>
-    //       Biiiiiyyyyyyyy{"\n"} {this.props.player}
-    //     </MainHeader>
-    //   </View>
-    // );
 
     return (
       <View style={styles.screenContainer}>
@@ -102,22 +93,30 @@ class LeaveCampaignSuccess extends Component {
         >
           <Animated.View
             style={{
-              left,
-              width: position,
-              height: position,
+              opacity: opacity1,
+              backgroundColor: "black",
               zIndex: 10,
               alignContent: "center",
-              justifyContent: "center"
+              justifyContent: "center",
+              height: "100%",
+              width: "100%"
             }}
           >
             <AnimatedMainHeader
               style={{
-                opacity,
-                textAlign: "center",
-                transform: [{ scale }]
+                opacity: opacity2,
+                textAlign: "center"
               }}
             >
-              Whatever{"\n"} {this.props.player}
+              Until Next Time
+            </AnimatedMainHeader>
+            <AnimatedMainHeader
+              style={{
+                opacity: opacity3,
+                textAlign: "center"
+              }}
+            >
+              {this.props.player}
             </AnimatedMainHeader>
           </Animated.View>
         </ImageBackground>
