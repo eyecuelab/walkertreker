@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import {
   View,
+  StyleSheet,
   Animated,
-  InteractionManager,
   Easing,
-  StyleSheet
+  InteractionManager,
+  ImageBackground
 } from "react-native";
 import { MainHeader } from "../text";
 import PropTypes from "prop-types";
+
+const bg = require("../../../assets/bg.png");
+
+const AnimatedMainHeader = Animated.createAnimatedComponent(MainHeader);
+const AnimatedImageBackground = Animated.createAnimatedComponent(
+  ImageBackground
+);
 
 const styles = StyleSheet.create({
   screenContainer: {
@@ -55,12 +63,64 @@ class LeaveCampaignSuccess extends Component {
   }
 
   render() {
+    const position = this.AnimationValue.interpolate({
+      inputRange: [0, 100],
+      outputRange: ["0%", "100%"]
+    });
+
+    const left = this.AnimationValue.interpolate({
+      inputRange: [0, 100],
+      outputRange: ["50%", "0%"]
+    });
+
+    const scale = this.TextAnimationValue.interpolate({
+      inputRange: [0, 0.25, 0.5, 0.75, 0.99],
+      outputRange: [0, 1, 1, 1.2, 0]
+    });
+
+    const opacity = this.TextAnimationValue.interpolate({
+      inputRange: [0, 0.5, 0.75, 0.99],
+      outputRange: [0, 1, 1, 0],
+      extrapolate: "clamp"
+    });
+
     console.log("------------rendering leavecampaignsucess-----------");
+
+    // return (
+    //   <View style={styles.screenContainer}>
+    //     <MainHeader>
+    //       Biiiiiyyyyyyyy{"\n"} {this.props.player}
+    //     </MainHeader>
+    //   </View>
+    // );
+
     return (
       <View style={styles.screenContainer}>
-        <MainHeader>
-          Biiiiiyyyyyyyy{"\n"} {this.props.player}
-        </MainHeader>
+        <ImageBackground
+          source={bg}
+          style={{ width: undefined, height: undefined, zIndex: 2 }}
+        >
+          <Animated.View
+            style={{
+              left,
+              width: position,
+              height: position,
+              zIndex: 10,
+              alignContent: "center",
+              justifyContent: "center"
+            }}
+          >
+            <AnimatedMainHeader
+              style={{
+                opacity,
+                textAlign: "center",
+                transform: [{ scale }]
+              }}
+            >
+              Whatever{"\n"} {this.props.player}
+            </AnimatedMainHeader>
+          </Animated.View>
+        </ImageBackground>
       </View>
     );
   }
