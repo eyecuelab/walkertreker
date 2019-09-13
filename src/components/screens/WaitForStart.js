@@ -97,12 +97,15 @@ class WaitForStart extends React.Component {
     super(props);
     this.state = {
       confirmationModalVisible: false,
-      leaveCampaign: false
+      leaveCampaign: false,
+      playerName: this.props.player.displayName
     };
   }
 
   componentDidUpdate() {
+    console.log("playerName componentdidupdate", this.state.playerName);
     if (this.props.campaign.startDate) {
+      console.log("INSIDE this.props.campaign.startDate");
       this.props.navigation.navigate("Campaign");
     }
   }
@@ -151,7 +154,7 @@ class WaitForStart extends React.Component {
         {this.state.leaveCampaign ? (
           <LeaveCampaignSuccess
             navigation={this.props.navigation}
-            player={this.props.player.displayName}
+            player={this.state.playerName}
           />
         ) : (
           <ImageBackground
