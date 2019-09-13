@@ -1,10 +1,11 @@
 import React from "react";
-import { Notifications } from "expo";
-import * as Permissions from "expo-permissions";
+// import { Notifications } from "expo";
+// import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
 import constants from "../constants";
 import socket from "../socket";
-import NavigationService from "../nav/NavigationService";
+// import NavigationService from "../nav/NavigationService";
+import PropTypes from "prop-types";
 
 const { c } = constants;
 
@@ -84,3 +85,19 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(SocketIO);
+
+SocketIO.propTypes = {
+  campaign: PropTypes.shape({
+    id: PropTypes.string
+  }).isRequired,
+  player: PropTypes.shape({
+    id: PropTypes.string,
+    campaignId: PropTypes.string
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+SocketIO.defaultTypes = {
+  campaign: {},
+  player: {}
+};
