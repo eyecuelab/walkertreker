@@ -134,25 +134,38 @@ class SignUp extends React.Component {
     };
     this.animationInterval = null;
   }
-  /* eslint-disable */
+
+  onUpdate1 = () => {
+    this.setState({
+      isLoading: false
+    });
+  };
+
+  onUpdate2 = () => {
+    this.setState({
+      signInSuccess: true
+    });
+  };
+
   componentDidUpdate(prevProps /* , prevState */) {
     const { auth } = this.props;
     if (prevProps.auth.gettingPlayerId && !auth.gettingPlayerId) {
-      this.setState({ isLoading: false }); // eslint-disable-line react/no-did-update-set-state
+      this.onUpdate1();
+      // this.setState({ isLoading: false }); // eslint-disable-line react/no-did-update-set-state
     }
     if (
       !auth.gettingPlayerId &&
       !auth.gettingCampaignId &&
       !this.state.signInSuccess
     ) {
-      this.props.player.id // eslint-disable-line
-        ? this.setState({ signInSuccess: true }) // eslint-disable-line react/no-did-update-set-state
-        : this.state.newPlayerCreated
-        ? this.recoveryText()
-        : null;
+      if (this.props.player.id) {
+        this.onUpdate2();
+        // this.setState({ signInSuccess: true })
+      } else if (!this.props.player.id && this.state.newPlayerCreated) {
+        this.recoveryText();
+      }
     }
   }
-  /* eslint-disable */
 
   navigateToMain() {
     this.props.navigation.navigate("MainApp");
@@ -174,6 +187,7 @@ class SignUp extends React.Component {
     console.log("handle submit for", prettyPhoneNumber);
     if (prettyPhoneNumber.length === 12) {
       const pushToken = await this.registerForPushNotificationsAsync();
+      console.log("push token", pushToken);
       dispatch({ type: c.GETTING_PLAYERID, gettingPlayerId: true });
       dispatch({
         type: c.CREATE_PLAYER,
@@ -188,6 +202,7 @@ class SignUp extends React.Component {
         : this.setState({ newPlayerCreated: true });
     } else {
       await this.setState({
+        isLoading: false,
         recoveryText: "Are you sure you entered your phone number correctly?"
       });
     }
