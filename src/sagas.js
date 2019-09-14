@@ -227,6 +227,7 @@ export function* leaveCampaign(action) {
     const response = yield fetch(url, initObj).then(res => res.json());
     console.log(response);
     yield put({ type: c.CAMPAIGN_LEFT });
+    yield put({ type: c.PLAYER_DESTROYED });
   } catch (error) {
     console.warn("error leaving campaign: ", error);
   }

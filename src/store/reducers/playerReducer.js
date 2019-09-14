@@ -48,7 +48,9 @@ export default (state = player, action) => {
         health: action.health
       };
       return newState;
-
+    case c.PLAYER_DESTROYED:
+      newState = Object.assign({}, player);
+      return newState;
     default:
       return state;
   }
