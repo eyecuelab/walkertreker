@@ -20,7 +20,7 @@
     "react": "16.8.3",
     "react-loading": "^2.0.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
-    "react-native-background-fetch": "^2.6.0",
+    "react-native-background-fetch": "^2.7.0",
     "react-native-background-task": "^0.2.1",
     "react-native-dotenv": "^0.2.0",
     "react-native-indicators": "^0.13.0",
