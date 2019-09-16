@@ -8,21 +8,23 @@ import {
   Linking,
   ActivityIndicator
 } from "expo";
-import KeepAwake, { activateKeepAwake } from "expo-keep-awake";
+import { /* KeepAwake, */ activateKeepAwake } from "expo-keep-awake";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import { AppContainer } from "./nav/router";
 import NavigationService from "./nav/NavigationService";
 import { PersistGate } from "redux-persist/integration/react";
-import { withNavigation } from "react-navigation";
+// import { withNavigation } from "react-navigation";
 
-import { Provider, connect, dispatch } from "react-redux";
+import { Provider, connect /* , dispatch */ } from "react-redux";
 import constants from "./constants";
 import { store, persistor } from "./store";
 
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
+
+import BackgroundFetch from "react-native-background-fetch";
 
 const { c, retrieveData } = constants;
 
