@@ -6,6 +6,7 @@ import {
   registerRootComponent,
   Notifications,
   Linking,
+  Pedometer,
   ActivityIndicator
 } from "expo";
 import { /* KeepAwake, */ activateKeepAwake } from "expo-keep-awake";
@@ -151,6 +152,39 @@ class App extends React.Component {
     this.setState({ notification });
   };
 
+  myHeadlessTask = async () => {
+    console.log("[BackgroundFetch HeadlessTask] start");
+    ///check pedometer availability
+    const { dispatch } = this.props;
+    await Pedometer.isAvailableAsync()
+      .then(
+        response => {
+          dispatch({
+            type: c.IS_PEDOMETER_AVAILABLE,
+            pedometerIsAvailable: response
+          });
+          console.log("pedometer.isAvailableAsync response", response);
+        },
+        error => {
+          // maybe dispatch an action to the store to update state instead?
+          console.log("pedometer error", error);
+          Alert.alert(
+            "Walker Treker can't connect to your phone's pedometer. Try closing the app and opening it again."
+          );
+        }
+      )
+      .then(dispatch({ type: c.GET_STEPS }));
+
+    // let response = await fetch('https://facebook.github.io/react-native/movies.json');
+    // let responseJson = await response.json();
+    // console.log('[BackgroundFetch HeadlessTask response: ', responseJson);
+
+    // Required:  Signal to native code that your task is complete.
+    // If you don't do this, your app could be terminated and/or assigned
+    // battery-blame for consuming too much time in background.
+    BackgroundFetch.finish();
+  };
+
   async componentDidMount() {
     Notifications.addListener(this._passNotificationToStart);
     const { path, queryParams } = await Linking.parseInitialURLAsync();
@@ -161,6 +195,7 @@ class App extends React.Component {
         queryParams
       });
     }
+
     BackgroundFetch.configure(
       {
         minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
@@ -203,6 +238,14 @@ class App extends React.Component {
           break;
       }
     });
+
+    if (
+      this.props.steps.campaignDateArray !== null &&
+      this.props.player.id !== null
+    ) {
+      // Register your BackgroundFetch HeadlessTask
+      BackgroundFetch.registerHeadlessTask(myHeadlessTask);
+    }
   }
 
   componentDidUpdate() {
@@ -229,7 +272,7 @@ class App extends React.Component {
       return (
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={ActivityIndicator}>
-            <BackgroundPedometer />
+            {/* <BackgroundPedometer /> */}
             <SocketIO />
             <NotificationListeners />
             <BackgroundPedometer />
