@@ -7,7 +7,8 @@ import {
   Notifications,
   Linking,
   Pedometer,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from "expo";
 import { /* KeepAwake, */ activateKeepAwake } from "expo-keep-awake";
 import * as Font from "expo-font";
@@ -24,6 +25,7 @@ import { store, persistor } from "./store";
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
+import PropTypes from "prop-types";
 
 import BackgroundFetch from "react-native-background-fetch";
 
@@ -154,7 +156,7 @@ class App extends React.Component {
 
   myHeadlessTask = async () => {
     console.log("[BackgroundFetch HeadlessTask] start");
-    ///check pedometer availability
+    // /check pedometer availability
     const { dispatch } = this.props;
     await Pedometer.isAvailableAsync()
       .then(
@@ -244,7 +246,7 @@ class App extends React.Component {
       this.props.player.id !== null
     ) {
       // Register your BackgroundFetch HeadlessTask
-      BackgroundFetch.registerHeadlessTask(myHeadlessTask);
+      BackgroundFetch.registerHeadlessTask(this.myHeadlessTask);
     }
   }
 
@@ -310,3 +312,18 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(App);
+
+App.propTypes = {
+  player: PropTypes.shape({
+    id: PropTypes.string
+  }).isRequired,
+  auth: PropTypes.shape().isRequired,
+  steps: PropTypes.shape({
+    campaignDateArray: PropTypes.arrayOf()
+  }),
+  dispatch: PropTypes.func.isRequired
+};
+
+App.defaultProps = {
+  steps: {}
+};
