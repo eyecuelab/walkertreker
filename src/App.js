@@ -37,9 +37,9 @@ const { c, retrieveData } = constants;
 if (__DEV__) {
   activateKeepAwake();
 }
-const Obj = new BackgroundFetchStepsService();
+const bg_fetch = new BackgroundFetchStepsService();
 
-Obj.defineTasks();
+bg_fetch.defineTasks();
 
 class App extends React.Component {
   constructor(props) {
@@ -172,7 +172,7 @@ class App extends React.Component {
       });
     }
     console.log("props steps: state.steps,", this.props.steps);
-    await Obj.registerTaskAsync();
+    await bg_fetch.registerTaskAsync();
     const tasks = await this.updateTasks();
     console.log("tasks:", tasks);
   };
