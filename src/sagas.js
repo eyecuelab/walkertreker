@@ -34,6 +34,7 @@ export function* fetchSteps() {
       const start = new Date(Date.parse(obj.start)); // eslint-disable-line no-undef
       const end = new Date(Date.parse(obj.end)); // eslint-disable-line no-undef
       const response = yield Pedometer.getStepCountAsync(start, end);
+      console.log("PEDOMETER-----------RESPONSE--------", response);
       const stepsToAdd = response.steps;
       const dateWithSteps = { ...datesCopy[obj.day], steps: stepsToAdd }; // eslint-disable-line no-undef
       datesCopy.splice(obj.day, 1, dateWithSteps); // eslint-disable-line no-undef
@@ -41,7 +42,8 @@ export function* fetchSteps() {
       yield put({ type: c.STEPS_FAILED, error });
     }
   }
-  yield storeData("stepInfo", JSON.stringify(steps));
+  const result = yield storeData("stepInfo", JSON.stringify(steps));
+  console.log("STEPS---------------STEPS-------------", result);
   yield put({ type: c.STEPS_RECEIVED, campaignDateArray: datesCopy });
 }
 
@@ -49,6 +51,7 @@ export function* updatePlayerSteps(action) {
   const simpleArray = [];
   action.campaignDateArray.forEach(obj => {
     simpleArray.push(obj.steps);
+    console.log("INSIDE UPDATE PLAYER STEPS", obj.steps);
   });
   yield put({ type: c.UPDATE_PLAYER_STEPS, steps: simpleArray });
 }
@@ -621,6 +624,7 @@ export function* watchPlayerStepsUpdated() {
       playId: player.id,
       steps: player.steps
     });
+    console.log("PLAYER STEPS--------------STEPS---update: ", player.steps);
   }
 }
 
