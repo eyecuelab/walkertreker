@@ -1,6 +1,8 @@
 /* eslint-disable global-require */
 import React from "react";
 import { Image } from "react-native";
+import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
 import {
   AppLoading,
   registerRootComponent,
@@ -25,13 +27,25 @@ import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
 
-import BackgroundFetch from "react-native-background-fetch";
-
 const { c, retrieveData } = constants;
 
 if (__DEV__) {
   activateKeepAwake();
 }
+
+// BackgroundFetch task
+
+TaskManager.defineTask(GET_STEPS_BACKGROUND_UPDATE, () => {
+  try {
+    const receivedNewData = ""; // do your background fetch here
+    return receivedNewData
+      ? BackgroundFetch.Result.NewData
+      : BackgroundFetch.Result.NoData;
+  } catch (error) {
+    return BackgroundFetch.Result.Failed;
+  }
+});
+
 class App extends React.Component {
   constructor(props) {
     super(props);
