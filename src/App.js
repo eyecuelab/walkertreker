@@ -1,6 +1,8 @@
 /* eslint-disable global-require */
 import React from "react";
 import { Image } from "react-native";
+import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
 import {
   AppLoading,
   registerRootComponent,
@@ -25,7 +27,9 @@ import { store, persistor } from "./store";
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
+
 import PropTypes from "prop-types";
+
 
 const { c, retrieveData } = constants;
 
