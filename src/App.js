@@ -9,7 +9,8 @@ import {
   Notifications,
   Linking,
   Pedometer,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from "expo";
 import { /* KeepAwake, */ activateKeepAwake } from "expo-keep-awake";
 import * as Font from "expo-font";
@@ -27,24 +28,14 @@ import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
 
+import PropTypes from "prop-types";
+
+
 const { c, retrieveData } = constants;
 
 if (__DEV__) {
   activateKeepAwake();
 }
-
-// BackgroundFetch task
-
-TaskManager.defineTask(GET_STEPS_BACKGROUND_UPDATE, () => {
-  try {
-    const receivedNewData = ""; // do your background fetch here
-    return receivedNewData
-      ? BackgroundFetch.Result.NewData
-      : BackgroundFetch.Result.NoData;
-  } catch (error) {
-    return BackgroundFetch.Result.Failed;
-  }
-});
 
 class App extends React.Component {
   constructor(props) {
@@ -166,40 +157,7 @@ class App extends React.Component {
     this.setState({ notification });
   };
 
-  myHeadlessTask = async () => {
-    console.log("[BackgroundFetch HeadlessTask] start");
-    ///check pedometer availability
-    const { dispatch } = this.props;
-    await Pedometer.isAvailableAsync()
-      .then(
-        response => {
-          dispatch({
-            type: c.IS_PEDOMETER_AVAILABLE,
-            pedometerIsAvailable: response
-          });
-          console.log("pedometer.isAvailableAsync response", response);
-        },
-        error => {
-          // maybe dispatch an action to the store to update state instead?
-          console.log("pedometer error", error);
-          Alert.alert(
-            "Walker Treker can't connect to your phone's pedometer. Try closing the app and opening it again."
-          );
-        }
-      )
-      .then(dispatch({ type: c.GET_STEPS }));
-
-    // let response = await fetch('https://facebook.github.io/react-native/movies.json');
-    // let responseJson = await response.json();
-    // console.log('[BackgroundFetch HeadlessTask response: ', responseJson);
-
-    // Required:  Signal to native code that your task is complete.
-    // If you don't do this, your app could be terminated and/or assigned
-    // battery-blame for consuming too much time in background.
-    BackgroundFetch.finish();
-  };
-
-  async componentDidMount() {
+  componentDidMount = async () => {
     Notifications.addListener(this._passNotificationToStart);
     const { path, queryParams } = await Linking.parseInitialURLAsync();
     if (path) {
@@ -209,58 +167,7 @@ class App extends React.Component {
         queryParams
       });
     }
-
-    BackgroundFetch.configure(
-      {
-        minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
-        // Android options
-        stopOnTerminate: false,
-        startOnBoot: true,
-        requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE, // Default
-        requiresCharging: false, // Default
-        requiresDeviceIdle: false, // Default
-        requiresBatteryNotLow: true, // Default
-        requiresStorageNotLow: false // Default
-      },
-      () => {
-        console.log("[js] Received background-fetch event");
-        // Required: Signal completion of your task to native code
-        // If you fail to do this, the OS can terminate your app
-        // or assign battery-blame for consuming too much background-time
-        BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
-      },
-      error => {
-        console.log("[js] RNBackgroundFetch failed to start", error);
-      }
-    );
-
-    BackgroundFetch.status(status => {
-      switch (status) {
-        case BackgroundFetch.STATUS_RESTRICTED:
-          console.log("BackgroundFetch restricted");
-          break;
-        case BackgroundFetch.STATUS_DENIED:
-          console.log("BackgroundFetch denied");
-          break;
-        case BackgroundFetch.STATUS_AVAILABLE:
-          console.log("BackgroundFetch is enabled");
-          break;
-        default:
-          console.log(
-            "default case for bg fetch: not restricted, denied or enable."
-          );
-          break;
-      }
-    });
-
-    if (
-      this.props.steps.campaignDateArray !== null &&
-      this.props.player.id !== null
-    ) {
-      // Register your BackgroundFetch HeadlessTask
-      BackgroundFetch.registerHeadlessTask(myHeadlessTask);
-    }
-  }
+  };
 
   componentDidUpdate() {
     console.log("AUTH STATE", this.props.auth);
@@ -324,3 +231,20 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(App);
+
+App.propTypes = {
+  player: PropTypes.shape({
+    id: PropTypes.string
+  }),
+  auth: PropTypes.shape(),
+  steps: PropTypes.shape({
+    campaignDateArray: PropTypes.arrayOf()
+  })
+  // dispatch: PropTypes.func.isRequired
+};
+
+App.defaultProps = {
+  steps: {},
+  player: {},
+  auth: {}
+};
