@@ -38,6 +38,14 @@ if (__DEV__) {
 }
 
 TaskManager.defineTask(taskName, async () => {
+  console.log("-");
+  console.log("-");
+  console.log("-");
+  console.log("INSIDE TASKMANAGER.defineTASK");
+  console.log("background fetch running");
+  console.log("-");
+  console.log("-");
+  console.log("-");
   const { dispatch } = this.props;
   try {
     await Pedometer.isAvailableAsync().then(
@@ -198,9 +206,7 @@ class App extends React.Component {
   };
 
   registerTaskAsync = async () => {
-    await BackgroundFetch.registerTaskAsync(taskName);
-    console.log("task registered");
-
+    console.log("INSIDE register task async");
     const status = await BackgroundFetch.getStatusAsync();
 
     switch (status) {
@@ -211,27 +217,18 @@ class App extends React.Component {
         console.log("bg fetch status: Background execution is disabled");
         break;
 
-      case BackgroundFetch.Status.Available:
+      case BackgroundFetch.Status.Available: {
         console.log("bg fetch status: Avaible");
-        break;
-
-      default: {
-        console.log("bg fetch status: Background execution allowed");
-        let tasks = await TaskManager.getRegisteredTasksAsync();
-        if (tasks.find(f => f.taskName === taskName) == null) {
-          console.log("bg fetch default: Registering task");
-          await BackgroundFetch.registerTaskAsync(taskName);
-
-          tasks = await TaskManager.getRegisteredTasksAsync();
-          console.log("bg fetch default: the identified tasks: ", tasks);
-        } else {
-          console.log(
-            `bg fetch default: Task ${taskName} already registered, skipping`
-          );
-        }
+        await BackgroundFetch.registerTaskAsync(taskName);
+        console.log("task registered");
+        const tasks = await TaskManager.getRegisteredTasksAsync();
+        console.log("bg fetch default: the identified tasks: ", tasks);
         await BackgroundFetch.setMinimumIntervalAsync(15);
         break;
       }
+      default:
+        console.log("bg fetch default case reached: nothing to do");
+        break;
     }
   };
 
@@ -245,13 +242,7 @@ class App extends React.Component {
         queryParams
       });
     }
-
-    // if (
-    //   this.props.steps.campaignDateArray !== null &&
-    //   this.props.player.id !== null
-    // ) {
     this.registerTaskAsync();
-    // }
   };
 
   componentDidUpdate() {
