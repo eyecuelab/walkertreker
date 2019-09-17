@@ -1,6 +1,7 @@
 import React from "react";
 import Expo, { Pedometer } from "expo";
 import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
 import {
   StyleSheet,
   Text,
@@ -19,8 +20,74 @@ import constants from "../constants";
 const { setAppState, setCampaignDates } = actions;
 const { c, retrieveData } = constants;
 
+const taskName = "bgFetchStepCount";
+
+TaskManager.defineTask(taskName, async () => {
+  console.log("INSIDE TASKMANAGER.defineTASK");
+  console.log("background fetch running");
+  const { dispatch } = this.props;
+  try {
+    await Pedometer.isAvailableAsync().then(
+      response => {
+        dispatch({
+          type: c.IS_PEDOMETER_AVAILABLE,
+          pedometerIsAvailable: response
+        });
+        console.log("pedometer.isAvailableAsync response", response);
+      },
+      error => {
+        // maybe dispatch an action to the store to update state instead?
+        console.log("pedometer error", error);
+        Alert.alert(
+          "Walker Treker can't connect to your phone's pedometer. Try closing the app and opening it again."
+        );
+      }
+    );
+    const receivedNewData = await dispatch({ type: c.GET_STEPS });
+    console.log("steps from c.GET_STEPS", receivedNewData);
+    return receivedNewData
+      ? BackgroundFetch.Result.NewData
+      : BackgroundFetch.Result.NoData;
+  } catch (error) {
+    console.log("error with getting pedometer task", error);
+    console.log(
+      "error with background.fetch.rsult.failed",
+      BackgroundFetch.Result.Failed
+    );
+    return BackgroundFetch.Result.Failed;
+  }
+});
+
+registerTaskAsync = async () => {
+  console.log("INSIDE register task async");
+  const status = await BackgroundFetch.getStatusAsync();
+
+  switch (status) {
+    case BackgroundFetch.Status.Restricted:
+      console.log("bg fetch status: Restrict");
+      break;
+    case BackgroundFetch.Status.Denied:
+      console.log("bg fetch status: Background execution is disabled");
+      break;
+    case BackgroundFetch.Status.Available: {
+      console.log("bg fetch status: Available");
+      await BackgroundFetch.registerTaskAsync(taskName);
+      console.log("task registered");
+      const tasks = await TaskManager.getRegisteredTasksAsync();
+      console.log("bg fetch default: the identified tasks: ", tasks);
+      await BackgroundFetch.setMinimumIntervalAsync(15);
+      break;
+    }
+    default:
+      console.log("bg fetch default case reached: nothing to do");
+      break;
+  }
+};
+
 class BackgroundPedometer extends React.Component {
   componentDidMount() {
+    console.log("component did mount: BackgroundPedometer.js");
+    this.registerTaskAsync();
     const { dispatch } = this.props;
 
     if (this.props.player.id && this.props.campaign.id) {
