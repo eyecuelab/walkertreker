@@ -44,7 +44,9 @@ class SocketIO extends React.Component {
 
     socket.on("sendCampaignInfo", campaign => {
       console.log(
-        `++++ received sendCampaignInfo event from server ++++++ + ${campaign}`
+        `++++ received sendCampaignInfo event from server ++++++ + ${JSON.stringify(
+          campaign
+        )}`
       );
       dispatch({ type: c.CAMPAIGN_UPDATED, campaign });
     });
