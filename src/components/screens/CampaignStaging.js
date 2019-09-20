@@ -40,8 +40,12 @@ class CampaignStaging extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log("inside campaignstaging COMPONENENTdidUPDATE");
     console.log("campaign start date ?", this.props.campaign.startDate);
     if (this.props.campaign.startDate) {
+      console.log(".......")
+      console.log("navigating to CAMPAIGN")
+      console.log(".......")
       this.props.navigation.navigate("Campaign");
     }
   }

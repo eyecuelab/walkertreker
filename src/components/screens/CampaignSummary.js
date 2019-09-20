@@ -31,7 +31,12 @@ class CampaignSummary extends React.Component {
 
   _displayStepPercentage = player => {
     const today = this.props.campaign.currentDay;
-
+    console.log(
+      "STEPS TODAY FOR",
+      player.displayName,
+      "---AT THIS MANY:::",
+      player.steps[today]
+    );
     // Code for Percentage based Display
     const percent = Math.floor(
       (player.steps[today] / player.stepTargets[today]) * 100
