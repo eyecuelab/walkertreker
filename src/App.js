@@ -1,6 +1,8 @@
 /* eslint-disable global-require */
 import React from "react";
 import { Image } from "react-native";
+import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
 import {
   AppLoading,
   registerRootComponent,
@@ -26,9 +28,21 @@ import NotificationListeners from "./components/NotificationListeners";
 
 const { c, retrieveData } = constants;
 
+const taskName = "BACKGROUND_GET_STEPS";
+
+TaskManager.defineTask(taskName, async () => {
+  try {
+    await UserRemoteLogService.logWithTaskType("STEPS_TASK_RUNNING");
+    return BackgroundFetch.Result.NewData;
+  } catch (error) {
+    return BackgroundFetch.Result.Failed;
+  }
+});
+
 if (__DEV__) {
   activateKeepAwake();
 }
+
 class App extends React.Component {
   constructor(props) {
     super(props);
