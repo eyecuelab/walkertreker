@@ -1,5 +1,6 @@
 import React from "react";
-import Expo, { Pedometer } from "expo";
+import Expo from "expo";
+import { Pedometer } from "expo-sensors";
 import * as BackgroundFetch from "expo-background-fetch";
 import {
   StyleSheet,
@@ -24,6 +25,7 @@ class BackgroundPedometer extends React.Component {
     const { dispatch } = this.props;
 
     if (this.props.player.id && this.props.campaign.id) {
+      console.log("bg_ped: getting last step state");
       dispatch({ type: c.GET_LAST_STEP_STATE });
     }
 
@@ -46,6 +48,7 @@ class BackgroundPedometer extends React.Component {
         this.props.steps.campaignDateArray !== null &&
         this.props.player.id !== null
       ) {
+        console.log("bg_ped: INTERVAl getting steps");
         dispatch({ type: c.GET_STEPS });
       }
     }, 60000);
@@ -67,12 +70,14 @@ class BackgroundPedometer extends React.Component {
     const { dispatch } = this.props;
     Pedometer.isAvailableAsync().then(
       response => {
+        console.log("PEDO_AVAILABLE,", response);
         dispatch({
           type: c.IS_PEDOMETER_AVAILABLE,
           pedometerIsAvailable: response
         });
       },
       error => {
+        console.log("ERROR WITH PEDOMETER,", error);
         // maybe dispatch an action to the store to update state instead?
         Alert.alert(
           "Walker Treker can't connect to your phone's pedometer. Try closing the app and opening it again."

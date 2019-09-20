@@ -30,7 +30,7 @@ class RandomEvent extends React.Component {
   componentDidMount = async () => {
     this.timer = setInterval(() => this._updateTime(), 1000);
     console.log("this.props.screenProps", this.props.screenProps);
-    console.log("this.props.screenProps.data", this.props.screenProps.data);
+    // console.log("this.props.screenProps.data", this.props.screenProps.data);
   };
 
   componentWillUnmount = () => {
@@ -69,10 +69,19 @@ class RandomEvent extends React.Component {
   };
 
   getEventToDisplay = async () => {
+    console.log("inside get event to display");
     const evtNumber = this.props.screenProps.notification.data.data.data
       .eventNumber;
+    console.log("evtNumber,", evtNumber);
     this.eventId = this.props.screenProps.notification.data.data.data.eventId;
+    console.log("this.eventId,", this.eventId);
+    console.log("this.props.screenProps.notification.data.data.data.eventId");
+    console.log(
+      "--->",
+      this.props.screenProps.notification.data.data.data.eventId
+    );
     this.evt = events[evtNumber - 1];
+    console.log("this.evt", this.evt);
     this.props.dispatch({ type: c.NEW_EVENT, event: this.evt });
   };
 
@@ -115,9 +124,9 @@ class RandomEvent extends React.Component {
         backgroundImage={this.props.screenProps.backgroundImage}
         onVote={opt => this._vote(opt)}
         timeLeft={this.state.timeLeft}
-        // antecedent={this.evt.antecedent}
-        // optionAButton={this.evt.optionAButton}
-        // optionBButton={this.evt.optionBButton}
+        antecedent={this.evt.antecedent}
+        optionAButton={this.evt.optionAButton}
+        optionBButton={this.evt.optionBButton}
       />
     );
   }
@@ -145,7 +154,7 @@ RandomEvent.propTypes = {
   }).isRequired,
   campaign: PropTypes.shape({
     id: PropTypes.string,
-    completedEvents: PropTypes.arrayOf()
+    completedEvents: PropTypes.arrayOf(PropTypes.number)
   }).isRequired
 };
 

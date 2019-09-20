@@ -185,7 +185,6 @@ class App extends React.Component {
       return (
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={ActivityIndicator}>
-            <BackgroundPedometer />
             <SocketIO />
             <NotificationListeners />
             <BackgroundPedometer />
