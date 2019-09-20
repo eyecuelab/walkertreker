@@ -31,6 +31,9 @@ const { c, retrieveData } = constants;
 const taskName = "BACKGROUND_GET_STEPS";
 
 TaskManager.defineTask(taskName, async () => {
+  console.log(
+    "TaskManager.defineTask successfully fired off -------------------------------------------"
+  );
   try {
     await UserRemoteLogService.logWithTaskType("STEPS_TASK_RUNNING");
     return BackgroundFetch.Result.NewData;
@@ -38,6 +41,12 @@ TaskManager.defineTask(taskName, async () => {
     return BackgroundFetch.Result.Failed;
   }
 });
+
+BackgroundFetch.registerTaskAsync(taskName, {
+  minimumInterval: 60,
+  stopOnTerminate: false,
+  startOnBoot: true
+}).then(() => BackgroundFetch.setMinimumIntervalAsync(60));
 
 if (__DEV__) {
   activateKeepAwake();
