@@ -23,19 +23,17 @@ export const getCampaign = state => state.campaign;
 
 export function* fetchSteps() {
   const steps = yield select(getSteps);
-  console.log("getSteps from fetchSteps:", steps);
   const dates = steps.campaignDateArray;
   const datesCopy = JSON.parse(JSON.stringify(dates));
 
   // Here we could only loop through the dates that are relevent (speed it up)
   // eslint-disable-next-line no-restricted-syntax, no-undef
   for (obj of datesCopy) {
-    console.log("fetch steps loop, day ", obj.start); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
+    // console.log("fetch steps loop, day ", obj.start); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
     try {
       const start = new Date(Date.parse(obj.start)); // eslint-disable-line no-undef
       const end = new Date(Date.parse(obj.end)); // eslint-disable-line no-undef
       const response = yield Pedometer.getStepCountAsync(start, end);
-      console.log("FECH STEPS: PEDOMETER.getStepCountAsync--------", response);
       const stepsToAdd = response.steps;
       const dateWithSteps = { ...datesCopy[obj.day], steps: stepsToAdd }; // eslint-disable-line no-undef
       datesCopy.splice(obj.day, 1, dateWithSteps); // eslint-disable-line no-undef
@@ -314,14 +312,6 @@ export function* startCampaign(action) {
   };
   try {
     const response = yield fetch(url, initObj).then(res => res.json());
-    console.log("RESPONSE from STARTCAMPAIGN genny function--------", response);
-    console.log("--------");
-    console.log("--------");
-    console.log("--------");
-    console.log(
-      "RESPONSE from STARTCAMPAIGN genny function STRINGIFIED--------",
-      response.JSON.stringify()
-    );
     yield put({ type: c.CAMPAIGN_STARTED, campaign: response });
   } catch (error) {
     console.warn("error starting campaign: ", error);
@@ -364,7 +354,9 @@ export function* castPlayerVote(action) {
   };
   try {
     const response = yield fetch(url, initObj).then(res => res.json());
-    // yield put({type: c.PLAYER_VOTE_CAST, vote: response});
+    console.log("Response from post to votes------", response);
+    console.log("------dispatching--- PLAYER_VOTE_CAST");
+    yield put({ type: c.PLAYER_VOTE_CAST, vote: response });
   } catch (error) {
     console.warn("error casting player vote details: ", error);
   }
@@ -640,6 +632,7 @@ export function* watchPlayerStepsUpdated() {
 // ////////////////////////
 
 export function* fetchEventInfo(action) {
+  console.log("ACTION from fetchEventInfo", action);
   const url = `${endpoint}/api/events/campaign/${action.campaignId}`;
   const initObj = {
     method: "GET",
@@ -650,6 +643,7 @@ export function* fetchEventInfo(action) {
   };
   try {
     const response = yield fetch(url, initObj).then(res => res.json());
+    console.log("EVENTS INFO FETCHED", response);
     yield put({ type: c.EVENT_INFO_FETCHED, events: response });
   } catch (error) {
     console.warn("error fetching event info:", error);
