@@ -14,12 +14,13 @@ function EventParticipation(props) {
           return ac;
         }, false);
         if (playerVoted) {
-          return +acc;
+          let num = acc;
+          num += 1;
+          return num;
         }
         return acc;
       }, 0);
-
-      return events.length ? `(${(eventsVoted / events.length) * 100}%` : "0%";
+      return events.length ? `${(eventsVoted / events.length) * 100}%` : "0%";
     }
     return "0%";
   };
