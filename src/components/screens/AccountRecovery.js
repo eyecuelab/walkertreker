@@ -21,7 +21,7 @@ import SingleButtonFullWidth from "../ui/SingleButtonFullWidth";
 import posed from "react-native-pose";
 // import defaultStyle from "../../styles/defaultStyle";
 import constants from "../../constants";
-import { /* OpacityContainer, */ ScreenContainer, Footer } from "../containers";
+import { /* OpacityContainer, ScreenContainer, */ Footer } from "../containers";
 // import { Transition } from "react-navigation-fluid-transitions";
 
 const { c } = constants;
@@ -30,9 +30,19 @@ const paint = require("../../../assets/paintstroke/Paint_Stroke_alt.png");
 const widthUnit = wp("1%");
 const heightUnit = hp("1%");
 const customStyles = StyleSheet.create({
+  screenContainer: {
+    padding: widthUnit * 5,
+    paddingTop: heightUnit * 6,
+    backgroundColor: "black",
+    flex: 1,
+    height: "100%"
+  },
   fieldContainer: {
     padding: 6,
-    marginBottom: heightUnit * 3
+    marginBottom: heightUnit * 3,
+    height: heightUnit * 11,
+    width: "auto",
+    marginLeft: -10
   },
   headerContainer: {
     marginTop: heightUnit * 4
@@ -49,7 +59,7 @@ const customStyles = StyleSheet.create({
   },
   textInput: {
     width: "100%",
-    marginTop: 5,
+    marginTop: 15,
     paddingTop: heightUnit * 1,
     paddingBottom: heightUnit * 2,
     paddingLeft: widthUnit * 1,
@@ -57,12 +67,12 @@ const customStyles = StyleSheet.create({
     fontFamily: "gore",
     fontSize: widthUnit * 6,
     zIndex: 0,
-    marginLeft: 20
+    marginLeft: 35
   },
   labelPosition: {
     position: "absolute",
-    bottom: heightUnit * 2,
-    left: widthUnit * 1.8,
+    bottom: heightUnit * 3,
+    left: widthUnit * 7,
     padding: 2,
     zIndex: 1
   }
@@ -134,7 +144,7 @@ class RecoverAccountModal extends React.Component {
 
   render() {
     return (
-      <ScreenContainer style={{ backgroundColor: "black" }}>
+      <View style={customStyles.screenContainer}>
         <View style={customStyles.headerContainer}>
           <MainHeader style={{ textAlign: "center" }}>
             Account Recovery
@@ -197,7 +207,7 @@ class RecoverAccountModal extends React.Component {
             </TextAlt>
           </View>
         </Footer>
-      </ScreenContainer>
+      </View>
     );
   }
 }
