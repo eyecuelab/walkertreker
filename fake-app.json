@@ -3,11 +3,8 @@
     "name": "Walker Treker",
     "slug": "walkertreker",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "sdkVersion": "33.0.0",
+    "platforms": ["ios", "android"],
     "entryPoint": "./src/App.js",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,9 +17,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.eyecuelab.walkertreker"
@@ -34,9 +29,9 @@
         "googleSignIn": {
           "certificateHash": "XXXXX",
           "apiKey": "XXXXX"
-        },
-      },
+        }
+      }
     },
-    "scheme": "walkertreker",
+    "scheme": "walkertreker"
   }
 }
