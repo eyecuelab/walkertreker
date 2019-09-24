@@ -1,5 +1,8 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { persistStore, persistReducer, purgeStoredState } from "redux-persist";
+import {
+  persistStore,
+  persistReducer /* , purgeStoredState */
+} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
@@ -16,15 +19,17 @@ const configureStore = () => {
 
   /* THE BELOW METHODS ARE FOR WHEN YOU NEED TO CLEAR PERSISTED STATE STORAGE; You only need one. */
 
-  // persistConfig.storage.clear();
+  persistConfig.storage.clear();
   // purgeStoredState(persistConfig);
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(
     persistedReducer,
     undefined,
-    applyMiddleware(sagaMiddleware)
+    composeEnhancers(applyMiddleware(sagaMiddleware))
   );
   sagaMiddleware.run(rootSaga);
   return store;
