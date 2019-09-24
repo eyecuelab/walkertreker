@@ -25,19 +25,22 @@ import { store, persistor } from "./store";
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
+import { checkBonusSteps } from "./sagas";
 
 const { c, retrieveData } = constants;
 
 const taskName = "BACKGROUND_GET_STEPS";
+const stepUpdate = checkBonusSteps();
 
 TaskManager.defineTask(taskName, async () => {
-  console.log(
-    "TaskManager.defineTask successfully fired off -------------------------------------------"
-  );
   try {
-    await UserRemoteLogService.logWithTaskType("STEPS_TASK_RUNNING");
-    return BackgroundFetch.Result.NewData;
+    console.log("inside .defineTask try block");
+    const receivedNewData = ""; // BackgroundFetch Logic goes here
+    return receivedNewData
+      ? BackgroundFetch.Result.NewData
+      : BackgroundFetch.Result.NoData;
   } catch (error) {
+    console.log(error);
     return BackgroundFetch.Result.Failed;
   }
 });
