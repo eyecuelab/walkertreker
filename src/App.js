@@ -8,15 +8,15 @@ import {
   Linking,
   ActivityIndicator
 } from "expo";
-import KeepAwake, { activateKeepAwake } from "expo-keep-awake";
+import { /* KeepAwake, */ activateKeepAwake } from "expo-keep-awake";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import { AppContainer } from "./nav/router";
 import NavigationService from "./nav/NavigationService";
 import { PersistGate } from "redux-persist/integration/react";
-import { withNavigation } from "react-navigation";
+// import { withNavigation } from "react-navigation";
 
-import { Provider, connect, dispatch } from "react-redux";
+import { Provider, connect /* , dispatch */ } from "react-redux";
 import constants from "./constants";
 import { store, persistor } from "./store";
 
@@ -25,6 +25,31 @@ import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
 
 const { c, retrieveData } = constants;
+
+// CODE BELOW LOGS XML REQUESTS IN REACT-NATIVE-DEBUGGER vvvvvvvv
+global.XMLHttpRequest = global.originalXMLHttpRequest
+  ? global.originalXMLHttpRequest
+  : global.XMLHttpRequest;
+global.FormData = global.originalFormData
+  ? global.originalFormData
+  : global.FormData;
+
+// fetch // Ensure to get the lazy property
+
+if (window.__FETCH_SUPPORT__) {
+  // it's RNDebugger only to have
+  window.__FETCH_SUPPORT__.blob = false;
+} else {
+  /*
+   * Set __FETCH_SUPPORT__ to false is just work for `fetch`.
+   * If you're using another way you can just use the native Blob and remove the `else` statement
+   */
+  global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
+  global.FileReader = global.originalFileReader
+    ? global.originalFileReader
+    : global.FileReader;
+}
+// CODE ABOVE LOGS XML REQUEST IN REACT-NATIVE-DEBUGGER ^^^^^^^^
 
 if (__DEV__) {
   activateKeepAwake();
