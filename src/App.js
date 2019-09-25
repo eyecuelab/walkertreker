@@ -3,6 +3,7 @@ import React from "react";
 import { Image } from "react-native";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
+import { Pedometer } from "expo";
 import {
   AppLoading,
   registerRootComponent,
@@ -10,6 +11,15 @@ import {
   Linking,
   ActivityIndicator
 } from "expo";
+import {
+  put,
+  take,
+  takeEvery,
+  takeLatest,
+  all,
+  call,
+  select
+} from "redux-saga/effects";
 import KeepAwake, { activateKeepAwake } from "expo-keep-awake";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
@@ -25,20 +35,19 @@ import { store, persistor } from "./store";
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
-import { checkBonusSteps } from "./sagas";
+import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 
-const { c, retrieveData } = constants;
+const { c, retrieveData, storeData } = constants;
 
 const taskName = "BACKGROUND_GET_STEPS";
-const stepUpdate = checkBonusSteps();
 
 TaskManager.defineTask(taskName, async () => {
   try {
     console.log("inside .defineTask try block");
-    const receivedNewData = ""; // BackgroundFetch Logic goes here
-    return receivedNewData
-      ? BackgroundFetch.Result.NewData
-      : BackgroundFetch.Result.NoData;
+    const receivedNewData = () => {
+      store.dispatch({ type: c.BACKGROUND_GET_STEPS });
+    }; // BackgroundFetch Logic goes here
+    return receivedNewData;
   } catch (error) {
     console.log(error);
     return BackgroundFetch.Result.Failed;

@@ -53,6 +53,18 @@ export function* updatePlayerSteps(action) {
   yield put({ type: c.UPDATE_PLAYER_STEPS, steps: simpleArray });
 }
 
+//=================================================================================================
+// Background Fetch Worker Saga
+//=================================================================================================
+
+// export function* backgroundFetchGetSteps() {
+
+// }
+
+//=================================================================================================
+// Background Fetch Worker Saga
+//=================================================================================================
+
 export function* setInitialCampaignDetails(action) {
   console.log("setting campaign");
   const url = `${endpoint}/api/campaigns`;
@@ -611,26 +623,20 @@ export function* watchStepUpdates() {
   yield takeEvery(c.STEPS_RECEIVED, updatePlayerSteps);
 }
 
-// export function* watchPlayerStepsUpdated() {
-//   while (true) {
-//     yield take(c.UPDATE_PLAYER_STEPS);
-//     const player = yield select(getPlayer);
-//     yield put({
-//       type: c.UPDATE_PLAYER,
-//       playId: player.id,
-//       steps: player.steps
-//     });
-//   }
-// }
-
 export function* watchPlayerStepsUpdated() {
-  yield take(c.UPDATE_PLAYER_STEPS);
-  const player = yield select(getPlayer);
-  yield put({
-    type: c.UPDATE_PLAYER,
-    playId: player.id,
-    steps: player.steps
-  });
+  while (true) {
+    yield take(c.UPDATE_PLAYER_STEPS);
+    const player = yield select(getPlayer);
+    yield put({
+      type: c.UPDATE_PLAYER,
+      playId: player.id,
+      steps: player.steps
+    });
+  }
+}
+
+export function* watchBackgroundSteps() {
+  yield takeLatest(c.BACKGROUND_GET_STEPS, fetchSteps);
 }
 
 // //////////////////////////
@@ -792,6 +798,7 @@ export default function* rootSaga() {
     watchReceiveInventory(),
     watchCastVote(),
     watchUpdateJournal(),
-    watchFetchEventInfo()
+    watchFetchEventInfo(),
+    watchBackgroundSteps()
   ]);
 }
