@@ -19,7 +19,7 @@ export const getPlayer = state => state.player;
 export const getCampaign = state => state.campaign;
 
 // worker sagas ==============================
-
+/* eslint-disable */
 export function* fetchSteps() {
   const steps = yield select(getSteps);
   const dates = steps.campaignDateArray;
@@ -44,6 +44,7 @@ export function* fetchSteps() {
   yield storeData("stepInfo", JSON.stringify(steps));
   yield put({ type: c.STEPS_RECEIVED, campaignDateArray: datesCopy });
 }
+/* eslint-enable */
 
 export function* updatePlayerSteps(action) {
   const simpleArray = [];
