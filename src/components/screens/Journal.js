@@ -29,6 +29,11 @@ class Journal extends React.Component {
   componentWillMount() {
     this.getEntriesByDay();
     this.scrollY = new Animated.Value(0);
+    console.log("∞∞∞")
+    // console.log("this.props.campaign.journals", this.props.campaign.journals)
+    console.log("∞∞∞")
+    // console.log("this.props.campaign", this.props.campaign)
+    console.log("∞∞∞")
   }
 
   componentDidMount() {
@@ -36,6 +41,11 @@ class Journal extends React.Component {
     this.focusListener = navigation.addListener("didFocus", async () => {
       this.evaluateFocusedDay();
     });
+    console.log("∞∞∞")
+    // console.log("this.props.campaign.journals", this.props.campaign.journals)
+    console.log("∞∞∞")
+    // console.log("this.props.campaign", this.props.campaign)
+    console.log("∞∞∞")
   }
 
   componentWillUnmount() {
@@ -63,14 +73,11 @@ class Journal extends React.Component {
         if (entry.entryDay !== currentDay) {
           index = 0;
           entryObj = { ...entryObj, [entry.entryDay]: { [index]: entry } };
-          currentDay = +currentDay;
+          currentDay += 1;
         } else {
-          const newDay = {
-            [entry.entryDay]: { ...entryObj[entry.entryDay], [index]: entry }
-          };
-          entryObj = { ...entryObj, newDay };
+          entryObj = { ...entryObj, [entry.entryDay]: {...entryObj[entry.entryDay], [index]: entry } };
         }
-        index = +index;
+        index += 1;
       });
       this.entryObj = entryObj;
       await this.evaluateFocusedDay();
