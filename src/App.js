@@ -131,7 +131,7 @@ class App extends React.Component {
 
     await Promise.all([
       Font.loadAsync({
-        gore: require("../assets/fonts/goreRough.otf"),
+        gore: require("../assets/fonts/goreRough.ttf"),
         verdana: require("../assets/fonts/verdana.ttf"),
         verdanaBold: require("../assets/fonts/verdanaBold.ttf"),
         "Gill Sans MT Condensed": require("../assets/fonts/gillSansCondensed.ttf"),
