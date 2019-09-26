@@ -4,15 +4,14 @@ import {
   takeEvery,
   takeLatest,
   all,
-  call,
   select
 } from "redux-saga/effects";
-import { Pedometer } from "expo";
+import { Pedometer } from "expo-sensors";
 import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 
 import constants from "./constants";
 
-const { c, storeData, retrieveData, item } = constants;
+const { c, storeData, retrieveData } = constants;
 const endpoint = FRONT_END_ENDPOINT;
 
 export const getSteps = state => state.steps;
@@ -32,12 +31,13 @@ export function* fetchSteps() {
     // console.log("fetch steps loop, day ", obj.start); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
     try {
       const start = new Date(Date.parse(obj.start)); // eslint-disable-line no-undef
-      const end = new Date(Date.parse(obj.end)); // eslint-disable-line no-undef
+      const end = new Date(Date.parse(obj.end));
       const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
       const dateWithSteps = { ...datesCopy[obj.day], steps: stepsToAdd }; // eslint-disable-line no-undef
       datesCopy.splice(obj.day, 1, dateWithSteps); // eslint-disable-line no-undef
     } catch (error) {
+      console.log("fetch steps FAILED");
       yield put({ type: c.STEPS_FAILED, error });
     }
   }
