@@ -37,6 +37,7 @@ import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
 import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
+import { BACKGROUND_GET_STEPS } from "./constants/actionTypes";
 
 const { c, retrieveData, storeData } = constants;
 
@@ -45,15 +46,17 @@ const taskName = "BACKGROUND_GET_STEPS";
 TaskManager.defineTask(taskName, async () => {
   try {
     console.log("inside .defineTask try block");
-    const receivedNewData = () => {
-      store.dispatch({ type: c.BACKGROUND_GET_STEPS });
-    }; // BackgroundFetch Logic goes here
+    const receivedNewData = await store.dispatch({
+      type: c.BACKGROUND_GET_STEPS
+    }); // BackgroundFetch Logic goes here
     return receivedNewData;
   } catch (error) {
     console.log(error);
     return BackgroundFetch.Result.Failed;
   }
 });
+
+console.log(".isTaskDefined: " + TaskManager.isTaskDefined(taskName));
 
 BackgroundFetch.registerTaskAsync(taskName, {
   minimumInterval: 60,
