@@ -13,10 +13,23 @@ import {
 } from "react-native-responsive-screen";
 import ScreenContainer from "../containers/ScreenContainer";
 import { SubHeader } from "../text";
-import defaultStyle from "../../styles/defaultStyle";
 import JournalDisplay from "../ui/JournalUI/JournalDisplay";
 import ScrollSlider from "../ui/ScrollSlider";
 import AnimatedCampaignHeader from "../ui/AnimatedCampaignHeader";
+import PropTypes from "prop-types";
+
+const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const customStyles = StyleSheet.create({
+  noJournalWarning: {
+    letterSpacing: widthUnit * 0.5,
+    lineHeight: widthUnit * 8,
+    padding: "10%",
+    marginTop: widthUnit * 10,
+    textAlign: "center",
+    width: "100%"
+  }
+});
 
 class Journal extends React.Component {
   constructor(props) {
@@ -29,11 +42,6 @@ class Journal extends React.Component {
   componentWillMount() {
     this.getEntriesByDay();
     this.scrollY = new Animated.Value(0);
-    console.log("∞∞∞")
-    // console.log("this.props.campaign.journals", this.props.campaign.journals)
-    console.log("∞∞∞")
-    // console.log("this.props.campaign", this.props.campaign)
-    console.log("∞∞∞")
   }
 
   componentDidMount() {
@@ -41,11 +49,6 @@ class Journal extends React.Component {
     this.focusListener = navigation.addListener("didFocus", async () => {
       this.evaluateFocusedDay();
     });
-    console.log("∞∞∞")
-    // console.log("this.props.campaign.journals", this.props.campaign.journals)
-    console.log("∞∞∞")
-    // console.log("this.props.campaign", this.props.campaign)
-    console.log("∞∞∞")
   }
 
   componentWillUnmount() {
@@ -65,7 +68,7 @@ class Journal extends React.Component {
     if (this.props.campaign.journals) {
       // need to sort entries by day first
       const sortedJournals = this.props.campaign.journals.slice(0);
-      sortedJournals.sort(function(a, b) {
+      sortedJournals.sort((a, b) => {
         return a.entryDay - b.entryDay;
       });
       // then create the entry object for display
@@ -75,7 +78,10 @@ class Journal extends React.Component {
           entryObj = { ...entryObj, [entry.entryDay]: { [index]: entry } };
           currentDay += 1;
         } else {
-          entryObj = { ...entryObj, [entry.entryDay]: {...entryObj[entry.entryDay], [index]: entry } };
+          entryObj = {
+            ...entryObj,
+            [entry.entryDay]: { ...entryObj[entry.entryDay], [index]: entry }
+          };
         }
         index += 1;
       });
@@ -132,25 +138,16 @@ class Journal extends React.Component {
   }
 }
 
-const styles = StyleSheet.create(defaultStyle);
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const customStyles = StyleSheet.create({
-  noJournalWarning: {
-    letterSpacing: widthUnit * 0.5,
-    lineHeight: widthUnit * 8,
-    padding: "10%",
-    marginTop: widthUnit * 10,
-    textAlign: "center",
-    width: "100%"
-  }
-});
-
 function mapStateToProps(state) {
   return {
-    campaign: state.campaign,
-    player: state.player
+    campaign: state.campaign
   };
 }
 
 export default connect(mapStateToProps)(Journal);
+
+Journal.propTypes = {
+  campaign: PropTypes.shape().isRequired,
+  navigation: PropTypes.shape().isRequired,
+  screenProps: PropTypes.shape().isRequired
+};
