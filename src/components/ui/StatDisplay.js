@@ -42,8 +42,4 @@ StatDisplay.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape()).isRequired
 };
 
-StatDisplay.defaultTypes = {
-  data: []
-};
-
 export default StatDisplay;
