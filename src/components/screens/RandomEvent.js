@@ -158,7 +158,3 @@ RandomEvent.propTypes = {
     completedEvents: PropTypes.arrayOf(PropTypes.number)
   }).isRequired
 };
-
-RandomEvent.defaultTypes = {
-  screenProps: {}
-};
