@@ -20,7 +20,9 @@ function EventParticipation(props) {
         }
         return acc;
       }, 0);
-      return events.length ? `${(eventsVoted / events.length) * 100}%` : "0%";
+      return events.length
+        ? `${((eventsVoted / events.length) * 100).toFixed(0)}%`
+        : "0%";
     }
     return "0%";
   };
