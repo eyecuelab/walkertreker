@@ -24,12 +24,60 @@ import FoodModal from "../ui/FoodModal";
 import MedicineModal from "../ui/MedicineModal";
 import WeaponModal from "../ui/WeaponModal";
 
+import PropTypes from "prop-types";
+
 const bg1 = require("../../../assets/buttontexture1.png");
 const bg2 = require("../../../assets/buttontexture2.png");
 const bg3 = require("../../../assets/buttontexture3.png");
 
 const { c, item } = constants;
 const { foodArray, medicineArray, weaponArray } = item;
+
+const styles = StyleSheet.create(defaultStyle);
+const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const customStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  text: {
+    color: "skyblue"
+  },
+  bottom: {
+    flex: 0.7,
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center"
+    // marginBottom: widthUnit*2,
+  },
+  inventoryContainer: {
+    flex: 1,
+    width: "100%",
+    // flexDirection: 'row',
+    // alignItems: 'flex-start',
+    flexWrap: "wrap"
+  },
+  itemContainer: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: widthUnit * 2.5
+  },
+  buttonContainer: {
+    // marginTop: heightUnit*3,
+    width: "100%",
+    height: heightUnit * 8,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  item: {
+    width: widthUnit * 21,
+    height: widthUnit * 21,
+    marginRight: widthUnit
+  }
+});
 
 class Inventory extends React.Component {
   constructor(props) {
@@ -214,6 +262,8 @@ class Inventory extends React.Component {
                   const value = arr[0];
                   const index = arr[1];
                   const img = foodArray[value];
+                  console.log("FOODITEMS index", index);
+                  console.log("FOODITEMS list", this.foodItems);
                   return (
                     <TouchableOpacity
                       key={index}
@@ -239,6 +289,8 @@ class Inventory extends React.Component {
                   const value = arr[0];
                   const index = arr[1];
                   const img = medicineArray[value];
+                  console.log("MEDICINE ITEMS index", index);
+                  console.log("MEDICINE ITEMS list", this.medicineItems);
                   return (
                     <TouchableOpacity
                       key={index}
@@ -264,6 +316,8 @@ class Inventory extends React.Component {
                   const value = arr[0];
                   const index = arr[1];
                   const img = weaponArray[value];
+                  console.log("WEAPON Items index", index);
+                  console.log("WEAPON Items list", this.weaponItems);
                   return (
                     <TouchableOpacity
                       key={index}
@@ -288,58 +342,21 @@ class Inventory extends React.Component {
   }
 }
 
-const styles = StyleSheet.create(defaultStyle);
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const customStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  text: {
-    color: "skyblue"
-  },
-  bottom: {
-    flex: 0.7,
-    width: "100%",
-    justifyContent: "flex-end",
-    alignItems: "center"
-    // marginBottom: widthUnit*2,
-  },
-  inventoryContainer: {
-    flex: 1,
-    width: "100%",
-    // flexDirection: 'row',
-    // alignItems: 'flex-start',
-    flexWrap: "wrap"
-  },
-  itemContainer: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: widthUnit * 2.5
-  },
-  buttonContainer: {
-    // marginTop: heightUnit*3,
-    width: "100%",
-    height: heightUnit * 8,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  item: {
-    width: widthUnit * 21,
-    height: widthUnit * 21,
-    marginRight: widthUnit
-  }
-});
-
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
-    player: state.player,
-    steps: state.steps
+    player: state.player
+    // steps: state.steps
   };
 }
+
+Inventory.propTypes = {
+  campaign: PropTypes.shape().isRequired,
+  player: PropTypes.shape().isRequired,
+  // steps: PropTypes.shape(),
+  navigation: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired,
+  screenProps: PropTypes.shape().isRequired
+};
 
 export default connect(mapStateToProps)(Inventory);
