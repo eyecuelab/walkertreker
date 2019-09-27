@@ -93,9 +93,7 @@ ButtonToggle.propTypes = {
   label: PropTypes.string,
   active: PropTypes.bool,
   color: PropTypes.string,
-  /* eslint-disable */
-  background: PropTypes.any
-  /* eslint-enable */
+  background: PropTypes.number
 };
 
 // This only toggles when rendered from the CreateCampaign component
@@ -107,5 +105,5 @@ ButtonToggle.defaultProps = {
   value: "",
   label: "",
   color: "",
-  background: ""
+  background: 0
 };
