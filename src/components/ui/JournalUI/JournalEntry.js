@@ -100,18 +100,16 @@ class JournalEntry extends React.Component {
   }
 }
 
-export default JournalEntry;
-
-/* eslint-disable */
 JournalEntry.propTypes = {
   entry: PropTypes.string,
   votingList: PropTypes.arrayOf(PropTypes.any),
   eventNumber: PropTypes.number
 };
-/* eslint-enable */
 
-JournalEntry.defaultTypes = {
+JournalEntry.defaultProps = {
   entry: "",
   votingList: [],
   eventNumber: 0
 };
+
+export default JournalEntry;
