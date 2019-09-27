@@ -12,6 +12,7 @@ import {
 } from "react-native-responsive-screen";
 import { withNavigation } from "react-navigation";
 import AnimatedJournalText from "./JournalUI/AnimatedJournalText";
+import ShortId from "shortid";
 
 import { SubHeader } from "../text";
 
@@ -72,32 +73,26 @@ class ScrollSlider extends React.Component {
           </View>
 
           {Object.keys(this.props.dataObj).map((key, index) => {
-            console.log(
-              "SCROLL SLIDER-------this.props.dataObj",
-              this.props.dataObj
-            );
-            console.log("SCROLL SLIDER-------this.props.dataObj index,", index);
-            // (key = parseInt(key))
+            const num = ShortId.generate();
+            const day = index + 1;
             return (
-              /* eslint-disable */
               <TouchableWithoutFeedback
-                key={index}
+                key={num}
                 onPress={() => {
-                  this.props.onSliderClick(key);
+                  this.props.onSliderClick(day);
                 }}
-                /* eslint-enable */
               >
                 <View style={customStyles.elementOnSlider}>
-                  {key === this.props.focused ? (
+                  {day === this.props.focused ? (
                     <AnimatedJournalText
                       style={{ textAlign: "center" }}
                       isFocused
                     >
-                      {this.props.label} {key}
+                      {this.props.label} {day}
                     </AnimatedJournalText>
                   ) : (
                     <SubHeader style={customStyles.unfocused}>
-                      {this.props.label} {key}
+                      {this.props.label} {day}
                     </SubHeader>
                   )}
 
