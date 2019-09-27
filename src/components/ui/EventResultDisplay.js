@@ -113,7 +113,11 @@ class EventResultDisplay extends React.Component {
 
             {
               <TwoButtonOverlay
-                button1title="See Group Votes"
+                button1title={
+                  this.state.showGroupVotes
+                    ? "Result of Event"
+                    : "See Group Votes"
+                }
                 button1onPress={this._toggleGroupVotes}
                 button2title="Campaign"
                 button2onPress={() => this.props.navigateBack()}
