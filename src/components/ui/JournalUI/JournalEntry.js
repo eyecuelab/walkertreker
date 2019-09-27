@@ -7,6 +7,7 @@ import {
 } from "react-native-responsive-screen";
 import constants from "../../../constants";
 import { MainText, TextWithBackground } from "../../text";
+import ShortId from "shortid";
 
 const { paint } = constants;
 const { paintArray } = paint;
@@ -70,21 +71,15 @@ class JournalEntry extends React.Component {
               </MainText>
               {this.props.eventNumber && this.props.votingList.length ? (
                 <View style={customStyles.playerVotes}>
-                  {this.props.votingList.map((vote, index) => {
-                    console.log("journal entry------VOTE index,", index);
-                    console.log(
-                      "journal entry------VOTING LIST,",
-                      this.props.votingList
-                    );
-                    /* eslint-disable */
+                  {this.props.votingList.map(vote => {
+                    const num = ShortId.generate();
                     return (
                       <TextWithBackground
-                        key={index}
+                        key={num}
                         text={vote}
                         image={this.getBGimage()}
                       />
                     );
-                    /* eslint-enable */
                   })}
                 </View>
               ) : null}
