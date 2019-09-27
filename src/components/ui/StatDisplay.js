@@ -8,6 +8,7 @@ import {
   /* widthPercentageToDP as wp, */
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import ShortId from "shortid";
 
 const heightUnit = hp("1%");
 
@@ -23,15 +24,12 @@ function StatDisplay(props) {
           justifyContent: "space-around"
         }}
       >
-        {props.data.map((dataItem, index) => {
-          console.log("stat display-----DATAITEM index,", index);
-          console.log("stat display-----DATA,", props.data);
+        {props.data.map(dataItem => {
+          const num = ShortId.generate();
           return (
-            /* eslint-disable */
-            <View key={index} style={{ marginRight: 5 }}>
+            <View key={num} style={{ marginRight: 5 }}>
               <StatInfoSquare value={dataItem.value} label={dataItem.label} />
             </View>
-            /* eslint-enable */
           );
         })}
       </ScrollView>
