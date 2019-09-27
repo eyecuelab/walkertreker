@@ -579,7 +579,7 @@ export function* updateHungerAndHealth(action) {
 export function* getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData("lastState");
-  console.log("----GENERATOR: GETLASTSTEPSTATE, state:", lastStateString);
+  // console.log("----GENERATOR: GETLASTSTEPSTATE, state:", lastStateString);
   let lastState;
   if (lastStateString !== undefined) {
     lastState = JSON.parse(lastStateString);
