@@ -9,6 +9,7 @@ import {
 import TwoButtonOverlay from "./TwoButtonOverlay";
 import { MainText, MainHeader } from "../text";
 import ScreenContainer from "../containers/ScreenContainer";
+import ShortId from "shortid";
 
 const event_bg = require("../../../assets/event_bg.png");
 
@@ -77,16 +78,13 @@ class EventResultDisplay extends React.Component {
     if (this.props.votesList.length) {
       return (
         <View style={[customStyles.opacityContainer, customStyles.marginTop]}>
-          {this.props.votesList.map((entry, index) => {
-            console.log("eventresult-----entry INDEX,", index);
-            console.log("eventresult-----VOTES LIST,", this.props.votesList);
-            /* eslint-disable */
+          {this.props.votesList.map(entry => {
+            const num = ShortId.generate();
             return (
-              <MainText style={customStyles.text} key={index} size="lg">
+              <MainText style={customStyles.text} key={num} size="lg">
                 {entry}
               </MainText>
             );
-            /* eslint-enable */
           })}
         </View>
       );
@@ -102,12 +100,6 @@ class EventResultDisplay extends React.Component {
   };
 
   render() {
-    console.log("this.props.resultHeader", this.props.resultHeader);
-    console.log("this.props.resultHeader", typeof this.props.resultHeader);
-    console.log("this.props.votesList", this.props.votesList);
-    console.log("this.props.votesList", typeof this.props.votesList);
-    console.log("this.props.resultText", this.props.resultText);
-    console.log("this.props.resultText", typeof this.props.resultText);
     return (
       <View style={[{ backgroundColor: "#6f655b" }, { flex: 1 }]}>
         <ImageBackground
