@@ -62,6 +62,8 @@ class ToggleBar extends Component {
     return (
       <View style={styles.container}>
         {options.map((option, index) => {
+          console.log("TOGGLE BAR------options index", index);
+          console.log("TOGGLE BAR------options", options);
           return (
             /* eslint-disable */
             <TouchableOpacity key={index}>

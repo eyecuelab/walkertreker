@@ -24,6 +24,8 @@ function StatDisplay(props) {
         }}
       >
         {props.data.map((dataItem, index) => {
+          console.log("stat display-----DATAITEM index,", index);
+          console.log("stat display-----DATA,", props.data);
           return (
             /* eslint-disable */
             <View key={index} style={{ marginRight: 5 }}>

@@ -78,11 +78,15 @@ class EventResultDisplay extends React.Component {
       return (
         <View style={[customStyles.opacityContainer, customStyles.marginTop]}>
           {this.props.votesList.map((entry, index) => {
+            console.log("eventresult-----entry INDEX,", index);
+            console.log("eventresult-----VOTES LIST,", this.props.votesList);
+            /* eslint-disable */
             return (
               <MainText style={customStyles.text} key={index} size="lg">
                 {entry}
               </MainText>
             );
+            /* eslint-enable */
           })}
         </View>
       );

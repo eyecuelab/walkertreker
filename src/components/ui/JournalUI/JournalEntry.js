@@ -71,6 +71,11 @@ class JournalEntry extends React.Component {
               {this.props.eventNumber && this.props.votingList.length ? (
                 <View style={customStyles.playerVotes}>
                   {this.props.votingList.map((vote, index) => {
+                    console.log("journal entry------VOTE index,", index);
+                    console.log(
+                      "journal entry------VOTING LIST,",
+                      this.props.votingList
+                    );
                     /* eslint-disable */
                     return (
                       <TextWithBackground

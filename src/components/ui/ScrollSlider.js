@@ -72,14 +72,20 @@ class ScrollSlider extends React.Component {
           </View>
 
           {Object.keys(this.props.dataObj).map((key, index) => {
-            
+            console.log(
+              "SCROLL SLIDER-------this.props.dataObj",
+              this.props.dataObj
+            );
+            console.log("SCROLL SLIDER-------this.props.dataObj index,", index);
             // (key = parseInt(key))
             return (
+              /* eslint-disable */
               <TouchableWithoutFeedback
                 key={index}
                 onPress={() => {
                   this.props.onSliderClick(key);
                 }}
+                /* eslint-enable */
               >
                 <View style={customStyles.elementOnSlider}>
                   {key === this.props.focused ? (
