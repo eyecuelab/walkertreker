@@ -24,6 +24,7 @@ import FoodModal from "../ui/FoodModal";
 import MedicineModal from "../ui/MedicineModal";
 import WeaponModal from "../ui/WeaponModal";
 
+import ShortId from "shortid";
 import PropTypes from "prop-types";
 
 const bg1 = require("../../../assets/buttontexture1.png");
@@ -260,10 +261,8 @@ class Inventory extends React.Component {
               <View style={customStyles.itemContainer}>
                 {this.foodItems.map(arr => {
                   const value = arr[0];
-                  const index = arr[1];
+                  const index = ShortId.generate();
                   const img = foodArray[value];
-                  console.log("FOODITEMS index", index);
-                  console.log("FOODITEMS list", this.foodItems);
                   return (
                     <TouchableOpacity
                       key={index}
@@ -287,10 +286,8 @@ class Inventory extends React.Component {
               <View style={customStyles.itemContainer}>
                 {this.medicineItems.map(arr => {
                   const value = arr[0];
-                  const index = arr[1];
+                  const index = ShortId.generate();
                   const img = medicineArray[value];
-                  console.log("MEDICINE ITEMS index", index);
-                  console.log("MEDICINE ITEMS list", this.medicineItems);
                   return (
                     <TouchableOpacity
                       key={index}
@@ -314,10 +311,8 @@ class Inventory extends React.Component {
               <View style={customStyles.itemContainer}>
                 {this.weaponItems.map(arr => {
                   const value = arr[0];
-                  const index = arr[1];
+                  const index = ShortId.generate();
                   const img = weaponArray[value];
-                  console.log("WEAPON Items index", index);
-                  console.log("WEAPON Items list", this.weaponItems);
                   return (
                     <TouchableOpacity
                       key={index}
