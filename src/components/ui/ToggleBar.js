@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Label } from "../text";
+// import ShortId from "shortid";
 
 // import { widthPercentageToDP as wp,
 // heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -34,7 +35,7 @@ class ToggleBar extends Component {
   }
 
   componentDidMount() {
-    this.setState({ selectedIndex: 0 });
+    this.setState({ selectedIndex: this.props.options[0].id });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -49,7 +50,7 @@ class ToggleBar extends Component {
   handleOnPress = index => {
     const { options } = this.props;
     this.setState({
-      selectedIndex: index,
+      selectedIndex: options[index].id,
       value:
         options[index].value !== undefined
           ? options[index].value
@@ -62,12 +63,10 @@ class ToggleBar extends Component {
     return (
       <View style={styles.container}>
         {options.map((option, index) => {
-          console.log("TOGGLE BAR------options index", index);
-          console.log("TOGGLE BAR------options", options);
+          console.log("index", index);
           return (
-            /* eslint-disable */
-            <TouchableOpacity key={index}>
-              {this.state.selectedIndex === index ? (
+            <TouchableOpacity key={option.id}>
+              {this.state.selectedIndex === option.id ? (
                 <Label style={{ color: "green" }} size="md">
                   {" "}
                   {option.label}{" "}
@@ -82,7 +81,6 @@ class ToggleBar extends Component {
                 </Label>
               )}
             </TouchableOpacity>
-            /* eslint-enable */
           );
         })}
       </View>
@@ -91,7 +89,13 @@ class ToggleBar extends Component {
 }
 
 ToggleBar.propTypes = {
-  options: PropTypes.arrayOf().isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+      id: PropTypes.string
+    })
+  ).isRequired,
   onValueChange: PropTypes.func.isRequired
 };
 
