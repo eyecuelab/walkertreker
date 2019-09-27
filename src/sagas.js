@@ -19,7 +19,7 @@ export const getPlayer = state => state.player;
 export const getCampaign = state => state.campaign;
 
 // worker sagas ==============================
-/* eslint-disable */
+
 export function* fetchSteps() {
   const steps = yield select(getSteps);
   const dates = steps.campaignDateArray;
@@ -28,13 +28,19 @@ export function* fetchSteps() {
   // Here we could only loop through the dates that are relevent (speed it up)
   // eslint-disable-next-line no-restricted-syntax, no-undef
   for (obj of datesCopy) {
-    // console.log("fetch steps loop, day ", obj.start); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
+    // console.log("fetch steps loop, day ", obj.start); // <= this is still here because it
+    // can be almost impossible to tell if this loop is working while debugging without it.
+    // it likes to stall on loop one every once and a while, so if you never see this
+    // console log hit two, it's time to restart both expo and the packager
     try {
       const start = new Date(Date.parse(obj.start)); // eslint-disable-line no-undef
-      const end = new Date(Date.parse(obj.end));
+      const end = new Date(Date.parse(obj.end)); // eslint-disable-line no-undef
       const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
-      const dateWithSteps = { ...datesCopy[obj.day], steps: stepsToAdd }; // eslint-disable-line no-undef
+      const dateWithSteps = {
+        ...datesCopy[obj.day], // eslint-disable-line no-undef
+        steps: stepsToAdd
+      }; // eslint-disable-line no-undef
       datesCopy.splice(obj.day, 1, dateWithSteps); // eslint-disable-line no-undef
     } catch (error) {
       console.log("fetch steps FAILED");
@@ -44,7 +50,6 @@ export function* fetchSteps() {
   yield storeData("stepInfo", JSON.stringify(steps));
   yield put({ type: c.STEPS_RECEIVED, campaignDateArray: datesCopy });
 }
-/* eslint-enable */
 
 export function* updatePlayerSteps(action) {
   const simpleArray = [];
