@@ -55,9 +55,14 @@ class EventResultDisplay extends React.Component {
   }
 
   _toggleGroupVotes = () => {
-    this.setState(prevState => {
-      const showGroupVotesCopy = { ...prevState.showGroupVotes };
-      return { showGroupVotes: !showGroupVotesCopy };
+    let opposite;
+    if (this.state.showGroupVotes === false) {
+      opposite = true;
+    } else if (this.state.showGroupVotes === true) {
+      opposite = false;
+    }
+    this.setState({
+      showGroupVotes: opposite
     });
   };
 
@@ -93,6 +98,12 @@ class EventResultDisplay extends React.Component {
   };
 
   render() {
+    console.log("this.props.resultHeader", this.props.resultHeader);
+    console.log("this.props.resultHeader", typeof this.props.resultHeader);
+    console.log("this.props.votesList", this.props.votesList);
+    console.log("this.props.votesList", typeof this.props.votesList);
+    console.log("this.props.resultText", this.props.resultText);
+    console.log("this.props.resultText", typeof this.props.resultText);
     return (
       <View style={[{ backgroundColor: "#6f655b" }, { flex: 1 }]}>
         <ImageBackground
@@ -114,9 +125,7 @@ class EventResultDisplay extends React.Component {
             {
               <TwoButtonOverlay
                 button1title={
-                  this.state.showGroupVotes
-                    ? "Result of Event"
-                    : "See Group Votes"
+                  this.state.showGroupVotes ? "See Event" : "See Votes"
                 }
                 button1onPress={this._toggleGroupVotes}
                 button2title="Campaign"
@@ -130,10 +139,17 @@ class EventResultDisplay extends React.Component {
   }
 }
 
-export default EventResultDisplay;
-
 EventResultDisplay.propTypes = {
-  // resultHeader: PropTypes.
-  // votesList: PropTypes.
-  // resultText: PropTypes.
+  resultHeader: PropTypes.string,
+  votesList: PropTypes.arrayOf(PropTypes.any),
+  resultText: PropTypes.string,
+  navigateBack: PropTypes.func.isRequired
 };
+
+EventResultDisplay.defaultProps = {
+  resultHeader: "",
+  votesList: [],
+  resultText: ""
+};
+
+export default EventResultDisplay;
