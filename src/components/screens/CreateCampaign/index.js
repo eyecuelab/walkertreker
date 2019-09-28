@@ -4,9 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   ImageBackground,
-  AsyncStorage,
   ScrollView
 } from "react-native";
 import { v4 } from "uuid";
@@ -16,13 +14,33 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { ButtonWithLoading } from "../../ui/Buttons";
-import TwoButtonOverlay from "../../ui/TwoButtonOverlay";
 import ThreeButtonToggle from "../../ui/ThreeButtonToggle";
 
 import defaultStyle from "../../../styles/defaultStyle";
 import constants from "../../../constants";
 
 const { c } = constants;
+
+const styles = StyleSheet.create(defaultStyle);
+const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const createCampaignStyle = StyleSheet.create({
+  buttonContainer: {
+    backgroundColor: "black",
+    width: "100%",
+    height: heightUnit * 8,
+    position: "absolute",
+    bottom: 0,
+    justifyContent: "center",
+    alignContent: "center"
+  },
+  toggleContainer: {
+    marginTop: heightUnit * 2.5
+  },
+  scrollviewContainer: {
+    height: heightUnit * 65
+  }
+});
 
 class CreateCampaign extends React.Component {
   constructor(props) {
@@ -176,29 +194,16 @@ class CreateCampaign extends React.Component {
   }
 }
 
-const styles = StyleSheet.create(defaultStyle);
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const createCampaignStyle = StyleSheet.create({
-  buttonContainer: {
-    backgroundColor: "black",
-    width: "100%",
-    height: heightUnit * 8,
-    position: "absolute",
-    bottom: 0,
-    justifyContent: "center",
-    alignContent: "center"
-  },
-  toggleContainer: {
-    marginTop: heightUnit * 2.5
-  },
-  scrollviewContainer: {
-    height: heightUnit * 65
-  }
-});
-
 CreateCampaign.propTypes = {
-  screenProps: PropTypes.any.isRequired
+  screenProps: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.shape().isRequired,
+  player: PropTypes.shape().isRequired,
+  campaign: PropTypes.shape()
+};
+
+CreateCampaign.defaultProps = {
+  campaign: {}
 };
 
 const mapStateToProps = state => {
