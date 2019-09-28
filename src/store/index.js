@@ -39,10 +39,10 @@ export const store = configureStore();
 
 export const persistor = persistStore(store, null, () => {
   // CHANGE PLAYERID AND CAMPAIGNID BELOW TO START GAME WITH A SPECIFIC GAME AND PLAYER LOADED:
-  // const playerId = ''
-  // const campaignId = ''
-  const playerId = store.getState().player.id || null;
-  const campaignId = store.getState().campaign.id || null;
+  const playerId = "217067b0-91d5-4359-8e1a-e89f3ef1172b";
+  const campaignId = "889f019c-a51d-412f-bc5f-29898e1e255e";
+  // const playerId = store.getState().player.id || null;
+  // const campaignId = store.getState().campaign.id || null;
   console.log("BEFORE ATTEMPTING TO FETCH", playerId, campaignId);
   if (playerId) {
     console.log("ATTEMPTING TO FETCH PLAYER +++++++++++++++++ \n");

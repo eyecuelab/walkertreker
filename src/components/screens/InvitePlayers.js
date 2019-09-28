@@ -300,7 +300,6 @@ function mapStateToProps(state) {
     player: state.player
   };
 }
-export default connect(mapStateToProps)(InvitePlayers);
 
 InvitePlayers.propTypes = {
   campaign: PropTypes.shape().isRequired,
@@ -310,9 +309,4 @@ InvitePlayers.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-InvitePlayers.defaultTypes = {
-  campaign: {},
-  player: {},
-  navigation: {},
-  screenProps: {}
-};
+export default connect(mapStateToProps)(InvitePlayers);

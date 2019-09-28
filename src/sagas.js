@@ -28,13 +28,19 @@ export function* fetchSteps() {
   // Here we could only loop through the dates that are relevent (speed it up)
   // eslint-disable-next-line no-restricted-syntax, no-undef
   for (obj of datesCopy) {
-    // console.log("fetch steps loop, day ", obj.start); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
+    // console.log("fetch steps loop, day ", obj.start); // <= this is still here because it
+    // can be almost impossible to tell if this loop is working while debugging without it.
+    // it likes to stall on loop one every once and a while, so if you never see this
+    // console log hit two, it's time to restart both expo and the packager
     try {
       const start = new Date(Date.parse(obj.start)); // eslint-disable-line no-undef
-      const end = new Date(Date.parse(obj.end));
+      const end = new Date(Date.parse(obj.end)); // eslint-disable-line no-undef
       const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
-      const dateWithSteps = { ...datesCopy[obj.day], steps: stepsToAdd }; // eslint-disable-line no-undef
+      const dateWithSteps = {
+        ...datesCopy[obj.day], // eslint-disable-line no-undef
+        steps: stepsToAdd
+      }; // eslint-disable-line no-undef
       datesCopy.splice(obj.day, 1, dateWithSteps); // eslint-disable-line no-undef
     } catch (error) {
       console.log("fetch steps FAILED");
@@ -578,7 +584,7 @@ export function* updateHungerAndHealth(action) {
 export function* getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData("lastState");
-  console.log("----GENERATOR: GETLASTSTEPSTATE, state:", lastStateString);
+  // console.log("----GENERATOR: GETLASTSTEPSTATE, state:", lastStateString);
   let lastState;
   if (lastStateString !== undefined) {
     lastState = JSON.parse(lastStateString);

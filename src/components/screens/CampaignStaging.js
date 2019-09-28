@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  ScrollView,
-  FlatList
-} from "react-native";
+import { StyleSheet, View, ImageBackground, ScrollView } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -19,15 +12,80 @@ import ContactsList from "../ui/ContactsList";
 import PlayersList from "../ui/PlayersList";
 import WhenToStartForm from "../ui/WhenToStartForm";
 
-import defaultStyle from "../../styles/defaultStyle";
-import constants from "../../constants";
+// import defaultStyle from "../../styles/defaultStyle";
+// import constants from "../../constants";
 
 import ScreenContainer from "../containers/ScreenContainer";
 import CampaignLobbyHeader from "../ui/CampaignLobbyHeader";
 
+import PropTypes from "prop-types";
+
 import { SubHeader } from "../text";
 
-const { c } = constants;
+// const { c } = constants;
+
+// const styles = StyleSheet.create(defaultStyle);
+
+const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const customStyles = StyleSheet.create({
+  contentContainer: {
+    width: "100%",
+    height: "90%"
+    // paddingBottom: 10,
+    // borderColor: 'white',
+    // borderWidth: 1,
+  },
+  headerContainer: {
+    flex: 1
+  },
+  headerRow: {
+    flexDirection: "row"
+  },
+  panelContainer: {
+    flex: 2.3,
+    width: "100%",
+    height: "100%",
+    paddingTop: 5,
+    marginBottom: 10,
+    borderTopColor: "white",
+    borderBottomColor: "white",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    marginTop: 10
+  },
+  scrollContainer: {
+    width: "100%",
+    flexDirection: "column"
+  },
+  scrollChildContainer: {
+    flex: 1,
+    width: "100%",
+    flexDirection: "column"
+  },
+  contactListContainer: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "flex-start",
+    // alignItems: 'center',
+    margin: 0,
+    padding: 0
+  },
+  contactListFirst: {
+    marginBottom: 25
+  },
+  contactListSecond: {
+    marginTop: 0,
+    marginBottom: 50
+  },
+  subHead: {
+    fontFamily: "gore",
+    fontSize: widthUnit * 10,
+    // lineHeight: widthUnit*10,
+    color: "white"
+  }
+});
+
 class CampaignStaging extends React.Component {
   constructor(props) {
     super(props);
@@ -100,7 +158,8 @@ class CampaignStaging extends React.Component {
   };
 
   _openKickPlayerConfirmation = () => {
-    // TODO: Pop up a confirmation modal that confirms the user wants to remove the selected player from the game.
+    // TODO: Pop up a confirmation modal that confirms the user
+    // wants to remove the selected player from the game.
     const id = this.state.selectedPlayer;
     const player = this.props.campaign.players[id];
     console.log(`Kick player ${player.displayName} from game.`);
@@ -170,73 +229,18 @@ class CampaignStaging extends React.Component {
   }
 }
 
-const styles = StyleSheet.create(defaultStyle);
-
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const customStyles = StyleSheet.create({
-  contentContainer: {
-    width: "100%",
-    height: "90%"
-    // paddingBottom: 10,
-    // borderColor: 'white',
-    // borderWidth: 1,
-  },
-  headerContainer: {
-    flex: 1
-  },
-  headerRow: {
-    flexDirection: "row"
-  },
-  panelContainer: {
-    flex: 2.3,
-    width: "100%",
-    height: "100%",
-    paddingTop: 5,
-    marginBottom: 10,
-    borderTopColor: "white",
-    borderBottomColor: "white",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    marginTop: 10
-  },
-  scrollContainer: {
-    width: "100%",
-    flexDirection: "column"
-  },
-  scrollChildContainer: {
-    flex: 1,
-    width: "100%",
-    flexDirection: "column"
-  },
-  contactListContainer: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "flex-start",
-    // alignItems: 'center',
-    margin: 0,
-    padding: 0
-  },
-  contactListFirst: {
-    marginBottom: 25
-  },
-  contactListSecond: {
-    marginTop: 0,
-    marginBottom: 50
-  },
-  subHead: {
-    fontFamily: "gore",
-    fontSize: widthUnit * 10,
-    // lineHeight: widthUnit*10,
-    color: "white"
-  }
-});
-
 function mapStateToProps(state) {
   return {
     campaign: state.campaign,
     player: state.player
   };
 }
+
+CampaignStaging.propTypes = {
+  campaign: PropTypes.shape().isRequired,
+  player: PropTypes.shape().isRequired,
+  screenProps: PropTypes.shape().isRequired,
+  navigation: PropTypes.shape().isRequired
+};
 
 export default connect(mapStateToProps)(CampaignStaging);

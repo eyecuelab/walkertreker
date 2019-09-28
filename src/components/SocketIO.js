@@ -98,8 +98,3 @@ SocketIO.propTypes = {
   }).isRequired,
   dispatch: PropTypes.func.isRequired
 };
-
-SocketIO.defaultTypes = {
-  campaign: {},
-  player: {}
-};

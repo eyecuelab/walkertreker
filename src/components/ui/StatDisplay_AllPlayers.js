@@ -14,13 +14,10 @@ class StatDisplay_AllPlayers extends Component {
 
   setValueData() {
     const { players } = this.props;
-    const data = [];
-    /* eslint-disable */
-    players.map(player => {
+    const data = players.map(player => {
       const value = this.props.setValue(player);
-      data.push({ label: player.displayName, value });
+      return { label: player.displayName, value };
     });
-    /* eslint-enable */
     return data;
   }
 
