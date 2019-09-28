@@ -64,7 +64,7 @@ export default class ButtonToggle extends React.Component {
       if (colorProps === "green") {
         return styles.green;
       }
-      return styles.red;
+      return null;
     };
 
     return (
@@ -100,10 +100,10 @@ ButtonToggle.propTypes = {
 // but not from the CampaignSummary component
 
 ButtonToggle.defaultProps = {
-  active: false,
   bigValue: false,
   value: "",
   label: "",
   color: "",
+  active: false,
   background: 0
 };
