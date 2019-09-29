@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   StyleSheet,
-  Text,
+  // Text,
   View,
-  Image,
+  // Image,
   ImageBackground,
-  TextInput,
-  TouchableOpacity,
-  AsyncStorage
+  TextInput
+  // TouchableOpacity,
+  // AsyncStorage
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -16,16 +16,67 @@ import {
 } from "react-native-responsive-screen";
 import { connect } from "react-redux";
 import { phoneNumPrettyPrint } from "../../util/util";
-import { MainHeader, SubHeader, TextAlt, Label } from "../text";
+import { MainHeader, /* SubHeader, */ TextAlt, Label } from "../text";
 import SingleButtonFullWidth from "../ui/SingleButtonFullWidth";
 import posed from "react-native-pose";
-import defaultStyle from "../../styles/defaultStyle";
+// import defaultStyle from "../../styles/defaultStyle";
 import constants from "../../constants";
-import { OpacityContainer, ScreenContainer, Footer } from "../containers";
-import { Transition } from "react-navigation-fluid-transitions";
+import { /* OpacityContainer, ScreenContainer, */ Footer } from "../containers";
+// import { Transition } from "react-navigation-fluid-transitions";
 
 const { c } = constants;
 const paint = require("../../../assets/paintstroke/Paint_Stroke_alt.png");
+
+const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const customStyles = StyleSheet.create({
+  screenContainer: {
+    padding: widthUnit * 5,
+    paddingTop: heightUnit * 6,
+    backgroundColor: "black",
+    flex: 1,
+    height: "100%"
+  },
+  fieldContainer: {
+    padding: 6,
+    marginBottom: heightUnit * 3,
+    height: heightUnit * 11,
+    width: "auto",
+    marginLeft: -10
+  },
+  headerContainer: {
+    marginTop: heightUnit * 4
+  },
+  textButtonContainer: {
+    marginTop: heightUnit * 3,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  body: {
+    justifyContent: "center",
+    alignContent: "center",
+    flex: 2
+  },
+  textInput: {
+    width: "100%",
+    marginTop: 15,
+    paddingTop: heightUnit * 1,
+    paddingBottom: heightUnit * 2,
+    paddingLeft: widthUnit * 1,
+    color: "white",
+    fontFamily: "gore",
+    fontSize: widthUnit * 6,
+    zIndex: 0,
+    marginLeft: 35
+  },
+  labelPosition: {
+    position: "absolute",
+    bottom: heightUnit * 3,
+    left: widthUnit * 7,
+    padding: 2,
+    zIndex: 1
+  }
+});
 
 const AnimatedLabel = posed.View({
   inInput: {
@@ -93,7 +144,7 @@ class RecoverAccountModal extends React.Component {
 
   render() {
     return (
-      <ScreenContainer>
+      <View style={customStyles.screenContainer}>
         <View style={customStyles.headerContainer}>
           <MainHeader style={{ textAlign: "center" }}>
             Account Recovery
@@ -156,50 +207,14 @@ class RecoverAccountModal extends React.Component {
             </TextAlt>
           </View>
         </Footer>
-      </ScreenContainer>
+      </View>
     );
   }
 }
 
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const customStyles = StyleSheet.create({
-  fieldContainer: {
-    padding: 6,
-    marginBottom: heightUnit * 3
-  },
-  headerContainer: {
-    marginTop: heightUnit * 4
-  },
-  textButtonContainer: {
-    marginTop: heightUnit * 3,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  body: {
-    justifyContent: "center",
-    alignContent: "center",
-    flex: 2
-  },
-  textInput: {
-    width: "100%",
-    marginTop: 5,
-    paddingTop: heightUnit * 1,
-    paddingBottom: heightUnit * 2,
-    paddingLeft: widthUnit * 1,
-    color: "white",
-    fontFamily: "gore",
-    fontSize: widthUnit * 6,
-    zIndex: 0,
-    marginLeft: 20
-  },
-  labelPosition: {
-    position: "absolute",
-    bottom: heightUnit * 2,
-    left: widthUnit * 1.8,
-    padding: 2,
-    zIndex: 1
-  }
-});
+RecoverAccountModal.propTypes = {
+  navigation: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired
+};
 
 export default connect()(RecoverAccountModal);

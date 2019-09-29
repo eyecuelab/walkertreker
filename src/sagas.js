@@ -4,15 +4,14 @@ import {
   takeEvery,
   takeLatest,
   all,
-  call,
   select
 } from "redux-saga/effects";
-import { Pedometer } from "expo";
+import { Pedometer } from "expo-sensors";
 import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 
 import constants from "./constants";
 
-const { c, storeData, retrieveData, item } = constants;
+const { c, storeData, retrieveData } = constants;
 const endpoint = FRONT_END_ENDPOINT;
 
 export const getSteps = state => state.steps;
@@ -35,9 +34,13 @@ export function* fetchSteps() {
       const end = new Date(Date.parse(obj.end)); // eslint-disable-line no-undef
       const response = yield Pedometer.getStepCountAsync(start, end);
       const stepsToAdd = response.steps;
-      const dateWithSteps = { ...datesCopy[obj.day], steps: stepsToAdd }; // eslint-disable-line no-undef
+      const dateWithSteps = {
+        ...datesCopy[obj.day], // eslint-disable-line no-undef
+        steps: stepsToAdd
+      }; // eslint-disable-line no-undef
       datesCopy.splice(obj.day, 1, dateWithSteps); // eslint-disable-line no-undef
     } catch (error) {
+      console.log("fetch steps FAILED");
       yield put({ type: c.STEPS_FAILED, error });
     }
   }
@@ -239,6 +242,7 @@ export function* leaveCampaign(action) {
     const response = yield fetch(url, initObj).then(res => res.json());
     console.log(response);
     yield put({ type: c.CAMPAIGN_LEFT });
+    yield put({ type: c.PLAYER_DESTROYED });
   } catch (error) {
     console.warn("error leaving campaign: ", error);
   }
@@ -365,7 +369,9 @@ export function* castPlayerVote(action) {
   };
   try {
     const response = yield fetch(url, initObj).then(res => res.json());
-    // yield put({type: c.PLAYER_VOTE_CAST, vote: response});
+    console.log("Response from post to votes------", response);
+    console.log("------dispatching--- PLAYER_VOTE_CAST");
+    yield put({ type: c.PLAYER_VOTE_CAST, vote: response });
   } catch (error) {
     console.warn("error casting player vote details: ", error);
   }
@@ -587,6 +593,7 @@ export function* updateHungerAndHealth(action) {
 export function* getLastStepState() {
   // TODO: retrieveData 'lastState' as object
   const lastStateString = yield retrieveData("lastState");
+  // console.log("----GENERATOR: GETLASTSTEPSTATE, state:", lastStateString);
   let lastState;
   if (lastStateString !== undefined) {
     lastState = JSON.parse(lastStateString);
@@ -644,6 +651,7 @@ export function* watchBackgroundSteps() {
 // ////////////////////////
 
 export function* fetchEventInfo(action) {
+  console.log("ACTION from fetchEventInfo", action);
   const url = `${endpoint}/api/events/campaign/${action.campaignId}`;
   const initObj = {
     method: "GET",
@@ -654,6 +662,7 @@ export function* fetchEventInfo(action) {
   };
   try {
     const response = yield fetch(url, initObj).then(res => res.json());
+    console.log("EVENTS INFO FETCHED", response);
     yield put({ type: c.EVENT_INFO_FETCHED, events: response });
   } catch (error) {
     console.warn("error fetching event info:", error);

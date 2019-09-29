@@ -27,7 +27,10 @@ class EventStats extends Component {
 }
 
 const mapStateToProps = state => {
-  return { campaign: state.campaign, events: state.event.events };
+  return {
+    campaign: state.campaign,
+    events: state.event.events
+  };
 };
 
 EventStats.propTypes = {

@@ -9,6 +9,7 @@ import {
 
 import ContactsListItemDisplay from "./ContactsListItemDisplay";
 import defaultStyle from "../../styles/defaultStyle";
+import ShortId from "shortid";
 
 const defaultStyleSheet = StyleSheet.create(defaultStyle);
 const styles = StyleSheet.create({
@@ -49,9 +50,10 @@ export default class ContactsList extends React.Component {
           {Object.keys(this.props.contacts).map(key => {
             const contact = this.props.contacts[key];
             const flags = this.setStatusFlags(contact);
+            const index = ShortId.generate();
             return (
               <TouchableOpacity
-                key={key}
+                key={index}
                 onPress={() => this.props.onSelectContact(contact)}
                 activeOpacity={0.6}
               >
