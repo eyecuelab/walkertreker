@@ -28,10 +28,7 @@ export function* fetchSteps() {
   // Here we could only loop through the dates that are relevent (speed it up)
   // eslint-disable-next-line no-restricted-syntax, no-undef
   for (obj of datesCopy) {
-    // console.log("fetch steps loop, day ", obj.start); // <= this is still here because it
-    // can be almost impossible to tell if this loop is working while debugging without it.
-    // it likes to stall on loop one every once and a while, so if you never see this
-    // console log hit two, it's time to restart both expo and the packager
+    console.log("fetch steps loop, day ", obj.start); // <= this is still here because it can be almost impossible to tell if this loop is working while debugging without it. it likes to stall on loop one every once and a while, so if you never see this console log hit two, it's time to restart both expo and the packager
     try {
       const start = new Date(Date.parse(obj.start)); // eslint-disable-line no-undef
       const end = new Date(Date.parse(obj.end)); // eslint-disable-line no-undef
@@ -58,6 +55,18 @@ export function* updatePlayerSteps(action) {
   });
   yield put({ type: c.UPDATE_PLAYER_STEPS, steps: simpleArray });
 }
+
+//= ================================================================================================
+// Background Fetch Worker Saga
+//= ================================================================================================
+
+// export function* backgroundFetchGetSteps() {
+
+// }
+
+//= ================================================================================================
+// Background Fetch Worker Saga
+//= ================================================================================================
 
 export function* setInitialCampaignDetails(action) {
   console.log("setting campaign");
@@ -633,6 +642,10 @@ export function* watchPlayerStepsUpdated() {
   }
 }
 
+export function* watchBackgroundSteps() {
+  yield takeLatest(c.BACKGROUND_GET_STEPS, fetchSteps);
+}
+
 // //////////////////////////
 // Event Sagas//////////////
 // ////////////////////////
@@ -794,6 +807,7 @@ export default function* rootSaga() {
     watchReceiveInventory(),
     watchCastVote(),
     watchUpdateJournal(),
-    watchFetchEventInfo()
+    watchFetchEventInfo(),
+    watchBackgroundSteps()
   ]);
 }

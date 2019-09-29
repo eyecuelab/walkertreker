@@ -1,14 +1,27 @@
 /* eslint-disable global-require */
 import React from "react";
 import { Image } from "react-native";
+import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
 import {
+  Pedometer,
   AppLoading,
   registerRootComponent,
   Notifications,
   Linking,
   ActivityIndicator
 } from "expo";
-import { /* KeepAwake, */ activateKeepAwake } from "expo-keep-awake";
+
+import {
+  put,
+  take,
+  takeEvery,
+  takeLatest,
+  all,
+  call,
+  select
+} from "redux-saga/effects";
+import KeepAwake, { activateKeepAwake } from "expo-keep-awake";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import { AppContainer } from "./nav/router";
@@ -23,8 +36,30 @@ import { store, persistor } from "./store";
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
+import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 
-const { c, retrieveData } = constants;
+const { c, retrieveData, storeData } = constants;
+
+const taskName = "BACKGROUND_GET_STEPS";
+
+TaskManager.defineTask(taskName, async () => {
+  try {
+    console.log("inside .defineTask try block");
+    const receivedNewData = () => {
+      store.dispatch({ type: c.BACKGROUND_GET_STEPS });
+    }; // BackgroundFetch Logic goes here
+    return receivedNewData;
+  } catch (error) {
+    console.log(error);
+    return BackgroundFetch.Result.Failed;
+  }
+});
+
+BackgroundFetch.registerTaskAsync(taskName, {
+  minimumInterval: 60,
+  stopOnTerminate: false,
+  startOnBoot: true
+}).then(() => BackgroundFetch.setMinimumIntervalAsync(60));
 
 // CODE BELOW LOGS XML REQUESTS IN REACT-NATIVE-DEBUGGER vvvvvvvv
 // global.XMLHttpRequest = global.originalXMLHttpRequest
@@ -54,6 +89,7 @@ const { c, retrieveData } = constants;
 if (__DEV__) {
   activateKeepAwake();
 }
+
 class App extends React.Component {
   constructor(props) {
     super(props);

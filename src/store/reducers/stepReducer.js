@@ -15,6 +15,12 @@ export default (state = steps, action) => {
         campaignDateArray: action.campaignDateArray
       };
 
+    case c.BACKGROUND_GET_STEPS:
+      return {
+        ...state,
+        isGettingSteps: true
+      };
+
     case c.GET_STEPS:
       return {
         ...state,
