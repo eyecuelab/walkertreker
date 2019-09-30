@@ -19,7 +19,7 @@ const configureStore = () => {
 
   /* THE BELOW METHODS ARE FOR WHEN YOU NEED TO CLEAR PERSISTED STATE STORAGE; You only need one. */
 
-  persistConfig.storage.clear();
+  // persistConfig.storage.clear();
   // purgeStoredState(persistConfig);
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);
