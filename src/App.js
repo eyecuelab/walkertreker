@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React from "react";
-import { Image } from "react-native";
+import { Image , AsyncStorage } from "react-native";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import {
@@ -38,16 +38,16 @@ import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
 import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 import { GET_STEPS } from "./constants/actionTypes";
-import { AsyncStorage } from "react-native";
+
 
 const { c, retrieveData, storeData } = constants;
 
 const taskName = "BACKGROUND_GET_STEPS";
 
 (async () => {
-  let allKeys = await AsyncStorage.getAllKeys();
+  const allKeys = await AsyncStorage.getAllKeys();
   console.log("allKeys: ", allKeys);
-  let campaignIdKey = await AsyncStorage.getItem("campaignId");
+  const campaignIdKey = await AsyncStorage.getItem("campaignId");
   console.log("campaignIdKey: ", campaignIdKey);
   console.log(
     "==========================================================================================="
@@ -58,7 +58,7 @@ const taskName = "BACKGROUND_GET_STEPS";
   console.log(
     "==========================================================================================="
   );
-  let lastStateKey = await AsyncStorage.getItem("lastState");
+  const lastStateKey = await AsyncStorage.getItem("lastState");
   console.log("lastStateKey: ", lastStateKey);
   console.log(
     "==========================================================================================="
@@ -69,7 +69,7 @@ const taskName = "BACKGROUND_GET_STEPS";
   console.log(
     "==========================================================================================="
   );
-  let persistRootKey = await AsyncStorage.getItem("persist:root");
+  const persistRootKey = await AsyncStorage.getItem("persist:root");
   console.log("persistRootKey: ", persistRootKey);
   console.log(
     "==========================================================================================="
@@ -80,7 +80,7 @@ const taskName = "BACKGROUND_GET_STEPS";
   console.log(
     "==========================================================================================="
   );
-  let stepInfoKey = await AsyncStorage.getItem("stepInfo");
+  const stepInfoKey = await AsyncStorage.getItem("stepInfo");
   console.log("stepInfoKey: ", stepInfoKey);
   console.log(
     "==========================================================================================="
@@ -111,7 +111,7 @@ TaskManager.defineTask(taskName, async () => {
   }
 });
 
-console.log(".isTaskDefined: " + TaskManager.isTaskDefined(taskName));
+console.log(`.isTaskDefined: ${  TaskManager.isTaskDefined(taskName)}`);
 
 BackgroundFetch.registerTaskAsync(taskName, {
   minimumInterval: 60,
