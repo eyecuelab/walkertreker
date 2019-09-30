@@ -1,29 +1,16 @@
 /* eslint-disable global-require */
 import React from "react";
 import { Image } from "react-native";
-import * as BackgroundFetch from "expo-background-fetch";
-import * as TaskManager from "expo-task-manager";
 import {
-  Pedometer,
   AppLoading,
+  Asset,
+  Font,
   registerRootComponent,
+  KeepAwake,
   Notifications,
   Linking,
   ActivityIndicator
 } from "expo";
-
-import {
-  put,
-  take,
-  takeEvery,
-  takeLatest,
-  all,
-  call,
-  select
-} from "redux-saga/effects";
-import KeepAwake, { activateKeepAwake } from "expo-keep-awake";
-import * as Font from "expo-font";
-import { Asset } from "expo-asset";
 import { AppContainer } from "./nav/router";
 import NavigationService from "./nav/NavigationService";
 import { PersistGate } from "redux-persist/integration/react";
@@ -36,69 +23,12 @@ import { store, persistor } from "./store";
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
-import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
-import { GET_STEPS } from "./constants/actionTypes";
-import { AsyncStorage } from 'react-native';
 
-
-const { c, retrieveData, storeData } = constants;
-
-const taskName = "BACKGROUND_GET_STEPS";
-
-// (async () => {
-//   let allKeys = await AsyncStorage.getAllKeys()
-//   console.log("allKeys: ", allKeys)
-//   let campaignIdKey = await AsyncStorage.getItem("campaignId")
-//   console.log("campaignIdKey: ", campaignIdKey)
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   let lastStateKey = await AsyncStorage.getItem("lastState")
-//   console.log("lastStateKey: ", lastStateKey)
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   let persistRootKey = await AsyncStorage.getItem("persist:root")
-//   console.log("persistRootKey: ", persistRootKey)
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   let stepInfoKey = await AsyncStorage.getItem("stepInfo")
-//   console.log("stepInfoKey: ", stepInfoKey)
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-// })();
-
-
-TaskManager.defineTask(taskName, async () => {
-  try {
-    
-    console.log("inside .defineTask try block");
-    // BackgroundFetch Logic goes here
-    await store.dispatch({type: c.GET_LAST_STEP_STATE});
-    console.log("GET_LAST_STEP_STATE run");
-    const receivedNewData = await store.dispatch({
-      type: c.GET_STEPS}); 
-    return receivedNewData;
-  } catch (error) {
-    console.log(error);
-    return BackgroundFetch.Result.Failed;
-  }
-});
-
-console.log(".isTaskDefined: " + TaskManager.isTaskDefined(taskName));
-
-BackgroundFetch.registerTaskAsync(taskName, {
-  minimumInterval: 60,
-  stopOnTerminate: false,
-  startOnBoot: true
-}).then(() => BackgroundFetch.setMinimumIntervalAsync(60));
+const { c, retrieveData } = constants;
 
 if (__DEV__) {
-  activateKeepAwake();
+  KeepAwake.activate();
 }
-
 class App extends React.Component {
   constructor(props) {
     super(props);
