@@ -6,7 +6,8 @@ import {
   all,
   select
 } from "redux-saga/effects";
-import { Pedometer } from "expo-sensors";
+import Pedometer from "expo-sensors";
+// import { Pedometer } from "expo";
 import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 
 import constants from "./constants";
@@ -456,7 +457,7 @@ export function* checkBonusSteps(action) {
   const { steps, stepTargets } = action.player;
   const { currentDay, startDate, id } = yield select(getCampaign);
   const { campaignDateArray, scavengingFor } = yield select(getSteps);
-
+  console.log("id: ", id)
   if (id) {
     if (
       steps[currentDay] === 0 ||

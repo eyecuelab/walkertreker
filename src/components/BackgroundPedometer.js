@@ -1,6 +1,7 @@
 import React from "react";
 import Expo from "expo";
 import { Pedometer } from "expo-sensors";
+// import { Pedometer } from "expo";
 import * as BackgroundFetch from "expo-background-fetch";
 import {
   StyleSheet,

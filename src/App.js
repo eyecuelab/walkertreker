@@ -10,7 +10,7 @@ import {
   Linking,
   ActivityIndicator
 } from "expo";
-import { Pedometer } from "expo-sensors";
+// import { Pedometer } from "expo";
 import {
   put,
   take,
