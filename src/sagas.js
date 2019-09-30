@@ -56,18 +56,6 @@ export function* updatePlayerSteps(action) {
   yield put({ type: c.UPDATE_PLAYER_STEPS, steps: simpleArray });
 }
 
-//= ================================================================================================
-// Background Fetch Worker Saga
-//= ================================================================================================
-
-// export function* backgroundFetchGetSteps() {
-
-// }
-
-//= ================================================================================================
-// Background Fetch Worker Saga
-//= ================================================================================================
-
 export function* setInitialCampaignDetails(action) {
   console.log("setting campaign");
   const url = `${endpoint}/api/campaigns`;
@@ -592,11 +580,14 @@ export function* updateHungerAndHealth(action) {
 
 export function* getLastStepState() {
   // TODO: retrieveData 'lastState' as object
+  console.log("Get Last Step State Saga Fired Off");
+
   const lastStateString = yield retrieveData("lastState");
   // console.log("----GENERATOR: GETLASTSTEPSTATE, state:", lastStateString);
   let lastState;
   if (lastStateString !== undefined) {
     lastState = JSON.parse(lastStateString);
+    // console.log("lastStateString was not undefined: " + lastState);
     const lastStepState = lastState.steps;
     // console.log('lastStepState: ', lastStepState);
     yield put({ type: c.SET_STEP_STATE, lastState: lastStepState });
@@ -605,8 +596,12 @@ export function* getLastStepState() {
     yield select(getSteps).pedometerIsAvailable &&
       lastState.steps.campaignDateArray !== null
   ) {
+    console.log(
+      "Pedometer is available and lastState.steps.campaignDateArray !== null"
+    );
     yield put({ type: c.GET_STEPS });
   }
+  console.log("End of getLastStepState()");
 }
 
 // watcher sagas ==============================
@@ -643,7 +638,7 @@ export function* watchPlayerStepsUpdated() {
 }
 
 export function* watchBackgroundSteps() {
-  yield takeLatest(c.BACKGROUND_GET_STEPS, fetchSteps);
+  yield takeLatest(c.BACKGROUND_GET_STEPS, getLastStepState);
 }
 
 // //////////////////////////

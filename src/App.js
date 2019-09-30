@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React from "react";
-import { Image } from "react-native";
+import { Image , AsyncStorage } from "react-native";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import {
@@ -37,23 +37,81 @@ import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
 import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
+import { GET_STEPS } from "./constants/actionTypes";
+
 
 const { c, retrieveData, storeData } = constants;
 
 const taskName = "BACKGROUND_GET_STEPS";
 
+(async () => {
+  const allKeys = await AsyncStorage.getAllKeys();
+  console.log("allKeys: ", allKeys);
+  const campaignIdKey = await AsyncStorage.getItem("campaignId");
+  console.log("campaignIdKey: ", campaignIdKey);
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  const lastStateKey = await AsyncStorage.getItem("lastState");
+  console.log("lastStateKey: ", lastStateKey);
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  const persistRootKey = await AsyncStorage.getItem("persist:root");
+  console.log("persistRootKey: ", persistRootKey);
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  const stepInfoKey = await AsyncStorage.getItem("stepInfo");
+  console.log("stepInfoKey: ", stepInfoKey);
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+})();
+
 TaskManager.defineTask(taskName, async () => {
   try {
     console.log("inside .defineTask try block");
-    const receivedNewData = () => {
-      store.dispatch({ type: c.BACKGROUND_GET_STEPS });
-    }; // BackgroundFetch Logic goes here
+    // BackgroundFetch Logic goes here
+    _checkPedometerAvailability;
+    // console.log("Pedo Result: ");
+    await store.dispatch({ type: c.GET_LAST_STEP_STATE });
+    console.log("GET_LAST_STEP_STATE run");
+    const receivedNewData = await store.dispatch({
+      type: c.GET_STEPS
+    });
     return receivedNewData;
   } catch (error) {
     console.log(error);
     return BackgroundFetch.Result.Failed;
   }
 });
+
+console.log(`.isTaskDefined: ${  TaskManager.isTaskDefined(taskName)}`);
 
 BackgroundFetch.registerTaskAsync(taskName, {
   minimumInterval: 60,
