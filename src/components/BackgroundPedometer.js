@@ -25,7 +25,6 @@ class BackgroundPedometer extends React.Component {
     const { dispatch } = this.props;
 
     if (this.props.player.id && this.props.campaign.id) {
-      console.log("bg_ped: getting last step state");
       dispatch({ type: c.GET_LAST_STEP_STATE });
     }
 
@@ -48,7 +47,6 @@ class BackgroundPedometer extends React.Component {
         this.props.steps.campaignDateArray !== null &&
         this.props.player.id !== null
       ) {
-        console.log("bg_ped: INTERVAl getting steps");
         dispatch({ type: c.GET_STEPS });
       }
     }, 60000);
