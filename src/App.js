@@ -4,14 +4,13 @@ import { Image } from "react-native";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import {
-  Pedometer,
   AppLoading,
   registerRootComponent,
   Notifications,
   Linking,
   ActivityIndicator
 } from "expo";
-
+import { Pedometer } from "expo-sensors";
 import {
   put,
   take,
