@@ -6,7 +6,8 @@ import {
   ImageBackground,
   ScrollView
 } from "react-native";
-import { Contacts, Permissions, Linking } from "expo";
+import { Contacts, Linking } from "expo";
+import * as Permissions from "expo-permissions";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -238,7 +239,7 @@ class InvitePlayers extends React.Component {
               <View style={customStyles.headerRow}>
                 <TextAlt size="sm">
                   Tap to select people you want to invite on your journey.
-                  Currently you&apos;ve selected{" "}
+                  Currently you&apos;ve selected 
                   <Text style={{ color: "black", fontFamily: "verdanaBold" }}>
                     {this.state.numSelected} people.
                   </Text>
