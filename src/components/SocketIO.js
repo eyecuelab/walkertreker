@@ -1,5 +1,6 @@
 import React from "react";
-import { Permissions, Notifications } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
 import constants from "../constants";
 import socket from "../socket";
