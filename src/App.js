@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React from "react";
-import { Image } from "react-native";
+import { Image , AsyncStorage } from "react-native";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import {
@@ -11,7 +11,6 @@ import {
   Linking,
   ActivityIndicator
 } from "expo";
-
 import {
   put,
   take,
@@ -38,8 +37,8 @@ import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
 import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 import { GET_STEPS } from "./constants/actionTypes";
-import { AsyncStorage } from 'react-native';
 
+import rootSaga from "./sagas";
 
 const { c, retrieveData, storeData } = constants;
 
@@ -70,16 +69,13 @@ const taskName = "BACKGROUND_GET_STEPS";
 //   console.log("===========================================================================================")
 // })();
 
-
 TaskManager.defineTask(taskName, async () => {
   try {
-    
     console.log("inside .defineTask try block");
     // BackgroundFetch Logic goes here
-    await store.dispatch({type: c.GET_LAST_STEP_STATE});
-    console.log("GET_LAST_STEP_STATE run");
     const receivedNewData = await store.dispatch({
-      type: c.GET_STEPS}); 
+      type: c.GET_STEPS
+    });
     return receivedNewData;
   } catch (error) {
     console.log(error);
@@ -87,7 +83,7 @@ TaskManager.defineTask(taskName, async () => {
   }
 });
 
-console.log(".isTaskDefined: " + TaskManager.isTaskDefined(taskName));
+console.log(`.isTaskDefined: ${  TaskManager.isTaskDefined(taskName)}`);
 
 BackgroundFetch.registerTaskAsync(taskName, {
   minimumInterval: 60,
