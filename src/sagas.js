@@ -8,12 +8,12 @@ import {
   select
 } from "redux-saga/effects";
 import { Pedometer } from "expo";
-import { CLIENT_APP_KEY, ENDPOINT } from "react-native-dotenv";
+import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 
 import constants from "./constants";
 
 const { c, storeData, retrieveData, item } = constants;
-const endpoint = ENDPOINT
+const endpoint = FRONT_END_ENDPOINT;
 
 export const getSteps = state => state.steps;
 export const getPlayer = state => state.player;
