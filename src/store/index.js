@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer, purgeStoredState } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
@@ -13,6 +13,12 @@ const configureStore = () => {
     stateReconciler: autoMergeLevel2,
     whitelist: ["player", "campaign", "steps"]
   };
+
+  /* THE BELOW METHODS ARE FOR WHEN YOU NEED TO CLEAR PERSISTED STATE STORAGE; You only need one. */
+
+  // persistConfig.storage.clear();
+  // purgeStoredState(persistConfig);
+
   const persistedReducer = persistReducer(persistConfig, rootReducer);
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(
@@ -27,6 +33,9 @@ const configureStore = () => {
 export const store = configureStore();
 
 export const persistor = persistStore(store, null, () => {
+  // CHANGE PLAYERID AND CAMPAIGNID BELOW TO START GAME WITH A SPECIFIC GAME AND PLAYER LOADED:
+  // const playerId = ''
+  // const campaignId = ''
   const playerId = store.getState().player.id || null;
   const campaignId = store.getState().campaign.id || null;
   console.log("BEFORE ATTEMPTING TO FETCH", playerId, campaignId);
