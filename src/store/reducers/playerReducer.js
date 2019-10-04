@@ -41,7 +41,12 @@ export default (state = player, action) => {
         hunger: action.hunger
       };
       return newState;
+    // case c.PLAYER_VOTE_CAST:
+    //   newState = {
+    //     ...state,
 
+    //   }
+    //   return newState;
     case c.UPDATE_HEALTH:
       newState = {
         ...state,

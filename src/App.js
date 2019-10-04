@@ -1,14 +1,27 @@
 /* eslint-disable global-require */
 import React from "react";
-import { Image } from "react-native";
+import { Image, AsyncStorage } from "react-native";
+import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
 import {
+  /* Pedometer, */
   AppLoading,
   registerRootComponent,
   Notifications,
   Linking,
   ActivityIndicator
 } from "expo";
-import { /* KeepAwake, */ activateKeepAwake } from "expo-keep-awake";
+
+import {
+  put,
+  take,
+  takeEvery,
+  takeLatest,
+  all,
+  call,
+  select
+} from "redux-saga/effects";
+import KeepAwake, { activateKeepAwake } from "expo-keep-awake";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import { AppContainer } from "./nav/router";
@@ -23,37 +36,117 @@ import { store, persistor } from "./store";
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
+// import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
+// import { GET_STEPS } from "./constants/actionTypes";
 
-const { c, retrieveData } = constants;
+const { c, retrieveData /* , storeData */ } = constants;
 
-// CODE BELOW LOGS XML REQUESTS IN REACT-NATIVE-DEBUGGER vvvvvvvv
-global.XMLHttpRequest = global.originalXMLHttpRequest
-  ? global.originalXMLHttpRequest
-  : global.XMLHttpRequest;
-global.FormData = global.originalFormData
-  ? global.originalFormData
-  : global.FormData;
+const taskName = "BACKGROUND_GET_STEPS";
 
-// fetch // Ensure to get the lazy property
+(async () => {
+  const allKeys = await AsyncStorage.getAllKeys();
+  console.log("allKeys: ", allKeys);
+  const campaignIdKey = await AsyncStorage.getItem("campaignId");
+  console.log("campaignIdKey: ", campaignIdKey);
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  const lastStateKey = await AsyncStorage.getItem("lastState");
+  console.log("lastStateKey: ", lastStateKey);
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  const persistRootKey = await AsyncStorage.getItem("persist:root");
+  console.log("persistRootKey: ", persistRootKey);
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  const stepInfoKey = await AsyncStorage.getItem("stepInfo");
+  console.log("stepInfoKey: ", stepInfoKey);
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+  console.log(
+    "==========================================================================================="
+  );
+})();
 
-if (window.__FETCH_SUPPORT__) {
-  // it's RNDebugger only to have
-  window.__FETCH_SUPPORT__.blob = false;
-} else {
-  /*
-   * Set __FETCH_SUPPORT__ to false is just work for `fetch`.
-   * If you're using another way you can just use the native Blob and remove the `else` statement
-   */
-  global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
-  global.FileReader = global.originalFileReader
-    ? global.originalFileReader
-    : global.FileReader;
-}
-// CODE ABOVE LOGS XML REQUEST IN REACT-NATIVE-DEBUGGER ^^^^^^^^
+TaskManager.defineTask(taskName, async () => {
+  try {
+    console.log("inside .defineTask try block");
+    // BackgroundFetch Logic goes here
+    // _checkPedometerAvailability;
+    // console.log("Pedo Result: ");
+    await store.dispatch({ type: c.GET_LAST_STEP_STATE });
+    console.log("GET_LAST_STEP_STATE run");
+    const receivedNewData = await store.dispatch({
+      type: c.GET_STEPS
+    });
+    return receivedNewData;
+  } catch (error) {
+    console.log(error);
+    return BackgroundFetch.Result.Failed;
+  }
+});
+
+console.log(`.isTaskDefined: ${TaskManager.isTaskDefined(taskName)}`);
+
+BackgroundFetch.registerTaskAsync(taskName, {
+  minimumInterval: 60,
+  stopOnTerminate: false,
+  startOnBoot: true
+}).then(() => BackgroundFetch.setMinimumIntervalAsync(60));
+
+/* CODE BELOW LOGS XML REQUESTS IN REACT-NATIVE-DEBUGGER vvvvvvvv */
+// global.XMLHttpRequest = global.originalXMLHttpRequest
+//   ? global.originalXMLHttpRequest
+//   : global.XMLHttpRequest;
+// global.FormData = global.originalFormData
+//   ? global.originalFormData
+//   : global.FormData;
+
+// // fetch // Ensure to get the lazy property
+
+// if (window.__FETCH_SUPPORT__) {
+//   // it's RNDebugger only to have
+//   window.__FETCH_SUPPORT__.blob = false;
+// } else {
+//   /*
+//    * Set __FETCH_SUPPORT__ to false is just work for `fetch`.
+//    * If you're using another way you can just use the native Blob and remove the `else` statement
+//    */
+//   global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
+//   global.FileReader = global.originalFileReader
+//     ? global.originalFileReader
+//     : global.FileReader;
+// }
+/* CODE ABOVE LOGS XML REQUEST IN REACT-NATIVE-DEBUGGER ^^^^^^^^ */
 
 if (__DEV__) {
   activateKeepAwake();
 }
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -131,7 +224,7 @@ class App extends React.Component {
 
     await Promise.all([
       Font.loadAsync({
-        gore: require("../assets/fonts/goreRough.otf"),
+        gore: require("../assets/fonts/goreRough.ttf"),
         verdana: require("../assets/fonts/verdana.ttf"),
         verdanaBold: require("../assets/fonts/verdanaBold.ttf"),
         "Gill Sans MT Condensed": require("../assets/fonts/gillSansCondensed.ttf"),
@@ -227,6 +320,7 @@ class App extends React.Component {
       );
     }
     console.log("Loading App Initialized");
+    console.log("PLAYER,", this.props.player);
     return (
       <AppLoading
         startAsync={this._loadResourcesAsync}

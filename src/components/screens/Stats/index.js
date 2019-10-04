@@ -1,18 +1,27 @@
 import React, { Component } from "react";
-import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import { View, ImageBackground, StyleSheet } from "react-native";
 import ScreenContainer from "../../containers/ScreenContainer";
 import CampaignHeader from "../../ui/CampaignHeader";
 import ToggleBar from "../../ui/ToggleBar";
+import ShortId from "shortid";
+import PropTypes from "prop-types";
 
 import StepStats from "./StepStats";
 import ItemStats from "./ItemStats";
 import EventStats from "./EventStats";
 
 const options = [
-  { label: "Steps", value: "Steps" },
-  { label: "Events", value: "Events" },
-  { label: "Items", value: "Items" }
+  { label: "Steps", value: "Steps", id: ShortId.generate() },
+  { label: "Events", value: "Events", id: ShortId.generate() },
+  { label: "Items", value: "Items", id: ShortId.generate() }
 ];
+
+const styles = StyleSheet.create({
+  statsContainer: {
+    flex: 1,
+    marginTop: 30
+  }
+});
 
 class Stats extends Component {
   constructor(props) {
@@ -61,11 +70,8 @@ class Stats extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  statsContainer: {
-    flex: 1,
-    marginTop: 30
-  }
-});
+Stats.propTypes = {
+  screenProps: PropTypes.shape().isRequired
+};
 
 export default Stats;

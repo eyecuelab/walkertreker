@@ -39,8 +39,9 @@ class RandomEvent extends React.Component {
 
   getTimeNow = () => {
     const createdAt = this.props.screenProps.notification.data.data.data.createdAt.toString();
-
     let start = new Date(createdAt);
+    // ADDDED IN CODE IN THE LINE BELOW  `- 420 * 60000` so that it would take 7 hours OFF of the createdAt time. Only necessary when running a forced event from api.
+    // start = new Date(start.getTime() - 420 * 60000);
     start = new Date(start.getTime());
     const then = new Date(start.getTime() + 15 * 60000);
 
@@ -156,8 +157,4 @@ RandomEvent.propTypes = {
     id: PropTypes.string,
     completedEvents: PropTypes.arrayOf(PropTypes.number)
   }).isRequired
-};
-
-RandomEvent.defaultTypes = {
-  screenProps: {}
 };
