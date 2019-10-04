@@ -1,10 +1,23 @@
 # Walker Treker
-## Motivating human people to walk more
-
 ### _They're right behind you..._
 
+**Last Update: 10/05/2019**
+
+Walker Treker is the companion repo to [walkertrekker-api](https://github.com/eyecuelab/walkertrekker-api). It is a zombified game to motivate human people to walk more. Built in React Native for iOS and Android. 
+
+It was created by 3 groups of EyeCue Lab interns:
+* [Joe](https://github.com/josephfriesen) and [Josh](https://github.com/gearjosh)
+* [Kim](https://github.com/kimmcconnell) and [Ward](https://github.com/wchamberlain89)
+* [Stuart](https://github.com/MCStuart) and [Brooke](https://github.com/BrookeZK)
+
+With the support of EyeCue Lab employees - thank you! (:
+
+### Are you a walkertreker developer? Or want to learn more about the stack? 
+### Check out the [walkertreker wiki](https://github.com/eyecuelab/walkertreker/wiki)
+
+## A Handy (But Possible Incomplete) List of Actions:
 #### Dispatching actions
-##### Here are the actions and payloads needed to dispatch actions to the server:
+#### Here are the actions and payloads needed to dispatch actions to the server:
 
 - **Create Campaign** - _returns a proto-campaign to state, containing campaign id, length, difficulty, and event frequency; adds host player to campaign players_
   - type: `c.SET_INITIAL_CAMPAIGN_DETAILS`
