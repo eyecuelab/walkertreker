@@ -1,10 +1,10 @@
 /* eslint-disable global-require */
 import React from "react";
-import { Image , AsyncStorage } from "react-native";
+import { Image, AsyncStorage } from "react-native";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import {
-  Pedometer,
+  /* Pedometer, */
   AppLoading,
   registerRootComponent,
   Notifications,
@@ -36,11 +36,10 @@ import { store, persistor } from "./store";
 import SocketIO from "./components/SocketIO";
 import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
-import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
-import { GET_STEPS } from "./constants/actionTypes";
+// import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
+// import { GET_STEPS } from "./constants/actionTypes";
 
-
-const { c, retrieveData, storeData } = constants;
+const { c, retrieveData /* , storeData */ } = constants;
 
 const taskName = "BACKGROUND_GET_STEPS";
 
@@ -97,7 +96,7 @@ TaskManager.defineTask(taskName, async () => {
   try {
     console.log("inside .defineTask try block");
     // BackgroundFetch Logic goes here
-    _checkPedometerAvailability;
+    // _checkPedometerAvailability;
     // console.log("Pedo Result: ");
     await store.dispatch({ type: c.GET_LAST_STEP_STATE });
     console.log("GET_LAST_STEP_STATE run");
@@ -111,7 +110,7 @@ TaskManager.defineTask(taskName, async () => {
   }
 });
 
-console.log(`.isTaskDefined: ${  TaskManager.isTaskDefined(taskName)}`);
+console.log(`.isTaskDefined: ${TaskManager.isTaskDefined(taskName)}`);
 
 BackgroundFetch.registerTaskAsync(taskName, {
   minimumInterval: 60,
@@ -119,7 +118,7 @@ BackgroundFetch.registerTaskAsync(taskName, {
   startOnBoot: true
 }).then(() => BackgroundFetch.setMinimumIntervalAsync(60));
 
-// CODE BELOW LOGS XML REQUESTS IN REACT-NATIVE-DEBUGGER vvvvvvvv
+/* CODE BELOW LOGS XML REQUESTS IN REACT-NATIVE-DEBUGGER vvvvvvvv */
 // global.XMLHttpRequest = global.originalXMLHttpRequest
 //   ? global.originalXMLHttpRequest
 //   : global.XMLHttpRequest;
@@ -142,7 +141,7 @@ BackgroundFetch.registerTaskAsync(taskName, {
 //     ? global.originalFileReader
 //     : global.FileReader;
 // }
-// CODE ABOVE LOGS XML REQUEST IN REACT-NATIVE-DEBUGGER ^^^^^^^^
+/* CODE ABOVE LOGS XML REQUEST IN REACT-NATIVE-DEBUGGER ^^^^^^^^ */
 
 if (__DEV__) {
   activateKeepAwake();
