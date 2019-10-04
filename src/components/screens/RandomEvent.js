@@ -2,7 +2,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
 import constants from "../../constants";
 
 import EventDisplay from "../ui/EventDisplay";
@@ -30,6 +29,8 @@ class RandomEvent extends React.Component {
 
   componentDidMount = async () => {
     this.timer = setInterval(() => this._updateTime(), 1000);
+    console.log("this.props.screenProps", this.props.screenProps);
+    // console.log("this.props.screenProps.data", this.props.screenProps.data);
   };
 
   componentWillUnmount = () => {
@@ -38,8 +39,9 @@ class RandomEvent extends React.Component {
 
   getTimeNow = () => {
     const createdAt = this.props.screenProps.notification.data.data.data.createdAt.toString();
-
     let start = new Date(createdAt);
+    // ADDDED IN CODE IN THE LINE BELOW  `- 420 * 60000` so that it would take 7 hours OFF of the createdAt time. Only necessary when running a forced event from api.
+    // start = new Date(start.getTime() - 420 * 60000);
     start = new Date(start.getTime());
     const then = new Date(start.getTime() + 15 * 60000);
 
@@ -67,11 +69,20 @@ class RandomEvent extends React.Component {
     this.setState({ timeLeft });
   };
 
-  getEventToDisplay = async props => {
+  getEventToDisplay = async () => {
+    console.log("inside get event to display");
     const evtNumber = this.props.screenProps.notification.data.data.data
       .eventNumber;
+    console.log("evtNumber,", evtNumber);
     this.eventId = this.props.screenProps.notification.data.data.data.eventId;
+    console.log("this.eventId,", this.eventId);
+    console.log("this.props.screenProps.notification.data.data.data.eventId");
+    console.log(
+      "--->",
+      this.props.screenProps.notification.data.data.data.eventId
+    );
     this.evt = events[evtNumber - 1];
+    console.log("this.evt", this.evt);
     this.props.dispatch({ type: c.NEW_EVENT, event: this.evt });
   };
 
@@ -132,3 +143,18 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(RandomEvent);
+
+RandomEvent.propTypes = {
+  screenProps: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    id: PropTypes.string
+  }).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func
+  }).isRequired,
+  campaign: PropTypes.shape({
+    id: PropTypes.string,
+    completedEvents: PropTypes.arrayOf(PropTypes.number)
+  }).isRequired
+};

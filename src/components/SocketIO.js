@@ -1,9 +1,11 @@
 import React from "react";
-import { Permissions, Notifications } from "expo";
+// import { Notifications } from "expo";
+// import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
 import constants from "../constants";
 import socket from "../socket";
-import NavigationService from "../nav/NavigationService";
+// import NavigationService from "../nav/NavigationService";
+import PropTypes from "prop-types";
 
 const { c } = constants;
 
@@ -24,7 +26,7 @@ class SocketIO extends React.Component {
     });
 
     socket.on("log", msg => {
-      console.log("socket msg", msg);
+      console.log("socket msg----", msg);
     });
 
     socket.on("connect", async () => {
@@ -42,7 +44,9 @@ class SocketIO extends React.Component {
 
     socket.on("sendCampaignInfo", campaign => {
       console.log(
-        `++++ received sendCampaignInfo event from server ++++++ + ${campaign}`
+        `++++ received sendCampaignInfo event from server ++++++ + ${JSON.stringify(
+          campaign
+        )}`
       );
       dispatch({ type: c.CAMPAIGN_UPDATED, campaign });
     });
@@ -83,3 +87,14 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(SocketIO);
+
+SocketIO.propTypes = {
+  campaign: PropTypes.shape({
+    id: PropTypes.string
+  }).isRequired,
+  player: PropTypes.shape({
+    id: PropTypes.string,
+    campaignId: PropTypes.string
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+};

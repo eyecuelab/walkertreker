@@ -2,26 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   StyleSheet,
-  Text,
+  // Text,
   View,
-  Image,
+  // Image,
   ImageBackground,
-  TextInput,
-  Animated,
-  Easing
+  TextInput
+  // Animated,
+  // Easing
 } from "react-native";
-import { ImagePicker, Permissions, Notifications } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { connect } from "react-redux";
-import { MainHeader, SubHeader, Label, TextAlt } from "../text";
+import { MainHeader, /* SubHeader, */ Label, TextAlt } from "../text";
 import { phoneNumPrettyPrint } from "../../util/util";
-import WithKeyboardShift from "../../util/WithKeyboardShift";
+// import WithKeyboardShift from "../../util/WithKeyboardShift";
 
 import { Transition } from "react-navigation-fluid-transitions";
-import { OpacityContainer, ScreenContainer, Footer } from "../containers";
+import { /* OpacityContainer, */ ScreenContainer, Footer } from "../containers";
 
 import posed from "react-native-pose";
 import ButtonWithLoading from "../ui/Buttons/ButtonWithLoading";
@@ -32,7 +34,75 @@ const paint = require("../../../assets/paintstroke/Paint_Stroke3_alt.png");
 const paint2 = require("../../../assets/paintstroke/Paint_Stroke_alt.png");
 
 const { c } = constants;
-const use_item_bg = require("../../../assets/use_item_bg.png");
+// const use_item_bg = require("../../../assets/use_item_bg.png");
+
+// const styles = StyleSheet.create(defaultStyle);
+const widthUnit = wp("1%");
+const heightUnit = hp("1%");
+const customStyles = StyleSheet.create({
+  fieldContainer: {
+    padding: 6,
+    marginBottom: heightUnit * 3
+  },
+  fieldContainer2: {
+    padding: 6,
+    marginBottom: heightUnit * 3,
+    height: heightUnit * 11,
+    width: "auto",
+    marginLeft: -15
+  },
+  headerContainer: {
+    marginTop: heightUnit * 4
+  },
+  textButtonContainer: {
+    marginTop: heightUnit * 3,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  body: {
+    justifyContent: "center",
+    alignContent: "center",
+    flex: 2
+  },
+  textInput: {
+    width: "100%",
+    marginTop: 5,
+    paddingTop: heightUnit * 1,
+    paddingBottom: heightUnit * 2,
+    paddingLeft: widthUnit * 1,
+    color: "white",
+    fontFamily: "gore",
+    fontSize: widthUnit * 6,
+    zIndex: 0,
+    marginLeft: 20
+  },
+  textInput2: {
+    width: "100%",
+    marginTop: 15,
+    paddingTop: heightUnit * 1,
+    paddingBottom: heightUnit * 2,
+    paddingLeft: widthUnit * 1,
+    color: "white",
+    fontFamily: "gore",
+    fontSize: widthUnit * 6,
+    zIndex: 0,
+    marginLeft: 35
+  },
+  labelPosition: {
+    position: "absolute",
+    bottom: heightUnit * 2.5,
+    left: widthUnit * 5,
+    padding: 2,
+    zIndex: 1
+  },
+  labelPosition2: {
+    position: "absolute",
+    bottom: heightUnit * 3,
+    left: widthUnit * 7,
+    padding: 2,
+    zIndex: 1
+  }
+});
 
 const AnimatedLabel = posed.View({
   inInput: {
@@ -65,21 +135,35 @@ class SignUp extends React.Component {
     this.animationInterval = null;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  onUpdate1 = () => {
+    this.setState({
+      isLoading: false
+    });
+  };
+
+  onUpdate2 = () => {
+    this.setState({
+      signInSuccess: true
+    });
+  };
+
+  componentDidUpdate(prevProps /* , prevState */) {
     const { auth } = this.props;
     if (prevProps.auth.gettingPlayerId && !auth.gettingPlayerId) {
-      this.setState({ isLoading: false }); // eslint-disable-line react/no-did-update-set-state
+      this.onUpdate1();
+      // this.setState({ isLoading: false }); // eslint-disable-line react/no-did-update-set-state
     }
     if (
       !auth.gettingPlayerId &&
       !auth.gettingCampaignId &&
       !this.state.signInSuccess
     ) {
-      this.props.player.id // eslint-disable-line
-        ? this.setState({ signInSuccess: true }) // eslint-disable-line react/no-did-update-set-state
-        : this.state.newPlayerCreated
-        ? this.recoveryText()
-        : null;
+      if (this.props.player.id) {
+        this.onUpdate2();
+        // this.setState({ signInSuccess: true })
+      } else if (!this.props.player.id && this.state.newPlayerCreated) {
+        this.recoveryText();
+      }
     }
   }
 
@@ -100,9 +184,10 @@ class SignUp extends React.Component {
     this.setState({ isLoading: true });
     const { dispatch } = this.props;
     const prettyPhoneNumber = phoneNumPrettyPrint(this.state.phoneNumber);
-    console.log(prettyPhoneNumber);
+    console.log("handle submit for", prettyPhoneNumber);
     if (prettyPhoneNumber.length === 12) {
       const pushToken = await this.registerForPushNotificationsAsync();
+      console.log("push token", pushToken);
       dispatch({ type: c.GETTING_PLAYERID, gettingPlayerId: true });
       dispatch({
         type: c.CREATE_PLAYER,
@@ -117,6 +202,7 @@ class SignUp extends React.Component {
         : this.setState({ newPlayerCreated: true });
     } else {
       await this.setState({
+        isLoading: false,
         recoveryText: "Are you sure you entered your phone number correctly?"
       });
     }
@@ -174,148 +260,110 @@ class SignUp extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "black" }}>
         {this.state.signInSuccess ? (
           <SignInSuccess
             navigation={this.props.navigation}
             player={this.props.player.displayName}
           />
-        ) : null}
-        <ScreenContainer>
-          <View style={customStyles.headerContainer}>
-            <MainHeader style={{ textAlign: "center" }}>New Player</MainHeader>
-          </View>
+        ) : (
+          <ScreenContainer>
+            <View style={customStyles.headerContainer}>
+              <MainHeader style={{ textAlign: "center" }}>
+                New Player
+              </MainHeader>
+            </View>
 
-          <View style={customStyles.body}>
-            <ImageBackground
-              source={paint}
-              resizeMode="stretch"
-              overflow="visible"
-              style={customStyles.fieldContainer}
-            >
-              <AnimatedLabel
-                pose={this.state.didFocusName}
-                style={[
-                  customStyles.labelPosition,
-                  this.state.didFocusName === "inInput"
-                    ? { zIndex: 0 }
-                    : { zIndex: 1 }
-                ]}
-              >
-                <Label>Display Name</Label>
-              </AnimatedLabel>
-              <TextInput
-                style={customStyles.textInput}
-                onChangeText={text => this.setState({ displayName: text })}
-                onFocus={() => this.handleFocus("name")}
-                onBlur={() => this.handleBlur("name")}
-                value={this.state.displayName}
-              />
-            </ImageBackground>
-
-            <Transition shared="phoneInput">
+            <View style={customStyles.body}>
               <ImageBackground
-                source={paint2}
+                source={paint}
                 resizeMode="stretch"
                 overflow="visible"
                 style={customStyles.fieldContainer}
               >
                 <AnimatedLabel
-                  pose={this.state.didFocusPhone}
+                  pose={this.state.didFocusName}
                   style={[
                     customStyles.labelPosition,
-                    this.state.didFocusPhone === "inInput"
+                    this.state.didFocusName === "inInput"
                       ? { zIndex: 0 }
                       : { zIndex: 1 }
                   ]}
                 >
-                  <Label>Phone Number</Label>
+                  <Label>Display Name</Label>
                 </AnimatedLabel>
-
                 <TextInput
                   style={customStyles.textInput}
-                  keyboardType="phone-pad"
-                  onChangeText={text => this.setState({ phoneNumber: text })}
-                  onFocus={() => this.handleFocus("phone")}
-                  onBlur={() => this.handleBlur("phone")}
-                  value={this.state.phoneNumber}
+                  onChangeText={text => this.setState({ displayName: text })}
+                  onFocus={() => this.handleFocus("name")}
+                  onBlur={() => this.handleBlur("name")}
+                  value={this.state.displayName}
                 />
               </ImageBackground>
-            </Transition>
-          </View>
 
-          <Footer style={{ alignContent: "center" }}>
-            <View style={{ height: heightUnit * 8 }}>
-              <ButtonWithLoading
-                isLoading={this.state.isLoading}
-                title="Submit"
-                onButtonPress={this._handleSubmit}
-                backgroundColor="darkred"
-              />
+              <Transition shared="phoneInput">
+                <ImageBackground
+                  source={paint2}
+                  resizeMode="stretch"
+                  overflow="visible"
+                  style={customStyles.fieldContainer2}
+                >
+                  <AnimatedLabel
+                    pose={this.state.didFocusPhone}
+                    style={[
+                      customStyles.labelPosition2,
+                      this.state.didFocusPhone === "inInput"
+                        ? { zIndex: 0 }
+                        : { zIndex: 1 }
+                    ]}
+                  >
+                    <Label>Phone Number</Label>
+                  </AnimatedLabel>
+
+                  <TextInput
+                    style={customStyles.textInput2}
+                    keyboardType="phone-pad"
+                    returnKeyType="done"
+                    onChangeText={text => this.setState({ phoneNumber: text })}
+                    onFocus={() => this.handleFocus("phone")}
+                    onBlur={() => this.handleBlur("phone")}
+                    value={this.state.phoneNumber}
+                  />
+                </ImageBackground>
+              </Transition>
             </View>
 
-            <View style={customStyles.textButtonContainer}>
-              <TextAlt
-                size="sm"
-                onPress={() => {
-                  this.props.navigation.navigate("AccountRecovery");
-                }}
-              >
-                {this.state.recoveryText}
-                <TextAlt color="darkred" weight="bold">
-                  {" "}
-                  {this.state.recoveryTextBold}
+            <Footer style={{ alignContent: "center" }}>
+              <View style={{ height: heightUnit * 8 }}>
+                <ButtonWithLoading
+                  isLoading={this.state.isLoading}
+                  title="Submit"
+                  onButtonPress={this._handleSubmit}
+                  backgroundColor="darkred"
+                />
+              </View>
+
+              <View style={customStyles.textButtonContainer}>
+                <TextAlt
+                  size="sm"
+                  onPress={() => {
+                    this.props.navigation.navigate("AccountRecovery");
+                  }}
+                >
+                  {this.state.recoveryText}
+                  <TextAlt color="darkred" weight="bold">
+                    {" "}
+                    {this.state.recoveryTextBold}
+                  </TextAlt>
                 </TextAlt>
-              </TextAlt>
-            </View>
-          </Footer>
-        </ScreenContainer>
+              </View>
+            </Footer>
+          </ScreenContainer>
+        )}
       </View>
     );
   }
 }
-
-// const styles = StyleSheet.create(defaultStyle);
-const widthUnit = wp("1%");
-const heightUnit = hp("1%");
-const customStyles = StyleSheet.create({
-  fieldContainer: {
-    padding: 6,
-    marginBottom: heightUnit * 3
-  },
-  headerContainer: {
-    marginTop: heightUnit * 4
-  },
-  textButtonContainer: {
-    marginTop: heightUnit * 3,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  body: {
-    justifyContent: "center",
-    alignContent: "center",
-    flex: 2
-  },
-  textInput: {
-    width: "100%",
-    marginTop: 5,
-    paddingTop: heightUnit * 1,
-    paddingBottom: heightUnit * 2,
-    paddingLeft: widthUnit * 1,
-    color: "white",
-    fontFamily: "gore",
-    fontSize: widthUnit * 6,
-    zIndex: 0,
-    marginLeft: 20
-  },
-  labelPosition: {
-    position: "absolute",
-    bottom: heightUnit * 2,
-    left: widthUnit * 1.8,
-    padding: 2,
-    zIndex: 1
-  }
-});
 
 function mapStateToProps(state) {
   return {
@@ -327,3 +375,10 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(SignUp);
+
+SignUp.propTypes = {
+  player: PropTypes.shape().isRequired,
+  dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.shape().isRequired,
+  auth: PropTypes.shape().isRequired
+};

@@ -41,14 +41,21 @@ export default (state = player, action) => {
         hunger: action.hunger
       };
       return newState;
+    // case c.PLAYER_VOTE_CAST:
+    //   newState = {
+    //     ...state,
 
+    //   }
+    //   return newState;
     case c.UPDATE_HEALTH:
       newState = {
         ...state,
         health: action.health
       };
       return newState;
-
+    case c.PLAYER_DESTROYED:
+      newState = Object.assign({}, player);
+      return newState;
     default:
       return state;
   }

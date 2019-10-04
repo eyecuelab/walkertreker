@@ -20,9 +20,9 @@ function MainText(props) {
     (p.size === "md" && widthUnit * 6.5) ||
     (p.size === "lg" && widthUnit * 7) ||
     widthUnit * 6};
-  letterSpacing: 1.15;
+  letter-spacing: 1.15;
   color: ${p => p.color || "white"};
-  fontWeight: ${p => p.weight || "normal"};
+  font-weight: ${p => p.weight || "normal"};
   `;
   return <StyledText {...props}>{props.children}</StyledText>;
 }
