@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React from "react";
-import { Image , AsyncStorage } from "react-native";
+import { Image, AppState } from "react-native";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import {
@@ -29,6 +29,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { withNavigation } from "react-navigation";
 
 import { Provider, connect, dispatch } from "react-redux";
+import * as actions from './actions'
 import constants from "./constants";
 import { store, persistor } from "./store";
 
@@ -37,45 +38,34 @@ import BackgroundPedometer from "./components/BackgroundPedometer";
 import NotificationListeners from "./components/NotificationListeners";
 import { CLIENT_APP_KEY, FRONT_END_ENDPOINT } from "react-native-dotenv";
 import { GET_STEPS } from "./constants/actionTypes";
+import { AsyncStorage } from "react-native";
+import rootSaga, { getSteps } from "./sagas";
 
-import rootSaga from "./sagas";
-
+const { setAppState, setCampaignDates } = actions;
 const { c, retrieveData, storeData } = constants;
 
 const taskName = "BACKGROUND_GET_STEPS";
 
+// These keys from Async Storage will be useful if state cannot be directly accessed from outside the app in the headless background task.
+// This is an immediately invoked function expression (IIFE) and will be run on App start
 // (async () => {
 //   let allKeys = await AsyncStorage.getAllKeys()
 //   console.log("allKeys: ", allKeys)
-//   let campaignIdKey = await AsyncStorage.getItem("campaignId")
-//   console.log("campaignIdKey: ", campaignIdKey)
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   let lastStateKey = await AsyncStorage.getItem("lastState")
-//   console.log("lastStateKey: ", lastStateKey)
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   let persistRootKey = await AsyncStorage.getItem("persist:root")
-//   console.log("persistRootKey: ", persistRootKey)
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   let stepInfoKey = await AsyncStorage.getItem("stepInfo")
-//   console.log("stepInfoKey: ", stepInfoKey)
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
-//   console.log("===========================================================================================")
 // })();
 
 TaskManager.defineTask(taskName, async () => {
   try {
+    // ------------------------------------------------
+    // BackgroundFetch Logic goes inside this try-block
+    // ------------------------------------------------
+    // This is the task that is called outside of the App in the background so it must contain everything needed to query, update, and return step counts for a player
+    // As per Expo documentation, "It must be called in the global scope of your JavaScript bundle. In particular, it cannot be called in 
+    // any of React lifecycle methods like componentDidMount. This limitation is due to the fact that when the application is launched in 
+    // the background, we need to spin up your JavaScript app, run your task and then shut down — no views are mounted in this scenario."
+    // ------------------------------------------------------------------------------------------------------------------------------------------------
     console.log("inside .defineTask try block");
-    // BackgroundFetch Logic goes here
-    const receivedNewData = await store.dispatch({
-      type: c.GET_STEPS
-    });
+    const receivedNewData = '';
+    console.log("receievedNewData defined and returned");
     return receivedNewData;
   } catch (error) {
     console.log(error);
@@ -83,7 +73,7 @@ TaskManager.defineTask(taskName, async () => {
   }
 });
 
-console.log(`.isTaskDefined: ${  TaskManager.isTaskDefined(taskName)}`);
+console.log(".isTaskDefined: " + TaskManager.isTaskDefined(taskName));
 
 BackgroundFetch.registerTaskAsync(taskName, {
   minimumInterval: 60,
