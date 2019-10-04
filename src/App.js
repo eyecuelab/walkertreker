@@ -27,28 +27,28 @@ import NotificationListeners from "./components/NotificationListeners";
 const { c, retrieveData } = constants;
 
 // CODE BELOW LOGS XML REQUESTS IN REACT-NATIVE-DEBUGGER vvvvvvvv
-// global.XMLHttpRequest = global.originalXMLHttpRequest
-//   ? global.originalXMLHttpRequest
-//   : global.XMLHttpRequest;
-// global.FormData = global.originalFormData
-//   ? global.originalFormData
-//   : global.FormData;
+global.XMLHttpRequest = global.originalXMLHttpRequest
+  ? global.originalXMLHttpRequest
+  : global.XMLHttpRequest;
+global.FormData = global.originalFormData
+  ? global.originalFormData
+  : global.FormData;
 
-// // fetch // Ensure to get the lazy property
+// fetch // Ensure to get the lazy property
 
-// if (window.__FETCH_SUPPORT__) {
-//   // it's RNDebugger only to have
-//   window.__FETCH_SUPPORT__.blob = false;
-// } else {
-//   /*
-//    * Set __FETCH_SUPPORT__ to false is just work for `fetch`.
-//    * If you're using another way you can just use the native Blob and remove the `else` statement
-//    */
-//   global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
-//   global.FileReader = global.originalFileReader
-//     ? global.originalFileReader
-//     : global.FileReader;
-// }
+if (window.__FETCH_SUPPORT__) {
+  // it's RNDebugger only to have
+  window.__FETCH_SUPPORT__.blob = false;
+} else {
+  /*
+   * Set __FETCH_SUPPORT__ to false is just work for `fetch`.
+   * If you're using another way you can just use the native Blob and remove the `else` statement
+   */
+  global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
+  global.FileReader = global.originalFileReader
+    ? global.originalFileReader
+    : global.FileReader;
+}
 // CODE ABOVE LOGS XML REQUEST IN REACT-NATIVE-DEBUGGER ^^^^^^^^
 
 if (__DEV__) {
