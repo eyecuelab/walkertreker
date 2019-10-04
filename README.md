@@ -15,7 +15,7 @@ With the support of EyeCue Lab employees - thank you! (:
 ### Are you a walkertreker developer? Or want to learn more about the stack? 
 ### Check out the [walkertreker wiki](https://github.com/eyecuelab/walkertreker/wiki)
 
-## A Handy (But Possible Incomplete) List of Actions:
+## A Handy (But Possibly Incomplete) List of Actions:
 #### Dispatching actions
 #### Here are the actions and payloads needed to dispatch actions to the server:
 
