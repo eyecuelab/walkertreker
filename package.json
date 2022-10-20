@@ -31,7 +31,7 @@
     "react-native-indicators": "^0.13.0",
     "react-native-modal": "^7.0.2",
     "react-native-pose": "^0.9.1",
-    "react-native-reanimated": "^1.2.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-responsive-screen": "^1.2.0",
     "react-navigation": "^3.11.0",
     "react-navigation-fluid-transitions": "^0.3.2",
